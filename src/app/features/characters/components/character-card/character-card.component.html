@@ -1,0 +1,39 @@
+<mat-card>
+  <div class="row">
+    <img
+      class="col-lg-4 character-image"
+      [src]="character.image"
+      [routerLink]="['/characters', character.id]"
+      alt="{{ character.name }}"
+    />
+    <div class="col-lg-8">
+      <mat-card-header [routerLink]="['/characters', character.id]">
+        <mat-card-title>{{ character.name }}</mat-card-title>
+        <mat-card-subtitle>
+          <span [ngClass]="'status-' + character.status | lowercase"></span>
+          {{ 'CHARACTERS.STATUS.' + character.status | uppercase | translate }} -
+          {{ 'CHARACTERS.SPECIES.' + character.species | uppercase | translate }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          {{ 'CHARACTERS.LAST_KNOWN_LOCATION' | translate }}<br />
+          <a
+            mat-button
+            color="primary"
+            [routerLink]="['/locations', character.location?.id]"
+            (prefetch)="prefetchOnHoverLocation(character.location?.id)"
+          >
+            {{ character.location?.name }}
+          </a>
+        </p>
+        <p>
+          {{ 'CHARACTERS.FIRST_SEEN' | translate }}<br />
+          <a mat-button color="primary" [routerLink]="['/episodes', character.firstEpisode?.id]">
+            {{ character.firstEpisode?.name }}
+          </a>
+        </p>
+      </mat-card-content>
+    </div>
+  </div>
+</mat-card>

@@ -1,0 +1,28 @@
+<mat-toolbar color="primary">
+  <div class="space"></div>
+  <div class="container">
+    <a [routerLink]="['/']" class="logo">
+      <img src="./assets/img/logo.svg" alt="logo" height="40" />
+    </a>
+    <nav>
+      <button
+        *ngFor="let item of appMenu$ | async; trackBy: trackByFn"
+        mat-button
+        [routerLink]="[item.path]"
+        routerLinkActive="active"
+      >
+        {{ item.name }}
+      </button>
+    </nav>
+    <div class="mobile-menu">
+      <button mat-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button *ngFor="let item of appMenu$ | async; trackBy: trackByFn" [routerLink]="[item.path]" mat-menu-item>
+          {{ item.name }}
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</mat-toolbar>

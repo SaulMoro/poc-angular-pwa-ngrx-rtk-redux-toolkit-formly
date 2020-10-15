@@ -1,0 +1,49 @@
+<mat-card>
+  <div class="row">
+    <div class="col-lg-4">
+      <img [src]="character.image" [alt]="character.name" />
+    </div>
+    <div class="col-lg-8">
+      <h2>{{ 'CHARACTERS.CHARACTER_INFO' | translate }}</h2>
+      <mat-list role="list">
+        <mat-list-item role="listitem">
+          {{ 'CHARACTERS.FIELDS.STATUS' | translate }}:
+          {{ 'CHARACTERS.STATUS.' + character.status | uppercase | translate }}
+        </mat-list-item>
+        <mat-list-item role="listitem">
+          {{ 'CHARACTERS.FIELDS.GENDER' | translate }}:
+          {{ 'CHARACTERS.GENDER.' + character.gender | uppercase | translate }}
+        </mat-list-item>
+        <mat-list-item role="listitem">
+          {{ 'CHARACTERS.FIELDS.SPECIES' | translate }}:
+          {{ 'CHARACTERS.SPECIES.' + character.species | uppercase | translate }}
+        </mat-list-item>
+        <mat-list-item *ngIf="character.type" role="listitem">
+          {{ 'CHARACTERS.FIELDS.TYPE' | translate }}: {{ character.type }}
+        </mat-list-item>
+        <mat-list-item role="listitem">
+          {{ 'CHARACTERS.FIELDS.ORIGIN' | translate }}:
+          <button
+            mat-button
+            color="primary"
+            [routerLink]="['/locations', character.origin?.id]"
+            (prefetch)="prefetchOnHoverLocation(character.origin?.id)"
+          >
+            {{ character.origin.name }}
+          </button>
+        </mat-list-item>
+        <mat-list-item role="listitem">
+          {{ 'CHARACTERS.FIELDS.LOCATION' | translate }}:
+          <button
+            mat-button
+            color="primary"
+            [routerLink]="['/locations', character.location?.id]"
+            (prefetch)="prefetchOnHoverLocation(character.location?.id)"
+          >
+            {{ character.location.name }}
+          </button>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+</mat-card>

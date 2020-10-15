@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "angular.ng-template",
+    "ms-vscode.vscode-typescript-tslint-plugin",
+    "esbenp.prettier-vscode",
+    "mkaufman.htmlhint",
+    "msjsdiag.debugger-for-chrome",
+    "mikael.angular-beastcode",
+    "stylelint.vscode-stylelint"
+  ]
+}

@@ -1,0 +1,22 @@
+@import 'variables';
+@import 'mixins';
+@import 'functions';
+
+.dynamic-form {
+  @include font-size($font-size--large);
+
+  line-height: 1.17;
+  height: 100%;
+}
+
+.cdk-overlay-pane-select-search {
+  margin-top: calc-rem($spacing--default);
+}
+
+.mat-select-placeholder {
+  @include font-size($font-size--small);
+}
+
+.mat-select-search-no-entries-found {
+  @include font-size($font-size--standard);
+}

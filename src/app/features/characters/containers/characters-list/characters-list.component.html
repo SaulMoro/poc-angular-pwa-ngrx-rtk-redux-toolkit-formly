@@ -1,0 +1,29 @@
+<app-characters-filter-form></app-characters-filter-form>
+
+<ng-container *ngIf="dataState$ | async as dataState">
+  <mat-progress-bar
+    *ngIf="dataState === dataStateTypes.LOADING || dataState === dataStateTypes.REFRESHING"
+    class="progress-bar--top"
+    mode="indeterminate"
+  ></mat-progress-bar>
+</ng-container>
+
+<ng-container *ngIf="characters$ | async as characters">
+  <div class="content">
+    <div class="row">
+      <div class="col-lg-6 character" *ngFor="let item of characters; trackBy: item?.id">
+        <app-character-card [character]="item" (prefetchLocation)="prefetchLocation($event)"></app-character-card>
+      </div>
+    </div>
+
+    <mat-paginator
+      *ngIf="!!characters.length"
+      [pageIndex]="(currentPage$ | async) - 1"
+      [length]="totalCharacters$ | async"
+      [pageSize]="pageSize"
+      (page)="changePage($event)"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
+</ng-container>

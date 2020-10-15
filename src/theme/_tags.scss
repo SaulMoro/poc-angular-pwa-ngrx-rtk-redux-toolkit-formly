@@ -1,0 +1,78 @@
+/**
+ * Element tag overrides
+ */
+::after,
+::before {
+  box-sizing: inherit;
+}
+
+html {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: $font-family--default;
+  margin: 0;
+  background: rgba(27, 31, 35, 0.05);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.unselectable {
+  user-select: none;
+}
+
+.progress-bar--top {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100000000;
+}
+
+.mat-card {
+  margin-bottom: calc-rem($spacing--large);
+}
+
+.status {
+  &-alive {
+    height: calc-rem($spacing--small);
+    width: calc-rem($spacing--small);
+    margin-right: calc-rem($spacing--smallest);
+    background: rgb(85, 204, 68);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  &-dead {
+    height: calc-rem($spacing--small);
+    width: calc-rem($spacing--small);
+    margin-right: calc-rem($spacing--smallest);
+    background: rgb(214, 61, 46);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  &-unknown {
+    height: calc-rem($spacing--small);
+    width: calc-rem($spacing--small);
+    margin-right: calc-rem($spacing--smallest);
+    background: rgb(94, 94, 94);
+    border-radius: 50%;
+    display: inline-block;
+  }
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.no-padding {
+  padding: 0;
+}

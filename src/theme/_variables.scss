@@ -1,0 +1,50 @@
+/**
+ * Shared across all platforms and apps
+ * You may define a set of global variables accessible across entire workspace here
+ */
+
+// Colors
+$color--primary: #6f7173;
+$color--primary-dark: #4a4a4a;
+$color--primary-light: #9b9b9b;
+$color--primary-inverted: #fff;
+$color--secondary: #fff;
+$color--success: #7aa327;
+$color--info: #477bbe;
+$color--error: #f53d3d;
+$color--warning: #c79705;
+$color--border-error: #ddb2b5;
+$color--background-error: #f5ebe9;
+
+// Spacing
+$spacing--default: 16px;
+$spacing--smallest: 4px;
+$spacing--smaller: 6px;
+$spacing--small: 8px;
+$spacing--large: 20px;
+$spacing--larger: 26px;
+$spacing--largest: 48px;
+$spacing--gap: 32px;
+
+// Layout
+$sidenav-width--default: 320px;
+
+// Fonts
+$font-size--default: 16px; // Texto general de la app
+$font-size--smallest: 8px;
+$font-size--smaller: 10px;
+$font-size--small: 12px;
+$font-size--medium: 17px; // Label inputs
+$font-size--large: 18px; // Tamaño de inputs, placeholders, tablas en modal
+$font-size--larger: 22px;
+$font-size--larger--alt: 24px;
+$font-size--larger--max: 26px;
+$font-size--largest: 28px;
+$font-size--standard: 14px;
+$font-size--container-title: 36px;
+
+/* stylelint-disable-next-line */
+$font-family--default: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue',
+  sans-serif;
+
+// Others

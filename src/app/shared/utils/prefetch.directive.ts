@@ -1,0 +1,69 @@
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+
+@Directive({
+  // tslint:disable-next-line: directive-selector
+  selector: '[prefetch]',
+})
+export class PrefetchDirective implements OnInit, AfterViewInit, OnDestroy {
+  @Input()
+  prefetchMode: ('load' | 'hover' | 'visible')[] = ['hover'];
+  @Output()
+  prefetch = new EventEmitter<void>();
+
+  observer: IntersectionObserver;
+  loaded = false;
+
+  constructor(private elemRef: ElementRef) {}
+
+  ngOnInit(): void {
+    if (this.prefetchMode.includes('load')) {
+      this.prefetchData();
+    }
+  }
+
+  ngAfterViewInit(): void {
+    if (this.prefetchMode.includes('visible')) {
+      this.observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            this.prefetchData();
+            this.observer.disconnect();
+          }
+        });
+      });
+
+      this.observer.observe(this.elemRef.nativeElement);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  @HostListener('mouseenter')
+  onMouseEnter(): void {
+    if (!this.loaded && this.prefetchMode.includes('hover')) {
+      this.loaded = true;
+      this.prefetchData();
+    }
+  }
+
+  prefetchData(): void {
+    if (navigator['connection']?.saveData) {
+      return undefined;
+    }
+    this.prefetch.next();
+  }
+}

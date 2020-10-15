@@ -1,0 +1,18 @@
+@import 'src/theme/variables';
+@import 'src/theme/mixins';
+@import 'src/theme/functions';
+
+.alert-confirm-dialog {
+  padding: calc-rem($spacing--gap) calc-rem($spacing--gap) calc-rem($spacing--gap/2) calc-rem($spacing--gap);
+}
+
+.alert-confirm-dialog__img {
+  margin-bottom: calc-rem($spacing--default);
+}
+
+.alert-confirm-dialog__msg {
+  @include font-size($font-size--large);
+
+  text-align: justify;
+  align-self: stretch;
+}

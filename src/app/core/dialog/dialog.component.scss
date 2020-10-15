@@ -1,0 +1,70 @@
+@import 'src/theme/variables';
+@import 'src/theme/mixins';
+@import 'src/theme/functions';
+
+$dialog__title-color: $color--primary-inverted;
+$dialog__title-height: 40px;
+
+.mat-dialog-title {
+  color: $dialog__title-color;
+  padding: calc-rem($spacing--large) calc-rem($spacing--gap);
+  width: 100%;
+  font-weight: 100;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.23);
+  margin-bottom: 0;
+
+  img {
+    vertical-align: middle;
+    margin-right: calc-rem($spacing--default);
+  }
+
+  [class^='fa'] {
+    vertical-align: middle;
+    margin-right: calc-rem($spacing--default);
+    @include font-size($font-size--largest);
+  }
+
+  mat-icon {
+    vertical-align: middle;
+    margin-right: calc-rem($spacing--default - 2px);
+    margin-top: calc-rem(-6px);
+    @include font-size($font-size--largest);
+  }
+}
+
+.mat___dialog-content {
+  max-width: 100vw;
+  margin: 0 0;
+  padding: 0 0;
+  color: $color--primary;
+  @include font-size($font-size--large);
+
+  @include sm {
+    max-width: 95vw;
+  }
+
+  @include md {
+    max-width: 70vw;
+  }
+
+  @include lg {
+    max-width: 60vw;
+  }
+
+  @include xl {
+    max-width: 40vw;
+  }
+}
+
+.mat-dialog-actions {
+  margin: calc-rem($spacing--small) calc-rem($spacing--default) 0;
+}
+
+.invoiceComponent {
+  margin: 0 0;
+  padding: 0 0;
+  color: $color--primary;
+  max-height: none;
+  @include font-size($font-size--large);
+}

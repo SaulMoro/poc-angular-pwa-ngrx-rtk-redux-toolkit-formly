@@ -1,0 +1,92 @@
+@import 'functions';
+
+/**
+ * Shared Mixins
+ */
+@mixin font-size($size) {
+  font-size: $size;
+  font-size: calc-rem($size);
+}
+
+// Responsive
+// CDK Breakpoints
+$grid-breakpoints: (
+  xs: 0,
+  sm: 600px,
+  md: 960px,
+  lg: 1280px,
+  xl: 1920px,
+);
+
+// Small devices
+@mixin xs {
+  @media (min-width: #{map-get($grid-breakpoints, "xs")}) and (max-width: #{map-get($grid-breakpoints, "sm")-1px}) {
+    @content;
+  }
+}
+@mixin sm {
+  @media (min-width: #{map-get($grid-breakpoints, "sm")}) and (max-width: #{map-get($grid-breakpoints, "md")-1px}) {
+    @content;
+  }
+}
+@mixin lt-sm {
+  @media (max-width: #{map-get($grid-breakpoints, "sm")-1px}) {
+    @content;
+  }
+}
+@mixin gt-xs {
+  @media (min-width: #{map-get($grid-breakpoints, "sm")}) {
+    @content;
+  }
+}
+
+// Medium devices
+@mixin md {
+  @media (min-width: #{map-get($grid-breakpoints, "md")}) and (max-width: #{map-get($grid-breakpoints, "lg")-1px}) {
+    @content;
+  }
+}
+@mixin lt-md {
+  @media (max-width: #{map-get($grid-breakpoints, "md")-1px}) {
+    @content;
+  }
+}
+@mixin gt-sm {
+  @media (min-width: #{map-get($grid-breakpoints, "md")}) {
+    @content;
+  }
+}
+
+// Large devices
+@mixin lg {
+  @media (min-width: #{map-get($grid-breakpoints, "lg")}) and (max-width: #{map-get($grid-breakpoints, "xl")-1px}) {
+    @content;
+  }
+}
+@mixin lt-lg {
+  @media (max-width: #{map-get($grid-breakpoints, "lg")-1px}) {
+    @content;
+  }
+}
+@mixin gt-md {
+  @media (min-width: #{map-get($grid-breakpoints, "lg")}) {
+    @content;
+  }
+}
+
+// Extra large devices
+@mixin xl {
+  @media (min-width: #{map-get($grid-breakpoints, "xl")}) {
+    @content;
+  }
+}
+@mixin lt-xl {
+  @media (max-width: #{map-get($grid-breakpoints, "xl")-1px}) {
+    @content;
+  }
+}
+@mixin gt-lg {
+  @media (min-width: #{map-get($grid-breakpoints, "xl")}) {
+    @content;
+  }
+}

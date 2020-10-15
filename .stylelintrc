@@ -1,0 +1,47 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-recommended-scss",
+    "stylelint-config-prettier"
+  ],
+  "rules": {
+    "font-family-name-quotes": "always-where-recommended",
+    "selector-attribute-quotes": "always",
+    "max-nesting-depth": 4,
+    "selector-max-compound-selectors": 4,
+    "selector-max-specificity": "0,4,3",
+    "declaration-no-important": true,
+    "at-rule-no-vendor-prefix": true,
+    "media-feature-name-no-vendor-prefix": true,
+    "property-no-vendor-prefix": true,
+    "selector-no-vendor-prefix": true,
+    "value-no-vendor-prefix": true,
+    "no-empty-source": null,
+    "selector-class-pattern": "[a-z-]+",
+    "selector-id-pattern": "[a-z-]+",
+    "selector-max-id": 0,
+    "selector-no-qualifying-type": true,
+    "selector-max-universal": 1,
+    "selector-type-no-unknown": [
+      true,
+      {
+        "ignore": ["custom-elements", "default-namespace"]
+      }
+    ],
+    "selector-pseudo-element-no-unknown": [
+      true,
+      {
+        "ignorePseudoElements": ["ng-deep"]
+      }
+    ],
+    "unit-allowed-list": ["px", "%", "em", "rem", "vw", "vh", "deg", "s", "fr", "ms"],
+    "max-empty-lines": 2,
+    "max-line-length": 120,
+    "font-family-no-missing-generic-family-keyword": [
+        true,
+        {
+          "ignoreFontFamilies": ["Helvetica-Neue-65-Medium"]
+        }
+    ]
+  }
+}

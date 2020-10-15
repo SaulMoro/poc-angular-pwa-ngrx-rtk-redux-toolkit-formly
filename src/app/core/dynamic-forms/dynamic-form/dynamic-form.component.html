@@ -1,0 +1,31 @@
+<div class="dynamic-form">
+  <form
+    class="dynamic-form__form"
+    [formGroup]="formGroup"
+    (ngSubmit)="disableInitialization ? onSubmitForm(formGroup.value) : onSubmitFormObs()"
+    #dynamicForm
+  >
+    <div fxFlexFill fxLayout="column" fxLayoutAlign="start stretch">
+      <formly-form
+        *ngIf="disableInitialization === false && form$ | async as form"
+        class="dynamic-form__form__content"
+        [form]="formGroup"
+        [model]="form.model"
+        [fields]="fields"
+        [options]="options"
+        (modelChange)="onModelChange($event)"
+      ></formly-form>
+
+      <formly-form
+        *ngIf="disableInitialization"
+        class="dynamic-form__form__content"
+        [form]="formGroup"
+        [model]="initialModel"
+        [fields]="fields"
+        [options]="options"
+        (modelChange)="onModelChange($event)"
+      ></formly-form>
+      <ng-content></ng-content>
+    </div>
+  </form>
+</div>
