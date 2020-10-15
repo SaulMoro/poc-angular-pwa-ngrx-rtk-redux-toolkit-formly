@@ -24,7 +24,7 @@ jobs:
          GH_TOKEN: ${{ secrets.GH_TOKEN }}
        run: |
          npm install
-         ng lint
+         npm run lint
          ###
          # Configure Angular first!
          ####
