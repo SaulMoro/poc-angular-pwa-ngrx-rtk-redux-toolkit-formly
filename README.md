@@ -1,4 +1,4 @@
-# **PoC Angular + Ngrx + Formly + Router State + NgRx-Entity**
+# **PoC Angular + PWA + Ngrx + Formly + Router State + NgRx-Entity**
 
 ## Table of Contents
 
