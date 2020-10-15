@@ -6,6 +6,7 @@
     "start": "ng serve -o --proxy-config tools/proxy.conf.js",
     "start:ie": "npm run start -- --configuration=es5",
     "build": "ng build --prod",
+    "deploy": "ng deploy --base-href=/PoC-Angular-PWA-NgRx-Entity-Formly-RouterState/",
     "test": "ng test",
     "lint": "ng lint && stylelint \"**/*.scss\" --syntax scss && htmlhint \"**/*.html\" --config .htmlhintrc",
     "e2e": "ng e2e",
