@@ -19,7 +19,6 @@ import { environment } from '../environments/environment';
 
     // app
     AppRoutingModule,
-
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   declarations: [AppComponent],
