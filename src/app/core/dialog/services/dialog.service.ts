@@ -17,11 +17,8 @@ const defaultConf = { autoFocus: true, panelClass: 'dialog-panel' };
   providedIn: 'root',
 })
 export class DialogService {
-  selectedButton: Subject<string>;
-
   constructor(private dialog: MatDialog, private coalescingResolver: CoalescingComponentFactoryResolver) {
     this.coalescingResolver.init();
-    this.selectedButton = new Subject<any>();
   }
 
   openComponent(

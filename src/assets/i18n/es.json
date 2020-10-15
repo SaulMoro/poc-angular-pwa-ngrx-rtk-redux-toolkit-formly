@@ -48,10 +48,34 @@
     }
   },
   "LOCATIONS": {
-    "TITLE": "Localizaciones"
+    "TITLE": "Localizaciones",
+    "FILTER_LOCATIONS": "Filtrar Localizaciones",
+    "LOCATION_INFO": "Información de Localización",
+    "LOCATION_CHARACTERS": "Residentes en {{ name }}",
+    "RESIDENTS": "{{ number }} Residentes",
+    "NO_RESIDENTS": "Sin Residentes",
+    "FIELDS": {
+      "NUM": "Num.",
+      "NAME": "Nombre",
+      "TYPE": "Tipo",
+      "DIMENSION": "Dimensión",
+      "RESIDENTS": "Residentes"
+    }
   },
   "EPISODES": {
-    "TITLE": "Episodios"
+    "TITLE": "Episodios",
+    "FILTER_EPISODES": "Filtrar Episodios",
+    "EPISODE_INFO": "Información del Episodio",
+    "EPISODE_CHARACTERS": "Personajes en {{ name }}",
+    "CHARACTERS": "{{ number }} Personajes",
+    "NO_CHARATERS": "Sin Personajes",
+    "FIELDS": {
+      "NUM": "Num.",
+      "EPISODE": "Episodio",
+      "NAME": "Nombre",
+      "AIR_DATE": "Fecha Emisión",
+      "CHARACTERS": "Personajes"
+    }
   },
   "NOT_FOUND": {
     "TITLE": "No encontrado"

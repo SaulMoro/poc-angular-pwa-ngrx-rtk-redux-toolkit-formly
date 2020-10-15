@@ -17,6 +17,8 @@ import {
 export class PrefetchDirective implements OnInit, AfterViewInit, OnDestroy {
   @Input()
   prefetchMode: ('load' | 'hover' | 'visible')[] = ['hover'];
+  @Input()
+  prefetchHovered = false;
   @Output()
   prefetch = new EventEmitter<void>();
 
@@ -55,7 +57,7 @@ export class PrefetchDirective implements OnInit, AfterViewInit, OnDestroy {
   @HostListener('mouseenter')
   onMouseEnter(): void {
     if (!this.loaded && this.prefetchMode.includes('hover')) {
-      this.loaded = true;
+      this.loaded = !this.prefetchHovered;
       this.prefetchData();
     }
   }

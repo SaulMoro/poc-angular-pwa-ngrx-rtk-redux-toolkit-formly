@@ -1,1 +1,84 @@
-<p>episodes-list works!</p>
+<p>filter here!</p>
+
+<ng-container *ngIf="dataState$ | async as dataState">
+  <mat-progress-bar
+    *ngIf="dataState === dataStateTypes.LOADING || dataState === dataStateTypes.REFRESHING"
+    class="progress-bar--top"
+    mode="indeterminate"
+  ></mat-progress-bar>
+</ng-container>
+
+<ng-container *ngIf="episodes$ | async as episodes">
+  <div class="content">
+    <div class="table-responsive">
+      <table mat-table [dataSource]="episodes">
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>{{ 'EPISODES.FIELDS.NUM' | translate }}</th>
+          <td mat-cell class="pointer-cursor" *matCellDef="let element" [routerLink]="['/episodes', element.id]">
+            {{ element.id }}
+          </td>
+        </ng-container>
+
+        <!-- Episode Column -->
+        <ng-container matColumnDef="episode">
+          <th mat-header-cell *matHeaderCellDef>{{ 'EPISODES.FIELDS.EPISODE' | translate }}</th>
+          <td mat-cell class="pointer-cursor" *matCellDef="let element" [routerLink]="['/episodes', element.id]">
+            {{ element.episode }}
+          </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>{{ 'EPISODES.FIELDS.NAME' | translate }}</th>
+          <td mat-cell class="pointer-cursor" *matCellDef="let element" [routerLink]="['/episodes', element.id]">
+            {{ element.name }}
+          </td>
+        </ng-container>
+
+        <!-- Air Date Column -->
+        <ng-container matColumnDef="air_date">
+          <th mat-header-cell *matHeaderCellDef>{{ 'EPISODES.FIELDS.AIR_DATE' | translate }}</th>
+          <td mat-cell *matCellDef="let element">{{ element.air_date }}</td>
+        </ng-container>
+
+        <!-- Characters Column -->
+        <ng-container matColumnDef="characters">
+          <th mat-header-cell *matHeaderCellDef>{{ 'EPISODES.FIELDS.CHARACTERS' | translate }}</th>
+          <td mat-cell *matCellDef="let element">
+            <button
+              mat-stroked-button
+              color="primary"
+              class="characters-button"
+              [disabled]="element.characters.length < 1"
+              (click)="openCharactersDialog(element)"
+            >
+              {{
+                (element.characters?.length ? 'EPISODES.CHARACTERS' : 'EPISODES.NO_CHARACTERS')
+                  | translate: { number: element.characters?.length }
+              }}
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          [prefetchHovered]="true"
+          (prefetch)="prefetchCharactersOnHover(row)"
+        ></tr>
+      </table>
+    </div>
+
+    <mat-paginator
+      *ngIf="!!episodes.length"
+      [pageIndex]="(currentPage$ | async) - 1"
+      [length]="totalEpisodes$ | async"
+      [pageSize]="pageSize"
+      (page)="changePage($event)"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
+</ng-container>
