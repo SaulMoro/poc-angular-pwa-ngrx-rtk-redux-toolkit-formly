@@ -10,6 +10,7 @@
     "test": "ng test",
     "lint": "ng lint && stylelint \"**/*.scss\" --syntax scss && htmlhint \"**/*.html\" --config .htmlhintrc",
     "e2e": "ng e2e",
+    "analyze": "npm run build -- --stats-json && webpack-bundle-analyzer ./dist/angular-pwa-ngrx-formly-routerstate/stats-es2015.json",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
   },
   "private": true,
@@ -93,7 +94,8 @@
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "tslint-angular": "^3.0.3",
-    "typescript": "~4.0.2"
+    "typescript": "~4.0.2",
+    "webpack-bundle-analyzer": "^3.9.0"
   },
   "commitlint": {
     "extends": [
