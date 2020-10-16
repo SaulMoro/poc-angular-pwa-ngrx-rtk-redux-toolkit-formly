@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TranslateModule } from '@ngx-translate/core';
@@ -29,6 +30,8 @@ import { DataAccessCharactersModule } from './data-access-characters';
 import { DataAccessLocationsModule } from './data-access-locations';
 import { DataAccessEpisodesModule } from './data-access-episodes';
 import { PrefetchDirective } from './utils/prefetch.directive';
+import { CharacterMiniCardComponent } from './components/character-mini-card/character-mini-card.component';
+import { CharactersDialogComponent } from './components/characters-dialog/characters-dialog.component';
 
 // Shared Components
 
@@ -52,7 +55,7 @@ const MATERIAL_MODULES = [
   MatListModule,
 ];
 
-const EXPORTED_DECLARATIONS = [PrefetchDirective];
+const EXPORTED_DECLARATIONS = [CharacterMiniCardComponent, PrefetchDirective];
 
 const IMPORTED_EXPORTS = [
   CommonModule,
@@ -64,8 +67,14 @@ const IMPORTED_EXPORTS = [
 ];
 
 @NgModule({
-  declarations: [...EXPORTED_DECLARATIONS],
-  imports: [...IMPORTED_EXPORTS, DataAccessCharactersModule, DataAccessLocationsModule, DataAccessEpisodesModule],
+  declarations: [...EXPORTED_DECLARATIONS, CharactersDialogComponent],
+  imports: [
+    ...IMPORTED_EXPORTS,
+    RouterModule,
+    DataAccessCharactersModule,
+    DataAccessLocationsModule,
+    DataAccessEpisodesModule,
+  ],
   exports: [...IMPORTED_EXPORTS, ...EXPORTED_DECLARATIONS],
 })
 export class SharedModule {

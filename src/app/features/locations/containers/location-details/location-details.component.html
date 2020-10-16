@@ -1,1 +1,32 @@
-<p>location-details works!</p>
+<ng-container *ngIf="dataState$ | async as dataState">
+  <mat-progress-bar
+    *ngIf="dataState === dataStateTypes.LOADING || dataState === dataStateTypes.REFRESHING"
+    class="progress-bar--top"
+    mode="indeterminate"
+  ></mat-progress-bar>
+</ng-container>
+
+<ng-container *ngIf="location$ | async as location">
+  <h1>{{ location.name }}</h1>
+  <h3>{{ 'LOCATIONS.FIELDS.TYPE' | translate }}: {{ location.type }}</h3>
+  <h3>{{ 'LOCATIONS.FIELDS.DIMENSION' | translate }} {{ location.dimension }}</h3>
+  <mat-divider></mat-divider>
+  <mat-card>
+    <h2>{{ 'LOCATIONS.LOCATION_RESIDENTS' | translate: { name: location.name } }}</h2>
+    <div class="row" *ngIf="charactersDataState$ | async as charactersDataState">
+      <mat-progress-bar *ngIf="charactersDataState === dataStateTypes.LOADING" mode="indeterminate"></mat-progress-bar>
+
+      <ng-container *ngIf="characters$ | async as characters">
+        <ng-container *ngIf="!!characters.length; else emptyCharacters">
+          <div class="col-12 col-md-6" *ngFor="let character of characters; trackBy: character?.id">
+            <app-character-mini-card [character]="character"></app-character-mini-card>
+          </div>
+        </ng-container>
+
+        <ng-template #emptyCharacters>
+          <p *ngIf="charactersDataState === dataStateTypes.LOADED">{{ 'LOCATIONS.NO_RESIDENTS' | translate }}</p>
+        </ng-template>
+      </ng-container>
+    </div>
+  </mat-card>
+</ng-container>

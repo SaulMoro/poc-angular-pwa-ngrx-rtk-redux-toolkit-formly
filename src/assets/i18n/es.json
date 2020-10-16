@@ -44,6 +44,7 @@
       "VAMPIRE": "Vampiro",
       "ROBOT": "Robot",
       "PLANET": "Planeta",
+      "CRONENBERG": "Cronenberg",
       "UNKNOWN": "Desconocida"
     }
   },
@@ -51,7 +52,7 @@
     "TITLE": "Localizaciones",
     "FILTER_LOCATIONS": "Filtrar Localizaciones",
     "LOCATION_INFO": "Información de Localización",
-    "LOCATION_CHARACTERS": "Residentes en {{ name }}",
+    "LOCATION_RESIDENTS": "Residentes en {{ name }}",
     "RESIDENTS": "{{ number }} Residentes",
     "NO_RESIDENTS": "Sin Residentes",
     "FIELDS": {

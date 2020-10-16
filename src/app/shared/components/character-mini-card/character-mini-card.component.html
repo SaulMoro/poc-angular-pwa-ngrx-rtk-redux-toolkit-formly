@@ -1,0 +1,10 @@
+<mat-card class="character-card" [routerLink]="['/characters', character?.id]">
+  <mat-card-header>
+    <img mat-card-avatar [src]="character?.image" [alt]="character?.name" />
+    <mat-card-title>{{ character?.name }}</mat-card-title>
+    <mat-card-subtitle>
+      {{ 'CHARACTERS.SPECIES.' + character?.species | uppercase | translate }} -
+      {{ 'CHARACTERS.GENDER.' + character?.gender | uppercase | translate }}
+    </mat-card-subtitle>
+  </mat-card-header>
+</mat-card>

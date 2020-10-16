@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinct } from 'rxjs/operators';
@@ -8,6 +9,10 @@ import { debounceTime, distinct } from 'rxjs/operators';
 import { DataState, Location, PAGE_SIZE } from '@app/shared/models';
 import { untilDestroyed } from '@app/shared/utils';
 import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
+import {
+  CharacterDialogData,
+  CharactersDialogComponent,
+} from '@app/shared/components/characters-dialog/characters-dialog.component';
 
 @Component({
   selector: 'app-locations-list',
@@ -27,7 +32,7 @@ export class LocationsListComponent implements OnInit, OnDestroy {
 
   private readonly hoverLocation$ = new Subject<Location>();
 
-  constructor(private readonly store: Store, private router: Router) {}
+  constructor(private readonly store: Store, private router: Router, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     // Only dispatch on hover location during debounce time
@@ -40,14 +45,8 @@ export class LocationsListComponent implements OnInit, OnDestroy {
       .subscribe((location) => this.store.dispatch(LocationsActions.hoverLocationLine({ location })));
   }
 
-  ngOnDestroy(): void {}
-
   prefetchResidentsOnHover(location: Location): void {
     this.hoverLocation$.next(location);
-  }
-
-  openResidentsDialog(location: Location): void {
-    // TODO:
   }
 
   changePage(page: PageEvent): void {
@@ -55,5 +54,18 @@ export class LocationsListComponent implements OnInit, OnDestroy {
       queryParams: { page: page.pageIndex + 1 },
       queryParamsHandling: 'merge',
     });
+  }
+
+  openResidentsDialog(location: Location): void {
+    this.dialog.open(CharactersDialogComponent, {
+      data: {
+        title: location.name,
+        characterIds: location.residents,
+      } as CharacterDialogData,
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.dialog.closeAll();
   }
 }

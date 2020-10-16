@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>
+  <span [matBadge]="data.characterIds.length" matBadgeOverlap="false">{{ data.title }}</span>
+</h2>
+<mat-dialog-content class="mat-typography">
+  <div class="row">
+    <mat-progress-bar
+      *ngIf="(charactersDataState$ | async) === dataStateTypes.LOADING"
+      mode="indeterminate"
+    ></mat-progress-bar>
+
+    <ng-container *ngIf="characters$ | async as characters">
+      <div class="col-12" *ngFor="let characterId of data.characterIds; trackBy: characterId">
+        <app-character-mini-card [character]="characters[characterId]"></app-character-mini-card>
+      </div>
+    </ng-container>
+  </div>
+</mat-dialog-content>

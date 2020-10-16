@@ -93,6 +93,10 @@ export class CharactersFilterFormComponent implements OnInit {
       label: this.translate.instant('CHARACTERS.SPECIES.' + CharacterSpecies.vampire.toUpperCase()),
     },
     {
+      id: CharacterSpecies.cronenberg,
+      label: this.translate.instant('CHARACTERS.SPECIES.' + CharacterSpecies.cronenberg.toUpperCase()),
+    },
+    {
       id: CharacterSpecies.unknown,
       label: this.translate.instant('CHARACTERS.SPECIES.' + CharacterSpecies.unknown.toUpperCase()),
     },

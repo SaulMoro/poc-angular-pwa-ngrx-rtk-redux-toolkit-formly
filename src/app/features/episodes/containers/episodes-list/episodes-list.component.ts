@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinct } from 'rxjs/operators';
@@ -8,6 +9,10 @@ import { debounceTime, distinct } from 'rxjs/operators';
 import { DataState, Episode, PAGE_SIZE } from '@app/shared/models';
 import { untilDestroyed } from '@app/shared/utils';
 import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
+import {
+  CharacterDialogData,
+  CharactersDialogComponent,
+} from '@app/shared/components/characters-dialog/characters-dialog.component';
 
 @Component({
   selector: 'app-episodes-list',
@@ -27,7 +32,7 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
 
   private readonly hoverEpisode$ = new Subject<Episode>();
 
-  constructor(private readonly store: Store, private router: Router) {}
+  constructor(private readonly store: Store, private router: Router, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     // Only dispatch on hover episode during debounce time
@@ -40,14 +45,8 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
       .subscribe((episode) => this.store.dispatch(EpisodesActions.hoverEpisodeLine({ episode })));
   }
 
-  ngOnDestroy(): void {}
-
   prefetchCharactersOnHover(episode: Episode): void {
     this.hoverEpisode$.next(episode);
-  }
-
-  openCharactersDialog(episode: Episode): void {
-    // TODO:
   }
 
   changePage(page: PageEvent): void {
@@ -55,5 +54,18 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
       queryParams: { page: page.pageIndex + 1 },
       queryParamsHandling: 'merge',
     });
+  }
+
+  openCharactersDialog(episode: Episode): void {
+    this.dialog.open(CharactersDialogComponent, {
+      data: {
+        title: episode.name,
+        characterIds: episode.characters,
+      } as CharacterDialogData,
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.dialog.closeAll();
   }
 }

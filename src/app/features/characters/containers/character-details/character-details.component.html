@@ -16,19 +16,18 @@
   <mat-card>
     <h2>{{ 'CHARACTERS.CHARACTER_EPISODES' | translate: { name: character.name } }}</h2>
     <div class="row">
-      <div class="col-lg-12">
-        <mat-progress-bar
-          *ngIf="(episodesDataState$ | async) === dataStateTypes.LOADING"
-          mode="indeterminate"
-        ></mat-progress-bar>
-        <mat-list role="list">
-          <mat-list-item *ngFor="let episode of episodes$ | async; trackBy: episode?.id" role="listitem">
-            <button *ngIf="episode" mat-button color="primary" [routerLink]="['/episodes', episode.id]">
-              {{ episode.episode }}: {{ episode.name }}
-            </button>
-          </mat-list-item>
-        </mat-list>
-      </div>
+      <mat-progress-bar
+        *ngIf="(episodesDataState$ | async) === dataStateTypes.LOADING"
+        mode="indeterminate"
+      ></mat-progress-bar>
+
+      <mat-list role="list">
+        <mat-list-item *ngFor="let episode of episodes$ | async; trackBy: episode?.id" role="listitem">
+          <button *ngIf="episode" mat-button color="primary" [routerLink]="['/episodes', episode.id]">
+            {{ episode.episode }}: {{ episode.name }}
+          </button>
+        </mat-list-item>
+      </mat-list>
     </div>
   </mat-card>
 </ng-container>
