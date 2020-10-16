@@ -47,6 +47,7 @@ const routes: Routes = [
       preloadingStrategy: PreloadAllModules,
       scrollPositionRestoration: 'enabled',
       paramsInheritanceStrategy: 'always',
+      useHash: true, // Supports github.io demo page
     }),
   ],
   exports: [RouterModule],
