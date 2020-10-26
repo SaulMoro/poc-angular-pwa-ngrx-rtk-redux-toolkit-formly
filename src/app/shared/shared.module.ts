@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TranslateModule } from '@ngx-translate/core';
-import { DynamicFormsModule } from '@app/core/dynamic-forms';
 
 // Material
 import { MatIconModule } from '@angular/material/icon';
@@ -29,9 +28,10 @@ import { DataAccessCharactersModule } from './data-access-characters';
 import { DataAccessLocationsModule } from './data-access-locations';
 import { DataAccessEpisodesModule } from './data-access-episodes';
 
+import { DynamicFormsModule } from './dynamic-forms';
+import { PrefetchDirective } from './directives/prefetch.directive';
 import { CharacterMiniCardComponent } from './components/character-mini-card/character-mini-card.component';
 import { CharactersDialogComponent } from './components/characters-dialog/characters-dialog.component';
-import { PrefetchDirective } from './directives/prefetch.directive';
 
 const MATERIAL_MODULES = [
   MatIconModule,

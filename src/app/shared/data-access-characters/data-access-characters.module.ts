@@ -1,9 +1,8 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { throwIfAlreadyLoaded } from '@app/core/utils';
 import * as fromCharacters from './+state/characters.reducer';
 import { CharactersEffects } from './+state/characters.effects';
 
@@ -19,7 +18,5 @@ import { CharactersEffects } from './+state/characters.effects';
   ],
 })
 export class DataAccessCharactersModule {
-  constructor(@Optional() @SkipSelf() parentModule: DataAccessCharactersModule) {
-    throwIfAlreadyLoaded(parentModule, DataAccessCharactersModule.name);
-  }
+  constructor() {}
 }

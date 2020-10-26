@@ -5,8 +5,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { filter, map, concatMap } from 'rxjs/operators';
 
 import { formatDateToYYYYMMDD, convertYYYYMMDDToDate, DATE_FORMAT_REGEXP } from '@app/shared/utils';
+import { RouterSelectors } from '@app/core/data-access-router';
 import { fromStore } from '@app/shared/ngrx-utils';
-import * as fromRouter from '@app/core/data-access-router';
 import * as FormsActions from './forms.actions';
 import * as FormsSelectors from './forms.selectors';
 import { FormsPartialState } from './forms.reducer';
@@ -44,7 +44,7 @@ export class FormsEffects {
     this.actions$.pipe(
       ofType(FormsActions.initForm),
       filter((action) => action.filter),
-      fromStore(fromRouter.getRouteQueryParams)(this.store$),
+      fromStore(RouterSelectors.getRouteQueryParams)(this.store$),
       map(([action, queryParams]) => {
         // Remove Page of filter (Pagination)
         const { page, ...model } = queryParams;

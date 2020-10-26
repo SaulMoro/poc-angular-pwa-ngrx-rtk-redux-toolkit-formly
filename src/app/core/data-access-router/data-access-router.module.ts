@@ -1,4 +1,4 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule } from '@angular/core';
 import {
   RouterStateSerializer,
   StoreRouterConnectingModule,
@@ -7,7 +7,6 @@ import {
 } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 
-import { throwIfAlreadyLoaded } from '../utils';
 import { CustomSerializer } from './+state/custom-serializer';
 import { ROUTER_FEATURE_KEY } from './+state/router.model';
 
@@ -22,7 +21,5 @@ import { ROUTER_FEATURE_KEY } from './+state/router.model';
   providers: [{ provide: RouterStateSerializer, useClass: CustomSerializer }],
 })
 export class DataAccessRouterModule {
-  constructor(@Optional() @SkipSelf() parentModule: DataAccessRouterModule) {
-    throwIfAlreadyLoaded(parentModule, DataAccessRouterModule.name);
-  }
+  constructor() {}
 }

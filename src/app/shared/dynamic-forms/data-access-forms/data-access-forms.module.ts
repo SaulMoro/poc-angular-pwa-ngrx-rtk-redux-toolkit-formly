@@ -1,8 +1,7 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { throwIfAlreadyLoaded } from '@app/core/utils';
 import { FormsEffects } from './+state/forms.effects';
 import { FormsFacade } from './+state/forms.facade';
 import * as fromForms from './+state/forms.reducer';
@@ -15,7 +14,5 @@ import * as fromForms from './+state/forms.reducer';
   providers: [FormsFacade],
 })
 export class DataAccessFormsModule {
-  constructor(@Optional() @SkipSelf() parentModule: DataAccessFormsModule) {
-    throwIfAlreadyLoaded(parentModule, DataAccessFormsModule.name);
-  }
+  constructor() {}
 }

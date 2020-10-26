@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { FieldConfig, FormOptions } from '@app/core/dynamic-forms';
+import { FieldConfig, FormOptions } from '@app/shared/dynamic-forms';
 import { LocationsFilter, FormIds } from '@app/shared/models';
 
 @Component({

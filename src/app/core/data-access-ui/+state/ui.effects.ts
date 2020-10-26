@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
-import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 
 import { mapToData, mapToRouterState } from '@app/core/data-access-router';
 import * as UiActions from './ui.actions';
@@ -27,7 +27,8 @@ export class UiEffects {
     () =>
       this.actions$.pipe(
         ofType(UiActions.setAppTitle),
-        map(({ title }) =>
+        // tslint:disable-next-line: rxjs-no-unsafe-switchmap
+        switchMap(({ title }) =>
           this.translate.get(['APP_TITLE', ...([title] ?? [])]).pipe(
             map(Object.values),
             tap((translatedTitles) =>

@@ -1,4 +1,4 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -11,7 +11,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 
-import { throwIfAlreadyLoaded } from '../utils';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 
@@ -32,7 +31,5 @@ const EXPORTED_DECLARATIONS = [HeaderComponent, FooterComponent];
   exports: [...EXPORTED_DECLARATIONS],
 })
 export class LayoutModule {
-  constructor(@Optional() @SkipSelf() parentModule: LayoutModule) {
-    throwIfAlreadyLoaded(parentModule, LayoutModule.name);
-  }
+  constructor() {}
 }

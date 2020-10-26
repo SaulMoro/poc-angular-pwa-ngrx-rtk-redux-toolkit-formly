@@ -6,8 +6,8 @@ import { asyncScheduler, of } from 'rxjs';
 import { map, debounceTime, exhaustMap, switchMap, filter, catchError, mergeMap } from 'rxjs/operators';
 
 import { ofRouteEnter, ofRouteFilter, ofRoutePageChange } from '@app/core/data-access-router';
-import { ofFilterForm } from '@app/core/dynamic-forms';
 import { UiActions } from '@app/core/data-access-ui';
+import { ofFilterForm } from '@app/shared/dynamic-forms';
 import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
 import { EpisodesActions, EpisodesApiActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { FormIds } from '@app/shared/models';

@@ -10,10 +10,9 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-import { DataAccessRouterModule } from '@app/core/data-access-router';
-import { DataAccessUiModule } from '@app/core/data-access-ui';
 import { environment } from '@environments/environment';
-import { throwIfAlreadyLoaded } from './utils';
+import { DataAccessRouterModule } from './data-access-router';
+import { DataAccessUiModule } from './data-access-ui';
 import { LayoutModule } from './layout/layout.module';
 import { LoadingHttpClientModule } from './loading-http-client';
 
@@ -62,11 +61,14 @@ const EXPORTED_IMPORTS = [LoadingHttpClientModule];
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule, private translateService: TranslateService) {
-    throwIfAlreadyLoaded(parentModule, CoreModule.name);
-    this.initApp();
+    if (parentModule) {
+      throw new Error('CoreModule is already loaded. Import only in AppModule');
+    }
+
+    this._initApp();
   }
 
-  initApp(): void {
+  private _initApp(): void {
     this.translateService.use('es');
   }
 }

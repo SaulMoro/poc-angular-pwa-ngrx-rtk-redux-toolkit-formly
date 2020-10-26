@@ -1,9 +1,8 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { throwIfAlreadyLoaded } from '@app/core/utils';
 import * as fromLocations from './+state/locations.reducer';
 import { LocationsEffects } from './+state/locations.effects';
 
@@ -19,7 +18,5 @@ import { LocationsEffects } from './+state/locations.effects';
   ],
 })
 export class DataAccessLocationsModule {
-  constructor(@Optional() @SkipSelf() parentModule: DataAccessLocationsModule) {
-    throwIfAlreadyLoaded(parentModule, DataAccessLocationsModule.name);
-  }
+  constructor() {}
 }

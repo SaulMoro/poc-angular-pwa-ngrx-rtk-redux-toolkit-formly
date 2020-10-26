@@ -1,8 +1,7 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { throwIfAlreadyLoaded } from '../utils';
 import { LoadingScreenComponent } from './components/loading-screen/loading-screen.component';
 import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
 
@@ -16,7 +15,5 @@ const EXPORTED_IMPORTS = [HttpClientModule];
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true }],
 })
 export class LoadingHttpClientModule {
-  constructor(@Optional() @SkipSelf() parentModule: HttpClientModule) {
-    throwIfAlreadyLoaded(parentModule, HttpClientModule.name);
-  }
+  constructor() {}
 }

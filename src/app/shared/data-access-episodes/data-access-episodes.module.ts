@@ -1,9 +1,8 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { throwIfAlreadyLoaded } from '@app/core/utils';
 import * as fromEpisodes from './+state/episodes.reducer';
 import { EpisodesEffects } from './+state/episodes.effects';
 
@@ -19,7 +18,5 @@ import { EpisodesEffects } from './+state/episodes.effects';
   ],
 })
 export class DataAccessEpisodesModule {
-  constructor(@Optional() @SkipSelf() parentModule: DataAccessEpisodesModule) {
-    throwIfAlreadyLoaded(parentModule, DataAccessEpisodesModule.name);
-  }
+  constructor() {}
 }
