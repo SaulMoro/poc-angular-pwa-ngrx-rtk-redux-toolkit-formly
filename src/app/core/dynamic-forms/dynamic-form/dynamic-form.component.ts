@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 import { take, map, skipWhile, distinctUntilChanged } from 'rxjs/operators';
 
 import { untilDestroyed } from '@app/shared/pipes';
-import { FormsEntity, FormsFacade } from '@app/core/data-access-forms';
+import { FormsEntity, FormsFacade } from '../data-access-forms';
 import { FieldConfig } from '../models/field-config.model';
 import { FormOptions } from '../models/form-options.model';
 

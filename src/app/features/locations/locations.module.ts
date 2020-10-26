@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '@app/shared/shared.module';
 import { LocationsRoutingModule } from './locations-routing.module';
@@ -9,6 +8,6 @@ import { LocationsFilterFormComponent } from './components/locations-filter-form
 
 @NgModule({
   declarations: [LocationsListComponent, LocationDetailsComponent, LocationsFilterFormComponent],
-  imports: [CommonModule, LocationsRoutingModule, SharedModule],
+  imports: [SharedModule, LocationsRoutingModule],
 })
 export class LocationsModule {}

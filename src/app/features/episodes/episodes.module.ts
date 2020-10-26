@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '@app/shared/shared.module';
 import { EpisodesRoutingModule } from './episodes-routing.module';
@@ -9,6 +8,6 @@ import { EpisodesFilterFormComponent } from './components/episodes-filter-form/e
 
 @NgModule({
   declarations: [EpisodesListComponent, EpisodeDetailsComponent, EpisodesFilterFormComponent],
-  imports: [CommonModule, EpisodesRoutingModule, SharedModule],
+  imports: [SharedModule, EpisodesRoutingModule],
 })
 export class EpisodesModule {}

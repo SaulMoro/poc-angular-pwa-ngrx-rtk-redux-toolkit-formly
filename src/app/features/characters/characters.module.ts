@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '@app/shared/shared.module';
 import { CharactersRoutingModule } from './characters-routing.module';
@@ -17,6 +16,6 @@ import { CharacterDetailsCardComponent } from './components/character-details-ca
     CharactersFilterFormComponent,
     CharacterDetailsCardComponent,
   ],
-  imports: [CommonModule, CharactersRoutingModule, SharedModule],
+  imports: [SharedModule, CharactersRoutingModule],
 })
 export class CharactersModule {}

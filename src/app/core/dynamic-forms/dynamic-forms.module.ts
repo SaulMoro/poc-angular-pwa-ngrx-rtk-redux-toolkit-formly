@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
+import { DataAccessFormsModule } from './data-access-forms';
 import { ValidationsLoader } from './services/validations-loader.service';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { applyDefaultOptions } from './config';
@@ -64,6 +65,7 @@ const EXPORTED_DECLARATIONS = [
     ...EXPORTED_IMPORTS,
     ...MATERIAL_MODULES,
     CommonModule,
+    DataAccessFormsModule,
     FormlyMaterialModule,
     FormlySelectModule,
     FormlyMatDatepickerModule,

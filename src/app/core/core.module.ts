@@ -11,7 +11,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { DataAccessRouterModule } from '@app/core/data-access-router';
-import { DataAccessFormsModule } from '@app/core/data-access-forms';
 import { DataAccessUiModule } from '@app/core/data-access-ui';
 import { environment } from '@environments/environment';
 import { throwIfAlreadyLoaded } from './utils';
@@ -57,7 +56,6 @@ const EXPORTED_IMPORTS = [LoadingHttpClientModule];
 
     // Core data access
     DataAccessRouterModule,
-    DataAccessFormsModule,
     DataAccessUiModule,
   ],
   exports: [...EXPORTED_IMPORTS, LayoutModule],
