@@ -7,7 +7,7 @@ import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinct } from 'rxjs/operators';
 
 import { DataState, Location, PAGE_SIZE } from '@app/shared/models';
-import { untilDestroyed } from '@app/shared/utils';
+import { untilDestroyed } from '@app/shared/pipes';
 import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
 import {
   CharacterDialogData,

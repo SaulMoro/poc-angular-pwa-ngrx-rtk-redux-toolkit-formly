@@ -7,7 +7,7 @@ import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinct } from 'rxjs/operators';
 
 import { DataState, Episode, PAGE_SIZE } from '@app/shared/models';
-import { untilDestroyed } from '@app/shared/utils';
+import { untilDestroyed } from '@app/shared/pipes';
 import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
 import {
   CharacterDialogData,

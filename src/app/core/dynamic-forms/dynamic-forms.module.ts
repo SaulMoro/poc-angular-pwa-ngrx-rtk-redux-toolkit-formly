@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { FormlyMaterialModule } from '@ngx-formly/material';
@@ -20,6 +19,9 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ValidationsLoader } from './services/validations-loader.service';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { applyDefaultOptions } from './config';
+import { addonsExtension } from './extensions/addons.extension';
+import { WrapperAddonsComponent } from './wrappers/addons.wrappper';
+import { LabeledFormPanelComponent } from './wrappers/labeled-form-panel.wrapper';
 
 import { ButtonComponent } from './components/button.component';
 import { ButtonToggleComponent } from './components/button-toggle.component';
@@ -30,9 +32,6 @@ import { LabelFromOptionsComponent } from './components/label-from-options.compo
 import { SelectAutocompleteComponent } from './components/select-autocomplete.component';
 import { SelectDefaultComponent } from './components/select-default.component';
 import { SpacerComponent } from './components/spacer.component';
-import { addonsExtension } from './extensions/addons.extension';
-import { WrapperAddonsComponent } from './wrappers/addons.wrappper';
-import { LabeledFormPanelComponent } from './wrappers/labeled-form-panel.wrapper';
 
 const MATERIAL_MODULES = [
   MatInputModule,
@@ -43,7 +42,7 @@ const MATERIAL_MODULES = [
   MatButtonToggleModule,
 ];
 
-const EXPORTED_IMPORTS = [CommonModule, ReactiveFormsModule, TranslateModule];
+const EXPORTED_IMPORTS = [ReactiveFormsModule];
 const EXPORTED_DECLARATIONS = [
   DynamicFormComponent,
   SpacerComponent,
@@ -63,15 +62,15 @@ const EXPORTED_DECLARATIONS = [
   declarations: [...EXPORTED_DECLARATIONS],
   imports: [
     ...EXPORTED_IMPORTS,
-    ReactiveFormsModule,
-    FlexLayoutModule,
     ...MATERIAL_MODULES,
+    CommonModule,
     FormlyMaterialModule,
     FormlySelectModule,
-    MatNativeDateModule,
-    NgxMatSelectSearchModule,
     FormlyMatDatepickerModule,
     FormlyMatFormFieldModule,
+    FlexLayoutModule,
+    MatNativeDateModule,
+    NgxMatSelectSearchModule,
 
     FormlyModule.forRoot({
       types: [
@@ -113,7 +112,7 @@ const EXPORTED_DECLARATIONS = [
       extras: { checkExpressionOn: 'modelChange', immutable: true },
     }),
   ],
-  exports: [...EXPORTED_IMPORTS, ...EXPORTED_DECLARATIONS, FormlyModule],
+  exports: [...EXPORTED_IMPORTS, ...EXPORTED_DECLARATIONS],
 })
 export class DynamicFormsModule {
   constructor(private validationsLoader: ValidationsLoader) {

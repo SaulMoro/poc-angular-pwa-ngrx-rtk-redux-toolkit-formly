@@ -17,7 +17,7 @@ export interface State extends EntityState<Location> {
 }
 
 export const locationsAdapter: EntityAdapter<Location> = createEntityAdapter<Location>({
-  sortComparer: (c1, c2) => c1.id - c2.id,
+  sortComparer: (c1, c2) => c1?.id - c2?.id,
 });
 
 export const initialState: State = locationsAdapter.getInitialState({

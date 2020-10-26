@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { LoadingHttpClient } from '@app/core/loading-http-client';
 import { EpisodesFilter } from '@app/shared/models';
-import { handleNotResultsError } from '@app/shared/utils';
+import { handleNotResultsError } from '@app/shared/pipes';
 import { EpisodesResponse } from '../models/episodes-response.model';
 import { EpisodeResponse } from '../models/episode-response.model';
 

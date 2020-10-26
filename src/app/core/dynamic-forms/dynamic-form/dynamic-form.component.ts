@@ -12,13 +12,10 @@ import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { take, map, skipWhile, distinctUntilChanged } from 'rxjs/operators';
 
-import { Logger } from '@app/core/services';
-import { untilDestroyed } from '@app/shared/utils';
+import { untilDestroyed } from '@app/shared/pipes';
 import { FormsEntity, FormsFacade } from '@app/core/data-access-forms';
 import { FieldConfig } from '../models/field-config.model';
 import { FormOptions } from '../models/form-options.model';
-
-const log = new Logger('DynamicForm');
 
 const FORM_VALID = 'VALID';
 
@@ -71,12 +68,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.disableInitialization) {
       this.form$.pipe(take(1)).subscribe((form) => {
         if (!form || this.reset) {
-          log.debug('Init form', {
-            formId: this.formId,
-            model: this.initialModel,
-            filter: this.filter,
-            filterOnSubmit: this.filterOnSubmit,
-          });
           this.formsFacade.initForm(this.formId, this.initialModel, this.filter || this.filterOnSubmit);
           this.previousModel = { ...this.initialModel };
         } else {

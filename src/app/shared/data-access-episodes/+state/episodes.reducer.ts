@@ -17,7 +17,7 @@ export interface State extends EntityState<Episode> {
 }
 
 export const episodesAdapter: EntityAdapter<Episode> = createEntityAdapter<Episode>({
-  sortComparer: (c1, c2) => c1.id - c2.id,
+  sortComparer: (c1, c2) => c1?.id - c2?.id,
 });
 
 export const initialState: State = episodesAdapter.getInitialState({

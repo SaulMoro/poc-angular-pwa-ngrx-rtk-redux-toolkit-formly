@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { throwIfAlreadyLoaded } from '../utils';
+import { throwIfAlreadyLoaded } from '@app/core/utils';
 import * as fromLocations from './+state/locations.reducer';
 import { LocationsEffects } from './+state/locations.effects';
 

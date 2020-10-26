@@ -19,7 +19,7 @@ export interface State extends EntityState<Character> {
 }
 
 export const charactersAdapter: EntityAdapter<Character> = createEntityAdapter<Character>({
-  sortComparer: (c1, c2) => c1.id - c2.id,
+  sortComparer: (c1, c2) => c1?.id - c2?.id,
 });
 
 export const initialState: State = charactersAdapter.getInitialState({

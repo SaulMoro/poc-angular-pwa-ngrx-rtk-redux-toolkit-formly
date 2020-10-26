@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { LoadingHttpClient } from '@app/core/loading-http-client';
 import { LocationsFilter } from '@app/shared/models';
-import { handleNotResultsError } from '@app/shared/utils';
+import { handleNotResultsError } from '@app/shared/pipes';
 import { LocationsResponse } from '../models/locations-response.model';
 import { LocationResponse } from '../models/location-response.model';
 

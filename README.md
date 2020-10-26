@@ -39,7 +39,6 @@ PoC para atSistemas de un proyecto Angular con:
 
 - **Prefetch Directive** para precargar información cuando un componente se le pase el ratón por encima o se muestre por pantalla
 - **Auto Lazy Load Images Directive** para añadir automáticamente el lazy load a las imágenes si el navegador lo soporta
-- **Dialog Util** para crear automáticamente diálogos de confirmación, alerta o con un componente en él
 - **HttpClient Loading Wrapper** para automatizar la muestra de spinner en ciertas llamadas backend
 - **Husky y lint-staged** para pasar lint y prettier a código cambiado al hacer commit
 - **Commitlint** para usar [Convetional Commits](https://www.conventionalcommits.org/)
@@ -109,7 +108,7 @@ TODO
 > ng g component features/(nombre-feature)/components/(component-name)
 > ng g service features/(nombre-feature)/services/(service-name)
 > ng g interface features/(nombre-feature)/models/(model-name) model
-```
+```/Users/smoro/Repositorios/PoC-Angular-PWA-NgRx-Entity-Formly-RouterState/tsconfig.json
 
 ## Contact
 

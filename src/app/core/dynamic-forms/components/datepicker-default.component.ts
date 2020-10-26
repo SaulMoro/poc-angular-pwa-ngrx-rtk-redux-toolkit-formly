@@ -3,7 +3,7 @@ import { MatInput } from '@angular/material/input';
 import { MatDatepickerInput } from '@angular/material/datepicker';
 import { ɵdefineHiddenProp as defineHiddenProp } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
-import { untilDestroyed } from '@app/shared/utils';
+import { untilDestroyed } from '@app/shared/pipes';
 
 @Component({
   selector: 'app-datepicker-default-dynamic-form',

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { LoadingHttpClient } from '@app/core/loading-http-client';
 import { CharactersFilter } from '@app/shared/models';
-import { handleNotResultsError } from '@app/shared/utils';
+import { handleNotResultsError } from '@app/shared/pipes';
 import { CharactersResponse } from '../models/characters-response.model';
 import { CharacterResponse } from '../models/character-response.model';
 

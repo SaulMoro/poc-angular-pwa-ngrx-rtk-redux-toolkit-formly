@@ -146,7 +146,7 @@ export class LocationsEffects {
   updateTitleOnLoadLocationDetails$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LocationsApiActions.loadLocationSuccess),
-      map(({ location }) => UiActions.updateTitle({ title: location.name }))
+      map(({ location }) => UiActions.setAppTitle({ title: location.name }))
     )
   );
 

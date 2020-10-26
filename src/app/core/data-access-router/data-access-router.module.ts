@@ -7,7 +7,7 @@ import {
 } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 
-import { throwIfAlreadyLoaded } from '@app/shared/utils';
+import { throwIfAlreadyLoaded } from '../utils';
 import { CustomSerializer } from './+state/custom-serializer';
 import { ROUTER_FEATURE_KEY } from './+state/router.model';
 
