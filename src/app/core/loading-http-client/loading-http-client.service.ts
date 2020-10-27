@@ -3,8 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, defer } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-import { LoadingService } from './services/loading.service';
 import { environment } from '@environments/environment';
+import { LoadingService } from './services/loading.service';
 
 @Injectable({
   providedIn: 'root',
