@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
-import { of, OperatorFunction, pipe } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { OperatorFunction, pipe } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 import * as FormsActions from '../+state/forms.actions';
 
