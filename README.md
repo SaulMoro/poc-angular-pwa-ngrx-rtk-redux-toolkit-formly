@@ -47,44 +47,185 @@ PoC para atSistemas de un proyecto Angular con:
 
 ### **NgRx/RxJS Utils**
 
+pipes y utilidades combinado NgRx y RxJS para sacar todo su potencial
+
 #### **ofRoute**
 
-TODO
+Salta el efecto cuando se navega a las rutas indicadas
+
+Input: string | string[] | RegExp
+
+Output: RouterStateUrl
 
 ```javascript
-// TODO
+xxxeffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofRoute('/characters'),
+      // Podemos aprovechar el estado de la ruta aquí (params, queryParams, ...)
+      map(() => CharactersActions.xxx())
+    )
+  );
+```
+
+#### **ofRouteEnter**
+
+Salta el efecto cuando se navega a las rutas indicadas desde otra página distinta
+
+Input: string | string[] | RegExp
+
+Output: RouterStateUrl
+
+```javascript
+xxxeffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofRouteEnter('/characters'),
+      // Podemos aprovechar el estado de la ruta aquí (params, queryParams, ...)
+      map(() => CharactersActions.enterCharactersPage())
+    )
+  );
+```
+
+#### **ofRouteFilter**
+
+Salta el efecto cuando se añade o modifica un queryParam a la ruta actual. Ignora el parámetro "page", se usa para paginación.
+
+Input: string | string[] | RegExp
+
+Output: QueryParams (quitando parámetro page)
+
+```javascript
+xxxeffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofRouteFilter('/characters'),
+      // Podemos aprovechar para usar los queryParams para map o filter
+      map((filter) => CharactersActions.filterCharacters({ filter }))
+    )
+  );
+```
+
+#### **ofRoutePageChange**
+
+Salta el efecto cuando se cambia el queryParam "page" en la misma ruta.
+
+Input: string | string[] | RegExp
+
+Output: number (número de página)
+
+```javascript
+xxxeffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofRoutePageChange('/characters'),
+      map((page) => CharactersActions.pageChange({ page }))
+    )
+  );
 ```
 
 #### **ofSubmitForm**
 
-TODO
+Salta el efecto cuando se **envía** alguno de los formularios indicados
+
+Input: string | string[] | RegExp
+
+Output: { formId: string; model: any; initialModel: any; filter: boolean }
 
 ```javascript
-// TODO
+xxxeffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofSubmitForm(FormIds.CHARACTERS_DETAILS_FORM_ID),
+      // Podemos aprovechar los datos del formulario aquí para map, filter, ...
+      // ...
+    )
+  );
 ```
 
 #### **ofUpdateForm**
 
-TODO
+Salta el efecto cuando se **actualiza** alguno de los formularios indicados
+
+Input: string | string[] | RegExp
+
+Output: { formId: string; model: any; filter: boolean }
 
 ```javascript
-// TODO
+xxxeffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofUpdateForm([FormIds.CHARACTERS_DETAILS_FORM_ID, FormIds.XXXX_FORM_ID]),
+      // Podemos aprovechar los datos del formulario aquí para map, filter, ...
+      // ...
+    )
+  );
+```
+
+#### **ofFilterForm**
+
+Salta el efecto cuando se **actualiza** alguno de los formularios indicados y este es de **tipo filter**
+
+Input: string | string[] | RegExp
+
+Output: model del formulario
+
+```javascript
+filterCharacters$ = createEffect(() => ({ debounce = 300, scheduler = asyncScheduler } = {}) =>
+    this.actions$.pipe(
+      // ofRouteFilter('/characters'), // (Same function)
+      ofFilterForm(FormIds.FORM_CHARACTERS_FILTER_ID),
+      debounceTime(debounce, scheduler),
+      switchMap(() =>
+        // Reset Filter Page
+        this.router.navigate([], {
+          queryParams: { page: null },
+          queryParamsHandling: 'merge',
+        })
+      ),
+      map(() => CharactersActions.filterCharacters())
+    )
+  );
+```
+
+#### **ofInitForm**
+
+Salta el efecto cuando se **inicia** alguno de los formularios indicados
+
+Input: string | string[] | RegExp
+
+Output: { formId: string; initialModel: any; filter: boolean }
+
+```javascript
+xxxeffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofInitForm(FormIds.CHARACTERS_DETAILS_FORM_ID),
+      // Podemos aprovechar los datos del formulario aquí para map, filter, ...
+      // ...
+    )
+  );
 ```
 
 #### **fromStore**
 
-TODO
+Utilidad que nos sirve para obtener, mediante el uso de selectores, parte del estado en un efecto
+
+Existe la variante getFromStore, que hace lo mismo pero iniciando un observable, en lugar de reutilizar el existente.
 
 ```javascript
-// TODO
+loadCharacters$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CharactersActions.enterCharactersPage, CharactersActions.pageChange, CharactersActions.filterCharacters),
+      fromStore(CharactersSelectors.getCurrentFilter, CharactersSelectors.getCurrentPage)(this.store),
+      switchMap(([action, currentFilter, page]) =>
+        this.charactersService.getCharacters(currentFilter, page).pipe(
+          // ...
+        )
+      )
+    )
+  );
 ```
 
 #### **untilDestroyed**
 
-TODO
+Utilidad que nos sirve para desubscribir un observable al destruirse un componente. Es necesario implementar el ngOnDestroy.
 
 ```javascript
-// TODO
+this.formControl.valueChanges.pipe(untilDestroyed(this)).subscribe(() => this.checkInputs());
 ```
 
 ## **Code scaffolding**
