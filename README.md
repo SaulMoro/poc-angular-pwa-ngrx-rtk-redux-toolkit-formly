@@ -110,6 +110,7 @@ TODO
 > ng g component features/(nombre-feature)/components/(component-name)
 > ng g service features/(nombre-feature)/services/(service-name)
 > ng g interface features/(nombre-feature)/models/(model-name) model
+```
 
 ## Contact
 
