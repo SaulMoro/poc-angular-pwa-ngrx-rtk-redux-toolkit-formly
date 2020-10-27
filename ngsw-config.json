@@ -17,5 +17,15 @@
         "files": ["/assets/**", "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"]
       }
     }
+  ],
+  "dataGroups": [
+    {
+      "name": "dynamicImgs",
+      "urls": ["**/character/avatar/*.jpeg"],
+      "cacheConfig": {
+        "maxSize": 250,
+        "maxAge": "7d"
+      }
+    }
   ]
 }
