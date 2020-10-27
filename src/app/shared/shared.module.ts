@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TranslateModule } from '@ngx-translate/core';
+import { ReactiveComponentModule } from '@ngrx/component';
 
 // Material
 import { MatIconModule } from '@angular/material/icon';
@@ -55,7 +56,14 @@ const MATERIAL_MODULES = [
 
 const EXPORTED_DECLARATIONS = [CharacterMiniCardComponent, PrefetchDirective];
 
-const IMPORTED_EXPORTS = [CommonModule, DynamicFormsModule, TranslateModule, FlexLayoutModule, ...MATERIAL_MODULES];
+const IMPORTED_EXPORTS = [
+  CommonModule,
+  DynamicFormsModule,
+  TranslateModule,
+  ReactiveComponentModule,
+  FlexLayoutModule,
+  ...MATERIAL_MODULES,
+];
 
 @NgModule({
   declarations: [...EXPORTED_DECLARATIONS, CharactersDialogComponent],

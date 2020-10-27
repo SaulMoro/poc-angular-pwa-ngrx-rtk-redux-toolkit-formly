@@ -1,4 +1,4 @@
-<ng-container *ngIf="dataState$ | async as dataState">
+<ng-container *ngrxLet="dataState$ as dataState">
   <mat-progress-bar
     *ngIf="dataState === dataStateTypes.LOADING || dataState === dataStateTypes.REFRESHING"
     class="progress-bar--top"
@@ -6,7 +6,7 @@
   ></mat-progress-bar>
 </ng-container>
 
-<ng-container *ngIf="character$ | async as character">
+<ng-container *ngrxLet="character$ as character">
   <h1>{{ character.name }}</h1>
   <mat-divider></mat-divider>
   <app-character-details-card
@@ -16,13 +16,15 @@
   <mat-card>
     <h2>{{ 'CHARACTERS.CHARACTER_EPISODES' | translate: { name: character.name } }}</h2>
     <div class="row">
-      <mat-progress-bar
-        *ngIf="(episodesDataState$ | async) === dataStateTypes.LOADING"
-        mode="indeterminate"
-      ></mat-progress-bar>
+      <ng-container *ngrxLet="episodesDataState$ as episodesDataState">
+        <mat-progress-bar
+          *ngrxLet="episodesDataState === dataStateTypes.LOADING"
+          mode="indeterminate"
+        ></mat-progress-bar>
+      </ng-container>
 
-      <mat-list role="list">
-        <mat-list-item *ngFor="let episode of episodes$ | async; trackBy: episode?.id" role="listitem">
+      <mat-list role="list" *ngrxLet="episodes$ as episodes">
+        <mat-list-item *ngFor="let episode of episodes; trackBy: episode?.id" role="listitem">
           <button *ngIf="episode" mat-button color="primary" [routerLink]="['/episodes', episode.id]">
             {{ episode.episode }}: {{ episode.name }}
           </button>

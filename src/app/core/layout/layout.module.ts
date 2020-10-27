@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { ReactiveComponentModule } from '@ngrx/component';
 
 // Material
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -27,7 +28,7 @@ const EXPORTED_DECLARATIONS = [HeaderComponent, FooterComponent];
 
 @NgModule({
   declarations: [...EXPORTED_DECLARATIONS],
-  imports: [CommonModule, RouterModule, TranslateModule, ...MATERIAL_MODULES],
+  imports: [CommonModule, RouterModule, TranslateModule, ReactiveComponentModule, ...MATERIAL_MODULES],
   exports: [...EXPORTED_DECLARATIONS],
 })
 export class LayoutModule {

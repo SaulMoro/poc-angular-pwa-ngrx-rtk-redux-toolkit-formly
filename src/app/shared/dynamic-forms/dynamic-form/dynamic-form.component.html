@@ -6,15 +6,17 @@
     #dynamicForm
   >
     <div fxFlexFill fxLayout="column" fxLayoutAlign="start stretch">
-      <formly-form
-        *ngIf="disableInitialization === false && form$ | async as form"
-        class="dynamic-form__form__content"
-        [form]="formGroup"
-        [model]="form.model"
-        [fields]="fields"
-        [options]="options"
-        (modelChange)="onModelChange($event)"
-      ></formly-form>
+      <ng-container *ngIf="disableInitialization === false">
+        <formly-form
+          *ngrxLet="form$ as form"
+          class="dynamic-form__form__content"
+          [form]="formGroup"
+          [model]="form.model"
+          [fields]="fields"
+          [options]="options"
+          (modelChange)="onModelChange($event)"
+        ></formly-form>
+      </ng-container>
 
       <formly-form
         *ngIf="disableInitialization"

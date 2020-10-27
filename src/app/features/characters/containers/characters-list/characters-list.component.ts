@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Character, DataState, PAGE_SIZE } from '@app/shared/models';
 import { CharactersSelectors } from '@app/shared/data-access-characters';
@@ -18,7 +19,7 @@ export class CharactersListComponent implements OnInit {
   dataState$: Observable<DataState> = this.store.select(CharactersSelectors.getDataState);
   characters$: Observable<Character[]> = this.store.select(CharactersSelectors.getCharacters);
   totalCharacters$: Observable<number> = this.store.select(CharactersSelectors.getTotalCharacters);
-  currentPage$: Observable<number> = this.store.select(CharactersSelectors.getCurrentPage);
+  pageIndex$: Observable<number> = this.store.select(CharactersSelectors.getCurrentPage).pipe(map((page) => page - 1));
 
   dataStateTypes = DataState;
   pageSize = PAGE_SIZE;

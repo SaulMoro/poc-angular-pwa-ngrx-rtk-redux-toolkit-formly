@@ -4,7 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, distinct } from 'rxjs/operators';
+import { debounceTime, distinct, map } from 'rxjs/operators';
 
 import { DataState, Location, PAGE_SIZE } from '@app/shared/models';
 import { untilDestroyed } from '@app/shared/pipes';
@@ -24,7 +24,7 @@ export class LocationsListComponent implements OnInit, OnDestroy {
   dataState$: Observable<DataState> = this.store.select(LocationsSelectors.getDataState);
   locations$: Observable<Location[]> = this.store.select(LocationsSelectors.getLocations);
   totalLocations$: Observable<number> = this.store.select(LocationsSelectors.getTotalLocations);
-  currentPage$: Observable<number> = this.store.select(LocationsSelectors.getCurrentPage);
+  pageIndex$: Observable<number> = this.store.select(LocationsSelectors.getCurrentPage).pipe(map((page) => page - 1));
 
   dataStateTypes = DataState;
   pageSize = PAGE_SIZE;

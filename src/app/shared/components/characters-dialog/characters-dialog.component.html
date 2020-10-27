@@ -3,12 +3,11 @@
 </h2>
 <mat-dialog-content class="mat-typography">
   <div class="row">
-    <mat-progress-bar
-      *ngIf="(charactersDataState$ | async) === dataStateTypes.LOADING"
-      mode="indeterminate"
-    ></mat-progress-bar>
+    <ng-container *ngrxLet="charactersDataState$ as charactersDataState">
+      <mat-progress-bar *ngIf="charactersDataState === dataStateTypes.LOADING" mode="indeterminate"></mat-progress-bar>
+    </ng-container>
 
-    <ng-container *ngIf="characters$ | async as characters">
+    <ng-container *ngrxLet="characters$ as characters">
       <div class="col-12" *ngFor="let characterId of data.characterIds; trackBy: characterId">
         <app-character-mini-card [character]="characters[characterId]"></app-character-mini-card>
       </div>

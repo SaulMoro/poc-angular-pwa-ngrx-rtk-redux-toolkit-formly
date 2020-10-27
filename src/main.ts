@@ -9,6 +9,12 @@ if (environment.production) {
 }
 
 platformBrowserDynamic()
-  // https://netbasal.com/reduce-change-detection-cycles-with-event-coalescing-in-angular-c4037199859f
-  .bootstrapModule(AppModule, { ngZoneEventCoalescing: true })
+  .bootstrapModule(AppModule, {
+    // Zone less (ngrx-component). Necessary in Angular Material (Remove on update to TailwindCSS)
+    // https://christiankohler.net/reactive-angular-with-ngrx-component
+    // ngZone: 'noop',
+
+    // https://netbasal.com/reduce-change-detection-cycles-with-event-coalescing-in-angular-c4037199859f
+    ngZoneEventCoalescing: true,
+  })
   .catch((err) => console.error(err));

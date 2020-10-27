@@ -28,6 +28,7 @@
     "@angular/router": "~10.2.0",
     "@angular/service-worker": "~10.2.0",
     "@fortawesome/fontawesome-free": "^5.15.0",
+    "@ngrx/component": "^10.0.1",
     "@ngrx/effects": "^10.0.1",
     "@ngrx/entity": "^10.0.1",
     "@ngrx/router-store": "^10.0.1",

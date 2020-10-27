@@ -1,4 +1,4 @@
-<ng-container *ngIf="dataState$ | async as dataState">
+<ng-container *ngrxLet="dataState$ as dataState">
   <mat-progress-bar
     *ngIf="dataState === dataStateTypes.LOADING || dataState === dataStateTypes.REFRESHING"
     class="progress-bar--top"
@@ -6,15 +6,15 @@
   ></mat-progress-bar>
 </ng-container>
 
-<ng-container *ngIf="episode$ | async as episode">
+<ng-container *ngrxLet="episode$ as episode">
   <h1>{{ episode.episode }}: {{ episode.name }} ({{ episode.air_date }})</h1>
   <mat-divider></mat-divider>
   <mat-card>
     <h2>{{ 'EPISODES.EPISODE_CHARACTERS' | translate: { name: episode.name } }}</h2>
-    <div class="row" *ngIf="charactersDataState$ | async as charactersDataState">
+    <div class="row" *ngrxLet="charactersDataState$ as charactersDataState">
       <mat-progress-bar *ngIf="charactersDataState === dataStateTypes.LOADING" mode="indeterminate"></mat-progress-bar>
 
-      <ng-container *ngIf="characters$ | async as characters">
+      <ng-container *ngrxLet="characters$ as characters">
         <ng-container *ngIf="!!characters.length; else emptyCharacters">
           <div class="col-12 col-md-6" *ngFor="let character of characters; trackBy: character?.id">
             <app-character-mini-card [character]="character"></app-character-mini-card>

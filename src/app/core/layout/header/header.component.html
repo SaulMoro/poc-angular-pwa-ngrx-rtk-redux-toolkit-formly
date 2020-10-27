@@ -6,7 +6,7 @@
     </a>
     <nav>
       <button
-        *ngFor="let item of appMenu$ | async; trackBy: trackByFn"
+        *ngFor="let item of appMenu$ | ngrxPush; trackBy: trackByFn"
         mat-button
         [routerLink]="[item.path]"
         routerLinkActive="active"
@@ -19,7 +19,7 @@
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button *ngFor="let item of appMenu$ | async; trackBy: trackByFn" [routerLink]="[item.path]" mat-menu-item>
+        <button *ngFor="let item of appMenu$ | ngrxPush; trackBy: trackByFn" [routerLink]="[item.path]" mat-menu-item>
           {{ item.name }}
         </button>
       </mat-menu>
