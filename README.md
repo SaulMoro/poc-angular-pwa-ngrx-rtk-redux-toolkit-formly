@@ -62,7 +62,7 @@ xxxeffect$ = createEffect(() =>
     this.actions$.pipe(
       ofRoute('/characters'),
       // Podemos aprovechar el estado de la ruta aquí (params, queryParams, ...)
-      map(() => CharactersActions.xxx())
+      // ...
     )
   );
 ```
