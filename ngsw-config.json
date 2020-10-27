@@ -6,7 +6,7 @@
       "name": "app",
       "installMode": "prefetch",
       "resources": {
-        "files": ["/favicon.ico", "/index.html", "/manifest.webmanifest", "/*.css", "/*.js"]
+        "files": ["/favicon.ico", "/index.html", "/manifest.webmanifest", "/*.css", "/*.js", "/assets/i18n/**"]
       }
     },
     {
@@ -21,7 +21,7 @@
   "dataGroups": [
     {
       "name": "dynamicImgs",
-      "urls": ["**/character/avatar/*.jpeg"],
+      "urls": ["https://rickandmortyapi.com/api/character/avatar/*.jpeg"],
       "cacheConfig": {
         "maxSize": 250,
         "maxAge": "7d"
