@@ -1,6 +1,6 @@
 # **PoC Angular + PWA + Ngrx + Formly + Router State + NgRx-Entity**
 
-[Website](https://saul-.github.io/poc-angular-pwa-ngrx-entity-formly-routerstate)
+[Website to try](https://saul-.github.io/poc-angular-pwa-ngrx-entity-formly-routerstate)
 
 ## Table of Contents
 
@@ -17,41 +17,41 @@
 
 ## **Description**
 
-PoC para atSistemas de un proyecto Angular con:
+PoC of an Angular project with:
 
 **Angular Core**
 
-- **Modulos Core y Shared**
+- **Core and Shared modules**
 - **Lazy Loading Features**
-- **Container/Presentational Components** (Smart/Dumb Components)
-- **Formly** para generación de formularios dinámicos
-- **Rendimiento** con el uso de trackBy, OnPush, Intersection Observer...
+- **Container / Presentational Components**(Smart / Dumb Components)
+- **Formly** for generating dynamic forms
+- **Performance** with the use of trackBy, OnPush, Intersection Observer ...
 
 **State Management**
 
-- **NgRx** como State Management
-- **NgRx Entity** para el tratamiento de entidades dentro de NgRx
-- **NgRx Router State** para manejar el estado de la App a partir del Router en NgRx
-- **Forms conectados a NgRx** para evitar el uso de acciones, manejar los formularios desde NgRx y filtros por queryParams automáticos
-- [**NgRx/RxJS Utils**](#ngrx/rxjs-utils) para manejar la información de el Router y los Formularios desde NgRx
-- [**Good Actions Hygiene**](https://www.youtube.com/watch?v=JmnsEvoy-gY) para pensar las acciones como eventos ([Source] Event), no como comandos
-- [**ngrx-store-localstorage**](https://github.com/btroncone/ngrx-store-localstorage) para guardar o recuperar partes del estado desde el localStorage. Rehidratamos contenido de NgRx (Cache)
+- **NgRx** as State Management
+- **NgRx Entity** for the treatment of entities with NgRx
+- **NgRx Router State** to manage the state of the App from the Router in NgRx
+- **Forms connected to NgRx** to avoid the use of actions, handle the forms from NgRx and filters by automatic queryParams
+- [**NgRx / RxJS Utils**](#ngrx/rxjs-utils) to handle the information of the Router and the Forms from NgRx
+- [**Good Actions Hygiene**](https://www.youtube.com/watch?v=JmnsEvoy-gY) to think on actions as events ([Source] Event), not as commands
+- [**ngrx-store-localstorage**](https://github.com/btroncone/ngrx-store-localstorage) to save or retrieve parts of the state from the localStorage. We rehydrate NgRx content (Cache)
 
 **Other**
 
-- **Prefetch Directive** para precargar información cuando un componente se le pase el ratón por encima o se muestre por pantalla
-- **Auto Lazy Load Images Directive** para añadir automáticamente el lazy load a las imágenes si el navegador lo soporta
-- **HttpClient Loading Wrapper** para automatizar la muestra de spinner en ciertas llamadas backend
-- **Husky y lint-staged** para pasar lint y prettier a código cambiado al hacer commit
-- **Commitlint** para usar [Convetional Commits](https://www.conventionalcommits.org/)
+- **Prefetch Directive** to preload information when a component is hovered over or displayed on the screen
+- **Auto Lazy Load Images Directive** to automatically add lazy load to images if browser supports it
+- **HttpClient Loading Wrapper** to automate spinner display on certain backend calls
+- **Husky and lint-staged** to pass lint and prettier to changed code on commit
+- **Commitlint** to use [Convetional Commits](https://www.conventionalcommits.org/)
 
 ### **NgRx/RxJS Utils**
 
-pipes y utilidades combinado NgRx y RxJS para sacar todo su potencial
+pipes and utilities, combined NgRx and RxJS to get their full potential
 
 #### **ofRoute**
 
-Salta el efecto cuando se navega a las rutas indicadas
+Trigger the effect when navigating to the indicated routes
 
 Input: string | string[] | RegExp
 
@@ -61,7 +61,7 @@ Output: RouterStateUrl
 xxxeffect$ = createEffect(() =>
     this.actions$.pipe(
       ofRoute('/characters'),
-      // Podemos aprovechar el estado de la ruta aquí (params, queryParams, ...)
+      // We can take advantage of the state of the route here (params, queryParams, ...)
       // ...
     )
   );
@@ -69,7 +69,7 @@ xxxeffect$ = createEffect(() =>
 
 #### **ofRouteEnter**
 
-Salta el efecto cuando se navega a las rutas indicadas desde otra página distinta
+Trigger the effect when navigating to the indicated routes from a different page
 
 Input: string | string[] | RegExp
 
@@ -79,50 +79,50 @@ Output: RouterStateUrl
 xxxeffect$ = createEffect(() =>
     this.actions$.pipe(
       ofRouteEnter('/characters'),
-      // Podemos aprovechar el estado de la ruta aquí (params, queryParams, ...)
-      map(() => CharactersActions.enterCharactersPage())
+      // We can take advantage of the state of the route here (params, queryParams, ...)
+      map(() => CharactersActions.enterCharactersPage()) // Example
     )
   );
 ```
 
 #### **ofRouteFilter**
 
-Salta el efecto cuando se añade o modifica un queryParam a la ruta actual. Ignora el parámetro "page", se usa para paginación.
+Trigger the effect when a queryParam is added or modified to the current route. Ignore the "page" param, it is used for pagination.
 
-Input: string | string[] | RegExp
+Input: string | string [] | RegExp
 
-Output: QueryParams (quitando parámetro page)
+Output: QueryParams (ignore "page" param)
 
 ```javascript
 xxxeffect$ = createEffect(() =>
     this.actions$.pipe(
       ofRouteFilter('/characters'),
-      // Podemos aprovechar para usar los queryParams para map o filter
-      map((filter) => CharactersActions.filterCharacters({ filter }))
+      // We can take advantage to use the queryParams for map or filter
+      map((filter) => CharactersActions.filterCharacters({ filter })) // Example
     )
   );
 ```
 
 #### **ofRoutePageChange**
 
-Salta el efecto cuando se cambia el queryParam "page" en la misma ruta.
+Trigger the effect when the queryParam "page" is changed in the same route.
 
 Input: string | string[] | RegExp
 
-Output: number (número de página)
+Output: number (page number)
 
 ```javascript
 xxxeffect$ = createEffect(() =>
     this.actions$.pipe(
       ofRoutePageChange('/characters'),
-      map((page) => CharactersActions.pageChange({ page }))
+      map((page) => CharactersActions.pageChange({ page })) // Example
     )
   );
 ```
 
 #### **ofSubmitForm**
 
-Salta el efecto cuando se **envía** alguno de los formularios indicados
+Trigger the effect when a **Submit** of any of the indicated forms is made
 
 Input: string | string[] | RegExp
 
@@ -132,7 +132,7 @@ Output: { formId: string; model: any; initialModel: any; filter: boolean }
 xxxeffect$ = createEffect(() =>
     this.actions$.pipe(
       ofSubmitForm(FormIds.CHARACTERS_DETAILS_FORM_ID),
-      // Podemos aprovechar los datos del formulario aquí para map, filter, ...
+      // We can take advantage of the form data here for map, filter, ...
       // ...
     )
   );
@@ -140,7 +140,7 @@ xxxeffect$ = createEffect(() =>
 
 #### **ofUpdateForm**
 
-Salta el efecto cuando se **actualiza** alguno de los formularios indicados
+Trigger the effect when a **Update** of any of the indicated forms is made
 
 Input: string | string[] | RegExp
 
@@ -150,7 +150,7 @@ Output: { formId: string; model: any; filter: boolean }
 xxxeffect$ = createEffect(() =>
     this.actions$.pipe(
       ofUpdateForm([FormIds.CHARACTERS_DETAILS_FORM_ID, FormIds.XXXX_FORM_ID]),
-      // Podemos aprovechar los datos del formulario aquí para map, filter, ...
+      // We can take advantage of the form data here for map, filter, ...
       // ...
     )
   );
@@ -158,11 +158,11 @@ xxxeffect$ = createEffect(() =>
 
 #### **ofFilterForm**
 
-Salta el efecto cuando se **actualiza** alguno de los formularios indicados y este es de **tipo filter**
+Trigger the effect when a **Update** of any of the indicated forms is made and this is **filter** type
 
 Input: string | string[] | RegExp
 
-Output: model del formulario
+Output: model of form
 
 ```javascript
 filterCharacters$ = createEffect(() => ({ debounce = 300, scheduler = asyncScheduler } = {}) =>
@@ -171,20 +171,20 @@ filterCharacters$ = createEffect(() => ({ debounce = 300, scheduler = asyncSched
       ofFilterForm(FormIds.FORM_CHARACTERS_FILTER_ID),
       debounceTime(debounce, scheduler),
       switchMap(() =>
-        // Reset Filter Page
+        // Reset Filter Page (Example)
         this.router.navigate([], {
           queryParams: { page: null },
           queryParamsHandling: 'merge',
         })
       ),
-      map(() => CharactersActions.filterCharacters())
+      map(() => CharactersActions.filterCharacters()) // Example
     )
   );
 ```
 
 #### **ofInitForm**
 
-Salta el efecto cuando se **inicia** alguno de los formularios indicados
+Trigger the effect when a **Init** of any of the indicated forms is made
 
 Input: string | string[] | RegExp
 
@@ -194,7 +194,7 @@ Output: { formId: string; initialModel: any; filter: boolean }
 xxxeffect$ = createEffect(() =>
     this.actions$.pipe(
       ofInitForm(FormIds.CHARACTERS_DETAILS_FORM_ID),
-      // Podemos aprovechar los datos del formulario aquí para map, filter, ...
+      // We can take advantage of the form data here for map, filter, ...
       // ...
     )
   );
@@ -202,11 +202,12 @@ xxxeffect$ = createEffect(() =>
 
 #### **fromStore**
 
-Utilidad que nos sirve para obtener, mediante el uso de selectores, parte del estado en un efecto
+Utility that helps us to obtain, through the use of selectors, part of the state in an effect
 
-Existe la variante getFromStore, que hace lo mismo pero iniciando un observable, en lugar de reutilizar el existente.
+There is the getFromStore alternative, which does the same but starting an observable, instead of reusing the existing stream.
 
 ```javascript
+// Example
 loadCharacters$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CharactersActions.enterCharactersPage, CharactersActions.pageChange, CharactersActions.filterCharacters),
@@ -222,9 +223,10 @@ loadCharacters$ = createEffect(() =>
 
 #### **untilDestroyed**
 
-Utilidad que nos sirve para desubscribir un observable al destruirse un componente. Es necesario implementar el ngOnDestroy.
+Utility that helps us to unsubscribe an observable when a component is destroyed. You need to implement the ngOnDestroy.
 
 ```javascript
+// Example
 this.formControl.valueChanges
   .pipe(untilDestroyed(this))
   .subscribe(() => this.checkInputs());
@@ -233,16 +235,16 @@ this.formControl.valueChanges
 ## **Code scaffolding**
 
 ```bash
-# Crear Feature Lazy
+# Create Lazy Feature
 > ng g module features/(nombre-feature) --module app --route (nombre-ruta)
 
-# Añadir Data-Access a Feature
+# Create Data-Access of a Feature (Not Shared)
 > ng g module features/(nombre-feature)/data-access-(state-name) --module features/(nombre-feature-padre)
 > ng g feature features/(nombre-feature)/data-access-(state-name)/+state/(StateName) -m features/(nombre-feature)/data-access-(state-name) --creators --api
 > ng g service features/(nombre-feature)/data-access-(state-name)/services/(service-name)
 > ng g interface features/(nombre-feature)/data-access-(state-name)/models/(model-name) model
 
-# Añadir Data-Access a Shared
+# Create Shared Data-Access
 > ng g module shared/data-access-(state-name) --module shared
 > ng g feature shared/data-access-(state-name)/+state/(StateName) -m shared/data-access-(state-name) --creators --api
 > ng g service shared/data-access-(state-name)/services/(service-name)
