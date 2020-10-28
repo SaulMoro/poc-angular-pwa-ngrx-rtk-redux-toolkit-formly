@@ -165,6 +165,7 @@ Input: string | string[] | RegExp
 Output: model of form
 
 ```javascript
+// Example
 filterCharacters$ = createEffect(() => ({ debounce = 300, scheduler = asyncScheduler } = {}) =>
     this.actions$.pipe(
       // ofRouteFilter('/characters'), // (Same function)
@@ -236,7 +237,7 @@ this.formControl.valueChanges
 
 ```bash
 # Create Lazy Feature
-> ng g module features/(nombre-feature) --module app --route (nombre-ruta)
+> ng g module features/(nombre-feature) --module [app | parent-module-name] --route (route-name)
 
 # Create Data-Access of a Feature (Not Shared)
 > ng g module features/(nombre-feature)/data-access-(state-name) --module features/(nombre-feature-padre)
