@@ -45,6 +45,7 @@
       "ROBOT": "Robot",
       "PLANET": "Planeta",
       "CRONENBERG": "Cronenberg",
+      "DISEASE": "Enfermedad",
       "UNKNOWN": "Desconocida"
     }
   },

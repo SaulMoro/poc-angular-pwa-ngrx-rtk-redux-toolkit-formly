@@ -8,6 +8,7 @@ export enum CharacterSpecies {
   vampire = 'Vampire',
   robot = 'Robot',
   cronenberg = 'Cronenberg',
+  disease = 'Disease',
   unknown = 'unknown',
 }
 
