@@ -1,0 +1,138 @@
+{
+  "LANGUAGE": "English",
+  "APP_TITLE": "Rick & Morty",
+  "CHARACTERS": {
+    "TITLE": "Characters",
+    "FILTER_CHARACTERS": "Filter Characters",
+    "LAST_KNOWN_LOCATION": "Last known location:",
+    "FIRST_SEEN": "First seen:",
+    "CHARACTER_INFO": "Character Info",
+    "CHARACTER_EPISODES": "Episodes with {{ name }}",
+    "FIELDS": {
+      "NAME": "Name",
+      "STATUS": "Status",
+      "GENDER": "Gender",
+      "SPECIES": "Species",
+      "TYPE": "Type",
+      "ORIGIN": "Origin",
+      "LOCATION": "Location"
+    },
+    "PLACEHOLDERS": {
+      "STATUS": "Select a status",
+      "GENDER": "Select a gender",
+      "SPECIES": "Select a species"
+    },
+    "STATUS": {
+      "ALIVE": "Alive",
+      "DEAD": "Dead",
+      "UNKNOWN": "Unknown"
+    },
+    "GENDER": {
+      "FEMALE": "Female",
+      "MALE": "Male",
+      "GENDERLESS": "Genderless",
+      "UNKNOWN": "Unknown"
+    },
+    "SPECIES": {
+      "HUMAN": "Human",
+      "HUMANOID": "Humanoid",
+      "ALIEN": "Alien",
+      "POOPYBUTTHOLE": "Poopy butthole",
+      "MYTHOLOG": "Mytholog",
+      "MYTHOLOGICAL CREATURE": "Mythological creature",
+      "ANIMAL": "Animal",
+      "VAMPIRE": "Vampire",
+      "ROBOT": "Robot",
+      "PLANET": "Planet",
+      "CRONENBERG": "Cronenberg",
+      "DISEASE": "Disease",
+      "UNKNOWN": "Unknown"
+    }
+  },
+  "LOCATIONS": {
+    "TITLE": "Locations",
+    "FILTER_LOCATIONS": "Filter Locations",
+    "LOCATION_INFO": "Location Info",
+    "LOCATION_RESIDENTS": "Residents in {{ name }}",
+    "RESIDENTS": "{{ number }} Residents",
+    "NO_RESIDENTS": "No Residents",
+    "FIELDS": {
+      "NUM": "Num.",
+      "NAME": "Name",
+      "TYPE": "Type",
+      "DIMENSION": "Dimension",
+      "RESIDENTS": "Residents"
+    }
+  },
+  "EPISODES": {
+    "TITLE": "Episodes",
+    "FILTER_EPISODES": "Filter Episodes",
+    "EPISODE_INFO": "Episode Info",
+    "EPISODE_CHARACTERS": "Characters in {{ name }}",
+    "CHARACTERS": "{{ number }} Characters",
+    "NO_CHARATERS": "No Characters",
+    "FIELDS": {
+      "NUM": "Num.",
+      "EPISODE": "Episode",
+      "NAME": "Name",
+      "AIR_DATE": "Air Date",
+      "CHARACTERS": "Characters"
+    }
+  },
+  "NOT_FOUND": {
+    "TITLE": "Not found"
+  },
+  "BUTTONS": {
+    "ACCEPT_DEFAULT": "Accept",
+    "CANCEL_DEFAULT": "Cancel",
+    "CLOSE_DEFAULT": "Close",
+    "SEND": "Send",
+    "NEXT": "Next",
+    "BACK": "Back",
+    "CONFIRM": "Confirm",
+    "CONTINUE": "Continue"
+  },
+  "CRUD": {
+    "CREATE": "New",
+    "DELETE": "Delete",
+    "DELETE2": "Remove",
+    "EDIT": "Edit",
+    "COPY": "Copy",
+    "MOVE": "Move",
+    "MODIFY": "Modify",
+    "SEE": "See",
+    "PDF": "Visualize",
+    "STOP": "Stop",
+    "SEND": "Send"
+  },
+  "FORMS": {
+    "NOT_FOUND": "No matches found",
+    "CLEAR_FILTER": "Clear Filter"
+  },
+  "VALIDATIONS": {
+    "MIN_LENGTH_NOT_TEXT": "This field must have at least {{number}} numeric characters.",
+    "MIN_LENGTH": "This field must have at least {{number}} characters",
+    "MAX_LENGTH": "This field must be less than {{number}} characters",
+    "MIN": "This field must be greater than {{number}}",
+    "MAX": "This field must be less than {{number}}",
+    "MIN_OR_EQUALS": "This field must be greater than or equal to {{number}}",
+    "MAX_OR_EQUALS": "This field must be less than or equal to {{number}}",
+    "RANGE": "This field must be greater than or equal to {{min}} and less than or equal to {{max}}",
+    "MIN_DATE": "Date must be greater than {{otherDate}}",
+    "MAX_DATE": "Date must be less than {{otherDate}}",
+    "REQUIRED": "This field is required",
+    "EMAIL": "The email address is not valid",
+    "PATTERN": "This field must comply with the specified format",
+    "MUST_BE_NUMBER": "This field must be a numeric value",
+    "MUST_BE_INTEGER": "This field must be an integer value",
+    "FILE_INCORRECT": "File with incorrect format",
+    "PHONE_NOT_VALID": "The phone must have the following format {{validFormatExample}}",
+    "FAX_NOT_VALID": "The fax must have the following format {{validFormatExample}}",
+    "PASSWORD_NOT_MATCH": "Passwords do not match"
+  },
+  "ERRORS": {
+    "OK": "Operation completed successfully",
+    "RETRY": "If this problem persists, please try again later or contact us",
+    "BACKEND": "There has been a problem connecting to our servers"
+  }
+}

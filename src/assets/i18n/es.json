@@ -95,9 +95,9 @@
   "CRUD": {
     "CREATE": "Nuevo",
     "DELETE": "Borrar",
+    "DELETE2": "Eliminar",
     "EDIT": "Editar",
     "COPY": "Copiar",
-    "DELETE2": "Eliminar",
     "MOVE": "Mover",
     "MODIFY": "Modificar",
     "SEE": "Consultar",

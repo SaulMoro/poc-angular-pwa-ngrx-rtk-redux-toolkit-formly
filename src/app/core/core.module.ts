@@ -69,6 +69,12 @@ export class CoreModule {
   }
 
   private _initApp(): void {
-    this.translateService.use('es');
+    this.translateService.setDefaultLang(environment.defaultLanguage);
+    this.translateService.addLangs(environment.supportedLanguages);
+    this.translateService.use(
+      environment.supportedLanguages.includes(this.translateService.getBrowserLang())
+        ? this.translateService.getBrowserLang()
+        : environment.defaultLanguage
+    );
   }
 }
