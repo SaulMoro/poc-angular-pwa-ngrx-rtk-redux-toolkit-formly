@@ -1,6 +1,6 @@
 # **PoC Angular + PWA + Ngrx + Formly + Router State + NgRx-Entity**
 
-https://saul-.github.io/poc-angular-pwa-ngrx-entity-formly-routerstate
+[Website](https://saul-.github.io/poc-angular-pwa-ngrx-entity-formly-routerstate)
 
 ## Table of Contents
 
@@ -225,7 +225,9 @@ loadCharacters$ = createEffect(() =>
 Utilidad que nos sirve para desubscribir un observable al destruirse un componente. Es necesario implementar el ngOnDestroy.
 
 ```javascript
-this.formControl.valueChanges.pipe(untilDestroyed(this)).subscribe(() => this.checkInputs());
+this.formControl.valueChanges
+  .pipe(untilDestroyed(this))
+  .subscribe(() => this.checkInputs());
 ```
 
 ## **Code scaffolding**
