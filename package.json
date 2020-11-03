@@ -102,12 +102,10 @@
   },
   "lint-staged": {
     "src/app/**/*.ts": [
-      "tslint --fix -c tslint.json -p tsconfig.json",
-      "git add"
+      "tslint --fix -c tslint.json -p tsconfig.json"
     ],
     "src/app/**/*.{scss,css}": [
-      "stylelint --syntax scss --fix",
-      "git add"
+      "stylelint --syntax scss --fix"
     ]
   },
   "commitlint": {
