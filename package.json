@@ -96,7 +96,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged && lint-staged -c lint-staged.config.js",
+      "pre-commit": "pretty-quick --staged && lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
