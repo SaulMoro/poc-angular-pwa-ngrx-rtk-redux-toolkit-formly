@@ -94,6 +94,22 @@
     "typescript": "~4.0.2",
     "webpack-bundle-analyzer": "^3.9.0"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged && lint-staged -c lint-staged.config.js",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "src/app/**/*.ts": [
+      "tslint --fix -c tslint.json -p tsconfig.json",
+      "git add"
+    ],
+    "src/app/**/*.{scss,css}": [
+      "stylelint --syntax scss --fix",
+      "git add"
+    ]
+  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
