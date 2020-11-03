@@ -1,6 +1,6 @@
 {
   "name": "angular-pwa-ngrx-formly-routerstate",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o --proxy-config tools/proxy.conf.js",
