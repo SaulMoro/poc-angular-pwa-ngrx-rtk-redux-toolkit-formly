@@ -1,15 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { FieldConfig, FormOptions } from '@app/shared/dynamic-forms';
-import {
-  CharacterGender,
-  CharactersFilter,
-  CharacterSpecies,
-  CharacterStatus,
-  FormIds,
-  Option,
-} from '@app/shared/models';
+import { FormConfig, generateFilterForm } from '@app/shared/dynamic-forms';
+import { CharacterGender, CharacterSpecies, CharacterStatus, FormIds, Option } from '@app/shared/models';
 
 @Component({
   selector: 'app-characters-filter-form',
@@ -18,12 +11,11 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CharactersFilterFormComponent implements OnInit {
-  FORM_GROUP_ID = FormIds.FORM_CHARACTERS_FILTER_ID;
-
-  initialModel: CharactersFilter = {};
   form = new FormGroup({});
-  fields: FieldConfig[] = [];
-  options: FormOptions = {};
+  formConfig: FormConfig = generateFilterForm({
+    formId: FormIds.FORM_CHARACTERS_FILTER_ID,
+    fields: [],
+  });
 
   status: Option[] = [
     {
@@ -109,74 +101,71 @@ export class CharactersFilterFormComponent implements OnInit {
   constructor(private translate: TranslateService) {}
 
   ngOnInit(): void {
-    this.initForm();
+    this._initForm();
   }
 
   resetFilter(): void {
-    this.form.patchValue({
-      name: undefined,
-      status: undefined,
-      species: undefined,
-      type: undefined,
-      gender: undefined,
-    });
+    this.form.reset();
   }
 
-  private initForm(): void {
-    this.fields = [
-      {
-        fieldGroupClassName: 'flex-container no-margin no-padding',
-        fieldGroup: [
-          {
-            key: 'name',
-            type: 'input',
-            className: 'flex-25',
-            templateOptions: {
-              floatLabel: 'always',
-              label: this.translate.instant('CHARACTERS.FIELDS.NAME'),
+  private _initForm(): void {
+    this.formConfig = {
+      ...this.formConfig,
+      fields: [
+        {
+          fieldGroupClassName: 'flex-container no-margin no-padding',
+          fieldGroup: [
+            {
+              key: 'name',
+              type: 'input',
+              className: 'flex-25',
+              templateOptions: {
+                floatLabel: 'always',
+                label: this.translate.instant('CHARACTERS.FIELDS.NAME'),
+              },
             },
-          },
-          {
-            key: 'status',
-            type: 'select-autocomplete',
-            className: 'flex-25',
-            templateOptions: {
-              floatLabel: 'always',
-              label: this.translate.instant('CHARACTERS.FIELDS.STATUS'),
-              placeholder: this.translate.instant('CHARACTERS.PLACEHOLDERS.STATUS'),
-              autocomplete: true,
-              showIcon: false,
-              searchOptions: this.status,
+            {
+              key: 'status',
+              type: 'select-autocomplete',
+              className: 'flex-25',
+              templateOptions: {
+                floatLabel: 'always',
+                label: this.translate.instant('CHARACTERS.FIELDS.STATUS'),
+                placeholder: this.translate.instant('CHARACTERS.PLACEHOLDERS.STATUS'),
+                autocomplete: true,
+                showIcon: false,
+                searchOptions: this.status,
+              },
             },
-          },
-          {
-            key: 'gender',
-            type: 'select-autocomplete',
-            className: 'flex-25',
-            templateOptions: {
-              floatLabel: 'always',
-              label: this.translate.instant('CHARACTERS.FIELDS.GENDER'),
-              placeholder: this.translate.instant('CHARACTERS.PLACEHOLDERS.GENDER'),
-              autocomplete: true,
-              showIcon: false,
-              searchOptions: this.genders,
+            {
+              key: 'gender',
+              type: 'select-autocomplete',
+              className: 'flex-25',
+              templateOptions: {
+                floatLabel: 'always',
+                label: this.translate.instant('CHARACTERS.FIELDS.GENDER'),
+                placeholder: this.translate.instant('CHARACTERS.PLACEHOLDERS.GENDER'),
+                autocomplete: true,
+                showIcon: false,
+                searchOptions: this.genders,
+              },
             },
-          },
-          {
-            key: 'species',
-            type: 'select-autocomplete',
-            className: 'flex-25',
-            templateOptions: {
-              floatLabel: 'always',
-              label: this.translate.instant('CHARACTERS.FIELDS.SPECIES'),
-              placeholder: this.translate.instant('CHARACTERS.PLACEHOLDERS.SPECIES'),
-              autocomplete: true,
-              showIcon: false,
-              searchOptions: this.species,
+            {
+              key: 'species',
+              type: 'select-autocomplete',
+              className: 'flex-25',
+              templateOptions: {
+                floatLabel: 'always',
+                label: this.translate.instant('CHARACTERS.FIELDS.SPECIES'),
+                placeholder: this.translate.instant('CHARACTERS.PLACEHOLDERS.SPECIES'),
+                autocomplete: true,
+                showIcon: false,
+                searchOptions: this.species,
+              },
             },
-          },
-        ],
-      },
-    ];
+          ],
+        },
+      ],
+    };
   }
 }

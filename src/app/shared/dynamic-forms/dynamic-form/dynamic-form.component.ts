@@ -14,8 +14,7 @@ import { take, map, skipWhile, distinctUntilChanged } from 'rxjs/operators';
 
 import { untilDestroyed } from '@app/shared/pipes';
 import { FormsEntity, FormsFacade } from '../data-access-forms';
-import { FieldConfig } from '../models/field-config.model';
-import { FormOptions } from '../models/form-options.model';
+import { FormConfig } from '../models/form-config.model';
 
 const FORM_VALID = 'VALID';
 
@@ -28,24 +27,12 @@ const FORM_VALID = 'VALID';
 export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
   // tslint:disable-next-line: no-input-rename
   @Input('form') formGroup = new FormGroup({});
-
-  @Input() formId: string;
-  @Input() initialModel: any = {};
-  @Input() fields: FieldConfig[];
-  @Input() options: FormOptions = {};
-  @Input() filter = false;
-  @Input() filterOnSubmit = false;
-  @Input() reset = false;
-  @Input() disable = false;
-  @Input() disableInitialization = false;
-
+  @Input() config: FormConfig;
   // tslint:disable-next-line: no-output-native
   @Output() submit = new EventEmitter<any>();
   @Output() modelChanges = new EventEmitter<any>();
 
   form$: Observable<FormsEntity>;
-  previousModel: any;
-  model: any;
 
   constructor(private formsFacade: FormsFacade) {}
 
@@ -57,59 +44,40 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
         skipWhile((valid) => !valid),
         distinctUntilChanged()
       )
-      .subscribe((valid) => this.formsFacade.updateFormValid(this.formId, valid));
-
-    this.previousModel = { ...this.initialModel };
+      .subscribe((valid) => this.formsFacade.updateFormValid(this.config.formId, valid));
   }
 
   ngOnChanges(): void {
-    this.form$ = this.formsFacade.formById$(this.formId);
+    this.form$ = this.formsFacade.formById$(this.config.formId);
 
-    if (!this.disableInitialization) {
-      this.form$.pipe(take(1)).subscribe((form) => {
-        if (!form || this.reset) {
-          this.formsFacade.initForm(this.formId, this.initialModel, this.filter || this.filterOnSubmit);
-          this.previousModel = { ...this.initialModel };
-        } else {
-          this.formsFacade.reuseForm(this.formId, form.model, this.filter);
-        }
-      });
-    } else {
-      this.previousModel = { ...this.initialModel };
-    }
+    this.form$.pipe(take(1)).subscribe((form) => {
+      if (!form || this.config.reset) {
+        this.formsFacade.initForm(
+          this.config.formId,
+          this.config.initialModel,
+          this.config.filter || this.config.filterOnSubmit
+        );
+      } else {
+        this.formsFacade.reuseForm(this.config.formId, form.model, this.config.filter);
+      }
+    });
 
-    this.disable ? this.formGroup.disable() : this.formGroup.enable();
+    this.config.disable ? this.formGroup.disable() : this.formGroup.enable();
   }
 
   ngOnDestroy(): void {
     // Necessary for untilDestroyed pipe
   }
 
-  onModelChange(newModel: any): void {
-    if (this.disableInitialization) {
-      if (JSON.stringify(newModel) !== JSON.stringify(this.previousModel)) {
-        this.previousModel = { ...newModel };
-        this.modelChanges.emit(newModel);
-      }
-    } else {
-      this.form$.pipe(take(1)).subscribe(({ model }) => {
-        if (JSON.stringify(newModel) !== JSON.stringify(model)) {
-          this.formsFacade.updateFormModel(this.formId, newModel, this.filter);
-          this.modelChanges.emit(newModel);
-        }
-      });
+  onModelChange(newModel: any, currModel: any): void {
+    if (JSON.stringify(newModel) !== JSON.stringify(currModel)) {
+      this.formsFacade.updateFormModel(this.config.formId, newModel, this.config.filter);
+      this.modelChanges.emit(newModel);
     }
   }
 
   onSubmitForm(model: any): void {
-    this.formsFacade.submitForm(this.formId, model, this.initialModel, this.filterOnSubmit);
+    this.formsFacade.submitForm(this.config.formId, model, this.config.initialModel, this.config.filterOnSubmit);
     this.submit.emit(model);
-  }
-
-  onSubmitFormObs(): void {
-    this.form$.pipe(take(1)).subscribe((form) => {
-      this.formsFacade.submitForm(this.formId, form.model, this.initialModel, this.filterOnSubmit);
-      this.submit.emit(form.model);
-    });
   }
 }

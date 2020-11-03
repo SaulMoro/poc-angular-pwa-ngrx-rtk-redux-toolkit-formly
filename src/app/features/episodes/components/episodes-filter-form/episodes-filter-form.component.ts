@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { FieldConfig, FormOptions } from '@app/shared/dynamic-forms';
-import { EpisodesFilter, FormIds } from '@app/shared/models';
+import { FormConfig, generateFilterForm } from '@app/shared/dynamic-forms';
+import { FormIds } from '@app/shared/models';
 
 @Component({
   selector: 'app-episodes-filter-form',
@@ -11,51 +11,50 @@ import { EpisodesFilter, FormIds } from '@app/shared/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EpisodesFilterFormComponent implements OnInit {
-  FORM_GROUP_ID = FormIds.FORM_EPISODES_FILTER_ID;
-
-  initialModel: EpisodesFilter = {};
   form = new FormGroup({});
-  fields: FieldConfig[] = [];
-  options: FormOptions = {};
+  formConfig: FormConfig = generateFilterForm({
+    formId: FormIds.FORM_EPISODES_FILTER_ID,
+    fields: [],
+  });
 
   constructor(private translate: TranslateService) {}
 
   ngOnInit(): void {
-    this.initForm();
+    this._initForm();
   }
 
   resetFilter(): void {
-    this.form.patchValue({
-      name: undefined,
-      episode: undefined,
-    });
+    this.form.reset();
   }
 
-  private initForm(): void {
-    this.fields = [
-      {
-        fieldGroupClassName: 'flex-container no-margin no-padding',
-        fieldGroup: [
-          {
-            key: 'name',
-            type: 'input',
-            className: 'flex-25',
-            templateOptions: {
-              floatLabel: 'always',
-              label: this.translate.instant('EPISODES.FIELDS.NAME'),
+  private _initForm(): void {
+    this.formConfig = {
+      ...this.formConfig,
+      fields: [
+        {
+          fieldGroupClassName: 'flex-container no-margin no-padding',
+          fieldGroup: [
+            {
+              key: 'name',
+              type: 'input',
+              className: 'flex-25',
+              templateOptions: {
+                floatLabel: 'always',
+                label: this.translate.instant('EPISODES.FIELDS.NAME'),
+              },
             },
-          },
-          {
-            key: 'episode',
-            type: 'input',
-            className: 'flex-25',
-            templateOptions: {
-              floatLabel: 'always',
-              label: this.translate.instant('EPISODES.FIELDS.EPISODE'),
+            {
+              key: 'episode',
+              type: 'input',
+              className: 'flex-25',
+              templateOptions: {
+                floatLabel: 'always',
+                label: this.translate.instant('EPISODES.FIELDS.EPISODE'),
+              },
             },
-          },
-        ],
-      },
-    ];
+          ],
+        },
+      ],
+    };
   }
 }
