@@ -32,6 +32,7 @@ import { DataAccessEpisodesModule } from './data-access-episodes';
 import { DynamicFormsModule } from './dynamic-forms';
 import { PrefetchDirective } from './directives/prefetch.directive';
 import { LazyImgDirective } from './directives/lazy-img.directive';
+import { AutofocusDirective } from './directives/autofocus.directive';
 import { CharacterMiniCardComponent } from './components/character-mini-card/character-mini-card.component';
 import { CharactersDialogComponent } from './components/characters-dialog/characters-dialog.component';
 
@@ -55,19 +56,25 @@ const MATERIAL_MODULES = [
   MatListModule,
 ];
 
-const EXPORTED_DECLARATIONS = [CharacterMiniCardComponent, PrefetchDirective, LazyImgDirective];
+const EXPORTED_DECLARATIONS = [
+  PrefetchDirective,
+  LazyImgDirective,
+  AutofocusDirective,
+  CharacterMiniCardComponent,
+  CharactersDialogComponent,
+];
 
 const IMPORTED_EXPORTS = [
   CommonModule,
   DynamicFormsModule,
   TranslateModule,
-  ReactiveComponentModule,
   FlexLayoutModule,
+  ReactiveComponentModule,
   ...MATERIAL_MODULES,
 ];
 
 @NgModule({
-  declarations: [...EXPORTED_DECLARATIONS, CharactersDialogComponent],
+  declarations: [...EXPORTED_DECLARATIONS],
   imports: [
     ...IMPORTED_EXPORTS,
     RouterModule,

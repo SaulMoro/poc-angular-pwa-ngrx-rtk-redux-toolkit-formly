@@ -6,7 +6,7 @@
 
 - [Quick Start](#quick-start)
 - [Description](#description)
-  - [NgRx/RxJS Utils](#ngrx/rxjs-utils)
+  - [NgRx/RxJS Operators](#ngrx/rxjs-operators)
 - [Code scaffolding](#code-scaffolding)
 - [Contact](#contact)
 
@@ -33,7 +33,7 @@ PoC of an Angular project with:
 - **NgRx Entity** for the treatment of entities with NgRx
 - **NgRx Router State** to manage the state of the App from the Router in NgRx
 - **Forms connected to NgRx** to avoid the use of actions, handle the forms from NgRx and filters by automatic queryParams
-- [**NgRx / RxJS Utils**](#ngrx/rxjs-utils) to handle the information of the Router and the Forms from NgRx
+- [**NgRx / RxJS Operators**](#ngrx/rxjs-operators) to handle the information of the Router and the Forms from NgRx
 - [**Good Actions Hygiene**](https://www.youtube.com/watch?v=JmnsEvoy-gY) to think on actions as events ([Source] Event), not as commands
 - [**ngrx-store-localstorage**](https://github.com/btroncone/ngrx-store-localstorage) to save or retrieve parts of the state from the localStorage. We rehydrate NgRx content (Cache)
 
@@ -45,7 +45,7 @@ PoC of an Angular project with:
 - **Husky and lint-staged** to pass lint and prettier to changed code on commit
 - **Commitlint** to use [Convetional Commits](https://www.conventionalcommits.org/)
 
-### **NgRx/RxJS Utils**
+### **NgRx/RxJS Operators**
 
 pipes and utilities, combined NgRx and RxJS to get their full potential
 
