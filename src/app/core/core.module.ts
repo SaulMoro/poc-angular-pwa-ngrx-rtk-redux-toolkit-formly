@@ -1,7 +1,7 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { StoreModule } from '@ngrx/store';
@@ -53,7 +53,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   exports: [LayoutModule],
 })
 export class CoreModule {
-  constructor(@Optional() @SkipSelf() parentModule: CoreModule, private translateService: TranslateService) {
+  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
     if (parentModule) {
       throw new Error('CoreModule is already loaded. Import only in AppModule');
     }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { RouterStateSerializer } from '@ngrx/router-store';
+import { environment } from '@environments/environment';
 
 import { RouterStateUrl } from './router.model';
 
@@ -19,14 +20,16 @@ export class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {
       root: { queryParams },
     } = routerState;
     const { params, data } = routeSnapshot;
+    const { route, lang } = extractRoute(url, params);
 
     const state = {
       url,
-      route: extractRoute(url, params),
+      route,
       prevRoute: this.lastRoute,
       queryParams,
       params,
       data,
+      lang,
     };
     this.lastRoute = state.route;
 
@@ -34,26 +37,27 @@ export class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {
   }
 }
 
-export function extractRoute(url, params): string {
-  if (url && params) {
-    const paramsAuxArray = Object.entries(params);
-    const urlSegments = url
-      .split('?')[0]
-      .split('/')
-      .filter((str) => !!str);
-    const genericUrlSegments = urlSegments.map((segment) => {
-      const paramFoundIndex = paramsAuxArray.findIndex(([key, value]) => value === segment);
-      if (paramFoundIndex !== -1) {
-        const paramFound = paramsAuxArray.splice(paramFoundIndex, 1)[0];
-        return ':' + paramFound[0];
-      }
-      return segment;
-    });
+export function extractRoute(url: string, params): { route: string; lang: string } {
+  const paramsAuxArray = Object.entries(params);
+  let urlSegments = url
+    .split('?')[0]
+    .split('/')
+    .filter((str) => !!str);
 
-    const route = '/' + genericUrlSegments.join('/');
+  const lang = environment.supportedLanguages.find((supportedLanguages) => supportedLanguages === urlSegments[0]);
+  urlSegments = lang ? urlSegments.slice(1) : urlSegments;
 
-    return route.split('?')[0];
-  }
+  const genericUrlSegments = urlSegments.map((segment) => {
+    const paramFoundIndex = paramsAuxArray.findIndex(([key, value]) => value === segment);
+    if (paramFoundIndex !== -1) {
+      const paramFound = paramsAuxArray.splice(paramFoundIndex, 1)[0];
+      return `:${paramFound[0]}`;
+    }
+    return segment;
+  });
 
-  return '';
+  return {
+    route: `${url ? '/' : ''}${genericUrlSegments.join('/').split('?')[0]}`,
+    lang: lang ?? environment.defaultLanguage,
+  };
 }

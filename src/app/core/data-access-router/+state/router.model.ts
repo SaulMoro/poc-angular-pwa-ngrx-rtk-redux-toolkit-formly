@@ -12,4 +12,5 @@ export interface RouterStateUrl {
   queryParams: Params;
   params: Params;
   data: Data;
+  lang?: string;
 }

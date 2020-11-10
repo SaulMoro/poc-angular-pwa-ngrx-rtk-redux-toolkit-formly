@@ -25,7 +25,7 @@
 
       <mat-list role="list" *ngrxLet="episodes$ as episodes">
         <mat-list-item *ngFor="let episode of episodes; trackBy: episode?.id" role="listitem">
-          <button *ngIf="episode" mat-button color="primary" [routerLink]="['/episodes', episode.id]">
+          <button *ngIf="episode" mat-button color="primary" [routerLink]="['/episodes', episode.id] | localize">
             {{ episode.episode }}: {{ episode.name }}
           </button>
         </mat-list-item>

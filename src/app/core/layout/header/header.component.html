@@ -1,14 +1,14 @@
 <mat-toolbar color="primary">
   <div class="space"></div>
   <div class="container">
-    <a [routerLink]="['/']" class="logo">
+    <a [routerLink]="['/'] | localize" class="logo">
       <img src="./assets/img/logo.svg" alt="logo" height="40" />
     </a>
     <nav>
       <button
         *ngFor="let item of appMenu$ | ngrxPush; trackBy: trackByFn"
         mat-button
-        [routerLink]="[item.path]"
+        [routerLink]="[item.path] | localize"
         routerLinkActive="active"
       >
         {{ item.name }}
@@ -19,8 +19,8 @@
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button *ngFor="let item of appMenu$ | ngrxPush; trackBy: trackByFn" [routerLink]="[item.path]" mat-menu-item>
-          {{ item.name }}
+        <button *ngFor="let item of appMenu$ | ngrxPush; trackBy: trackByFn" mat-menu-item>
+          <span *ngIf="item" [routerLink]="[item.path] | localize">{{ item.name }}</span>
         </button>
       </mat-menu>
     </div>

@@ -1,4 +1,4 @@
-<mat-card class="character-card" [routerLink]="['/characters', character?.id]">
+<mat-card class="character-card" [routerLink]="['/characters', character?.id] | localize">
   <mat-card-header>
     <img mat-card-avatar class="placeholder" [src]="character?.image" [alt]="character?.name" />
     <mat-card-title>{{ character?.name }}</mat-card-title>

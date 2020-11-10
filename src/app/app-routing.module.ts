@@ -1,5 +1,22 @@
 import { NgModule } from '@angular/core';
+import { Location } from '@angular/common';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import {
+  LocalizeParser,
+  LocalizeRouterModule,
+  LocalizeRouterSettings,
+  ManualParserLoader,
+} from '@gilsdav/ngx-translate-router';
+import { environment } from '@environments/environment';
+
+export function createTranslateLoader(
+  translate: TranslateService,
+  location: Location,
+  settings: LocalizeRouterSettings
+): ManualParserLoader {
+  return new ManualParserLoader(translate, location, settings, environment.supportedLanguages, 'ROUTES.');
+}
 
 const routes: Routes = [
   {
@@ -20,12 +37,12 @@ const routes: Routes = [
     loadChildren: () => import('./features/episodes/episodes.module').then((m) => m.EpisodesModule),
   },
   {
-    path: 'not-found',
+    path: '404',
     loadChildren: () => import('./features/not-found/not-found.module').then((m) => m.NotFoundModule),
   },
   {
     path: '**',
-    redirectTo: 'not-found',
+    redirectTo: '/404',
   },
 ];
 
@@ -36,6 +53,15 @@ const routes: Routes = [
       scrollPositionRestoration: 'enabled',
       paramsInheritanceStrategy: 'always',
       useHash: true, // Supports github.io demo page
+    }),
+    LocalizeRouterModule.forRoot(routes, {
+      parser: {
+        provide: LocalizeParser,
+        useFactory: createTranslateLoader,
+        deps: [TranslateService, Location, LocalizeRouterSettings],
+      },
+      // alwaysSetPrefix: false,
+      // defaultLangFunction: (langs, cachedLang) => environment.defaultLanguage,
     }),
   ],
   exports: [RouterModule],

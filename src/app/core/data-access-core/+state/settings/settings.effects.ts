@@ -11,7 +11,7 @@ import { Language } from '../../models';
 
 @Injectable()
 export class SettingsEffects {
-  setTranslateServiceLanguage = createEffect(
+  /* setTranslateServiceLanguage = createEffect(
     () =>
       this.store.pipe(
         select(SettingsSelectors.getSelectedLanguage),
@@ -28,7 +28,7 @@ export class SettingsEffects {
         tap((language) => this.translateService.use(language))
       ),
     { dispatch: false }
-  );
+  ); */
 
   constructor(private actions$: Actions, private store: Store, private translateService: TranslateService) {}
 }

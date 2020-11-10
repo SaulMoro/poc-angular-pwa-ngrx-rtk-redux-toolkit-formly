@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: '/api',
-  supportedLanguages: ['en', 'es'] as const,
+  supportedLanguages: ['en', 'es'],
   defaultLanguage: 'en',
 };
 
