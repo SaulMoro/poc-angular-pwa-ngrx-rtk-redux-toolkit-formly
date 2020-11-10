@@ -13,7 +13,7 @@ export const initialState: SettingsState = {
 
 export const settingsReducer = createReducer(
   initialState,
-  on(SettingsActions.initLanguage, SettingsActions.changeLanguage, (state, { language }) => ({
+  on(SettingsActions.changeLanguage, (state, { language }) => ({
     ...state,
     language,
   }))
