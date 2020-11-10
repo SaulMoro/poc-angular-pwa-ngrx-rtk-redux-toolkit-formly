@@ -5,7 +5,13 @@ import { LocationsListComponent } from './containers/locations-list/locations-li
 import { LocationDetailsComponent } from './containers/location-details/location-details.component';
 
 const routes: Routes = [
-  { path: '', component: LocationsListComponent },
+  {
+    path: '',
+    component: LocationsListComponent,
+    data: {
+      title: 'LOCATIONS.TITLE',
+    },
+  },
   { path: ':id', component: LocationDetailsComponent },
 ];
 

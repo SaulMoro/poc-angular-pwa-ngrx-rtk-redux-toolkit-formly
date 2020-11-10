@@ -5,7 +5,13 @@ import { EpisodesListComponent } from './containers/episodes-list/episodes-list.
 import { EpisodeDetailsComponent } from './containers/episode-details/episode-details.component';
 
 const routes: Routes = [
-  { path: '', component: EpisodesListComponent },
+  {
+    path: '',
+    component: EpisodesListComponent,
+    data: {
+      title: 'EPISODES.TITLE',
+    },
+  },
   { path: ':id', component: EpisodeDetailsComponent },
 ];
 

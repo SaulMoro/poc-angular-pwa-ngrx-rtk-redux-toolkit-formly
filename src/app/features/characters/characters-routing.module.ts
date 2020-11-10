@@ -5,7 +5,13 @@ import { CharactersListComponent } from './containers/characters-list/characters
 import { CharacterDetailsComponent } from './containers/character-details/character-details.component';
 
 const routes: Routes = [
-  { path: '', component: CharactersListComponent },
+  {
+    path: '',
+    component: CharactersListComponent,
+    data: {
+      title: 'CHARACTERS.TITLE',
+    },
+  },
   { path: ':id', component: CharacterDetailsComponent },
 ];
 

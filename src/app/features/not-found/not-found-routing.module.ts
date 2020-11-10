@@ -7,6 +7,9 @@ const routes: Routes = [
   {
     path: '',
     component: NotFoundComponent,
+    data: {
+      title: 'NOT_FOUND.TITLE',
+    },
   },
 ];
 
