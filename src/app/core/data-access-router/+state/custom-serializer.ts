@@ -20,7 +20,7 @@ export class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {
       root: { queryParams },
     } = routerState;
     const { params, data } = routeSnapshot;
-    const { route, lang } = extractRoute(url, params);
+    const { route, lang } = extractRouteInfo(url, params);
 
     const state = {
       url,
@@ -37,7 +37,7 @@ export class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {
   }
 }
 
-export function extractRoute(url: string, params): { route: string; lang: string } {
+export function extractRouteInfo(url: string, params): { route: string; lang: string } {
   const paramsAuxArray = Object.entries(params);
   let urlSegments = url
     .split('?')[0]
