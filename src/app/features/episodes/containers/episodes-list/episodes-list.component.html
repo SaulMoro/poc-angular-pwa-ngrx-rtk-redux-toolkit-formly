@@ -15,12 +15,7 @@
         <!-- ID Column -->
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>{{ 'EPISODES.FIELDS.NUM' | translate }}</th>
-          <td
-            mat-cell
-            class="pointer-cursor"
-            *matCellDef="let element"
-            [routerLink]="['/episodes', element.id] | localize"
-          >
+          <td mat-cell class="pointer-cursor" *matCellDef="let element" [routerLink]="['/episodes', element.id]">
             {{ element.id }}
           </td>
         </ng-container>
@@ -28,12 +23,7 @@
         <!-- Episode Column -->
         <ng-container matColumnDef="episode">
           <th mat-header-cell *matHeaderCellDef>{{ 'EPISODES.FIELDS.EPISODE' | translate }}</th>
-          <td
-            mat-cell
-            class="pointer-cursor"
-            *matCellDef="let element"
-            [routerLink]="['/episodes', element.id] | localize"
-          >
+          <td mat-cell class="pointer-cursor" *matCellDef="let element" [routerLink]="['/episodes', element.id]">
             {{ element.episode }}
           </td>
         </ng-container>
@@ -41,12 +31,7 @@
         <!-- Name Column -->
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef>{{ 'EPISODES.FIELDS.NAME' | translate }}</th>
-          <td
-            mat-cell
-            class="pointer-cursor"
-            *matCellDef="let element"
-            [routerLink]="['/episodes', element.id] | localize"
-          >
+          <td mat-cell class="pointer-cursor" *matCellDef="let element" [routerLink]="['/episodes', element.id]">
             {{ element.name }}
           </td>
         </ng-container>

@@ -35,7 +35,6 @@ import { LazyImgDirective } from './directives/lazy-img.directive';
 import { AutofocusDirective } from './directives/autofocus.directive';
 import { CharacterMiniCardComponent } from './components/character-mini-card/character-mini-card.component';
 import { CharactersDialogComponent } from './components/characters-dialog/characters-dialog.component';
-import { LocalizeRouterModule } from '@gilsdav/ngx-translate-router';
 
 const MATERIAL_MODULES = [
   MatIconModule,
@@ -79,7 +78,6 @@ const IMPORTED_EXPORTS = [
   imports: [
     ...IMPORTED_EXPORTS,
     RouterModule,
-    LocalizeRouterModule,
 
     // Shared data access
     DataAccessCharactersModule,

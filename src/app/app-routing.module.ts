@@ -1,22 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Location } from '@angular/common';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import {
-  LocalizeParser,
-  LocalizeRouterModule,
-  LocalizeRouterSettings,
-  ManualParserLoader,
-} from '@gilsdav/ngx-translate-router';
-import { environment } from '@environments/environment';
-
-export function createTranslateLoader(
-  translate: TranslateService,
-  location: Location,
-  settings: LocalizeRouterSettings
-): ManualParserLoader {
-  return new ManualParserLoader(translate, location, settings, environment.supportedLanguages, 'ROUTES.');
-}
 
 const routes: Routes = [
   {
@@ -52,16 +35,6 @@ const routes: Routes = [
       preloadingStrategy: PreloadAllModules,
       scrollPositionRestoration: 'enabled',
       // useHash: true, // Supports github.io demo page
-    }),
-    LocalizeRouterModule.forRoot(routes, {
-      parser: {
-        provide: LocalizeParser,
-        useFactory: createTranslateLoader,
-        deps: [TranslateService, Location, LocalizeRouterSettings],
-      },
-      useCachedLang: false,
-      alwaysSetPrefix: false,
-      defaultLangFunction: () => environment.defaultLanguage,
     }),
   ],
   exports: [RouterModule],

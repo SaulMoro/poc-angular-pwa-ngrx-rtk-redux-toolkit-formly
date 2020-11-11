@@ -1,7 +1,17 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy,
+  Output,
+  EventEmitter,
+  Input,
+  OnChanges,
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { environment } from '@environments/environment';
 
 export interface MenuItem {
   name: string;
@@ -14,18 +24,29 @@ export interface MenuItem {
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit {
-  appMenu$: Observable<MenuItem[]> = this.translate.onLangChange.pipe(
-    startWith(1),
-    map(() => this._fillMenu())
-  );
+export class HeaderComponent implements OnInit, OnChanges {
+  @Input() language: string;
+  @Input() languages: string[];
+  @Output() languageChange = new EventEmitter<string>();
+
+  appMenu: MenuItem[];
 
   constructor(private translate: TranslateService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.appMenu = this._fillMenu();
+  }
 
-  trackByFn(index: number, item: MenuItem): number {
+  ngOnChanges(): void {
+    this.appMenu = this._fillMenu();
+  }
+
+  trackByFn(index: number): number {
     return index;
+  }
+
+  onLanguageSelect({ value: language }): void {
+    this.languageChange.emit(language);
   }
 
   private _fillMenu(): MenuItem[] {

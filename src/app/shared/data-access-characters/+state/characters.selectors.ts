@@ -107,7 +107,7 @@ export const getSelectedCharacter = createSelectorFactory((projector) => resultM
 export const getEpisodesOfSelectedCharacter = createSelector(
   getSelectedCharacter,
   EpisodesSelectors.getEpisodesEntities,
-  (character: Character, episodes): Episode[] => character.episodes.map((episodeId) => episodes[episodeId])
+  (character: Character, episodes): Episode[] => character.episodes?.map((episodeId) => episodes[episodeId])
 );
 
 export const getCharactersOfSelectedEpisode = createSelectorFactory((projector) =>

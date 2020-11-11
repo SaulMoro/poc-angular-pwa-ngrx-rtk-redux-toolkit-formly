@@ -1,26 +1,34 @@
 <mat-toolbar color="primary">
   <div class="space"></div>
   <div class="container">
-    <a [routerLink]="['/'] | localize" class="logo">
+    <a [routerLink]="['/']" class="logo">
       <img src="./assets/img/logo.svg" alt="logo" height="40" />
     </a>
     <nav>
       <button
-        *ngFor="let item of appMenu$ | ngrxPush; trackBy: trackByFn"
+        *ngFor="let item of appMenu; trackBy: trackByFn"
         mat-button
-        [routerLink]="[item.path] | localize"
+        [routerLink]="[item.path]"
         routerLinkActive="active"
       >
         {{ item.name }}
       </button>
+      <button mat-button class="lang-button" *ngIf="language">
+        <mat-select [ngModel]="language" (selectionChange)="onLanguageSelect($event)">
+          <mat-option *ngFor="let l of languages; trackBy: trackByFn" [value]="l">
+            {{ l | uppercase }}
+          </mat-option>
+        </mat-select>
+      </button>
     </nav>
+
     <div class="mobile-menu">
       <button mat-button [matMenuTriggerFor]="menu">
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button *ngFor="let item of appMenu$ | ngrxPush; trackBy: trackByFn" mat-menu-item>
-          <span *ngIf="item" [routerLink]="[item.path] | localize">{{ item.name }}</span>
+        <button *ngFor="let item of appMenu; trackBy: trackByFn" mat-menu-item>
+          <span *ngIf="item" [routerLink]="[item.path]">{{ item.name }}</span>
         </button>
       </mat-menu>
     </div>

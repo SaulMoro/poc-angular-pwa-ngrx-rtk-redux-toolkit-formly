@@ -1,4 +1,8 @@
-<app-header></app-header>
+<app-header
+  [languages]="supportedLanguages"
+  [language]="language"
+  (languageChange)="onChangeLanguage($event)"
+></app-header>
 <div class="container">
   <router-outlet></router-outlet>
 </div>

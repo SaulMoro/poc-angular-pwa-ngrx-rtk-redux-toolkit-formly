@@ -3,11 +3,11 @@
     <img
       class="col-lg-4 character-image placeholder"
       [src]="character.image"
-      [routerLink]="['/characters', character.id] | localize"
+      [routerLink]="['/characters', character.id]"
       alt="{{ character.name }}"
     />
     <div class="col-lg-8">
-      <mat-card-header [routerLink]="['/characters', character.id] | localize">
+      <mat-card-header [routerLink]="['/characters', character.id]">
         <mat-card-title>{{ character.name }}</mat-card-title>
         <mat-card-subtitle>
           <span [ngClass]="'status-' + character.status | lowercase"></span>
@@ -21,7 +21,7 @@
           <a
             mat-button
             color="primary"
-            [routerLink]="['/locations', character.location?.id] | localize"
+            [routerLink]="['/locations', character.location?.id]"
             (prefetch)="prefetchOnHoverLocation(character.location?.id)"
           >
             {{ character.location?.name }}
@@ -29,7 +29,7 @@
         </p>
         <p>
           {{ 'CHARACTERS.FIRST_SEEN' | translate }}<br />
-          <a mat-button color="primary" [routerLink]="['/episodes', character.firstEpisode?.id] | localize">
+          <a mat-button color="primary" [routerLink]="['/episodes', character.firstEpisode?.id]">
             {{ character.firstEpisode?.name }}
           </a>
         </p>
