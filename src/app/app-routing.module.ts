@@ -51,8 +51,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes, {
       preloadingStrategy: PreloadAllModules,
       scrollPositionRestoration: 'enabled',
-      paramsInheritanceStrategy: 'always',
-      useHash: true, // Supports github.io demo page
+      // useHash: true, // Supports github.io demo page
     }),
     LocalizeRouterModule.forRoot(routes, {
       parser: {
@@ -60,8 +59,9 @@ const routes: Routes = [
         useFactory: createTranslateLoader,
         deps: [TranslateService, Location, LocalizeRouterSettings],
       },
-      // alwaysSetPrefix: false,
-      // defaultLangFunction: (langs, cachedLang) => environment.defaultLanguage,
+      useCachedLang: false,
+      alwaysSetPrefix: false,
+      defaultLangFunction: () => environment.defaultLanguage,
     }),
   ],
   exports: [RouterModule],

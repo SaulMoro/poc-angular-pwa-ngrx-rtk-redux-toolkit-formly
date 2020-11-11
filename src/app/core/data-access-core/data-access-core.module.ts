@@ -8,10 +8,9 @@ import { MatButtonModule } from '@angular/material/button';
 
 import * as fromCore from './+state/core.reducer';
 import { CoreEffects } from './+state/core.effects';
-import { SettingsEffects } from './+state/settings/settings.effects';
+import { UiEffects } from './+state/ui/ui.effects';
 
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
-import { UiEffects } from './+state/ui/ui.effects';
 
 @NgModule({
   declarations: [AlertDialogComponent],
@@ -21,10 +20,8 @@ import { UiEffects } from './+state/ui/ui.effects';
     MatDialogModule,
     MatButtonModule,
 
-    StoreModule.forFeature(fromCore.CORE_FEATURE_KEY, fromCore.coreReducers, {
-      metaReducers: fromCore.metaReducers,
-    }),
-    EffectsModule.forFeature([CoreEffects, SettingsEffects, UiEffects]),
+    StoreModule.forFeature(fromCore.CORE_FEATURE_KEY, fromCore.coreReducers),
+    EffectsModule.forFeature([CoreEffects, UiEffects]),
   ],
 })
 export class DataAccessCoreModule {

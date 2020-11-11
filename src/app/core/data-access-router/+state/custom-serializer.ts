@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import { RouterStateSnapshot, ActivatedRouteSnapshot, Route } from '@angular/router';
 import { RouterStateSerializer } from '@ngrx/router-store';
 import { environment } from '@environments/environment';
 
@@ -11,53 +11,29 @@ export class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {
 
   serialize(routerState: RouterStateSnapshot): RouterStateUrl {
     let routeSnapshot: ActivatedRouteSnapshot = routerState.root;
+    let route = '';
     while (routeSnapshot.firstChild) {
       routeSnapshot = routeSnapshot.firstChild;
+      route = route.concat(routeSnapshot.routeConfig?.path ? `/${routeSnapshot.routeConfig.path}` : '');
     }
 
-    const {
-      url,
-      root: { queryParams },
-    } = routerState;
-    const { params, data } = routeSnapshot;
-    const { route, lang } = extractRouteInfo(url, params);
+    const { params, data, queryParams } = routeSnapshot;
 
     const state = {
-      url,
-      route,
+      url: routerState.url,
+      route: this._removeLangFromRoute(route),
       prevRoute: this.lastRoute,
       queryParams,
       params,
       data,
-      lang,
     };
     this.lastRoute = state.route;
 
     return state;
   }
-}
 
-export function extractRouteInfo(url: string, params): { route: string; lang: string } {
-  const paramsAuxArray = Object.entries(params);
-  let urlSegments = url
-    .split('?')[0]
-    .split('/')
-    .filter((str) => !!str);
-
-  const lang = environment.supportedLanguages.find((supportedLanguages) => supportedLanguages === urlSegments[0]);
-  urlSegments = lang ? urlSegments.slice(1) : urlSegments;
-
-  const genericUrlSegments = urlSegments.map((segment) => {
-    const paramFoundIndex = paramsAuxArray.findIndex(([key, value]) => value === segment);
-    if (paramFoundIndex !== -1) {
-      const paramFound = paramsAuxArray.splice(paramFoundIndex, 1)[0];
-      return `:${paramFound[0]}`;
-    }
-    return segment;
-  });
-
-  return {
-    route: `${url ? '/' : ''}${genericUrlSegments.join('/').split('?')[0]}`,
-    lang: lang ?? environment.defaultLanguage,
-  };
+  private _removeLangFromRoute(route: string): string {
+    const lang: string = (environment as any).supportedLanguages?.find((language) => route.startsWith(`/${language}`));
+    return lang ? route.slice(lang.length + 1) : route;
+  }
 }

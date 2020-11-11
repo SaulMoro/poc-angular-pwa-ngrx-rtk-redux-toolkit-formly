@@ -10,7 +10,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import * as UiActions from './ui.actions';
 import * as UiSelectors from './ui.selectors';
 import * as CoreActions from '../core.actions';
-import * as SettingsActions from '../settings/settings.actions';
 import { TitleService } from '../../services/title.service';
 import { AlertDialogComponent } from '../../components/alert-dialog/alert-dialog.component';
 
@@ -19,7 +18,7 @@ export class UiEffects {
   setAppTitle$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(UiActions.setAppTitle, CoreActions.newNavigationData, SettingsActions.changeLanguage),
+        ofType(UiActions.setAppTitle, CoreActions.newNavigationData),
         withLatestFrom(this.store.pipe(select(UiSelectors.getTitle))),
         // tslint:disable-next-line: rxjs-no-unsafe-switchmap
         switchMap(([, title]) => this.titleService.setTitle(title))
