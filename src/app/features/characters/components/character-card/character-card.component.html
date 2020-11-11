@@ -11,8 +11,8 @@
         <mat-card-title>{{ character.name }}</mat-card-title>
         <mat-card-subtitle>
           <span [ngClass]="'status-' + character.status | lowercase"></span>
-          {{ t('CHARACTERS.STATUS.' + character.status) | uppercase }} -
-          {{ t('CHARACTERS.SPECIES.' + character.species) | uppercase }}
+          {{ t('CHARACTERS.STATUS.' + character.status | uppercase) }} -
+          {{ t('CHARACTERS.SPECIES.' + character.species | uppercase) }}
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>

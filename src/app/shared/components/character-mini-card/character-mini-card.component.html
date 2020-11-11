@@ -3,8 +3,8 @@
     <img mat-card-avatar class="placeholder" [src]="character?.image" [alt]="character?.name" />
     <mat-card-title>{{ character?.name }}</mat-card-title>
     <mat-card-subtitle>
-      {{ t('CHARACTERS.SPECIES.' + character?.species) | uppercase }} -
-      {{ t('CHARACTERS.GENDER.' + character?.gender) | uppercase }}
+      {{ t('CHARACTERS.SPECIES.' + character?.species | uppercase) }} -
+      {{ t('CHARACTERS.GENDER.' + character?.gender | uppercase) }}
     </mat-card-subtitle>
   </mat-card-header>
 </mat-card>

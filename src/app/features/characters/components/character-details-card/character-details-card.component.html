@@ -8,15 +8,15 @@
       <mat-list role="list">
         <mat-list-item role="listitem">
           {{ t('CHARACTERS.FIELDS.STATUS') }}:
-          {{ t('CHARACTERS.STATUS.' + character.status) | uppercase }}
+          {{ t('CHARACTERS.STATUS.' + character.status | uppercase) }}
         </mat-list-item>
         <mat-list-item role="listitem">
           {{ t('CHARACTERS.FIELDS.GENDER') }}:
-          {{ t('CHARACTERS.GENDER.' + character.gender) | uppercase }}
+          {{ t('CHARACTERS.GENDER.' + character.gender | uppercase) }}
         </mat-list-item>
         <mat-list-item role="listitem">
           {{ t('CHARACTERS.FIELDS.SPECIES') }}:
-          {{ t('CHARACTERS.SPECIES.' + character.species) | uppercase }}
+          {{ t('CHARACTERS.SPECIES.' + character.species | uppercase) }}
         </mat-list-item>
         <mat-list-item *ngIf="character.type" role="listitem">
           {{ t('CHARACTERS.FIELDS.TYPE') }}: {{ character.type }}
