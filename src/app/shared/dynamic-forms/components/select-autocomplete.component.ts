@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { FieldType } from '@ngx-formly/material';
 import { FormControl } from '@angular/forms';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
@@ -68,7 +68,7 @@ import { take, takeUntil, debounceTime } from 'rxjs/operators';
 export class SelectAutocompleteComponent extends FieldType implements OnInit, AfterViewInit, OnDestroy {
   searchOptions: any[] = [];
   searchLabel = '';
-  notFoundLabel: string = this.translateSrv.instant('FORMS.NOT_FOUND');
+  notFoundLabel: string = this.translateSrv.translate('FORMS.NOT_FOUND');
   showDeleteIcon = true;
 
   /** control for the MatSelect filter keyword */
@@ -83,7 +83,7 @@ export class SelectAutocompleteComponent extends FieldType implements OnInit, Af
   // tslint:disable-next-line: variable-name
   protected _onDestroy = new Subject<void>();
 
-  constructor(private translateSrv: TranslateService) {
+  constructor(private translateSrv: TranslocoService) {
     super();
   }
 

@@ -6,27 +6,32 @@
   ></mat-progress-bar>
 </ng-container>
 
-<ng-container *ngrxLet="location$ as location">
-  <h1>{{ location.name }}</h1>
-  <h3>{{ 'LOCATIONS.FIELDS.TYPE' | translate }}: {{ location.type }}</h3>
-  <h3>{{ 'LOCATIONS.FIELDS.DIMENSION' | translate }} {{ location.dimension }}</h3>
-  <mat-divider></mat-divider>
-  <mat-card>
-    <h2>{{ 'LOCATIONS.LOCATION_RESIDENTS' | translate: { name: location.name } }}</h2>
-    <div class="row" *ngrxLet="charactersDataState$ as charactersDataState">
-      <mat-progress-bar *ngIf="charactersDataState === dataStateTypes.LOADING" mode="indeterminate"></mat-progress-bar>
+<ng-container *transloco="let t">
+  <ng-container *ngrxLet="location$ as location">
+    <h1>{{ location.name }}</h1>
+    <h3>{{ t('LOCATIONS.FIELDS.TYPE') }}: {{ location.type }}</h3>
+    <h3>{{ t('LOCATIONS.FIELDS.DIMENSION') }}: {{ location.dimension }}</h3>
+    <mat-divider></mat-divider>
+    <mat-card>
+      <h2>{{ t('LOCATIONS.LOCATION_RESIDENTS', { name: location.name }) }}</h2>
+      <div class="row" *ngrxLet="charactersDataState$ as charactersDataState">
+        <mat-progress-bar
+          *ngIf="charactersDataState === dataStateTypes.LOADING"
+          mode="indeterminate"
+        ></mat-progress-bar>
 
-      <ng-container *ngrxLet="characters$ as characters">
-        <ng-container *ngIf="!!characters.length; else emptyCharacters">
-          <div class="col-12 col-md-6" *ngFor="let character of characters; trackBy: character?.id">
-            <app-character-mini-card [character]="character"></app-character-mini-card>
-          </div>
+        <ng-container *ngrxLet="characters$ as characters">
+          <ng-container *ngIf="!!characters.length; else emptyCharacters">
+            <div class="col-12 col-md-6" *ngFor="let character of characters; trackBy: character?.id">
+              <app-character-mini-card [character]="character"></app-character-mini-card>
+            </div>
+          </ng-container>
+
+          <ng-template #emptyCharacters>
+            <p *ngIf="charactersDataState === dataStateTypes.LOADED">{{ t('LOCATIONS.NO_RESIDENTS') }}</p>
+          </ng-template>
         </ng-container>
-
-        <ng-template #emptyCharacters>
-          <p *ngIf="charactersDataState === dataStateTypes.LOADED">{{ 'LOCATIONS.NO_RESIDENTS' | translate }}</p>
-        </ng-template>
-      </ng-container>
-    </div>
-  </mat-card>
+      </div>
+    </mat-card>
+  </ng-container>
 </ng-container>

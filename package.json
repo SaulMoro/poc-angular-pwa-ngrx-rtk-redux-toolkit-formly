@@ -5,12 +5,13 @@
     "ng": "ng",
     "start": "ng serve -o --proxy-config tools/proxy.conf.js",
     "start:ie": "npm run start -- --configuration=es5",
-    "build": "ng build --prod",
+    "build": "ng build --prod && npm run transloco:optimize",
     "deploy": "ng deploy --base-href=/poc-angular-pwa-ngrx-entity-formly-routerstate/",
     "test": "ng test",
     "lint": "ng lint && stylelint \"**/*.scss\" --syntax scss && htmlhint \"src/app/**/*.html\" --config .htmlhintrc",
     "e2e": "ng e2e",
     "analyze": "npm run build -- --stats-json && webpack-bundle-analyzer ./dist/angular-pwa-ngrx-formly-routerstate/stats-es2015.json",
+    "transloco:optimize": "transloco-optimize dist/angular-pwa-ngrx-formly-routerstate/assets/i18n",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
   },
   "private": true,
@@ -27,6 +28,7 @@
     "@angular/platform-browser-dynamic": "~10.2.0",
     "@angular/router": "~10.2.0",
     "@angular/service-worker": "~10.2.0",
+    "@ngneat/transloco": "^2.19.1",
     "@ngrx/component": "^10.0.1",
     "@ngrx/effects": "^10.0.1",
     "@ngrx/entity": "^10.0.1",
@@ -34,8 +36,6 @@
     "@ngrx/store": "^10.0.1",
     "@ngx-formly/core": "^5.10.3",
     "@ngx-formly/material": "^5.10.3",
-    "@ngx-translate/core": "^13.0.0",
-    "@ngx-translate/http-loader": "^6.0.0",
     "bootstrap": "^4.5.2",
     "classlist.js": "^1.1.20150312",
     "core-js": "^3.6.5",
@@ -57,6 +57,8 @@
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "@commitlint/prompt": "^11.0.0",
+    "@ngneat/transloco-optimize": "^1.0.2",
+    "@ngneat/transloco-validator": "^1.0.1",
     "@ngrx/schematics": "^10.0.1",
     "@ngrx/store-devtools": "^10.0.1",
     "@types/jasmine": "~3.5.0",
@@ -106,6 +108,9 @@
     ],
     "src/app/**/*.{scss,css}": [
       "stylelint --syntax scss --fix"
+    ],
+    "src/app/**/i18n/*.json": [
+      "transloco-validator"
     ]
   },
   "commitlint": {

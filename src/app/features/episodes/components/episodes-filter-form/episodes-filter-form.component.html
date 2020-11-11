@@ -1,7 +1,7 @@
-<mat-card>
+<mat-card *transloco="let t">
   <mat-card-header>
-    <mat-card-title>{{ 'EPISODES.FILTER_EPISODES' | translate }}</mat-card-title>
-    <button mat-button (click)="resetFilter()">{{ 'FORMS.CLEAR_FILTER' | translate }}</button>
+    <mat-card-title>{{ t('EPISODES.FILTER_EPISODES') }}</mat-card-title>
+    <button mat-button (click)="resetFilter()">{{ t('FORMS.CLEAR_FILTER') }}</button>
   </mat-card-header>
   <mat-card-content>
     <app-dynamic-form [form]="form" [config]="formConfig"></app-dynamic-form>

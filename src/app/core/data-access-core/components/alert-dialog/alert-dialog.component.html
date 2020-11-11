@@ -1,4 +1,4 @@
-<div fxFill>
+<div fxFill *transloco="let t">
   <mat-dialog-content class="mat-typography">
     <div class="alert-dialog" fxFlexFill fxLayout="column" fxLayoutAlign="start start">
       <img class="alert-dialog__img" src="./assets/img/exclamation.svg" />
@@ -8,7 +8,7 @@
 
   <div mat-dialog-actions align="end">
     <button mat-flat-button color="primary" cdkFocusInitial mat-dialog-close>
-      {{ 'BUTTONS.ACCEPT_DEFAULT' | translate }}
+      {{ t('BUTTONS.ACCEPT_DEFAULT') }}
     </button>
   </div>
 </div>

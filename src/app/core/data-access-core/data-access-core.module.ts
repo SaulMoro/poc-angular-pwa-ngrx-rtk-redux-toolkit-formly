@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslocoModule } from '@ngneat/transloco';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { TranslateModule } from '@ngx-translate/core';
+
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -16,7 +17,7 @@ import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.com
   declarations: [AlertDialogComponent],
   imports: [
     CommonModule,
-    TranslateModule,
+    TranslocoModule,
     MatDialogModule,
     MatButtonModule,
 

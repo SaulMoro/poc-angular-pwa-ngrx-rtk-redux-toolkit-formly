@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@ngneat/transloco';
 import { ReactiveComponentModule } from '@ngrx/component';
 
 // Material
@@ -31,7 +31,7 @@ const EXPORTED_DECLARATIONS = [HeaderComponent, FooterComponent];
 
 @NgModule({
   declarations: [...EXPORTED_DECLARATIONS],
-  imports: [CommonModule, FormsModule, RouterModule, TranslateModule, ReactiveComponentModule, ...MATERIAL_MODULES],
+  imports: [CommonModule, FormsModule, RouterModule, TranslocoModule, ReactiveComponentModule, ...MATERIAL_MODULES],
   exports: [...EXPORTED_DECLARATIONS],
 })
 export class LayoutModule {

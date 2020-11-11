@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
@@ -8,11 +8,11 @@ import { map, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class TitleService {
-  constructor(private translateService: TranslateService, private title: Title) {}
+  constructor(private translateService: TranslocoService, private title: Title) {}
 
-  setTitle(title: string | string[], lazyTranslateService?: TranslateService): Observable<any> {
+  setTitle(title: string | string[], lazyTranslateService?: TranslocoService): Observable<any> {
     const translate = lazyTranslateService || this.translateService;
-    return translate.get(title).pipe(
+    return translate.selectTranslate(title).pipe(
       map(Object.values),
       tap((translatedTitles) =>
         this.title.setTitle(translatedTitles.reduce((total, curr) => `${total}${total ? ' - ' : ''}${curr}`, ''))

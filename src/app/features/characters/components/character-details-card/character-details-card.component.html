@@ -1,28 +1,28 @@
-<mat-card>
+<mat-card *transloco="let t">
   <div class="row">
     <div class="col-lg-4">
       <img class="placeholder" [src]="character.image" [alt]="character.name" />
     </div>
     <div class="col-lg-8">
-      <h2>{{ 'CHARACTERS.CHARACTER_INFO' | translate }}</h2>
+      <h2>{{ t('CHARACTERS.CHARACTER_INFO') }}</h2>
       <mat-list role="list">
         <mat-list-item role="listitem">
-          {{ 'CHARACTERS.FIELDS.STATUS' | translate }}:
-          {{ 'CHARACTERS.STATUS.' + character.status | uppercase | translate }}
+          {{ t('CHARACTERS.FIELDS.STATUS') }}:
+          {{ t('CHARACTERS.STATUS.' + character.status) | uppercase }}
         </mat-list-item>
         <mat-list-item role="listitem">
-          {{ 'CHARACTERS.FIELDS.GENDER' | translate }}:
-          {{ 'CHARACTERS.GENDER.' + character.gender | uppercase | translate }}
+          {{ t('CHARACTERS.FIELDS.GENDER') }}:
+          {{ t('CHARACTERS.GENDER.' + character.gender) | uppercase }}
         </mat-list-item>
         <mat-list-item role="listitem">
-          {{ 'CHARACTERS.FIELDS.SPECIES' | translate }}:
-          {{ 'CHARACTERS.SPECIES.' + character.species | uppercase | translate }}
+          {{ t('CHARACTERS.FIELDS.SPECIES') }}:
+          {{ t('CHARACTERS.SPECIES.' + character.species) | uppercase }}
         </mat-list-item>
         <mat-list-item *ngIf="character.type" role="listitem">
-          {{ 'CHARACTERS.FIELDS.TYPE' | translate }}: {{ character.type }}
+          {{ t('CHARACTERS.FIELDS.TYPE') }}: {{ character.type }}
         </mat-list-item>
         <mat-list-item role="listitem">
-          {{ 'CHARACTERS.FIELDS.ORIGIN' | translate }}:
+          {{ t('CHARACTERS.FIELDS.ORIGIN') }}:
           <button
             mat-button
             color="primary"
@@ -34,7 +34,7 @@
           </button>
         </mat-list-item>
         <mat-list-item role="listitem">
-          {{ 'CHARACTERS.FIELDS.LOCATION' | translate }}:
+          {{ t('CHARACTERS.FIELDS.LOCATION') }}:
           <button
             mat-button
             color="primary"

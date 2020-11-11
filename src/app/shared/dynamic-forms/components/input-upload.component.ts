@@ -34,8 +34,8 @@ import { FormControl } from '@angular/forms';
       </button>
     </mat-form-field>
     <ng-container *ngIf="errorFile">
-      <mat-error class="error-file-gn">
-        <p>{{ 'VALIDATIONS.FILE_INCORRECT' | translate }} {{ error }}</p>
+      <mat-error class="error-file-gn" *transloco="let t">
+        <p>{{ t('VALIDATIONS.FILE_INCORRECT') }} {{ error }}</p>
       </mat-error>
     </ng-container>
     <input type="text" [hidden]="true" [formControl]="formControl" />

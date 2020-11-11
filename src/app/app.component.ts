@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '@environments/environment';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-root',
@@ -11,11 +11,9 @@ export class AppComponent implements OnInit {
   supportedLanguages = environment.supportedLanguages;
   language: string;
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslocoService) {}
 
-  ngOnInit(): void {
-    this._setLang();
-  }
+  ngOnInit(): void {}
 
   onChangeLanguage(lang: string): void {
     this._setLang(lang);
@@ -23,7 +21,6 @@ export class AppComponent implements OnInit {
 
   private _setLang(lang?: string): void {
     this.language = lang;
-    console.log(this.language ?? environment.defaultLanguage);
-    this.translate.use(this.language ?? environment.defaultLanguage);
+    this.translate.setActiveLang(this.language ?? environment.defaultLanguage);
   }
 }

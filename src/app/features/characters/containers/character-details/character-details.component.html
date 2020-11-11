@@ -13,8 +13,8 @@
     [character]="character"
     (prefetchLocation)="prefetchLocation($event)"
   ></app-character-details-card>
-  <mat-card>
-    <h2>{{ 'CHARACTERS.CHARACTER_EPISODES' | translate: { name: character.name } }}</h2>
+  <mat-card *transloco="let t">
+    <h2>{{ t('CHARACTERS.CHARACTER_EPISODES', { name: character.name }) }}</h2>
     <div class="row">
       <ng-container *ngrxLet="episodesDataState$ as episodesDataState">
         <mat-progress-bar

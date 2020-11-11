@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { select, Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap, withLatestFrom } from 'rxjs/operators';
@@ -33,8 +33,8 @@ export class UiEffects {
         map(({ message }) =>
           this.dialog.open(AlertDialogComponent, {
             data: [
-              !!message ? message : this.translate.instant('ERRORS.BACKEND'),
-              this.translate.instant('ERRORS.RETRY'),
+              !!message ? message : this.translate.translate('ERRORS.BACKEND'),
+              this.translate.translate('ERRORS.RETRY'),
             ],
           })
         )
@@ -48,8 +48,8 @@ export class UiEffects {
         ofType(UiActions.showSuccessSnackBar),
         map(({ message }) =>
           this.snackBar.open(
-            !!message ? message : this.translate.instant('ERRORS.OK'),
-            this.translate.instant('BUTTONS.CLOSE_DEFAULT'),
+            !!message ? message : this.translate.translate('ERRORS.OK'),
+            this.translate.translate('BUTTONS.CLOSE_DEFAULT'),
             {
               panelClass: 'mat-snackbar',
               duration: 3000,
@@ -64,7 +64,7 @@ export class UiEffects {
     private actions$: Actions,
     private store: Store,
     private titleService: TitleService,
-    private translate: TranslateService,
+    private translate: TranslocoService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}

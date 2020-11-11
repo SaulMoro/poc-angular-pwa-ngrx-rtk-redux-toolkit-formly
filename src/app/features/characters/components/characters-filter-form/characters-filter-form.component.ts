@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 import { FormConfig, generateFilterForm } from '@app/shared/dynamic-forms';
 import { CharacterGender, CharacterSpecies, CharacterStatus, FormIds, Option } from '@app/shared/models';
 
@@ -20,85 +20,85 @@ export class CharactersFilterFormComponent implements OnInit {
   status: Option[] = [
     {
       id: CharacterStatus.alive,
-      label: this.translate.instant('CHARACTERS.STATUS.' + CharacterStatus.alive.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.STATUS.' + CharacterStatus.alive.toUpperCase()),
     },
     {
       id: CharacterStatus.dead,
-      label: this.translate.instant('CHARACTERS.STATUS.' + CharacterStatus.dead.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.STATUS.' + CharacterStatus.dead.toUpperCase()),
     },
     {
       id: CharacterStatus.unknown,
-      label: this.translate.instant('CHARACTERS.STATUS.' + CharacterStatus.unknown.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.STATUS.' + CharacterStatus.unknown.toUpperCase()),
     },
   ];
 
   genders: Option[] = [
     {
       id: CharacterGender.male,
-      label: this.translate.instant('CHARACTERS.GENDER.' + CharacterGender.male.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.GENDER.' + CharacterGender.male.toUpperCase()),
     },
     {
       id: CharacterGender.female,
-      label: this.translate.instant('CHARACTERS.GENDER.' + CharacterGender.female.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.GENDER.' + CharacterGender.female.toUpperCase()),
     },
     {
       id: CharacterGender.genderless,
-      label: this.translate.instant('CHARACTERS.GENDER.' + CharacterGender.genderless.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.GENDER.' + CharacterGender.genderless.toUpperCase()),
     },
     {
       id: CharacterGender.unknown,
-      label: this.translate.instant('CHARACTERS.GENDER.' + CharacterGender.unknown.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.GENDER.' + CharacterGender.unknown.toUpperCase()),
     },
   ];
 
   species: Option[] = [
     {
       id: CharacterSpecies.alien,
-      label: this.translate.instant('CHARACTERS.SPECIES.' + CharacterSpecies.alien.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.alien.toUpperCase()),
     },
     {
       id: CharacterSpecies.animal,
-      label: this.translate.instant('CHARACTERS.SPECIES.' + CharacterSpecies.animal.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.animal.toUpperCase()),
     },
     {
       id: CharacterSpecies.human,
-      label: this.translate.instant('CHARACTERS.SPECIES.' + CharacterSpecies.human.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.human.toUpperCase()),
     },
     {
       id: CharacterSpecies.humanoid,
-      label: this.translate.instant('CHARACTERS.SPECIES.' + CharacterSpecies.humanoid.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.humanoid.toUpperCase()),
     },
     {
       id: CharacterSpecies.mytholog,
-      label: this.translate.instant('CHARACTERS.SPECIES.' + CharacterSpecies.mytholog.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.mytholog.toUpperCase()),
     },
     {
       id: CharacterSpecies.poopybutthole,
-      label: this.translate.instant('CHARACTERS.SPECIES.' + CharacterSpecies.poopybutthole.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.poopybutthole.toUpperCase()),
     },
     {
       id: CharacterSpecies.robot,
-      label: this.translate.instant('CHARACTERS.SPECIES.' + CharacterSpecies.robot.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.robot.toUpperCase()),
     },
     {
       id: CharacterSpecies.vampire,
-      label: this.translate.instant('CHARACTERS.SPECIES.' + CharacterSpecies.vampire.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.vampire.toUpperCase()),
     },
     {
       id: CharacterSpecies.cronenberg,
-      label: this.translate.instant('CHARACTERS.SPECIES.' + CharacterSpecies.cronenberg.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.cronenberg.toUpperCase()),
     },
     {
       id: CharacterSpecies.disease,
-      label: this.translate.instant('CHARACTERS.SPECIES.' + CharacterSpecies.disease.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.disease.toUpperCase()),
     },
     {
       id: CharacterSpecies.unknown,
-      label: this.translate.instant('CHARACTERS.SPECIES.' + CharacterSpecies.unknown.toUpperCase()),
+      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.unknown.toUpperCase()),
     },
   ];
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslocoService) {}
 
   ngOnInit(): void {
     this._initForm();
@@ -121,7 +121,7 @@ export class CharactersFilterFormComponent implements OnInit {
               className: 'flex-25',
               templateOptions: {
                 floatLabel: 'always',
-                label: this.translate.instant('CHARACTERS.FIELDS.NAME'),
+                label: this.translate.translate('CHARACTERS.FIELDS.NAME'),
               },
             },
             {
@@ -130,8 +130,8 @@ export class CharactersFilterFormComponent implements OnInit {
               className: 'flex-25',
               templateOptions: {
                 floatLabel: 'always',
-                label: this.translate.instant('CHARACTERS.FIELDS.STATUS'),
-                placeholder: this.translate.instant('CHARACTERS.PLACEHOLDERS.STATUS'),
+                label: this.translate.translate('CHARACTERS.FIELDS.STATUS'),
+                placeholder: this.translate.translate('CHARACTERS.PLACEHOLDERS.STATUS'),
                 autocomplete: true,
                 showIcon: false,
                 searchOptions: this.status,
@@ -143,8 +143,8 @@ export class CharactersFilterFormComponent implements OnInit {
               className: 'flex-25',
               templateOptions: {
                 floatLabel: 'always',
-                label: this.translate.instant('CHARACTERS.FIELDS.GENDER'),
-                placeholder: this.translate.instant('CHARACTERS.PLACEHOLDERS.GENDER'),
+                label: this.translate.translate('CHARACTERS.FIELDS.GENDER'),
+                placeholder: this.translate.translate('CHARACTERS.PLACEHOLDERS.GENDER'),
                 autocomplete: true,
                 showIcon: false,
                 searchOptions: this.genders,
@@ -156,8 +156,8 @@ export class CharactersFilterFormComponent implements OnInit {
               className: 'flex-25',
               templateOptions: {
                 floatLabel: 'always',
-                label: this.translate.instant('CHARACTERS.FIELDS.SPECIES'),
-                placeholder: this.translate.instant('CHARACTERS.PLACEHOLDERS.SPECIES'),
+                label: this.translate.translate('CHARACTERS.FIELDS.SPECIES'),
+                placeholder: this.translate.translate('CHARACTERS.PLACEHOLDERS.SPECIES'),
                 autocomplete: true,
                 showIcon: false,
                 searchOptions: this.species,

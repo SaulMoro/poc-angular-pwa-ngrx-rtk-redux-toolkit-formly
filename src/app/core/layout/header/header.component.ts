@@ -1,17 +1,5 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ChangeDetectionStrategy,
-  Output,
-  EventEmitter,
-  Input,
-  OnChanges,
-} from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { environment } from '@environments/environment';
+import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input, OnChanges } from '@angular/core';
+import { TranslocoService } from '@ngneat/transloco';
 
 export interface MenuItem {
   name: string;
@@ -31,7 +19,7 @@ export class HeaderComponent implements OnInit, OnChanges {
 
   appMenu: MenuItem[];
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslocoService) {}
 
   ngOnInit(): void {
     this.appMenu = this._fillMenu();
@@ -52,15 +40,15 @@ export class HeaderComponent implements OnInit, OnChanges {
   private _fillMenu(): MenuItem[] {
     return [
       {
-        name: this.translate.instant('CHARACTERS.TITLE'),
+        name: this.translate.translate('CHARACTERS.TITLE'),
         path: '/characters',
       },
       {
-        name: this.translate.instant('LOCATIONS.TITLE'),
+        name: this.translate.translate('LOCATIONS.TITLE'),
         path: '/locations',
       },
       {
-        name: this.translate.instant('EPISODES.TITLE'),
+        name: this.translate.translate('EPISODES.TITLE'),
         path: '/episodes',
       },
     ];
