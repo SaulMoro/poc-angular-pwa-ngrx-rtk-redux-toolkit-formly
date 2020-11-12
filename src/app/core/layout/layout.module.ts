@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
 import { ReactiveComponentModule } from '@ngrx/component';
@@ -13,9 +14,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 
+import { TranslocoLocalizeRouterPipe } from './transloco-localize-router.pipe';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { FormsModule } from '@angular/forms';
 
 const MATERIAL_MODULES = [
   MatToolbarModule,
@@ -27,7 +28,7 @@ const MATERIAL_MODULES = [
   MatSelectModule,
 ];
 
-const EXPORTED_DECLARATIONS = [HeaderComponent, FooterComponent];
+const EXPORTED_DECLARATIONS = [TranslocoLocalizeRouterPipe, HeaderComponent, FooterComponent];
 
 @NgModule({
   declarations: [...EXPORTED_DECLARATIONS],

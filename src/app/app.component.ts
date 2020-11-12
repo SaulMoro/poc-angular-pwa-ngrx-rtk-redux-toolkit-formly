@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from '@environments/environment';
-import { getBrowserLang, TranslocoService } from '@ngneat/transloco';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-root',
@@ -8,21 +8,25 @@ import { getBrowserLang, TranslocoService } from '@ngneat/transloco';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  supportedLanguages = environment.supportedLanguages;
-  language;
+  supportedLanguages = this.translate.getAvailableLangs();
+  language$ = this.translate.langChanges$;
 
-  constructor(private translate: TranslocoService) {}
+  constructor(private translate: TranslocoService, private router: Router) {}
 
-  ngOnInit(): void {
-    this._setLang(getBrowserLang() ?? this.translate.getActiveLang());
-  }
+  ngOnInit(): void {}
 
   onChangeLanguage(lang: string): void {
-    this._setLang(lang);
-  }
+    if (lang !== this.translate.getActiveLang()) {
+      const route = this.router.url;
+      const isPrevDefaultLang = this.translate.getActiveLang() === this.translate.getDefaultLang();
+      const isDefaultLang = lang === this.translate.getDefaultLang();
+      const startPath = isDefaultLang ? '' : `/${lang}`;
 
-  private _setLang(lang: string): void {
-    this.language = lang ?? environment.defaultLanguage;
-    this.translate.setActiveLang(this.language);
+      if (isDefaultLang) {
+        this.translate.setActiveLang(lang);
+      }
+
+      this.router.navigateByUrl(isPrevDefaultLang ? startPath + route : startPath + route.slice(3));
+    }
   }
 }
