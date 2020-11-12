@@ -34,7 +34,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes, {
       preloadingStrategy: PreloadAllModules,
       scrollPositionRestoration: 'enabled',
-      // useHash: true, // Supports github.io demo page
     }),
   ],
   exports: [RouterModule],
