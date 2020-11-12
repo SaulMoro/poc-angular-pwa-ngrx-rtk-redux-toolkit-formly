@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve -o --proxy-config tools/proxy.conf.js",
+    "start": "ng serve -o --hmr --proxy-config tools/proxy.conf.js",
     "start:ie": "npm run start -- --configuration=es5",
     "build": "ng build --prod && npm run transloco:optimize",
     "deploy": "ng deploy --base-href=/poc-angular-pwa-ngrx-entity-formly-routerstate/",
