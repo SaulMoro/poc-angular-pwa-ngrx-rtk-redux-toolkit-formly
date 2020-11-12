@@ -2,11 +2,9 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class TranslocoLocalizeRouterGuard implements CanActivate {
-  constructor(private router: Router, private translocoService: TranslocoService) {}
+  constructor(private translocoService: TranslocoService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
     const routeLang = route.params?.lang;
@@ -17,6 +15,6 @@ export class TranslocoLocalizeRouterGuard implements CanActivate {
       this.translocoService.setActiveLang(routeLang);
     }
 
-    return isSupportedLang || this.router.parseUrl('/404');
+    return isSupportedLang || this.router.parseUrl('/**');
   }
 }

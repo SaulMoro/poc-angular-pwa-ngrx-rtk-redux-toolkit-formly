@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoLocalizeRouterModule } from '@saulmoro/transloco-localize-router/index';
 import { ReactiveComponentModule } from '@ngrx/component';
 
 // Material
@@ -14,7 +15,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 
-import { TranslocoLocalizeRouterPipe } from './transloco-localize-router.pipe';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 
@@ -28,11 +28,19 @@ const MATERIAL_MODULES = [
   MatSelectModule,
 ];
 
-const EXPORTED_DECLARATIONS = [TranslocoLocalizeRouterPipe, HeaderComponent, FooterComponent];
+const EXPORTED_DECLARATIONS = [HeaderComponent, FooterComponent];
 
 @NgModule({
   declarations: [...EXPORTED_DECLARATIONS],
-  imports: [CommonModule, FormsModule, RouterModule, TranslocoModule, ReactiveComponentModule, ...MATERIAL_MODULES],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    TranslocoModule,
+    TranslocoLocalizeRouterModule,
+    ReactiveComponentModule,
+    ...MATERIAL_MODULES,
+  ],
   exports: [...EXPORTED_DECLARATIONS],
 })
 export class LayoutModule {

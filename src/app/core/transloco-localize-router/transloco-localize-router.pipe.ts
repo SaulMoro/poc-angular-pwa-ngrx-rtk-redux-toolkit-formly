@@ -7,7 +7,7 @@ import { TranslocoService } from '@ngneat/transloco';
 export class TranslocoLocalizeRouterPipe implements PipeTransform {
   constructor(private translocoService: TranslocoService) {}
 
-  transform(query: string | any[], transloco?): string | any[] {
+  transform(query: string | any[], transloco?: any): string | any[] {
     return !query || this.translocoService.getActiveLang() === this.translocoService.getDefaultLang()
       ? query
       : Array.isArray(query)

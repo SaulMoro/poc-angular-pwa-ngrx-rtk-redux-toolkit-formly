@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
+import { translateRoute, TranslocoLocalizeRouterService } from '@saulmoro/transloco-localize-router/index';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,26 @@ export class AppComponent implements OnInit {
   supportedLanguages = this.translate.getAvailableLangs();
   language$ = this.translate.langChanges$;
 
-  constructor(private translate: TranslocoService, private router: Router) {}
+  constructor(private translate: TranslocoService, private router: Router) {
+    console.log(translateRoute(null));
+    console.log(translateRoute(''));
+    console.log(translateRoute('', 'es'));
+    console.log(translateRoute('/'));
+    console.log(translateRoute('/', 'es'));
+    console.log(translateRoute('/characters'));
+    console.log(translateRoute('/characters', 'es'));
+    console.log(translateRoute('/characters/asas/1'));
+    console.log(translateRoute('/characters/asas/1', 'es'));
+
+    console.log(translateRoute(['']));
+    console.log(translateRoute([''], 'es'));
+    console.log(translateRoute(['/']));
+    console.log(translateRoute(['/'], 'es'));
+    console.log(translateRoute(['/characters']));
+    console.log(translateRoute(['/characters'], 'es'));
+    console.log(translateRoute(['/characters/asas/1']));
+    console.log(translateRoute(['/characters/asas/1'], 'es'));
+  }
 
   ngOnInit(): void {}
 
