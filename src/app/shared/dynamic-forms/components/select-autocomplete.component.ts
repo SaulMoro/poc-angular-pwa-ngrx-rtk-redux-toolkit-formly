@@ -1,38 +1,39 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
-import { FieldType } from '@ngx-formly/material';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSelect, MatSelectChange } from '@angular/material/select';
+import { FieldType } from '@ngx-formly/material';
 import { ReplaySubject, Subject } from 'rxjs';
-import { take, takeUntil, debounceTime } from 'rxjs/operators';
+import { takeUntil, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-select-autocomplete-dynamic-form',
   template: `
     <mat-icon *ngIf="to.showSearchIcon" class="search-icon">search</mat-icon>
-    <mat-select
-      [ngClass]="{ 'input-select': to.showSearchIcon }"
-      [id]="id"
-      [formControl]="formControl"
-      [formlyAttributes]="field"
-      [placeholder]="to.placeholder"
-      [tabindex]="to.tabindex || 0"
-      (selectionChange)="change($event)"
-      [errorStateMatcher]="errorStateMatcher"
-      [disableOptionCentering]="to.disableOptionCentering"
-      #singleSelect
-    >
-      <mat-option>
-        <ngx-mat-select-search
-          [placeholderLabel]="searchLabel"
-          [noEntriesFoundLabel]="notFoundLabel"
-          [formControl]="dataFilterCtrl"
-        ></ngx-mat-select-search>
-      </mat-option>
-      <mat-option *ngFor="let option of filteredData | ngrxPush" [value]="option.id">
-        {{ option.label }}
-      </mat-option>
-    </mat-select>
+    <ng-container *transloco="let t">
+      <mat-select
+        [ngClass]="{ 'input-select': to.showSearchIcon }"
+        [id]="id"
+        [formControl]="formControl"
+        [formlyAttributes]="field"
+        [placeholder]="to.placeholder"
+        [tabindex]="to.tabindex || 0"
+        (selectionChange)="change($event)"
+        [errorStateMatcher]="errorStateMatcher"
+        [disableOptionCentering]="to.disableOptionCentering"
+        #singleSelect
+      >
+        <mat-option>
+          <ngx-mat-select-search
+            [placeholderLabel]="searchLabel"
+            [noEntriesFoundLabel]="t(notFoundLabel)"
+            [formControl]="dataFilterCtrl"
+          ></ngx-mat-select-search>
+        </mat-option>
+        <mat-option *ngFor="let option of filteredData | ngrxPush" [value]="option.id">
+          {{ t(option.label) }}
+        </mat-option>
+      </mat-select>
+    </ng-container>
     <mat-icon *ngIf="showDeleteIcon && selectedValue() && !to.disabled" (click)="resetValue()" class="reset-icon"
       >close</mat-icon
     >
@@ -65,10 +66,10 @@ import { take, takeUntil, debounceTime } from 'rxjs/operators';
     `,
   ],
 })
-export class SelectAutocompleteComponent extends FieldType implements OnInit, AfterViewInit, OnDestroy {
+export class SelectAutocompleteComponent extends FieldType implements OnInit, OnDestroy {
   searchOptions: any[] = [];
   searchLabel = '';
-  notFoundLabel: string = this.translateSrv.translate('FORMS.NOT_FOUND');
+  notFoundLabel = 'FORMS.NOT_FOUND';
   showDeleteIcon = true;
 
   /** control for the MatSelect filter keyword */
@@ -83,7 +84,7 @@ export class SelectAutocompleteComponent extends FieldType implements OnInit, Af
   // tslint:disable-next-line: variable-name
   protected _onDestroy = new Subject<void>();
 
-  constructor(private translateSrv: TranslocoService) {
+  constructor() {
     super();
   }
 
@@ -108,19 +109,6 @@ export class SelectAutocompleteComponent extends FieldType implements OnInit, Af
   ngOnDestroy(): void {
     this._onDestroy.next();
     this._onDestroy.complete();
-  }
-
-  ngAfterViewInit(): void {
-    this.setInitialValue();
-  }
-
-  /**
-   * Sets the initial value after the filteredBanks are loaded initially
-   */
-  protected setInitialValue(): void {
-    this.filteredData.pipe(take(1), takeUntil(this._onDestroy)).subscribe(() => {
-      this.singleSelect.compareWith = (a: any, b: any) => a === b;
-    });
   }
 
   protected filterData(): void {

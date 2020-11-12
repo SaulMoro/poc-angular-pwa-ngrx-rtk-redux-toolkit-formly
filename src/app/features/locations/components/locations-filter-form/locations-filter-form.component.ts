@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { TranslocoService } from '@ngneat/transloco';
+import { translate } from '@ngneat/transloco';
 import { FormConfig, generateFilterForm } from '@app/shared/dynamic-forms';
 import { FormIds } from '@app/shared/models';
 
@@ -17,7 +17,7 @@ export class LocationsFilterFormComponent implements OnInit {
     fields: [],
   });
 
-  constructor(private translate: TranslocoService) {}
+  constructor() {}
 
   ngOnInit(): void {
     this._initForm();
@@ -40,7 +40,7 @@ export class LocationsFilterFormComponent implements OnInit {
               className: 'flex-25',
               templateOptions: {
                 floatLabel: 'always',
-                label: this.translate.translate('LOCATIONS.FIELDS.NAME'),
+                label: translate('LOCATIONS.FIELDS.NAME'),
               },
             },
             {
@@ -49,7 +49,7 @@ export class LocationsFilterFormComponent implements OnInit {
               className: 'flex-25',
               templateOptions: {
                 floatLabel: 'always',
-                label: this.translate.translate('LOCATIONS.FIELDS.TYPE'),
+                label: translate('LOCATIONS.FIELDS.TYPE'),
               },
             },
             {
@@ -58,7 +58,7 @@ export class LocationsFilterFormComponent implements OnInit {
               className: 'flex-25',
               templateOptions: {
                 floatLabel: 'always',
-                label: this.translate.translate('LOCATIONS.FIELDS.DIMENSION'),
+                label: translate('LOCATIONS.FIELDS.DIMENSION'),
               },
             },
           ],

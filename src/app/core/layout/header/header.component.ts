@@ -1,5 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input, OnChanges } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
+import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
 
 export interface MenuItem {
   name: string;
@@ -12,22 +11,29 @@ export interface MenuItem {
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit, OnChanges {
+export class HeaderComponent implements OnInit {
   @Input() language: string;
   @Input() languages: string[];
   @Output() languageChange = new EventEmitter<string>();
 
-  appMenu: MenuItem[];
+  appMenu: MenuItem[] = [
+    {
+      name: 'CHARACTERS.TITLE',
+      path: '/characters',
+    },
+    {
+      name: 'LOCATIONS.TITLE',
+      path: '/locations',
+    },
+    {
+      name: 'EPISODES.TITLE',
+      path: '/episodes',
+    },
+  ];
 
-  constructor(private translate: TranslocoService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.appMenu = this._fillMenu();
-  }
-
-  ngOnChanges(): void {
-    this.appMenu = this._fillMenu();
-  }
+  ngOnInit(): void {}
 
   trackByFn(index: number): number {
     return index;
@@ -35,22 +41,5 @@ export class HeaderComponent implements OnInit, OnChanges {
 
   onLanguageSelect({ value: language }): void {
     this.languageChange.emit(language);
-  }
-
-  private _fillMenu(): MenuItem[] {
-    return [
-      {
-        name: this.translate.translate('CHARACTERS.TITLE'),
-        path: '/characters',
-      },
-      {
-        name: this.translate.translate('LOCATIONS.TITLE'),
-        path: '/locations',
-      },
-      {
-        name: this.translate.translate('EPISODES.TITLE'),
-        path: '/episodes',
-      },
-    ];
   }
 }

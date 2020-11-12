@@ -15,7 +15,7 @@ export const initialState: UiState = {
 
 export const uiReducer = createReducer(
   initialState,
-  on(UiActions.setAppTitle, (state, { title }) => ({
+  on(UiActions.newDetailPageTitle, (state, { title }) => ({
     ...state,
     title: [title, 'APP_TITLE'],
   })),

@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" *transloco="let t">
   <div class="space"></div>
   <div class="container">
     <a [routerLink]="['/']" class="logo">
@@ -11,7 +11,7 @@
         [routerLink]="[item.path]"
         routerLinkActive="active"
       >
-        {{ item.name }}
+        {{ t(item.name) }}
       </button>
       <button mat-button class="lang-button" *ngIf="language">
         <mat-select [ngModel]="language" (selectionChange)="onLanguageSelect($event)">
@@ -28,7 +28,7 @@
       </button>
       <mat-menu #menu="matMenu">
         <button *ngFor="let item of appMenu; trackBy: trackByFn" mat-menu-item>
-          <span *ngIf="item" [routerLink]="[item.path]">{{ item.name }}</span>
+          <span *ngIf="item" [routerLink]="[item.path]">{{ t(item.name) }}</span>
         </button>
       </mat-menu>
     </div>

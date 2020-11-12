@@ -153,7 +153,7 @@ export class CharactersEffects {
   updateTitleOnLoadCharacterDetails$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CharactersApiActions.loadCharacterSuccess),
-      map(({ character }) => UiActions.setAppTitle({ title: character.name }))
+      map(({ character }) => UiActions.newDetailPageTitle({ title: character.name }))
     )
   );
 

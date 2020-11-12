@@ -138,7 +138,7 @@ export class EpisodesEffects {
   updateTitleOnLoadEpisodeDetails$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EpisodesApiActions.loadEpisodeSuccess),
-      map(({ episode }) => UiActions.setAppTitle({ title: episode.name }))
+      map(({ episode }) => UiActions.newDetailPageTitle({ title: episode.name }))
     )
   );
 

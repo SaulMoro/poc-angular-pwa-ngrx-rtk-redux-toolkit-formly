@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { TranslocoService } from '@ngneat/transloco';
+import { translate } from '@ngneat/transloco';
 import { FormConfig, generateFilterForm } from '@app/shared/dynamic-forms';
 import { CharacterGender, CharacterSpecies, CharacterStatus, FormIds, Option } from '@app/shared/models';
 
@@ -16,91 +16,14 @@ export class CharactersFilterFormComponent implements OnInit {
     formId: FormIds.FORM_CHARACTERS_FILTER_ID,
     fields: [],
   });
+  status: Option[];
+  genders: Option[];
+  species: Option[];
 
-  status: Option[] = [
-    {
-      id: CharacterStatus.alive,
-      label: this.translate.translate('CHARACTERS.STATUS.' + CharacterStatus.alive.toUpperCase()),
-    },
-    {
-      id: CharacterStatus.dead,
-      label: this.translate.translate('CHARACTERS.STATUS.' + CharacterStatus.dead.toUpperCase()),
-    },
-    {
-      id: CharacterStatus.unknown,
-      label: this.translate.translate('CHARACTERS.STATUS.' + CharacterStatus.unknown.toUpperCase()),
-    },
-  ];
-
-  genders: Option[] = [
-    {
-      id: CharacterGender.male,
-      label: this.translate.translate('CHARACTERS.GENDER.' + CharacterGender.male.toUpperCase()),
-    },
-    {
-      id: CharacterGender.female,
-      label: this.translate.translate('CHARACTERS.GENDER.' + CharacterGender.female.toUpperCase()),
-    },
-    {
-      id: CharacterGender.genderless,
-      label: this.translate.translate('CHARACTERS.GENDER.' + CharacterGender.genderless.toUpperCase()),
-    },
-    {
-      id: CharacterGender.unknown,
-      label: this.translate.translate('CHARACTERS.GENDER.' + CharacterGender.unknown.toUpperCase()),
-    },
-  ];
-
-  species: Option[] = [
-    {
-      id: CharacterSpecies.alien,
-      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.alien.toUpperCase()),
-    },
-    {
-      id: CharacterSpecies.animal,
-      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.animal.toUpperCase()),
-    },
-    {
-      id: CharacterSpecies.human,
-      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.human.toUpperCase()),
-    },
-    {
-      id: CharacterSpecies.humanoid,
-      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.humanoid.toUpperCase()),
-    },
-    {
-      id: CharacterSpecies.mytholog,
-      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.mytholog.toUpperCase()),
-    },
-    {
-      id: CharacterSpecies.poopybutthole,
-      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.poopybutthole.toUpperCase()),
-    },
-    {
-      id: CharacterSpecies.robot,
-      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.robot.toUpperCase()),
-    },
-    {
-      id: CharacterSpecies.vampire,
-      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.vampire.toUpperCase()),
-    },
-    {
-      id: CharacterSpecies.cronenberg,
-      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.cronenberg.toUpperCase()),
-    },
-    {
-      id: CharacterSpecies.disease,
-      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.disease.toUpperCase()),
-    },
-    {
-      id: CharacterSpecies.unknown,
-      label: this.translate.translate('CHARACTERS.SPECIES.' + CharacterSpecies.unknown.toUpperCase()),
-    },
-  ];
-
-  constructor(private translate: TranslocoService) {}
+  constructor() {}
 
   ngOnInit(): void {
+    this._initOptions();
     this._initForm();
   }
 
@@ -121,7 +44,7 @@ export class CharactersFilterFormComponent implements OnInit {
               className: 'flex-25',
               templateOptions: {
                 floatLabel: 'always',
-                label: this.translate.translate('CHARACTERS.FIELDS.NAME'),
+                label: translate('CHARACTERS.FIELDS.NAME'),
               },
             },
             {
@@ -130,8 +53,8 @@ export class CharactersFilterFormComponent implements OnInit {
               className: 'flex-25',
               templateOptions: {
                 floatLabel: 'always',
-                label: this.translate.translate('CHARACTERS.FIELDS.STATUS'),
-                placeholder: this.translate.translate('CHARACTERS.PLACEHOLDERS.STATUS'),
+                label: translate('CHARACTERS.FIELDS.STATUS'),
+                placeholder: translate('CHARACTERS.PLACEHOLDERS.STATUS'),
                 autocomplete: true,
                 showIcon: false,
                 searchOptions: this.status,
@@ -143,8 +66,8 @@ export class CharactersFilterFormComponent implements OnInit {
               className: 'flex-25',
               templateOptions: {
                 floatLabel: 'always',
-                label: this.translate.translate('CHARACTERS.FIELDS.GENDER'),
-                placeholder: this.translate.translate('CHARACTERS.PLACEHOLDERS.GENDER'),
+                label: translate('CHARACTERS.FIELDS.GENDER'),
+                placeholder: translate('CHARACTERS.PLACEHOLDERS.GENDER'),
                 autocomplete: true,
                 showIcon: false,
                 searchOptions: this.genders,
@@ -156,8 +79,8 @@ export class CharactersFilterFormComponent implements OnInit {
               className: 'flex-25',
               templateOptions: {
                 floatLabel: 'always',
-                label: this.translate.translate('CHARACTERS.FIELDS.SPECIES'),
-                placeholder: this.translate.translate('CHARACTERS.PLACEHOLDERS.SPECIES'),
+                label: translate('CHARACTERS.FIELDS.SPECIES'),
+                placeholder: translate('CHARACTERS.PLACEHOLDERS.SPECIES'),
                 autocomplete: true,
                 showIcon: false,
                 searchOptions: this.species,
@@ -167,5 +90,88 @@ export class CharactersFilterFormComponent implements OnInit {
         },
       ],
     };
+  }
+
+  private _initOptions(): void {
+    this.status = [
+      {
+        id: CharacterStatus.alive,
+        label: 'CHARACTERS.STATUS.' + CharacterStatus.alive.toUpperCase(),
+      },
+      {
+        id: CharacterStatus.dead,
+        label: 'CHARACTERS.STATUS.' + CharacterStatus.dead.toUpperCase(),
+      },
+      {
+        id: CharacterStatus.unknown,
+        label: 'CHARACTERS.STATUS.' + CharacterStatus.unknown.toUpperCase(),
+      },
+    ];
+
+    this.genders = [
+      {
+        id: CharacterGender.male,
+        label: 'CHARACTERS.GENDER.' + CharacterGender.male.toUpperCase(),
+      },
+      {
+        id: CharacterGender.female,
+        label: 'CHARACTERS.GENDER.' + CharacterGender.female.toUpperCase(),
+      },
+      {
+        id: CharacterGender.genderless,
+        label: 'CHARACTERS.GENDER.' + CharacterGender.genderless.toUpperCase(),
+      },
+      {
+        id: CharacterGender.unknown,
+        label: 'CHARACTERS.GENDER.' + CharacterGender.unknown.toUpperCase(),
+      },
+    ];
+
+    this.species = [
+      {
+        id: CharacterSpecies.alien,
+        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.alien.toUpperCase(),
+      },
+      {
+        id: CharacterSpecies.animal,
+        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.animal.toUpperCase(),
+      },
+      {
+        id: CharacterSpecies.human,
+        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.human.toUpperCase(),
+      },
+      {
+        id: CharacterSpecies.humanoid,
+        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.humanoid.toUpperCase(),
+      },
+      {
+        id: CharacterSpecies.mytholog,
+        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.mytholog.toUpperCase(),
+      },
+      {
+        id: CharacterSpecies.poopybutthole,
+        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.poopybutthole.toUpperCase(),
+      },
+      {
+        id: CharacterSpecies.robot,
+        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.robot.toUpperCase(),
+      },
+      {
+        id: CharacterSpecies.vampire,
+        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.vampire.toUpperCase(),
+      },
+      {
+        id: CharacterSpecies.cronenberg,
+        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.cronenberg.toUpperCase(),
+      },
+      {
+        id: CharacterSpecies.disease,
+        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.disease.toUpperCase(),
+      },
+      {
+        id: CharacterSpecies.unknown,
+        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.unknown.toUpperCase(),
+      },
+    ];
   }
 }

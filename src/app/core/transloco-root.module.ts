@@ -16,7 +16,7 @@ export class TranslocoHttpLoader implements TranslocoLoader {
   constructor(private http: HttpClient) {}
 
   getTranslation(lang: string): Observable<Translation> {
-    return this.http.get<Translation>(`/assets/i18n/${lang}.json`);
+    return this.http.get<Translation>(`./assets/i18n/${lang}.json`);
   }
 }
 
@@ -39,4 +39,6 @@ export class TranslocoHttpLoader implements TranslocoLoader {
     { provide: TRANSLOCO_LOADER, useClass: TranslocoHttpLoader },
   ],
 })
-export class TranslocoRootModule {}
+export class TranslocoRootModule {
+  constructor() {}
+}
