@@ -1,4 +1,4 @@
-import { SkipSelf } from '@angular/core';
+import { APP_INITIALIZER, SkipSelf } from '@angular/core';
 import { ModuleWithProviders, NgModule, Optional } from '@angular/core';
 
 import {
@@ -17,7 +17,7 @@ const EXPORTED_DECLARATIONS = [TranslocoLocalizeRouterPipe];
   exports: [...EXPORTED_DECLARATIONS],
 })
 export class TranslocoLocalizeRouterModule {
-  static forRoot(config: Partial<TranslocoLocalizeRouterConfig>): ModuleWithProviders<TranslocoLocalizeRouterModule> {
+  static forRoot(config: TranslocoLocalizeRouterConfig): ModuleWithProviders<TranslocoLocalizeRouterModule> {
     return {
       ngModule: TranslocoLocalizeRouterModule,
       providers: [

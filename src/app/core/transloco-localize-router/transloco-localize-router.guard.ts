@@ -4,17 +4,9 @@ import { TranslocoService } from '@ngneat/transloco';
 
 @Injectable({ providedIn: 'root' })
 export class TranslocoLocalizeRouterGuard implements CanActivate {
-  constructor(private translocoService: TranslocoService, private router: Router) {}
+  constructor(private transloco: TranslocoService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
-    const routeLang = route.params?.lang;
-    const isDefaultLang = routeLang === this.translocoService.getDefaultLang();
-    const isSupportedLang = !isDefaultLang && this.translocoService.isLang(routeLang);
-
-    if (isSupportedLang) {
-      this.translocoService.setActiveLang(routeLang);
-    }
-
-    return isSupportedLang || this.router.parseUrl('/**');
+    return this.transloco.isLang(route.params?.lang) || this.router.parseUrl('/');
   }
 }

@@ -1,20 +1,19 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
+import { translateRoute } from './transloco-localize-router.service';
 
 @Pipe({
   name: 'localize',
 })
 export class TranslocoLocalizeRouterPipe implements PipeTransform {
-  constructor(private translocoService: TranslocoService) {}
+  constructor() {}
 
-  transform(query: string | any[], transloco?: any): string | any[] {
-    return !query || this.translocoService.getActiveLang() === this.translocoService.getDefaultLang()
-      ? query
-      : Array.isArray(query)
-      ? [
-          `/${this.translocoService.getActiveLang()}`,
-          ...query.map((routes: string) => routes.replace('/', '')).filter(Boolean),
-        ]
-      : `/${this.translocoService.getActiveLang()}/${query}`;
+  /**
+   * Receive the transloco directive to hack the pipe
+   * (recalculate the route when changing the language).
+   *
+   * Requires reRenderOnLangChange=true for the hack to work.
+   */
+  transform(route: string | any[], tDirective?: any): string | any[] {
+    return translateRoute(route);
   }
 }
