@@ -1,5 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import {
+  TranslocoLocalizeRouterModule,
+  initTranslocoLocalizeRouter,
+  TranslocoLocalizeRouter,
+} from '@saulmoro/transloco-localize-router/index';
 
 const routes: Routes = [
   {
@@ -25,13 +30,16 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/404',
+    redirectTo: '404',
   },
 ];
 
+const TRANSLOCO_LOCALIZE_ROUTER: TranslocoLocalizeRouter = initTranslocoLocalizeRouter(routes);
+
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, {
+    TranslocoLocalizeRouterModule.forRoot(TRANSLOCO_LOCALIZE_ROUTER.config),
+    RouterModule.forRoot(TRANSLOCO_LOCALIZE_ROUTER.routes, {
       preloadingStrategy: PreloadAllModules,
       scrollPositionRestoration: 'enabled',
     }),

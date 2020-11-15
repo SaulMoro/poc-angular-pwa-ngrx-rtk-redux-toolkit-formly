@@ -1,28 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { environment } from '@environments/environment';
-import { getBrowserLang, TranslocoService } from '@ngneat/transloco';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TranslocoService } from '@ngneat/transloco';
+import { TranslocoLocalizeRouterService } from '@saulmoro/transloco-localize-router/index';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  supportedLanguages = environment.supportedLanguages;
-  language;
+  supportedLanguages = this.translate.getAvailableLangs();
+  language$ = this.translate.langChanges$;
 
-  constructor(private translate: TranslocoService) {}
+  constructor(private translate: TranslocoService, private translatoLozalizeRouter: TranslocoLocalizeRouterService) {}
 
-  ngOnInit(): void {
-    this._setLang(getBrowserLang() ?? this.translate.getActiveLang());
-  }
+  ngOnInit(): void {}
 
   onChangeLanguage(lang: string): void {
-    this._setLang(lang);
-  }
-
-  private _setLang(lang: string): void {
-    this.language = lang ?? environment.defaultLanguage;
-    this.translate.setActiveLang(this.language);
+    this.translatoLozalizeRouter.changeLanguage(lang);
   }
 }

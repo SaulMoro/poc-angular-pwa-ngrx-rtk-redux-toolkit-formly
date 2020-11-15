@@ -8,6 +8,7 @@ import {
   TranslocoModule,
 } from '@ngneat/transloco';
 import { Injectable, NgModule } from '@angular/core';
+import { getRouterLang } from '@saulmoro/transloco-localize-router/index';
 import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
 
@@ -27,8 +28,7 @@ export class TranslocoHttpLoader implements TranslocoLoader {
       provide: TRANSLOCO_CONFIG,
       useValue: translocoConfig({
         availableLangs: environment.supportedLanguages,
-        defaultLang: environment.defaultLanguage,
-        // Remove this option if your application doesn't support changing language in runtime.
+        defaultLang: getRouterLang(environment.supportedLanguages) ?? environment.defaultLanguage,
         reRenderOnLangChange: true,
         prodMode: environment.production,
         flatten: {

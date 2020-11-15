@@ -27,7 +27,7 @@
             mat-button
             color="primary"
             *ngIf="character.origin"
-            [routerLink]="['/locations', character.origin?.id]"
+            [routerLink]="['/locations', character.origin?.id] | localize"
             (prefetch)="prefetchOnHoverLocation(character.origin?.id)"
           >
             {{ character.origin.name }}
@@ -39,7 +39,7 @@
             mat-button
             color="primary"
             *ngIf="character.location"
-            [routerLink]="['/locations', character.location?.id]"
+            [routerLink]="['/locations', character.location?.id] | localize"
             (prefetch)="prefetchOnHoverLocation(character.location?.id)"
           >
             {{ character.location.name }}
