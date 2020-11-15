@@ -29,7 +29,7 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
             [formControl]="dataFilterCtrl"
           ></ngx-mat-select-search>
         </mat-option>
-        <mat-option *ngFor="let option of filteredData | ngrxPush" [value]="option.id">
+        <mat-option *ngFor="let option of filteredData | async" [value]="option.id">
           {{ t(option.label) }}
         </mat-option>
       </mat-select>

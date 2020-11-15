@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TranslocoModule } from '@ngneat/transloco';
 import { TranslocoLocalizeRouterModule } from '@saulmoro/transloco-localize-router/index';
-import { ReactiveComponentModule } from '@ngrx/component';
+import { TemplateModule } from '@rx-angular/template';
 
 // Material
 import { MatIconModule } from '@angular/material/icon';
@@ -71,7 +71,7 @@ const IMPORTED_EXPORTS = [
   TranslocoModule,
   TranslocoLocalizeRouterModule,
   FlexLayoutModule,
-  ReactiveComponentModule,
+  TemplateModule,
   ...MATERIAL_MODULES,
 ];
 

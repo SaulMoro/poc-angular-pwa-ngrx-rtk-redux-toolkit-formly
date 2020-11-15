@@ -1,4 +1,4 @@
-<ng-container *ngrxLet="dataState$ as dataState">
+<ng-container *rxLet="dataState$ as dataState">
   <mat-progress-bar
     *ngIf="dataState === dataStateTypes.LOADING || dataState === dataStateTypes.REFRESHING"
     class="progress-bar--top"
@@ -7,20 +7,20 @@
 </ng-container>
 
 <ng-container *transloco="let t">
-  <ng-container *ngrxLet="location$ as location">
+  <ng-container *rxLet="location$ as location">
     <h1>{{ location.name }}</h1>
     <h3>{{ t('LOCATIONS.FIELDS.TYPE') }}: {{ location.type }}</h3>
     <h3>{{ t('LOCATIONS.FIELDS.DIMENSION') }}: {{ location.dimension }}</h3>
     <mat-divider></mat-divider>
     <mat-card>
       <h2>{{ t('LOCATIONS.LOCATION_RESIDENTS', { name: location.name }) }}</h2>
-      <div class="row" *ngrxLet="charactersDataState$ as charactersDataState">
+      <div class="row" *rxLet="charactersDataState$ as charactersDataState">
         <mat-progress-bar
           *ngIf="charactersDataState === dataStateTypes.LOADING"
           mode="indeterminate"
         ></mat-progress-bar>
 
-        <ng-container *ngrxLet="characters$ as characters">
+        <ng-container *rxLet="characters$ as characters">
           <ng-container *ngIf="!!characters.length; else emptyCharacters">
             <div class="col-12 col-md-6" *ngFor="let character of characters; trackBy: character?.id">
               <app-character-mini-card [character]="character"></app-character-mini-card>

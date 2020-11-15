@@ -1,6 +1,6 @@
 <app-episodes-filter-form></app-episodes-filter-form>
 
-<ng-container *ngrxLet="dataState$ as dataState">
+<ng-container *rxLet="dataState$ as dataState">
   <mat-progress-bar
     *ngIf="dataState === dataStateTypes.LOADING || dataState === dataStateTypes.REFRESHING"
     class="progress-bar--top"
@@ -8,7 +8,7 @@
   ></mat-progress-bar>
 </ng-container>
 
-<ng-container *ngrxLet="episodes$ as episodes">
+<ng-container *rxLet="episodes$ as episodes">
   <div class="content" *transloco="let t">
     <div class="table-responsive">
       <table mat-table [dataSource]="episodes">
@@ -89,8 +89,8 @@
 
     <mat-paginator
       *ngIf="!!episodes.length"
-      [pageIndex]="pageIndex$ | ngrxPush"
-      [length]="totalEpisodes$ | ngrxPush"
+      [pageIndex]="pageIndex$ | push"
+      [length]="totalEpisodes$ | push"
       [pageSize]="pageSize"
       (page)="changePage($event)"
       showFirstLastButtons
