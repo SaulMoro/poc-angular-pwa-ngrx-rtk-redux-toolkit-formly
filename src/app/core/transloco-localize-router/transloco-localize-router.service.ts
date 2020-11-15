@@ -21,7 +21,7 @@ export class TranslocoLocalizeRouterService {
   }
 
   translate(route: string | any[], lang: string = this.transloco.getActiveLang()): string | any[] {
-    const startPath = this.config.alwaysPrefix || lang !== this.config.noPrefixLang ? `/${lang}` : '';
+    const startPath = this.showPrefix(lang) ? `/${lang}` : '';
     return route && Array.isArray(route)
       ? startPath
         ? [startPath, ...route?.map((path: string) => String(path).replace('/', '')).filter(Boolean)]
@@ -42,5 +42,17 @@ export class TranslocoLocalizeRouterService {
         },
       });
     }
+  }
+
+  showPrefix(lang: string): boolean {
+    return this.config.alwaysPrefix || lang !== this.noPrefixLang;
+  }
+
+  isSupportedLang(lang: string): boolean {
+    return this.showPrefix(lang) && this.transloco.isLang(lang);
+  }
+
+  get noPrefixLang(): string {
+    return this.config.noPrefixLang;
   }
 }

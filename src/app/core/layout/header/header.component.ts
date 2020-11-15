@@ -33,7 +33,6 @@ export class HeaderComponent implements OnInit {
 
   constructor() {}
 
-  // trick for keep reRenderOnLangChange=false
   ngOnInit(): void {}
 
   trackByFn(index: number): number {

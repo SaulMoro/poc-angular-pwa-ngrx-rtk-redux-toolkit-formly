@@ -8,19 +8,19 @@ import {
   CanDeactivate,
 } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
-import { LOCALIZE_ROUTER_CONFIG, TranslocoLocalizeRouterConfig } from '.';
+import { TranslocoLocalizeRouterService } from './transloco-localize-router.service';
 
 @Injectable({ providedIn: 'root' })
 export class TranslocoLocalizeRouterGuard implements CanActivate, CanDeactivate<void> {
   constructor(
     private transloco: TranslocoService,
-    private router: Router,
-    @Inject(LOCALIZE_ROUTER_CONFIG) private config: TranslocoLocalizeRouterConfig
+    private translocoLocalizeRouter: TranslocoLocalizeRouterService,
+    private router: Router
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
     const lang = route.params?.lang;
-    const isSupportedLang = this.transloco.isLang(lang);
+    const isSupportedLang = this.translocoLocalizeRouter.isSupportedLang(lang);
     if (isSupportedLang) {
       this.transloco.setActiveLang(lang);
     }
@@ -28,7 +28,7 @@ export class TranslocoLocalizeRouterGuard implements CanActivate, CanDeactivate<
   }
 
   canDeactivate(): boolean {
-    this.transloco.setActiveLang(this.config.noPrefixLang);
+    this.transloco.setActiveLang(this.translocoLocalizeRouter.noPrefixLang);
     return true;
   }
 }

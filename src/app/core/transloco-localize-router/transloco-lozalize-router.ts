@@ -1,6 +1,21 @@
 import { Routes } from '@angular/router';
-import { TranslocoLocalizeRouterConfig } from './transloco-localize-router.config';
+import {
+  defaultConfig,
+  TranslocoLocalizeRouter,
+  TranslocoLocalizeRouterConfig,
+} from './transloco-localize-router.config';
 import { TranslocoLocalizeRouterGuard } from './transloco-localize-router.guard';
+
+export const initTranslocoLocalizeRouter = (
+  routes: Routes,
+  config?: Partial<TranslocoLocalizeRouterConfig>
+): TranslocoLocalizeRouter => {
+  const translocoLocalizeRouterConfig = { ...defaultConfig, ...config };
+  return {
+    routes: localizeRoutes(routes, translocoLocalizeRouterConfig),
+    config: translocoLocalizeRouterConfig,
+  };
+};
 
 export const localizeRoutes = (
   routes: Routes,

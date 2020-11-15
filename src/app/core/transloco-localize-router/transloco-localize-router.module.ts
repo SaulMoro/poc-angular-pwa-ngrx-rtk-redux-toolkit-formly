@@ -1,10 +1,6 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 
-import {
-  defaultConfig,
-  LOCALIZE_ROUTER_CONFIG,
-  TranslocoLocalizeRouterConfig,
-} from './transloco-localize-router.config';
+import { LOCALIZE_ROUTER_CONFIG, TranslocoLocalizeRouterConfig } from './transloco-localize-router.config';
 import { TranslocoLocalizeRouterService } from './transloco-localize-router.service';
 import { TranslocoLocalizeRouterPipe } from './transloco-localize-router.pipe';
 
