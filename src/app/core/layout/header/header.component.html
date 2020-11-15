@@ -1,14 +1,14 @@
 <mat-toolbar color="primary" *transloco="let t">
   <div class="space"></div>
   <div class="container">
-    <a [routerLink]="['/'] | localize: t" class="logo">
+    <a [routerLink]="['/'] | localize: language" class="logo">
       <img src="./assets/img/logo.svg" alt="logo" height="40" />
     </a>
     <nav>
       <button
         *ngFor="let item of appMenu; trackBy: trackByFn"
         mat-button
-        [routerLink]="[item.path] | localize: t"
+        [routerLink]="[item.path] | localize: language"
         routerLinkActive="active"
       >
         {{ t(item.name) }}
@@ -28,7 +28,7 @@
       </button>
       <mat-menu #menu="matMenu">
         <button *ngFor="let item of appMenu; trackBy: trackByFn" mat-menu-item>
-          <span *ngIf="item" [routerLink]="[item.path] | localize: t">{{ t(item.name) }}</span>
+          <span *ngIf="item" [routerLink]="[item.path] | localize: language">{{ t(item.name) }}</span>
         </button>
       </mat-menu>
     </div>

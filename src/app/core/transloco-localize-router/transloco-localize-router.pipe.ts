@@ -8,12 +8,11 @@ export class TranslocoLocalizeRouterPipe implements PipeTransform {
   constructor() {}
 
   /**
-   * Receive the transloco directive to hack the pipe
-   * (recalculate the route when changing the language).
+   * Requires currentLang to translate paths in non-lazy modules
    *
-   * Requires reRenderOnLangChange=true for the hack to work.
+   * (Ex: LayoutModule)
    */
-  transform(route: string | any[], tDirective?: any): string | any[] {
-    return translateRoute(route);
+  transform(route: string | any[], currentLang?: string): string | any[] {
+    return translateRoute(route, currentLang);
   }
 }

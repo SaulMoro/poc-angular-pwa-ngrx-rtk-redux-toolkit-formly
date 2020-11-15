@@ -10,11 +10,13 @@ export interface TranslocoLocalizeRouter {
 
 export interface TranslocoLocalizeRouterConfig {
   alwaysPrefix: boolean;
+  noPrefixLang?: string;
   langPath: string;
 }
 
 export const defaultConfig: TranslocoLocalizeRouterConfig = {
   alwaysPrefix: false,
+  noPrefixLang: 'en',
   langPath: ':lang',
 };
 

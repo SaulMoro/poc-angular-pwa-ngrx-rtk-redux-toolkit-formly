@@ -15,7 +15,12 @@
         <!-- ID Column -->
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>{{ t('LOCATIONS.FIELDS.NUM') }}</th>
-          <td mat-cell class="pointer-cursor" *matCellDef="let element" [routerLink]="['/locations', element.id]">
+          <td
+            mat-cell
+            class="pointer-cursor"
+            *matCellDef="let element"
+            [routerLink]="['/locations', element.id] | localize"
+          >
             {{ element.id }}
           </td>
         </ng-container>
@@ -23,7 +28,12 @@
         <!-- Name Column -->
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef>{{ t('LOCATIONS.FIELDS.NAME') }}</th>
-          <td mat-cell class="pointer-cursor" *matCellDef="let element" [routerLink]="['/locations', element.id]">
+          <td
+            mat-cell
+            class="pointer-cursor"
+            *matCellDef="let element"
+            [routerLink]="['/locations', element.id] | localize"
+          >
             {{ element.name }}
           </td>
         </ng-container>
