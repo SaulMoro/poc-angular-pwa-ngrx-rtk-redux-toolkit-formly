@@ -1,6 +1,6 @@
 <app-locations-filter-form></app-locations-filter-form>
 
-<ng-container *rxLet="dataState$ as dataState">
+<ng-container *ngrxLet="dataState$ as dataState">
   <mat-progress-bar
     *ngIf="dataState === dataStateTypes.LOADING || dataState === dataStateTypes.REFRESHING"
     class="progress-bar--top"
@@ -8,7 +8,7 @@
   ></mat-progress-bar>
 </ng-container>
 
-<ng-container *rxLet="locations$ as locations">
+<ng-container *ngrxLet="locations$ as locations">
   <div class="content" *transloco="let t">
     <div class="table-responsive">
       <table mat-table [dataSource]="locations">
@@ -82,8 +82,8 @@
 
     <mat-paginator
       *ngIf="!!locations.length"
-      [pageIndex]="pageIndex$ | push"
-      [length]="totalLocations$ | push"
+      [pageIndex]="pageIndex$ | ngrxPush"
+      [length]="totalLocations$ | ngrxPush"
       [pageSize]="pageSize"
       (page)="changePage($event)"
       showFirstLastButtons
