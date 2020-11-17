@@ -7,6 +7,8 @@ import { CharacterDetailsComponent } from './containers/character-details/charac
 import { CharacterCardComponent } from './components/character-card/character-card.component';
 import { CharactersFilterFormComponent } from './components/characters-filter-form/characters-filter-form.component';
 import { CharacterDetailsCardComponent } from './components/character-details-card/character-details-card.component';
+import { LoadingCharacterComponent } from './components/loading-character/loading-character.component';
+import { LoadingEpisodeComponent } from './components/loading-episode/loading-episode.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,8 @@ import { CharacterDetailsCardComponent } from './components/character-details-ca
     CharacterCardComponent,
     CharactersFilterFormComponent,
     CharacterDetailsCardComponent,
+    LoadingCharacterComponent,
+    LoadingEpisodeComponent,
   ],
   imports: [SharedModule, CharactersRoutingModule],
 })

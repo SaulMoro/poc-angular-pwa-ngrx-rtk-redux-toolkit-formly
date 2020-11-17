@@ -1,4 +1,4 @@
-<div *ngrxLet="form$ as form" class="dynamic-form">
+<div *ngIf="form$ | async as form" class="dynamic-form">
   <form
     [id]="form.formId"
     class="dynamic-form__form"

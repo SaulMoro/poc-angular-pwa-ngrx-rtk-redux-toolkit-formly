@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
 import { TranslocoLocalizeRouterModule } from '@saulmoro/transloco-localize-router/index';
-import { ReactiveComponentModule } from '@ngrx/component';
 
 // Material
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -38,7 +37,6 @@ const EXPORTED_DECLARATIONS = [HeaderComponent, FooterComponent];
     RouterModule,
     TranslocoModule,
     TranslocoLocalizeRouterModule,
-    ReactiveComponentModule,
     ...MATERIAL_MODULES,
   ],
   exports: [...EXPORTED_DECLARATIONS],

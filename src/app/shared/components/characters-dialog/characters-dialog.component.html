@@ -9,7 +9,13 @@
 
     <ng-container *ngrxLet="characters$ as characters">
       <div class="col-12" *ngFor="let characterId of data.characterIds; trackBy: characterId">
-        <app-character-mini-card [character]="characters[characterId]"></app-character-mini-card>
+        <app-character-mini-card
+          *ngIf="characters[characterId]; else loadingCharacter"
+          [character]="characters[characterId]"
+        ></app-character-mini-card>
+        <ng-template #loadingCharacter>
+          <app-loading-character-mini-card></app-loading-character-mini-card>
+        </ng-template>
       </div>
     </ng-container>
   </div>

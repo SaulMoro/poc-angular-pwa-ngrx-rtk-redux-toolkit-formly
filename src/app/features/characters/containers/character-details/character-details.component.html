@@ -7,31 +7,41 @@
 </ng-container>
 
 <ng-container *ngrxLet="character$ as character">
-  <h1>{{ character.name }}</h1>
-  <mat-divider></mat-divider>
-  <app-character-details-card
-    [character]="character"
-    (prefetchLocation)="prefetchLocation($event)"
-  ></app-character-details-card>
-  <mat-card *transloco="let t">
-    <h2>{{ t('CHARACTERS.CHARACTER_EPISODES', { name: character.name }) }}</h2>
-    <div class="row">
-      <ng-container *ngrxLet="episodesDataState$ as episodesDataState">
-        <mat-progress-bar
-          *ngrxLet="episodesDataState === dataStateTypes.LOADING"
-          mode="indeterminate"
-        ></mat-progress-bar>
-      </ng-container>
-
-      <mat-list role="list" *ngrxLet="episodes$ as episodes">
-        <ng-container *ngIf="episodes">
-          <mat-list-item *ngFor="let episode of episodes; trackBy: episode?.id" role="listitem">
-            <button mat-button color="primary" [routerLink]="['/episodes', episode.id] | localize">
-              {{ episode.episode }}: {{ episode.name }}
-            </button>
-          </mat-list-item>
+  <ng-container *ngIf="character; else loadingCharacter">
+    <h1>{{ character.name }}</h1>
+    <mat-divider></mat-divider>
+    <app-character-details-card
+      [character]="character"
+      (prefetchLocation)="prefetchLocation($event)"
+    ></app-character-details-card>
+    <mat-card *transloco="let t">
+      <h2>{{ t('CHARACTERS.CHARACTER_EPISODES', { name: character.name }) }}</h2>
+      <div class="row">
+        <ng-container *ngrxLet="episodesDataState$ as episodesDataState">
+          <mat-progress-bar
+            *ngIf="episodesDataState === dataStateTypes.LOADING"
+            mode="indeterminate"
+          ></mat-progress-bar>
         </ng-container>
-      </mat-list>
-    </div>
-  </mat-card>
+
+        <mat-list role="list" *ngrxLet="episodes$ as episodes">
+          <ng-container *ngFor="let episode of episodes; trackBy: episode?.id">
+            <mat-list-item *ngIf="episode; else loadingEpisode" role="listitem">
+              <button mat-button color="primary" [routerLink]="['/episodes', episode.id] | localize">
+                {{ episode.episode }}: {{ episode.name }}
+              </button>
+            </mat-list-item>
+
+            <ng-template #loadingEpisode>
+              <app-loading-episode></app-loading-episode>
+            </ng-template>
+          </ng-container>
+        </mat-list>
+      </div>
+    </mat-card>
+  </ng-container>
+
+  <ng-template #loadingCharacter>
+    <app-loading-character></app-loading-character>
+  </ng-template>
 </ng-container>

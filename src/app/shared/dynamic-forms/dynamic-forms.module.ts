@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslocoModule } from '@ngneat/transloco';
-import { ReactiveComponentModule } from '@ngrx/component';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 import { FormlyMaterialModule } from '@ngx-formly/material';
@@ -73,7 +72,6 @@ const EXPORTED_DECLARATIONS = [
     FormlyMatDatepickerModule,
     FormlyMatFormFieldModule,
     TranslocoModule,
-    ReactiveComponentModule,
     FlexLayoutModule,
     MatNativeDateModule,
     NgxMatSelectSearchModule,
