@@ -1,4 +1,4 @@
-# **PoC Angular + PWA + Ngrx + Formly + Router State + NgRx-Entity**
+# **PoC Angular + PWA + NgRx + Router State + NgRx-Entity + Formly**
 
 [Demo of project](https://SaulMoro.github.io/poc-angular-pwa-ngrx-entity-formly-routerstate)
 
@@ -25,6 +25,7 @@ PoC of an Angular project with:
 - **Lazy Loading Features**
 - **Container / Presentational Components**(Smart / Dumb Components)
 - **Formly** for generating dynamic forms
+- [**Multilingual site**](https://developers.google.com/search/docs/advanced/crawling/managing-multi-regional-sites) with my own Transloco Localize Router plugin
 - **Performance** with the use of trackBy, OnPush, Intersection Observer ...
 
 **State Management**
@@ -41,7 +42,8 @@ PoC of an Angular project with:
 
 - **Prefetch Directive** to preload information when a component is hovered over or displayed on the screen
 - **Auto Lazy Load Images Directive** to automatically add lazy load to images if browser supports it
-- **HttpClient Loading Wrapper** to automate spinner display on certain backend calls
+- **Skeleton content loader**
+- **Auto deploy** with Github Actions
 - **Husky and lint-staged** to pass lint and prettier to changed code on commit
 - **Commitlint** to use [Convetional Commits](https://www.conventionalcommits.org/)
 
