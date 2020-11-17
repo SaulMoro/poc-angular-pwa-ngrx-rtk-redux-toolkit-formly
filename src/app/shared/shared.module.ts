@@ -37,6 +37,8 @@ import { LazyImgDirective } from './directives/lazy-img.directive';
 import { AutofocusDirective } from './directives/autofocus.directive';
 import { CharacterMiniCardComponent } from './components/character-mini-card/character-mini-card.component';
 import { CharactersDialogComponent } from './components/characters-dialog/characters-dialog.component';
+import { LoadingCharacterMiniCardComponent } from './components/loading-character-mini-card/loading-character-mini-card.component';
+import { LoadingDetailsContentComponent } from './components/loading-details-content/loading-details-content.component';
 
 const MATERIAL_MODULES = [
   MatIconModule,
@@ -63,7 +65,9 @@ const EXPORTED_DECLARATIONS = [
   LazyImgDirective,
   AutofocusDirective,
   CharacterMiniCardComponent,
+  LoadingCharacterMiniCardComponent,
   CharactersDialogComponent,
+  LoadingDetailsContentComponent,
 ];
 
 const IMPORTED_EXPORTS = [
