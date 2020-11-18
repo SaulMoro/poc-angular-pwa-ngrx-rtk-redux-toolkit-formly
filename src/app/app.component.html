@@ -1,4 +1,5 @@
 <app-header
+  [menu]="menu$ | async"
   [languages]="supportedLanguages"
   [language]="language$ | async"
   (languageChange)="onChangeLanguage($event)"

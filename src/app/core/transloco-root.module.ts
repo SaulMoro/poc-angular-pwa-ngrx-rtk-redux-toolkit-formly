@@ -29,7 +29,7 @@ export class TranslocoHttpLoader implements TranslocoLoader {
       useValue: translocoConfig({
         availableLangs: environment.supportedLanguages,
         defaultLang: getRouterLang(environment.supportedLanguages) ?? environment.defaultLanguage,
-        reRenderOnLangChange: true,
+        reRenderOnLangChange: false,
         prodMode: environment.production,
         flatten: {
           aot: environment.production,

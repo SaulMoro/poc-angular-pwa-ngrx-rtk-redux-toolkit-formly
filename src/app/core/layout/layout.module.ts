@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { TranslocoModule } from '@ngneat/transloco';
 import { TranslocoLocalizeRouterModule } from '@saulmoro/transloco-localize-router/index';
 
 // Material
@@ -31,14 +30,7 @@ const EXPORTED_DECLARATIONS = [HeaderComponent, FooterComponent];
 
 @NgModule({
   declarations: [...EXPORTED_DECLARATIONS],
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule,
-    TranslocoModule,
-    TranslocoLocalizeRouterModule,
-    ...MATERIAL_MODULES,
-  ],
+  imports: [CommonModule, FormsModule, RouterModule, TranslocoLocalizeRouterModule, ...MATERIAL_MODULES],
   exports: [...EXPORTED_DECLARATIONS],
 })
 export class LayoutModule {

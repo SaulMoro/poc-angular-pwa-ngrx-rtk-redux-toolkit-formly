@@ -5,8 +5,8 @@ import { LOCALIZE_ROUTER_CONFIG, TranslocoLocalizeRouterConfig } from './translo
 
 let service: TranslocoLocalizeRouterService;
 
-export function translateRoute(route: string | any[], lang?: string): string | any[] {
-  return service?.translate(route, lang);
+export function translateRoute<T = any>(route: string | any[], lang?: string): T {
+  return service.translateRoute(route, lang);
 }
 
 @Injectable({ providedIn: 'root' })
@@ -20,13 +20,15 @@ export class TranslocoLocalizeRouterService {
     service = this;
   }
 
-  translate(route: string | any[], lang: string = this.transloco.getActiveLang()): string | any[] {
+  translateRoute<T = any>(route: string | any[], lang: string = this.transloco.getActiveLang()): T {
     const startPath = this.showPrefix(lang) ? `/${lang}` : '';
-    return route && Array.isArray(route)
+    const translatedRoute = Array.isArray(route)
       ? startPath
         ? [startPath, ...route?.map((path: string) => String(path).replace('/', '')).filter(Boolean)]
         : [...route]
       : startPath + (route || '/');
+
+    return translatedRoute as any;
   }
 
   changeLanguage(lang: string, extras: NavigationExtras = {}): void {
@@ -34,7 +36,7 @@ export class TranslocoLocalizeRouterService {
     if (lang !== currentLang) {
       const route = this.router.url.split('?')[0]?.replace(`/${currentLang}/`, '/');
       const queryParams = this.route.snapshot.queryParams;
-      this.router.navigate([this.translate(route, lang) as string], {
+      this.router.navigate([this.translateRoute(route, lang)], {
         ...extras,
         queryParams: {
           ...queryParams,
