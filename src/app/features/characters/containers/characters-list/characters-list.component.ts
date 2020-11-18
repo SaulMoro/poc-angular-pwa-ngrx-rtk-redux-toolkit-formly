@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Character, DataState, PAGE_SIZE } from '@app/shared/models';
+import { Character, PAGE_SIZE } from '@app/shared/models';
 import { CharactersSelectors } from '@app/shared/data-access-characters';
 import { LocationsActions } from '@app/shared/data-access-locations';
 

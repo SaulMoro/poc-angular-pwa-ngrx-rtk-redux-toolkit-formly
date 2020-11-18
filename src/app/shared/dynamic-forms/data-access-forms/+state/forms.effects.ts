@@ -58,7 +58,7 @@ export class FormsEffects {
             typeof newModel[key] === 'string'
               ? newModel[key].match(DATE_FORMAT_REGEXP)
                 ? convertYYYYMMDDToDate(newModel[key])
-                : newModel[key].replace('%20', ' ')
+                : newModel[key].replace(/%20/g, ' ')
               : newModel[key];
         });
         return FormsActions.updateFormModel({ formId, model: newModel, filter: false });
