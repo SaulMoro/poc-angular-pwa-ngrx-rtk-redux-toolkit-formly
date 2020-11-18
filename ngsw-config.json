@@ -20,11 +20,13 @@
   ],
   "dataGroups": [
     {
-      "name": "dynamicImgs",
-      "urls": ["https://rickandmortyapi.com/api/character/avatar/*.jpeg"],
+      "name": "apiData",
+      "urls": ["https://rickandmortyapi.com/api/**"],
       "cacheConfig": {
-        "maxSize": 250,
-        "maxAge": "7d"
+        "strategy": "freshness",
+        "maxSize": 100,
+        "maxAge": "6h",
+        "timeout": "10s"
       }
     }
   ]
