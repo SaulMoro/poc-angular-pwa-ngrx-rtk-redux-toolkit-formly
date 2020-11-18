@@ -44,6 +44,7 @@ PoC of an Angular project with:
 - **Auto Lazy Load Images Directive** to automatically add lazy load to images if browser supports it
 - **Skeleton content loader**
 - **Auto deploy** with Github Actions
+- **CodeQL** analysis
 - **Husky and lint-staged** to pass lint and prettier to changed code on commit
 - **Commitlint** to use [Convetional Commits](https://www.conventionalcommits.org/)
 
