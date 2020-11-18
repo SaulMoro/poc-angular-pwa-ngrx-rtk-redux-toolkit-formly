@@ -1,8 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Dictionary } from '@ngrx/entity';
+import { combineLatest, Observable } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
-import { Character, DataState, Episode } from '@app/shared/models';
+import { Character, Episode } from '@app/shared/models';
 import { EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { CharactersSelectors } from '@app/shared/data-access-characters';
 
@@ -13,12 +15,15 @@ import { CharactersSelectors } from '@app/shared/data-access-characters';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EpisodeDetailsComponent implements OnInit {
-  dataState$: Observable<DataState> = this.store.select(EpisodesSelectors.getDataState);
   episode$: Observable<Episode> = this.store.select(EpisodesSelectors.getSelectedEpisode);
-  charactersDataState$: Observable<DataState> = this.store.select(CharactersSelectors.getDataState);
-  characters$: Observable<Character[]> = this.store.select(CharactersSelectors.getCharactersOfSelectedEpisode);
-
-  dataStateTypes = DataState;
+  characters$: Observable<Dictionary<Character>> = this.store.select(CharactersSelectors.getCharatersEntities);
+  loading$: Observable<boolean> = combineLatest([
+    this.store.select(EpisodesSelectors.getLoading),
+    this.store.select(CharactersSelectors.getLoading),
+  ]).pipe(
+    map(([episodeLoading, charactersLoading]) => episodeLoading || charactersLoading),
+    distinctUntilChanged()
+  );
 
   constructor(private readonly store: Store) {}
 

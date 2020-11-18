@@ -1,9 +1,5 @@
-<ng-container *ngrxLet="dataState$ as dataState">
-  <mat-progress-bar
-    *ngIf="dataState === dataStateTypes.LOADING || dataState === dataStateTypes.REFRESHING"
-    class="progress-bar--top"
-    mode="indeterminate"
-  ></mat-progress-bar>
+<ng-container *ngrxLet="loading$ as loading">
+  <mat-progress-bar *ngIf="loading" class="progress-bar--top" mode="indeterminate"></mat-progress-bar>
 </ng-container>
 
 <ng-container *transloco="let t">
@@ -15,18 +11,13 @@
       <mat-divider></mat-divider>
       <mat-card>
         <h2>{{ t('LOCATIONS.LOCATION_RESIDENTS', { name: location.name }) }}</h2>
-        <div class="row" *ngrxLet="charactersDataState$ as charactersDataState">
-          <mat-progress-bar
-            *ngIf="charactersDataState === dataStateTypes.LOADING"
-            mode="indeterminate"
-          ></mat-progress-bar>
-
-          <ng-container *ngrxLet="characters$ as characters">
-            <ng-container *ngIf="!!characters.length; else emptyCharacters">
-              <div class="col-12 col-md-6" *ngFor="let character of characters; trackBy: character?.id">
+        <div class="row">
+          <ng-container *ngIf="location.residents?.length; else emptyCharacters">
+            <ng-container *ngrxLet="characters$ as characters">
+              <div class="col-12 col-md-6" *ngFor="let characterId of location.residents; trackBy: characterId">
                 <app-character-mini-card
-                  *ngIf="character; else loadingCharacter"
-                  [character]="character"
+                  *ngIf="characters[characterId]; else loadingCharacter"
+                  [character]="characters[characterId]"
                 ></app-character-mini-card>
                 <ng-template #loadingCharacter>
                   <app-loading-character-mini-card></app-loading-character-mini-card>
@@ -35,7 +26,7 @@
             </ng-container>
 
             <ng-template #emptyCharacters>
-              <p *ngIf="charactersDataState === dataStateTypes.LOADED">{{ t('LOCATIONS.NO_RESIDENTS') }}</p>
+              <p>{{ t('LOCATIONS.NO_RESIDENTS') }}</p>
             </ng-template>
           </ng-container>
         </div>

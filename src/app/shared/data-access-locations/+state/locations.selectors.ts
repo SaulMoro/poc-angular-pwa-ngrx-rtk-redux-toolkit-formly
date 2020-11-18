@@ -12,6 +12,11 @@ const { selectAll, selectEntities, selectIds } = locationsAdapter.getSelectors()
 
 export const getDataState = createSelector(selectLocationsState, (state: State) => state?.dataState);
 
+export const getLoading = createSelector(
+  getDataState,
+  (state: DataState) => state === DataState.LOADING || state === DataState.REFRESHING
+);
+
 export const getError = createSelector(selectLocationsState, (state: State) => state?.error);
 
 export const getAllLocation = createSelector(selectLocationsState, (state: State) => state && selectAll(state));
@@ -35,6 +40,9 @@ export const getCurrentPage = createSelector(RouterSelectors.getRouteQueryParams
   params?.page ? +params?.page : 1
 );
 
+/*
+ * Locations List Selectors
+ */
 export const getLocationsOfCurrentPage = createSelector(
   getAllLocation,
   getCurrentPage,
@@ -82,6 +90,9 @@ export const getLocations = createSelectorFactory((projector) =>
     state === DataState.LOADING ? locationsFiltered : locations
 );
 
+/*
+ * Location Details Selectors
+ */
 export const getSelectedLocation = createSelectorFactory((projector) => resultMemoize(projector, isEqual))(
   getLocationEntities,
   getSelectedId,

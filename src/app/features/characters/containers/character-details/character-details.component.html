@@ -1,9 +1,5 @@
-<ng-container *ngrxLet="dataState$ as dataState">
-  <mat-progress-bar
-    *ngIf="dataState === dataStateTypes.LOADING || dataState === dataStateTypes.REFRESHING"
-    class="progress-bar--top"
-    mode="indeterminate"
-  ></mat-progress-bar>
+<ng-container *ngrxLet="loading$ as loading">
+  <mat-progress-bar *ngIf="loading" class="progress-bar--top" mode="indeterminate"></mat-progress-bar>
 </ng-container>
 
 <ng-container *ngrxLet="character$ as character">
@@ -17,13 +13,6 @@
     <mat-card *transloco="let t">
       <h2>{{ t('CHARACTERS.CHARACTER_EPISODES', { name: character.name }) }}</h2>
       <div class="row">
-        <ng-container *ngrxLet="episodesDataState$ as episodesDataState">
-          <mat-progress-bar
-            *ngIf="episodesDataState === dataStateTypes.LOADING"
-            mode="indeterminate"
-          ></mat-progress-bar>
-        </ng-container>
-
         <mat-list role="list" *ngrxLet="episodes$ as episodes">
           <ng-container *ngFor="let episode of episodes; trackBy: episode?.id">
             <mat-list-item *ngIf="episode; else loadingEpisode" role="listitem">

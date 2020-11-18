@@ -12,6 +12,11 @@ const { selectAll, selectEntities, selectIds } = episodesAdapter.getSelectors();
 
 export const getDataState = createSelector(selectEpisodesState, (state: State) => state?.dataState);
 
+export const getLoading = createSelector(
+  getDataState,
+  (state: DataState) => state === DataState.LOADING || state === DataState.REFRESHING
+);
+
 export const getError = createSelector(selectEpisodesState, (state: State) => state?.error);
 
 export const getAllEpisodes = createSelector(selectEpisodesState, (state: State) => state && selectAll(state));
@@ -35,6 +40,9 @@ export const getCurrentPage = createSelector(RouterSelectors.getRouteQueryParams
   params?.page ? +params?.page : 1
 );
 
+/*
+ * Episodes List Selectors
+ */
 export const getEpisodesOfCurrentPage = createSelector(
   getAllEpisodes,
   getCurrentPage,
@@ -80,6 +88,9 @@ export const getEpisodes = createSelectorFactory((projector) =>
     state === DataState.LOADING ? episodesFiltered : episodes
 );
 
+/*
+ * Episode Details Selectors
+ */
 export const getSelectedEpisode = createSelectorFactory((projector) => resultMemoize(projector, isEqual))(
   getEpisodesEntities,
   getSelectedId,

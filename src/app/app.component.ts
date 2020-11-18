@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
 import { TranslocoLocalizeRouterService } from '@saulmoro/transloco-localize-router/index';
 
@@ -6,7 +6,6 @@ import { TranslocoLocalizeRouterService } from '@saulmoro/transloco-localize-rou
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
   supportedLanguages = this.translate.getAvailableLangs();

@@ -1,6 +1,5 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -16,6 +15,7 @@ import { LayoutModule } from './layout/layout.module';
   imports: [
     // angular
     HttpClientModule,
+    TranslocoRootModule,
 
     // ngrx
     StoreModule.forRoot(
@@ -33,10 +33,6 @@ import { LayoutModule } from './layout/layout.module';
     // core data access
     DataAccessCoreModule,
     DataAccessRouterModule,
-
-    // 3rd party
-    TranslocoRootModule,
-    MatSnackBarModule,
   ],
   exports: [LayoutModule],
 })

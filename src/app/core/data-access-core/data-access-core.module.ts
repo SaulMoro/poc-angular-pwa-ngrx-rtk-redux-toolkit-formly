@@ -5,6 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 
 import * as fromCore from './+state/core.reducer';
@@ -19,6 +20,7 @@ import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.com
     CommonModule,
     TranslocoModule,
     MatDialogModule,
+    MatSnackBarModule,
     MatButtonModule,
 
     StoreModule.forFeature(fromCore.CORE_FEATURE_KEY, fromCore.coreReducers),

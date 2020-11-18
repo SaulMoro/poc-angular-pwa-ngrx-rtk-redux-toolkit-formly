@@ -16,12 +16,10 @@ import { LocationsActions } from '@app/shared/data-access-locations';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CharactersListComponent implements OnInit {
-  dataState$: Observable<DataState> = this.store.select(CharactersSelectors.getDataState);
   characters$: Observable<Character[]> = this.store.select(CharactersSelectors.getCharacters);
+  loading$: Observable<boolean> = this.store.select(CharactersSelectors.getLoading);
   totalCharacters$: Observable<number> = this.store.select(CharactersSelectors.getTotalCharacters);
   pageIndex$: Observable<number> = this.store.select(CharactersSelectors.getCurrentPage).pipe(map((page) => page - 1));
-
-  dataStateTypes = DataState;
   pageSize = PAGE_SIZE;
 
   constructor(private readonly store: Store, private router: Router) {}

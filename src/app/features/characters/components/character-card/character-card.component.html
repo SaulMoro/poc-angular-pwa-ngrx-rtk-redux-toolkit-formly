@@ -21,17 +21,25 @@
           <a
             mat-button
             color="primary"
-            [routerLink]="['/locations', character.location?.id] | localize"
-            (prefetch)="prefetchOnHoverLocation(character.location?.id)"
+            [routerLink]="['/locations', character.location.id] | localize"
+            (prefetch)="prefetchOnHoverLocation(character.location.id)"
           >
             {{ character.location?.name }}
           </a>
         </p>
         <p>
           {{ t('CHARACTERS.FIRST_SEEN') }}<br />
-          <a mat-button color="primary" [routerLink]="['/episodes', character.firstEpisode?.id] | localize">
-            {{ character.firstEpisode?.name }}
+          <a
+            *ngIf="character.firstEpisode?.name; else loadingEpisode"
+            mat-button
+            color="primary"
+            [routerLink]="['/episodes', character.firstEpisode.id] | localize"
+          >
+            {{ character.firstEpisode.name }}
           </a>
+          <ng-template #loadingEpisode>
+            <app-loading-episode></app-loading-episode>
+          </ng-template>
         </p>
       </mat-card-content>
     </div>
