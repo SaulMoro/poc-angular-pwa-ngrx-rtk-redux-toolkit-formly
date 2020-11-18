@@ -38,7 +38,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          npm run ng build --prod --base-href \"/poc-angular-pwa-ngrx-entity-formly-routerstate/\"
-          npm run transloco:optimize
-          npx angular-cli-ghpages --repo=https://${{ secrets.GH_TOKEN }}@github.com/SaulMoro/poc-angular-pwa-ngrx-entity-formly-routerstate.git --name="SaulMoro" --email=smoro@atsistemas.com
           # npm run deploy -- --name="SaulMoro" --email=smoro@atsistemas.com

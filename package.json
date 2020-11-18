@@ -8,7 +8,7 @@
     "start:hmr": "npm run start -- --hmr",
     "build": "ng build --prod && npm run transloco:optimize",
     "deploy": "ng deploy --base-href=/poc-angular-pwa-ngrx-entity-formly-routerstate/",
-    "deploy:standalone": "ng build --prod --base-href \"/poc-angular-pwa-ngrx-entity-formly-routerstate/\" && npm run transloco:optimize && npx angular-cli-ghpages",
+    "deploy:standalone": "ng build --prod --base-href \"/poc-angular-pwa-ngrx-entity-formly-routerstate/\" && npm run transloco:optimize && npx angular-cli-ghpages --dir=dist/angular-pwa-ngrx-formly-routerstate",
     "test": "ng test",
     "lint": "ng lint && stylelint \"**/*.scss\" --syntax scss && htmlhint \"src/app/**/*.html\" --config .htmlhintrc",
     "e2e": "ng e2e",
