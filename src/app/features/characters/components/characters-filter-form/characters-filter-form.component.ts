@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { translate } from '@ngneat/transloco';
+import { TranslocoService } from '@ngneat/transloco';
 import { FormConfig, generateFilterForm } from '@app/shared/dynamic-forms';
 import { CharacterGender, CharacterSpecies, CharacterStatus, FormIds, Option } from '@app/shared/models';
 
@@ -20,7 +20,7 @@ export class CharactersFilterFormComponent implements OnInit {
   genders: Option[];
   species: Option[];
 
-  constructor() {}
+  constructor(private translate: TranslocoService) {}
 
   ngOnInit(): void {
     this._initOptions();
@@ -44,7 +44,9 @@ export class CharactersFilterFormComponent implements OnInit {
               className: 'flex-25',
               templateOptions: {
                 floatLabel: 'always',
-                label: translate('CHARACTERS.FIELDS.NAME'),
+              },
+              expressionProperties: {
+                'templateOptions.label': this.translate.selectTranslate('CHARACTERS.FIELDS.NAME'),
               },
             },
             {
@@ -53,11 +55,13 @@ export class CharactersFilterFormComponent implements OnInit {
               className: 'flex-25',
               templateOptions: {
                 floatLabel: 'always',
-                label: translate('CHARACTERS.FIELDS.STATUS'),
-                placeholder: translate('CHARACTERS.PLACEHOLDERS.STATUS'),
+                placeholder: 'CHARACTERS.PLACEHOLDERS.STATUS',
                 autocomplete: true,
                 showIcon: false,
                 searchOptions: this.status,
+              },
+              expressionProperties: {
+                'templateOptions.label': this.translate.selectTranslate('CHARACTERS.FIELDS.STATUS'),
               },
             },
             {
@@ -66,11 +70,13 @@ export class CharactersFilterFormComponent implements OnInit {
               className: 'flex-25',
               templateOptions: {
                 floatLabel: 'always',
-                label: translate('CHARACTERS.FIELDS.GENDER'),
-                placeholder: translate('CHARACTERS.PLACEHOLDERS.GENDER'),
+                placeholder: 'CHARACTERS.PLACEHOLDERS.GENDER',
                 autocomplete: true,
                 showIcon: false,
                 searchOptions: this.genders,
+              },
+              expressionProperties: {
+                'templateOptions.label': this.translate.selectTranslate('CHARACTERS.FIELDS.GENDER'),
               },
             },
             {
@@ -79,11 +85,13 @@ export class CharactersFilterFormComponent implements OnInit {
               className: 'flex-25',
               templateOptions: {
                 floatLabel: 'always',
-                label: translate('CHARACTERS.FIELDS.SPECIES'),
-                placeholder: translate('CHARACTERS.PLACEHOLDERS.SPECIES'),
+                placeholder: 'CHARACTERS.PLACEHOLDERS.SPECIES',
                 autocomplete: true,
                 showIcon: false,
                 searchOptions: this.species,
+              },
+              expressionProperties: {
+                'templateOptions.label': this.translate.selectTranslate('CHARACTERS.FIELDS.SPECIES'),
               },
             },
           ],

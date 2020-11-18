@@ -15,7 +15,7 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
         [id]="id"
         [formControl]="formControl"
         [formlyAttributes]="field"
-        [placeholder]="to.placeholder"
+        [placeholder]="t(to.placeholder)"
         [tabindex]="to.tabindex || 0"
         (selectionChange)="change($event)"
         [errorStateMatcher]="errorStateMatcher"
@@ -24,7 +24,7 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
       >
         <mat-option>
           <ngx-mat-select-search
-            [placeholderLabel]="searchLabel"
+            [placeholderLabel]="t(searchLabel)"
             [noEntriesFoundLabel]="t(notFoundLabel)"
             [formControl]="dataFilterCtrl"
           ></ngx-mat-select-search>
