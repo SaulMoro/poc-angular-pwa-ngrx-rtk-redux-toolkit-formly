@@ -38,4 +38,5 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          npm run deploy -- --name="SaulMoro" --email=smoro@atsistemas.com
+          npm run deploy:standalone
+          # npm run deploy -- --name="SaulMoro" --email=smoro@atsistemas.com
