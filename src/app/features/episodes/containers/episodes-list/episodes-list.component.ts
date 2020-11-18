@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinct, map } from 'rxjs/operators';
 
-import { DataState, Episode, PAGE_SIZE } from '@app/shared/models';
+import { Episode, PAGE_SIZE } from '@app/shared/models';
 import { untilDestroyed } from '@app/shared/pipes';
 import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
 import {
@@ -21,12 +21,11 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EpisodesListComponent implements OnInit, OnDestroy {
-  dataState$: Observable<DataState> = this.store.select(EpisodesSelectors.getDataState);
   episodes$: Observable<Episode[]> = this.store.select(EpisodesSelectors.getEpisodes);
+  loading$: Observable<boolean> = this.store.select(EpisodesSelectors.getLoading);
   totalEpisodes$: Observable<number> = this.store.select(EpisodesSelectors.getTotalEpisodes);
   pageIndex$: Observable<number> = this.store.select(EpisodesSelectors.getCurrentPage).pipe(map((page) => page - 1));
 
-  dataStateTypes = DataState;
   pageSize = PAGE_SIZE;
   displayedColumns = ['id', 'episode', 'name', 'air_date', 'characters'];
 

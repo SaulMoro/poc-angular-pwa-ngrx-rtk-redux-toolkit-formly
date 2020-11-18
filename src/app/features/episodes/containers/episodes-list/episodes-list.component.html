@@ -1,11 +1,7 @@
 <app-episodes-filter-form></app-episodes-filter-form>
 
-<ng-container *ngrxLet="dataState$ as dataState">
-  <mat-progress-bar
-    *ngIf="dataState === dataStateTypes.LOADING || dataState === dataStateTypes.REFRESHING"
-    class="progress-bar--top"
-    mode="indeterminate"
-  ></mat-progress-bar>
+<ng-container *ngrxLet="loading$ as loading">
+  <mat-progress-bar *ngIf="loading" class="progress-bar--top" mode="indeterminate"></mat-progress-bar>
 </ng-container>
 
 <ng-container *ngrxLet="episodes$ as episodes">

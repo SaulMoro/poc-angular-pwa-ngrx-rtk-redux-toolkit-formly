@@ -1,45 +1,38 @@
-<ng-container *ngrxLet="dataState$ as dataState">
-  <mat-progress-bar
-    *ngIf="dataState === dataStateTypes.LOADING || dataState === dataStateTypes.REFRESHING"
-    class="progress-bar--top"
-    mode="indeterminate"
-  ></mat-progress-bar>
+<ng-container *ngrxLet="loading$ as loading">
+  <mat-progress-bar *ngIf="loading" class="progress-bar--top" mode="indeterminate"></mat-progress-bar>
 </ng-container>
 
-<ng-container *ngrxLet="episode$ as episode">
-  <ng-container *ngIf="episode; else loadingEpisode">
-    <h1>{{ episode.episode }}: {{ episode.name }} ({{ episode.air_date }})</h1>
-    <mat-divider></mat-divider>
-    <mat-card *transloco="let t">
-      <h2>{{ t('EPISODES.EPISODE_CHARACTERS', { name: episode.name }) }}</h2>
-      <div class="row" *ngrxLet="charactersDataState$ as charactersDataState">
-        <mat-progress-bar
-          *ngIf="charactersDataState === dataStateTypes.LOADING"
-          mode="indeterminate"
-        ></mat-progress-bar>
+<ng-container *transloco="let t">
+  <ng-container *ngrxLet="episode$ as episode">
+    <ng-container *ngIf="episode; else loadingEpisode">
+      <h1>{{ episode.episode }}: {{ episode.name }} ({{ episode.air_date }})</h1>
+      <mat-divider></mat-divider>
+      <mat-card>
+        <h2>{{ t('EPISODES.EPISODE_CHARACTERS', { name: episode.name }) }}</h2>
+        <div class="row">
+          <ng-container *ngIf="episode.characters?.length; else emptyCharacters">
+            <ng-container *ngrxLet="characters$ as characters">
+              <div class="col-12 col-md-6" *ngFor="let characterId of episode.characters; trackBy: characterId">
+                <app-character-mini-card
+                  *ngIf="characters[characterId]; else loadingCharacter"
+                  [character]="characters[characterId]"
+                ></app-character-mini-card>
+                <ng-template #loadingCharacter>
+                  <app-loading-character-mini-card></app-loading-character-mini-card>
+                </ng-template>
+              </div>
+            </ng-container>
 
-        <ng-container *ngrxLet="characters$ as characters">
-          <ng-container *ngIf="!!characters.length; else emptyCharacters">
-            <div class="col-12 col-md-6" *ngFor="let character of characters; trackBy: character?.id">
-              <app-character-mini-card
-                *ngIf="character; else loadingCharacter"
-                [character]="character"
-              ></app-character-mini-card>
-              <ng-template #loadingCharacter>
-                <app-loading-character-mini-card></app-loading-character-mini-card>
-              </ng-template>
-            </div>
+            <ng-template #emptyCharacters>
+              <p>{{ t('EPISODES.NO_CHARATERS') }}</p>
+            </ng-template>
           </ng-container>
+        </div>
+      </mat-card>
+    </ng-container>
 
-          <ng-template #emptyCharacters>
-            <p *ngIf="charactersDataState === dataStateTypes.LOADED">{{ t('EPISODES.NO_CHARATERS') }}</p>
-          </ng-template>
-        </ng-container>
-      </div>
-    </mat-card>
+    <ng-template #loadingEpisode>
+      <app-loading-details-content></app-loading-details-content>
+    </ng-template>
   </ng-container>
-
-  <ng-template #loadingEpisode>
-    <app-loading-details-content></app-loading-details-content>
-  </ng-template>
 </ng-container>

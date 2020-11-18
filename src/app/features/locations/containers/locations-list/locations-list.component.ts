@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinct, map } from 'rxjs/operators';
 
-import { DataState, Location, PAGE_SIZE } from '@app/shared/models';
+import { Location, PAGE_SIZE } from '@app/shared/models';
 import { untilDestroyed } from '@app/shared/pipes';
 import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
 import {
@@ -21,12 +21,11 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationsListComponent implements OnInit, OnDestroy {
-  dataState$: Observable<DataState> = this.store.select(LocationsSelectors.getDataState);
   locations$: Observable<Location[]> = this.store.select(LocationsSelectors.getLocations);
+  loading$: Observable<boolean> = this.store.select(LocationsSelectors.getLoading);
   totalLocations$: Observable<number> = this.store.select(LocationsSelectors.getTotalLocations);
   pageIndex$: Observable<number> = this.store.select(LocationsSelectors.getCurrentPage).pipe(map((page) => page - 1));
 
-  dataStateTypes = DataState;
   pageSize = PAGE_SIZE;
   displayedColumns = ['id', 'name', 'type', 'dimension', 'residents'];
 

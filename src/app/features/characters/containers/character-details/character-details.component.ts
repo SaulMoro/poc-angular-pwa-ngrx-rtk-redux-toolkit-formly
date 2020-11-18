@@ -3,8 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { CharactersSelectors } from '@app/shared/data-access-characters';
-import { DataState, Character, Episode } from '@app/shared/models';
-import { EpisodesSelectors } from '@app/shared/data-access-episodes';
+import { Character, Episode } from '@app/shared/models';
 import { LocationsActions } from '@app/shared/data-access-locations';
 
 @Component({
@@ -14,12 +13,9 @@ import { LocationsActions } from '@app/shared/data-access-locations';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CharacterDetailsComponent implements OnInit {
-  dataState$: Observable<DataState> = this.store.select(CharactersSelectors.getDataState);
   character$: Observable<Character> = this.store.select(CharactersSelectors.getSelectedCharacter);
-  episodesDataState$: Observable<DataState> = this.store.select(EpisodesSelectors.getDataState);
+  loading$: Observable<boolean> = this.store.select(CharactersSelectors.getLoadingCharacter);
   episodes$: Observable<Episode[]> = this.store.select(CharactersSelectors.getEpisodesOfSelectedCharacter);
-
-  dataStateTypes = DataState;
 
   constructor(private readonly store: Store) {}
 

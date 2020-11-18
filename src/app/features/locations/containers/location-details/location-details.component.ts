@@ -1,8 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Dictionary } from '@ngrx/entity';
+import { combineLatest, Observable } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
-import { Character, DataState, Location } from '@app/shared/models';
+import { Character, Location } from '@app/shared/models';
 import { LocationsSelectors } from '@app/shared/data-access-locations';
 import { CharactersSelectors } from '@app/shared/data-access-characters';
 
@@ -13,12 +15,15 @@ import { CharactersSelectors } from '@app/shared/data-access-characters';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationDetailsComponent implements OnInit {
-  dataState$: Observable<DataState> = this.store.select(LocationsSelectors.getDataState);
   location$: Observable<Location> = this.store.select(LocationsSelectors.getSelectedLocation);
-  charactersDataState$: Observable<DataState> = this.store.select(CharactersSelectors.getDataState);
-  characters$: Observable<Character[]> = this.store.select(CharactersSelectors.getCharactersOfSelectedLocation);
-
-  dataStateTypes = DataState;
+  characters$: Observable<Dictionary<Character>> = this.store.select(CharactersSelectors.getCharatersEntities);
+  loading$: Observable<boolean> = combineLatest([
+    this.store.select(LocationsSelectors.getLoading),
+    this.store.select(CharactersSelectors.getLoading),
+  ]).pipe(
+    map(([locationLoading, charactersLoading]) => locationLoading || charactersLoading),
+    distinctUntilChanged()
+  );
 
   constructor(private readonly store: Store) {}
 
