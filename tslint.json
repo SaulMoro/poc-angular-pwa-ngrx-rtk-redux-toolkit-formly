@@ -96,8 +96,6 @@
     "rxjs-no-unsafe-switchmap": {
       "severity": "error"
     },
-    "ngrx-no-typed-store": false,
-    "ngrx-no-multiple-actions-in-effects": false,
     "directive-selector": [true, "attribute", "app", "camelCase"],
     "component-selector": [true, "element", "app", "kebab-case"]
   }

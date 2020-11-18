@@ -42,6 +42,7 @@ const TRANSLOCO_LOCALIZE_ROUTER: TranslocoLocalizeRouter = initTranslocoLocalize
     RouterModule.forRoot(TRANSLOCO_LOCALIZE_ROUTER.routes, {
       preloadingStrategy: PreloadAllModules,
       scrollPositionRestoration: 'enabled',
+      useHash: true, // Supports github.io demo page
     }),
   ],
   exports: [RouterModule],

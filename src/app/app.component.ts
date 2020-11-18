@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
-import { TranslocoLocalizeRouterService } from '@saulmoro/transloco-localize-router/index';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { UiActions } from '@app/core/data-access-core';
 import { MenuItem } from '@app/core/layout/models';
 
 @Component({
@@ -33,11 +34,11 @@ export class AppComponent implements OnInit {
       ])
     );
 
-  constructor(private translate: TranslocoService, private translatoLozalizeRouter: TranslocoLocalizeRouterService) {}
+  constructor(private translate: TranslocoService, private store: Store) {}
 
   ngOnInit(): void {}
 
   onChangeLanguage(lang: string): void {
-    this.translatoLozalizeRouter.changeLanguage(lang);
+    this.store.dispatch(UiActions.changeLanguage({ lang }));
   }
 }
