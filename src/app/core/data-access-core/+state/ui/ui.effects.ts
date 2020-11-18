@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { translate } from '@ngneat/transloco';
+import { TranslocoLocalizeRouterService } from '@saulmoro/transloco-localize-router/index';
 import { select, Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap, withLatestFrom } from 'rxjs/operators';
@@ -15,13 +16,21 @@ import { AlertDialogComponent } from '../../components/alert-dialog/alert-dialog
 
 @Injectable()
 export class UiEffects {
+  changeLanguage$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(UiActions.changeLanguage),
+        map(({ lang }) => this.translocoLocalizeRouter.changeLanguage(lang))
+      ),
+    { dispatch: false }
+  );
+
   setAppTitle$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(CoreActions.newNavigationData),
+        ofType(CoreActions.newNavigationData, UiActions.changeLanguage),
         withLatestFrom(this.store.pipe(select(UiSelectors.getTitle))),
-        // tslint:disable-next-line: rxjs-no-unsafe-switchmap
-        switchMap(([, title]) => this.titleService.setTitle(title))
+        switchMap(([action, title]: any[]) => this.titleService.setTitle(title, action.lang))
       ),
     { dispatch: false }
   );
@@ -31,7 +40,6 @@ export class UiEffects {
       this.actions$.pipe(
         ofType(UiActions.newDetailPageTitle),
         withLatestFrom(this.store.pipe(select(UiSelectors.getTitle))),
-        // tslint:disable-next-line: rxjs-no-unsafe-switchmap
         switchMap(([, title]) => this.titleService.setDetailTitle(title))
       ),
     { dispatch: false }
@@ -68,6 +76,7 @@ export class UiEffects {
     private actions$: Actions,
     private store: Store,
     private titleService: TitleService,
+    private translocoLocalizeRouter: TranslocoLocalizeRouterService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}

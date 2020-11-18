@@ -9,7 +9,6 @@ import { RouterSelectors } from '@app/core/data-access-router';
 import { fromStore } from '@app/shared/ngrx-utils';
 import * as FormsActions from './forms.actions';
 import * as FormsSelectors from './forms.selectors';
-import { FormsPartialState } from './forms.reducer';
 
 @Injectable()
 export class FormsEffects {
@@ -74,5 +73,5 @@ export class FormsEffects {
     )
   );
 
-  constructor(private actions$: Actions, private store$: Store<FormsPartialState>, private router: Router) {}
+  constructor(private actions$: Actions, private store$: Store, private router: Router) {}
 }

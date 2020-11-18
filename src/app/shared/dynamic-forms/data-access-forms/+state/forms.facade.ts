@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 
-import * as fromForms from './forms.reducer';
 import * as FormsSelectors from './forms.selectors';
 import * as FormsActions from './forms.actions';
 
@@ -13,7 +12,7 @@ export class FormsFacade {
   isFormValid$ = (formId: string) => this.formById$(formId).pipe(map((form) => form?.valid));
   fieldOfFormModel$ = (formId: string, field: string) => this.formById$(formId).pipe(map((form) => form?.model[field]));
 
-  constructor(private store: Store<fromForms.FormsPartialState>) {}
+  constructor(private store: Store) {}
 
   initForm(formId: string, initialModel: any, filter: boolean = false): void {
     this.store.dispatch(FormsActions.initForm({ formId, initialModel, filter }));
