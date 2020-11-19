@@ -13,7 +13,7 @@ export class GoogleAnalyticsService {
 
   sendEvent(eventName: string, eventCategory: string, eventLabel: string = null, eventValue: number = null): void {
     if (!environment.gaTrackingId) {
-      // console.warn('not triggering analytics event without gtag');
+      console.warn('not triggering analytics event without gtag');
       console.log('sendEvent', { eventName, eventCategory, eventLabel, eventValue });
       return;
     }
@@ -27,7 +27,7 @@ export class GoogleAnalyticsService {
 
   sendPageView(url: string, title?: string): void {
     if (!environment.gaTrackingId) {
-      // console.warn('not triggering analytics event without gtag');
+      console.warn('not triggering analytics event without gtag');
       console.log('sendPageView', { page_title: title, page_path: url });
       return;
     }
