@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { merge, of } from 'rxjs';
-import { concatMap, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { mapToRouterState, ofRouteEnter, RouterSelectors } from '@app/core/data-access-router';
+import { ofRouteEnter, ofRouteLangChange, RouterSelectors } from '@app/core/data-access-router';
 import { TranslocoLocalizeRouterService } from '@app/core/transloco-localize-router';
 import * as CoreActions from './core.actions';
 import { GoogleAnalyticsService, TitleService } from '../services';
-import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 
 @Injectable()
 export class CoreEffects {
@@ -22,47 +21,36 @@ export class CoreEffects {
   );
 
   setAppTitle$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(ROUTER_NAVIGATION),
-      mapToRouterState(),
-      map(({ data }) => data.title),
-      filter(Boolean),
-      switchMap((title: string) =>
+    merge(
+      this.actions$.pipe(
+        ofRouteEnter(/.*/),
+        map(({ data }) => ({ title: data.title })),
+        filter(Boolean)
+      ),
+      this.actions$.pipe(
+        ofRouteLangChange(/.*/),
+        map(({ data }) => ({ title: data.title }))
+      ),
+      this.actions$.pipe(
+        ofType(
+          CoreActions.enterCharacterDetailsPage,
+          CoreActions.enterLocationDetailsPage,
+          CoreActions.enterEpisodeDetailsPage
+        )
+      )
+    ).pipe(
+      switchMap(({ title }) =>
         this.titleService.setTitle(title).pipe(map((translatedTitle) => CoreActions.changedTitle({ translatedTitle })))
       )
     )
   );
 
-  setAppDetailsTitle$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(
-        CoreActions.enterCharacterDetailsPage,
-        CoreActions.enterLocationDetailsPage,
-        CoreActions.enterEpisodeDetailsPage
-      ),
-      switchMap(({ title }) =>
-        this.titleService
-          .setDetailsTitle(title)
-          .pipe(map((translatedTitle) => CoreActions.changedTitle({ translatedTitle })))
-      )
-    )
-  );
-
-  sendGAPageView$ = createEffect(
+  sendGAPageViewWithTitle$ = createEffect(
     () =>
-      merge(
-        this.actions$.pipe(ofType(CoreActions.changedTitle)),
-        this.actions$.pipe(
-          ofType(ROUTER_NAVIGATION),
-          mapToRouterState(),
-          map(({ data }) => data.title),
-          filter((title) => !title)
-        )
-      ).pipe(
+      this.actions$.pipe(
+        ofType(CoreActions.changedTitle),
         concatMap((action) => of(action).pipe(withLatestFrom(this.store.pipe(select(RouterSelectors.getCurrentUrl))))),
-        map(([action, url]) =>
-          this.googleAnalyticsService.sendPageView(url, action?.title ?? this.titleService.getCurrentTitle())
-        )
+        map(([{ translatedTitle }, url]) => this.googleAnalyticsService.sendPageView(url, translatedTitle))
       ),
     { dispatch: false }
   );

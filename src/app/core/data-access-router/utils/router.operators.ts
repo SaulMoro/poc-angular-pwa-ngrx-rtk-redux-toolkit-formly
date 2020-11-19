@@ -46,6 +46,14 @@ export function ofRoutePageChange(routeCheck: string | string[] | RegExp): Opera
   );
 }
 
+export function ofRouteLangChange(routeCheck: string | string[] | RegExp): OperatorFunction<Action, RouterStateUrl> {
+  return pipe(
+    ofRoute(routeCheck),
+    filter(({ route, prevRoute }) => route === prevRoute),
+    distinctUntilChanged(({ params: prevParams }, { params: currParams }) => prevParams?.lang === currParams?.lang)
+  );
+}
+
 export function mapToRouterState(): OperatorFunction<Action, RouterStateUrl> {
   return map((action: RouterNavigationAction<RouterStateUrl>) => action.payload.routerState);
 }
