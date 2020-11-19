@@ -7,6 +7,7 @@ export const environment = {
   apiUrl: '/api',
   supportedLanguages: ['en', 'es'],
   defaultLanguage: 'en',
+  gaTrackingId: '',
 };
 
 /*

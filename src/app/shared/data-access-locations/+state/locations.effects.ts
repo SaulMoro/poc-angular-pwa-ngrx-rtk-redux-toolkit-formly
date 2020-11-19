@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { translate } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { asyncScheduler, of } from 'rxjs';
 import { map, debounceTime, exhaustMap, switchMap, filter, catchError, mergeMap, takeUntil } from 'rxjs/operators';
 
-import { ofRouteEnter, ofRouteFilter, ofRoutePageChange } from '@app/core/data-access-router';
-import { UiActions } from '@app/core/data-access-core';
+import { CoreActions } from '@app/core/data-access-core';
+import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
 import { ofFilterForm } from '@app/shared/dynamic-forms';
 import { FormIds } from '@app/shared/models';
 import { fromStore } from '@app/shared/ngrx-utils';
+import { AlertDialogComponent } from '@app/shared/components/alert-dialog/alert-dialog.component';
 import * as LocationsActions from './locations.actions';
 import * as LocationsApiActions from './locations-api.actions';
 import * as LocationsSelectors from './locations.selectors';
@@ -146,7 +149,7 @@ export class LocationsEffects {
   updateTitleOnLoadLocationDetails$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LocationsApiActions.loadLocationSuccess),
-      map(({ location }) => UiActions.newDetailPageTitle({ title: location.name }))
+      map(({ location }) => CoreActions.enterLocationDetailsPage({ title: location.name }))
     )
   );
 
@@ -154,7 +157,11 @@ export class LocationsEffects {
     this.actions$.pipe(
       ofType(LocationsApiActions.loadLocationsFailure, LocationsApiActions.loadLocationFailure),
       exhaustMap(({ error }) =>
-        of(UiActions.showErrorDialog(!!error.errorMessage ? { message: error.errorMessage } : {}))
+        this.dialog
+          .open(AlertDialogComponent, {
+            data: [!!error.errorMessage ? error.errorMessage : translate('ERRORS.BACKEND'), translate('ERRORS.RETRY')],
+          })
+          .afterClosed()
       )
     )
   );
@@ -163,6 +170,7 @@ export class LocationsEffects {
     private actions$: Actions,
     private store: Store,
     private locationsService: LocationsService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 }

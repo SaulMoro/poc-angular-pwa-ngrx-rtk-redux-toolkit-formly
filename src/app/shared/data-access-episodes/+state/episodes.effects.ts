@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { translate } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { asyncScheduler, of } from 'rxjs';
 import { map, debounceTime, exhaustMap, switchMap, filter, catchError, mergeMap } from 'rxjs/operators';
 
-import { ofRouteEnter, ofRouteFilter, ofRoutePageChange } from '@app/core/data-access-router';
-import { UiActions } from '@app/core/data-access-core';
+import { CoreActions } from '@app/core/data-access-core';
+import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
 import { ofFilterForm } from '@app/shared/dynamic-forms';
 import { FormIds } from '@app/shared/models';
 import { fromStore } from '@app/shared/ngrx-utils';
+import { AlertDialogComponent } from '@app/shared/components/alert-dialog/alert-dialog.component';
 import * as EpisodesActions from './episodes.actions';
 import * as EpisodesApiActions from './episodes-api.actions';
 import * as EpisodesSelectors from './episodes.selectors';
@@ -138,7 +141,7 @@ export class EpisodesEffects {
   updateTitleOnLoadEpisodeDetails$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EpisodesApiActions.loadEpisodeSuccess),
-      map(({ episode }) => UiActions.newDetailPageTitle({ title: episode.name }))
+      map(({ episode }) => CoreActions.enterEpisodeDetailsPage({ title: episode.name }))
     )
   );
 
@@ -150,7 +153,11 @@ export class EpisodesEffects {
         EpisodesApiActions.loadEpisodesFromIdsFailure
       ),
       exhaustMap(({ error }) =>
-        of(UiActions.showErrorDialog(!!error.errorMessage ? { message: error.errorMessage } : {}))
+        this.dialog
+          .open(AlertDialogComponent, {
+            data: [!!error.errorMessage ? error.errorMessage : translate('ERRORS.BACKEND'), translate('ERRORS.RETRY')],
+          })
+          .afterClosed()
       )
     )
   );
@@ -159,6 +166,7 @@ export class EpisodesEffects {
     private actions$: Actions,
     private store: Store,
     private episodesService: EpisodesService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 }

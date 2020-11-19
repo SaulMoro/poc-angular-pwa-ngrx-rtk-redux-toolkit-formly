@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { UiActions } from '@app/core/data-access-core';
+import { CoreActions } from '@app/core/data-access-core';
 import { MenuItem } from '@app/core/layout/models';
 
 @Component({
@@ -39,6 +39,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {}
 
   onChangeLanguage(lang: string): void {
-    this.store.dispatch(UiActions.changeLanguage({ lang }));
+    this.store.dispatch(CoreActions.changeLanguage({ lang }));
   }
 }

@@ -34,6 +34,8 @@ export const getRouteParam = createSelector(
 
 export const getRouteIdParam = createSelector(getRouteParams, (params: Params) => params?.id);
 
+export const getRouteLangParam = createSelector(getRouteParams, (params: Params) => params?.lang);
+
 export const getRouteData = createSelector(getRouterState, (state: RouterStateUrl) => state?.data);
 
 export const getRouteTitleData = createSelector(getRouteData, (data: Data) => data?.title);

@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { translate } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { asyncScheduler, of } from 'rxjs';
 import { map, debounceTime, exhaustMap, switchMap, filter, catchError, mergeMap } from 'rxjs/operators';
 
-import { ofRouteEnter, ofRouteFilter, ofRoutePageChange } from '@app/core/data-access-router';
-import { UiActions } from '@app/core/data-access-core';
+import { CoreActions } from '@app/core/data-access-core';
+import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
 import { ofFilterForm } from '@app/shared/dynamic-forms';
 import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
 import { EpisodesActions, EpisodesApiActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { FormIds } from '@app/shared/models';
 import { fromStore } from '@app/shared/ngrx-utils';
+import { AlertDialogComponent } from '@app/shared/components/alert-dialog/alert-dialog.component';
 import * as CharactersActions from './characters.actions';
 import * as CharactersApiActions from './characters-api.actions';
 import * as CharactersSelectors from './characters.selectors';
@@ -153,7 +156,7 @@ export class CharactersEffects {
   updateTitleOnLoadCharacterDetails$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CharactersApiActions.loadCharacterSuccess),
-      map(({ character }) => UiActions.newDetailPageTitle({ title: character.name }))
+      map(({ character }) => CoreActions.enterCharacterDetailsPage({ title: character.name }))
     )
   );
 
@@ -184,7 +187,11 @@ export class CharactersEffects {
         CharactersApiActions.loadCharactersFromIdsFailure
       ),
       exhaustMap(({ error }) =>
-        of(UiActions.showErrorDialog(!!error.errorMessage ? { message: error.errorMessage } : {}))
+        this.dialog
+          .open(AlertDialogComponent, {
+            data: [!!error.errorMessage ? error.errorMessage : translate('ERRORS.BACKEND'), translate('ERRORS.RETRY')],
+          })
+          .afterClosed()
       )
     )
   );
@@ -193,6 +200,7 @@ export class CharactersEffects {
     private actions$: Actions,
     private store: Store,
     private charactersService: CharactersService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 }

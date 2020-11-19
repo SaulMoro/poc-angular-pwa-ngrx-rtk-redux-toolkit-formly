@@ -3,4 +3,5 @@ export const environment = {
   apiUrl: 'https://rickandmortyapi.com/api',
   supportedLanguages: ['en', 'es'],
   defaultLanguage: 'en',
+  gaTrackingId: 'G-4MNDX3NZP2',
 };

@@ -208,8 +208,6 @@ xxxeffect$ = createEffect(() =>
 
 Utility that helps us to obtain, through the use of selectors, part of the state in an effect
 
-There is the getFromStore alternative, which does the same but starting an observable, instead of reusing the existing stream.
-
 ```javascript
 // Example
 loadCharacters$ = createEffect(() =>
