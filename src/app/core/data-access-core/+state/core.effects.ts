@@ -21,36 +21,47 @@ export class CoreEffects {
     { dispatch: false }
   );
 
-  setAppTitle$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(ROUTER_NAVIGATION),
-        mapToRouterState(),
-        filter(({ data }) => data.title), // Skip details pages
-        switchMap(({ data, params, url }) =>
-          this.titleService
-            .setTitle(data.title, params.lang)
-            .pipe(map((translatedTitle) => this.googleAnalyticsService.sendPageView(url, translatedTitle)))
-        )
-      ),
-    { dispatch: false }
+  setAppTitle$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ROUTER_NAVIGATION),
+      mapToRouterState(),
+      map(({ data }) => data.title),
+      filter(Boolean),
+      switchMap((title: string) =>
+        this.titleService.setTitle(title).pipe(map((translatedTitle) => CoreActions.changedTitle({ translatedTitle })))
+      )
+    )
   );
 
-  setAppDetailsTitle$ = createEffect(
+  setAppDetailsTitle$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        CoreActions.enterCharacterDetailsPage,
+        CoreActions.enterLocationDetailsPage,
+        CoreActions.enterEpisodeDetailsPage
+      ),
+      switchMap(({ title }) =>
+        this.titleService
+          .setDetailsTitle(title)
+          .pipe(map((translatedTitle) => CoreActions.changedTitle({ translatedTitle })))
+      )
+    )
+  );
+
+  sendGAPageView$ = createEffect(
     () =>
-      this.actions$.pipe(
-        ofType(
-          CoreActions.enterCharacterDetailsPage,
-          CoreActions.enterLocationDetailsPage,
-          CoreActions.enterEpisodeDetailsPage
-        ),
-        switchMap(({ title }) =>
-          this.titleService.setDetailsTitle(title).pipe(
-            concatMap((translatedTitle) =>
-              of(translatedTitle).pipe(withLatestFrom(this.store.pipe(select(RouterSelectors.getCurrentUrl))))
-            ),
-            map(([translatedTitle, url]) => this.googleAnalyticsService.sendPageView(url, translatedTitle))
-          )
+      merge(
+        this.actions$.pipe(ofType(CoreActions.changedTitle)),
+        this.actions$.pipe(
+          ofType(ROUTER_NAVIGATION),
+          mapToRouterState(),
+          map(({ data }) => data.title),
+          filter((title) => !title)
+        )
+      ).pipe(
+        concatMap((action) => of(action).pipe(withLatestFrom(this.store.pipe(select(RouterSelectors.getCurrentUrl))))),
+        map(([action, url]) =>
+          this.googleAnalyticsService.sendPageView(url, action?.title ?? this.titleService.getCurrentTitle())
         )
       ),
     { dispatch: false }

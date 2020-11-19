@@ -28,4 +28,8 @@ export class TitleService {
       tap((translatedTitle) => this.title.setTitle(translatedTitle))
     );
   }
+
+  getCurrentTitle(): string {
+    return this.title.getTitle();
+  }
 }
