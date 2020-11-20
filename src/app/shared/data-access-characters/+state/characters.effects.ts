@@ -5,9 +5,9 @@ import { translate } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { asyncScheduler, of } from 'rxjs';
-import { map, debounceTime, exhaustMap, switchMap, filter, catchError, mergeMap } from 'rxjs/operators';
+import { map, debounceTime, exhaustMap, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
 
-import { CoreActions } from '@app/core/data-access-core';
+import { CoreActions, GAEventCategory, GoogleAnalyticsService } from '@app/core/data-access-core';
 import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
 import { ofFilterForm } from '@app/shared/dynamic-forms';
 import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
@@ -68,6 +68,14 @@ export class CharactersEffects {
     this.actions$.pipe(
       ofType(CharactersActions.enterCharactersPage, CharactersActions.pageChange, CharactersActions.filterCharacters),
       fromStore(CharactersSelectors.getCurrentFilter, CharactersSelectors.getCurrentPage)(this.store),
+      tap(([, currentFilter, page]) =>
+        this.googleAnalytics.sendEvent({
+          name: 'New Characters Filter',
+          category: GAEventCategory.FILTER,
+          label: JSON.stringify(currentFilter),
+          value: page,
+        })
+      ),
       switchMap(([, currentFilter, page]) =>
         this.charactersService.getCharacters(currentFilter, page).pipe(
           map(({ info, results }) =>
@@ -201,6 +209,7 @@ export class CharactersEffects {
     private store: Store,
     private charactersService: CharactersService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private googleAnalytics: GoogleAnalyticsService
   ) {}
 }

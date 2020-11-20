@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { merge, of } from 'rxjs';
-import { concatMap, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { ofRouteEnter, ofRouteLangChange, RouterSelectors } from '@app/core/data-access-router';
 import { TranslocoLocalizeRouterService } from '@app/core/transloco-localize-router';
 import * as CoreActions from './core.actions';
+import { GAEventCategory } from '../models';
 import { GoogleAnalyticsService, TitleService } from '../services';
 
 @Injectable()
@@ -15,6 +16,13 @@ export class CoreEffects {
     () =>
       this.actions$.pipe(
         ofType(CoreActions.changeLanguage),
+        tap(({ lang }) =>
+          this.googleAnalytics.sendEvent({
+            name: 'Changed Language',
+            category: GAEventCategory.INTERACTION,
+            label: lang,
+          })
+        ),
         map(({ lang }) => this.translocoLocalizeRouter.changeLanguage(lang))
       ),
     { dispatch: false }
@@ -33,7 +41,7 @@ export class CoreEffects {
         switchMap(({ title, url }) =>
           this.titleService
             .translateAndSetTitle(title)
-            .pipe(map((translatedTitle) => this.googleAnalyticsService.sendPageView(url, translatedTitle)))
+            .pipe(map((translatedTitle) => this.googleAnalytics.sendPageView({ url, title: translatedTitle })))
         )
       ),
     { dispatch: false }
@@ -52,7 +60,7 @@ export class CoreEffects {
             concatMap((action) =>
               of(action).pipe(withLatestFrom(this.store.pipe(select(RouterSelectors.getCurrentUrl))))
             ),
-            map(([translatedTitle, url]) => this.googleAnalyticsService.sendPageView(url, translatedTitle))
+            map(([translatedTitle, url]) => this.googleAnalytics.sendPageView({ url, title: translatedTitle }))
           )
         )
       ),
@@ -62,8 +70,8 @@ export class CoreEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
-    private googleAnalyticsService: GoogleAnalyticsService,
     private titleService: TitleService,
-    private translocoLocalizeRouter: TranslocoLocalizeRouterService
+    private translocoLocalizeRouter: TranslocoLocalizeRouterService,
+    private googleAnalytics: GoogleAnalyticsService
   ) {}
 }

@@ -6,9 +6,10 @@ import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinct, map } from 'rxjs/operators';
 
+import { GAEventCategory, GoogleAnalyticsService } from '@app/core/data-access-core';
+import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { Episode, PAGE_SIZE } from '@app/shared/models';
 import { untilDestroyed } from '@app/shared/pipes';
-import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
 import {
   CharacterDialogData,
   CharactersDialogComponent,
@@ -31,7 +32,12 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
 
   private readonly hoverEpisode$ = new Subject<Episode>();
 
-  constructor(private readonly store: Store, private router: Router, private dialog: MatDialog) {}
+  constructor(
+    private readonly store: Store,
+    private router: Router,
+    private dialog: MatDialog,
+    private googleAnalytics: GoogleAnalyticsService
+  ) {}
 
   ngOnInit(): void {
     // Only dispatch on hover episode during debounce time
@@ -61,6 +67,12 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
         title: episode.name,
         characterIds: episode.characters,
       } as CharacterDialogData,
+    });
+    this.googleAnalytics.sendEvent({
+      name: 'Open Characters Dialog Of Episode',
+      category: GAEventCategory.INTERACTION,
+      label: episode.name,
+      value: episode.id,
     });
   }
 

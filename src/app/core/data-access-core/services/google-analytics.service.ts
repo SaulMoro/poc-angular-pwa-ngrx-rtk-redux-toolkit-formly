@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
+import { GAEvent, GAEventCategory, GAPageView } from '../models';
 
 declare let gtag;
 
@@ -11,29 +12,33 @@ export class GoogleAnalyticsService {
     this._init();
   }
 
-  sendEvent(eventName: string, eventCategory: string, eventLabel: string = null, eventValue: number = null): void {
+  sendEvent({ name, category, label = null, value = null }: GAEvent): void {
     if (!environment.gaTrackingId) {
       console.warn('not triggering analytics event without gtag');
-      console.log('sendEvent', { eventName, eventCategory, eventLabel, eventValue });
+      console.log('sendEvent', { name, category, label, value });
       return;
     }
-    gtag('event', eventName, {
-      event_category: eventCategory,
-      event_label: eventLabel,
-      value: eventValue,
+    gtag('event', name, {
+      event_category: category,
+      event_label: label,
+      value,
     });
   }
 
-  sendPageView(url: string, title?: string): void {
+  sendPageView({ url, title }: GAPageView): void {
     if (!environment.gaTrackingId) {
       console.warn('not triggering analytics event without gtag');
-      console.log('sendPageView', { page_title: title, page_path: url });
+      console.log('sendPageView', { url, title });
       return;
     }
     gtag('event', 'page_view', {
       page_title: title,
       page_path: url,
     });
+  }
+
+  sendExternalLinkEvent(ref: string): void {
+    this.sendEvent({ name: 'External Link click', category: GAEventCategory.ENGAGEMENT, label: ref });
   }
 
   private _init(): void {

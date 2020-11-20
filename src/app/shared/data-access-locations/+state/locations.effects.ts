@@ -5,9 +5,9 @@ import { translate } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { asyncScheduler, of } from 'rxjs';
-import { map, debounceTime, exhaustMap, switchMap, filter, catchError, mergeMap, takeUntil } from 'rxjs/operators';
+import { map, debounceTime, exhaustMap, switchMap, filter, catchError, mergeMap, takeUntil, tap } from 'rxjs/operators';
 
-import { CoreActions } from '@app/core/data-access-core';
+import { CoreActions, GAEventCategory, GoogleAnalyticsService } from '@app/core/data-access-core';
 import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
 import { ofFilterForm } from '@app/shared/dynamic-forms';
 import { FormIds } from '@app/shared/models';
@@ -63,6 +63,14 @@ export class LocationsEffects {
     this.actions$.pipe(
       ofType(LocationsActions.enterLocationsPage, LocationsActions.pageChange, LocationsActions.filterLocations),
       fromStore(LocationsSelectors.getCurrentFilter, LocationsSelectors.getCurrentPage)(this.store),
+      tap(([, currentFilter, page]) =>
+        this.googleAnalytics.sendEvent({
+          name: 'New Locations Filter',
+          category: GAEventCategory.FILTER,
+          label: JSON.stringify(currentFilter),
+          value: page,
+        })
+      ),
       switchMap(([, currentFilter, page]) =>
         this.locationsService.getLocations(currentFilter, page).pipe(
           map(({ info, results }) =>
@@ -171,6 +179,7 @@ export class LocationsEffects {
     private store: Store,
     private locationsService: LocationsService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private googleAnalytics: GoogleAnalyticsService
   ) {}
 }

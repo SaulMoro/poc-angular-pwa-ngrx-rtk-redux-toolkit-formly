@@ -5,9 +5,9 @@ import { translate } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { asyncScheduler, of } from 'rxjs';
-import { map, debounceTime, exhaustMap, switchMap, filter, catchError, mergeMap } from 'rxjs/operators';
+import { map, debounceTime, exhaustMap, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
 
-import { CoreActions } from '@app/core/data-access-core';
+import { CoreActions, GAEventCategory, GoogleAnalyticsService } from '@app/core/data-access-core';
 import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
 import { ofFilterForm } from '@app/shared/dynamic-forms';
 import { FormIds } from '@app/shared/models';
@@ -63,6 +63,14 @@ export class EpisodesEffects {
     this.actions$.pipe(
       ofType(EpisodesActions.enterEpisodesPage, EpisodesActions.pageChange, EpisodesActions.filterEpisodes),
       fromStore(EpisodesSelectors.getCurrentFilter, EpisodesSelectors.getCurrentPage)(this.store),
+      tap(([, currentFilter, page]) =>
+        this.googleAnalytics.sendEvent({
+          name: 'New Episodes Filter',
+          category: GAEventCategory.FILTER,
+          label: JSON.stringify(currentFilter),
+          value: page,
+        })
+      ),
       switchMap(([, currentFilter, page]) =>
         this.episodesService.getEpisodes(currentFilter, page).pipe(
           map(({ info, results }) =>
@@ -167,6 +175,7 @@ export class EpisodesEffects {
     private store: Store,
     private episodesService: EpisodesService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private googleAnalytics: GoogleAnalyticsService
   ) {}
 }

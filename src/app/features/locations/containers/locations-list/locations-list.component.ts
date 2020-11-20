@@ -6,9 +6,10 @@ import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinct, map } from 'rxjs/operators';
 
+import { GoogleAnalyticsService, GAEventCategory } from '@app/core/data-access-core';
+import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
 import { Location, PAGE_SIZE } from '@app/shared/models';
 import { untilDestroyed } from '@app/shared/pipes';
-import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
 import {
   CharacterDialogData,
   CharactersDialogComponent,
@@ -31,7 +32,12 @@ export class LocationsListComponent implements OnInit, OnDestroy {
 
   private readonly hoverLocation$ = new Subject<Location>();
 
-  constructor(private readonly store: Store, private router: Router, private dialog: MatDialog) {}
+  constructor(
+    private readonly store: Store,
+    private router: Router,
+    private dialog: MatDialog,
+    private googleAnalytics: GoogleAnalyticsService
+  ) {}
 
   ngOnInit(): void {
     // Only dispatch on hover location during debounce time
@@ -61,6 +67,12 @@ export class LocationsListComponent implements OnInit, OnDestroy {
         title: location.name,
         characterIds: location.residents,
       } as CharacterDialogData,
+    });
+    this.googleAnalytics.sendEvent({
+      name: 'Open Characters Dialog Of Location',
+      category: GAEventCategory.INTERACTION,
+      label: location.name,
+      value: location.id,
     });
   }
 
