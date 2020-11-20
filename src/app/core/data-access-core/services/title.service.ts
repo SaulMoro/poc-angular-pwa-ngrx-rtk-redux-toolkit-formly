@@ -12,16 +12,24 @@ const APP_TITLE = 'APP_TITLE';
 export class TitleService {
   constructor(private title: Title, private translateService: TranslocoService) {}
 
-  setTitle(title: string, lang?: string): Observable<string> {
+  translateAndSetTitle(title?: string): Observable<string> {
     return title
-      ? this.translateService.selectTranslate([title, APP_TITLE], {}, lang).pipe(
-          map(Object.values),
-          take(1),
-          map((translatedTitles) =>
-            translatedTitles.reduce((total, curr) => `${total}${total ? ' - ' : ''}${curr}`, '')
-          ),
-          tap((translatedTitle) => this.title.setTitle(translatedTitle))
-        )
+      ? this._selectTranslate(title).pipe(tap((translatedTitle) => this.title.setTitle(translatedTitle)))
       : of(title);
+  }
+
+  translateAndSetDetailsTitle(title: string): Observable<string> {
+    return this._selectTranslate().pipe(
+      map((translatedTitle) => `${title} - ${translatedTitle}`),
+      tap((translatedTitle) => this.title.setTitle(translatedTitle))
+    );
+  }
+
+  private _selectTranslate(title?: string): Observable<string> {
+    return this.translateService.selectTranslate(title ? [title, APP_TITLE] : [APP_TITLE]).pipe(
+      map(Object.values),
+      take(1),
+      map((translatedTitles) => translatedTitles.reduce((total, curr) => `${total}${total ? ' - ' : ''}${curr}`, ''))
+    );
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { merge, of } from 'rxjs';
-import { concatMap, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { ofRouteEnter, ofRouteLangChange, RouterSelectors } from '@app/core/data-access-router';
 import { TranslocoLocalizeRouterService } from '@app/core/transloco-localize-router';
@@ -20,37 +20,41 @@ export class CoreEffects {
     { dispatch: false }
   );
 
-  setAppTitle$ = createEffect(() =>
-    merge(
-      this.actions$.pipe(
-        ofRouteEnter(/.*/),
-        filter(({ data }) => data.title),
-        map(({ data }) => ({ title: data.title }))
+  setAppTitleAndGAPageView$ = createEffect(
+    () =>
+      merge(
+        this.actions$.pipe(
+          ofRouteEnter(/.*/),
+          filter(({ data }) => data.title)
+        ),
+        this.actions$.pipe(ofRouteLangChange(/.*/))
+      ).pipe(
+        map(({ data, url }) => ({ title: data.title, url })),
+        switchMap(({ title, url }) =>
+          this.titleService
+            .translateAndSetTitle(title)
+            .pipe(map((translatedTitle) => this.googleAnalyticsService.sendPageView(url, translatedTitle)))
+        )
       ),
-      this.actions$.pipe(
-        ofRouteLangChange(/.*/),
-        map(({ data }) => ({ title: data.title }))
-      ),
+    { dispatch: false }
+  );
+
+  setAppDetailsTitleAndGAPageView$ = createEffect(
+    () =>
       this.actions$.pipe(
         ofType(
           CoreActions.enterCharacterDetailsPage,
           CoreActions.enterLocationDetailsPage,
           CoreActions.enterEpisodeDetailsPage
+        ),
+        switchMap(({ title }) =>
+          this.titleService.translateAndSetDetailsTitle(title).pipe(
+            concatMap((action) =>
+              of(action).pipe(withLatestFrom(this.store.pipe(select(RouterSelectors.getCurrentUrl))))
+            ),
+            map(([translatedTitle, url]) => this.googleAnalyticsService.sendPageView(url, translatedTitle))
+          )
         )
-      )
-    ).pipe(
-      switchMap(({ title }) =>
-        this.titleService.setTitle(title).pipe(map((translatedTitle) => CoreActions.changedTitle({ translatedTitle })))
-      )
-    )
-  );
-
-  sendGAPageViewWithTitle$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(CoreActions.changedTitle),
-        concatMap((action) => of(action).pipe(withLatestFrom(this.store.pipe(select(RouterSelectors.getCurrentUrl))))),
-        map(([{ translatedTitle }, url]) => this.googleAnalyticsService.sendPageView(url, translatedTitle))
       ),
     { dispatch: false }
   );
