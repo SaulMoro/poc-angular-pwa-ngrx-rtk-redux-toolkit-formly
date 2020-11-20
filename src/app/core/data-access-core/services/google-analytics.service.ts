@@ -17,7 +17,6 @@ export class GoogleAnalyticsService {
       console.log('sendEvent', { eventName, eventCategory, eventLabel, eventValue });
       return;
     }
-    console.log('sendEvent', { eventName, eventCategory, eventLabel, eventValue });
     gtag('event', eventName, {
       event_category: eventCategory,
       event_label: eventLabel,
@@ -31,7 +30,6 @@ export class GoogleAnalyticsService {
       console.log('sendPageView', { page_title: title, page_path: url });
       return;
     }
-    console.log('sendPageView', { page_title: title, page_path: url });
     gtag('event', 'page_view', {
       page_title: title,
       page_path: url,

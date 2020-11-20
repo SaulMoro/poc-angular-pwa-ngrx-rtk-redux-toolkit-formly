@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { merge, of } from 'rxjs';
-import { concatMap, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { concatMap, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { ofRouteEnter, ofRouteLangChange, RouterSelectors } from '@app/core/data-access-router';
 import { TranslocoLocalizeRouterService } from '@app/core/transloco-localize-router';
@@ -24,8 +24,8 @@ export class CoreEffects {
     merge(
       this.actions$.pipe(
         ofRouteEnter(/.*/),
-        map(({ data }) => ({ title: data.title })),
-        filter(Boolean)
+        filter(({ data }) => data.title),
+        map(({ data }) => ({ title: data.title }))
       ),
       this.actions$.pipe(
         ofRouteLangChange(/.*/),
