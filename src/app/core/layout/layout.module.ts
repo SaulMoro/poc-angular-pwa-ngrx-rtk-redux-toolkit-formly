@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { TranslocoLocalizeRouterModule } from '@saulmoro/transloco-localize-router/index';
 
 // Material
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -13,6 +12,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 
+import { TranslocoLocalizeRouterModule } from '@app/core/transloco-localize-router';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 

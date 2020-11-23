@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FieldType } from '@ngx-formly/material';
+import { FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
+import { FieldType } from '@ngx-formly/material';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-input-upload-dynamic-form',

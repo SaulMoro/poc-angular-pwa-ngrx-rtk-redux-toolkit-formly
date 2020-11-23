@@ -223,17 +223,6 @@ loadCharacters$ = createEffect(() =>
   );
 ```
 
-#### **untilDestroyed**
-
-Utility that helps us to unsubscribe an observable when a component is destroyed. You need to implement the ngOnDestroy.
-
-```javascript
-// Example
-this.formControl.valueChanges
-  .pipe(untilDestroyed(this))
-  .subscribe(() => this.checkInputs());
-```
-
 ## **Code scaffolding**
 
 ```bash

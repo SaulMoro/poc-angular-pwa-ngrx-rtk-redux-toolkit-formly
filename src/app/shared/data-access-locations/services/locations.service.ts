@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { LocationsFilter } from '@app/shared/models';
-import { handleNotResultsError } from '@app/shared/pipes';
+import { handleNotResultsError } from '@app/shared/utils';
 import { environment } from '@environments/environment';
 import { LocationsResponse } from '../models/locations-response.model';
 import { LocationResponse } from '../models/location-response.model';

@@ -9,22 +9,23 @@ import {
   OnChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { take, map, skipWhile, distinctUntilChanged } from 'rxjs/operators';
 
-import { untilDestroyed } from '@app/shared/pipes';
 import { FormsEntity, FormsFacade } from '../data-access-forms';
 import { FormConfig } from '../models/form-config.model';
 
 const FORM_VALID = 'VALID';
 
+@UntilDestroy()
 @Component({
   selector: 'app-dynamic-form',
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
+export class DynamicFormComponent implements OnInit, OnChanges {
   // tslint:disable-next-line: no-input-rename
   @Input('form') formGroup = new FormGroup({});
   @Input() config: FormConfig;
@@ -39,10 +40,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.formGroup.statusChanges
       .pipe(
-        untilDestroyed(this),
         map((status) => status === FORM_VALID),
         skipWhile((valid) => !valid),
-        distinctUntilChanged()
+        distinctUntilChanged(),
+        untilDestroyed(this)
       )
       .subscribe((valid) => this.formsFacade.updateFormValid(this.config.formId, valid));
   }
@@ -63,10 +64,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
     });
 
     this.config.disable ? this.formGroup.disable() : this.formGroup.enable();
-  }
-
-  ngOnDestroy(): void {
-    // Necessary for untilDestroyed pipe
   }
 
   onModelChange(newModel: any, currModel: any): void {

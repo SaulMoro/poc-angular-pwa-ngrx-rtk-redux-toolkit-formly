@@ -8,8 +8,8 @@ import {
   TranslocoModule,
 } from '@ngneat/transloco';
 import { Injectable, NgModule } from '@angular/core';
-import { getRouterLang } from '@saulmoro/transloco-localize-router/index';
 import { Observable } from 'rxjs';
+import { getRouterLang } from '@app/core/transloco-localize-router';
 import { environment } from '@environments/environment';
 
 @Injectable({ providedIn: 'root' })

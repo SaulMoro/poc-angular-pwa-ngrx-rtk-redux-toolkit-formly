@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinct, map } from 'rxjs/operators';
@@ -9,12 +10,12 @@ import { debounceTime, distinct, map } from 'rxjs/operators';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/data-access-core';
 import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { Episode, PAGE_SIZE } from '@app/shared/models';
-import { untilDestroyed } from '@app/shared/pipes';
 import {
   CharacterDialogData,
   CharactersDialogComponent,
 } from '@app/shared/components/characters-dialog/characters-dialog.component';
 
+@UntilDestroy()
 @Component({
   selector: 'app-episodes-list',
   templateUrl: './episodes-list.component.html',
@@ -43,9 +44,9 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
     // Only dispatch on hover episode during debounce time
     this.hoverEpisode$
       .pipe(
-        untilDestroyed(this),
         debounceTime(300),
-        distinct(({ id }) => id)
+        distinct(({ id }) => id),
+        untilDestroyed(this)
       )
       .subscribe((episode) => this.store.dispatch(EpisodesActions.hoverEpisodeLine({ episode })));
   }

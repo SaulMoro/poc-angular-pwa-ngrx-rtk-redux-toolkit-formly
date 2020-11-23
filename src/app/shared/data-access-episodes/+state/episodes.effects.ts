@@ -9,9 +9,9 @@ import { map, debounceTime, exhaustMap, switchMap, filter, catchError, mergeMap,
 
 import { CoreActions, GAEventCategory, GoogleAnalyticsService } from '@app/core/data-access-core';
 import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
-import { ofFilterForm } from '@app/shared/dynamic-forms';
+import { ofFilterForm } from '@app/core/dynamic-forms';
 import { FormIds } from '@app/shared/models';
-import { fromStore } from '@app/shared/ngrx-utils';
+import { fromStore } from '@app/shared/utils';
 import { AlertDialogComponent } from '@app/shared/components/alert-dialog/alert-dialog.component';
 import * as EpisodesActions from './episodes.actions';
 import * as EpisodesApiActions from './episodes-api.actions';

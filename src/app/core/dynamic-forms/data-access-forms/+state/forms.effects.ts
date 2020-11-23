@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { filter, map, concatMap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { filter, map, concatMap, withLatestFrom } from 'rxjs/operators';
 
-import { formatDateToYYYYMMDD, convertYYYYMMDDToDate, DATE_FORMAT_REGEXP } from '@app/shared/utils';
 import { RouterSelectors } from '@app/core/data-access-router';
-import { fromStore } from '@app/shared/ngrx-utils';
 import * as FormsActions from './forms.actions';
 import * as FormsSelectors from './forms.selectors';
+import { formatDateToYYYYMMDD, convertYYYYMMDDToDate, DATE_FORMAT_REGEXP } from '../utils/date-utils';
 
 @Injectable()
 export class FormsEffects {
@@ -43,7 +43,9 @@ export class FormsEffects {
     this.actions$.pipe(
       ofType(FormsActions.initForm),
       filter((action) => action.filter),
-      fromStore(RouterSelectors.getRouteQueryParams)(this.store$),
+      concatMap((action) =>
+        of(action).pipe(withLatestFrom(this.store$.pipe(select(RouterSelectors.getRouteQueryParams))))
+      ),
       map(([action, queryParams]) => {
         // Remove Page of filter (Pagination)
         const { page, ...model } = queryParams;
@@ -68,7 +70,7 @@ export class FormsEffects {
   manualSubmitForm$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FormsActions.manualSubmitForm),
-      fromStore(FormsSelectors.getFormsEntities)(this.store$),
+      concatMap((action) => of(action).pipe(withLatestFrom(this.store$.pipe(select(FormsSelectors.getFormsEntities))))),
       map(([action, forms]) => FormsActions.submitForm({ ...action, model: forms[action.formId].model }))
     )
   );

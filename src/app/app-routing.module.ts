@@ -4,7 +4,7 @@ import {
   TranslocoLocalizeRouterModule,
   initTranslocoLocalizeRouter,
   TranslocoLocalizeRouter,
-} from '@saulmoro/transloco-localize-router/index';
+} from '@app/core/transloco-localize-router';
 
 const routes: Routes = [
   {

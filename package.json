@@ -32,6 +32,7 @@
     "@angular/service-worker": "~11.0.0",
     "@ngneat/content-loader": "^6.0.0",
     "@ngneat/transloco": "^2.19.1",
+    "@ngneat/until-destroy": "^8.0.3",
     "@ngrx/component": "^10.0.1",
     "@ngrx/effects": "^10.0.1",
     "@ngrx/entity": "^10.0.1",

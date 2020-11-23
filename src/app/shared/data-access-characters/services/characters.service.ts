@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { CharactersFilter } from '@app/shared/models';
-import { handleNotResultsError } from '@app/shared/pipes';
+import { handleNotResultsError } from '@app/shared/utils';
 import { environment } from '@environments/environment';
 import { CharactersResponse } from '../models/characters-response.model';
 import { CharacterResponse } from '../models/character-response.model';

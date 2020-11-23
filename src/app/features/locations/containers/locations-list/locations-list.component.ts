@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinct, map } from 'rxjs/operators';
@@ -9,12 +10,12 @@ import { debounceTime, distinct, map } from 'rxjs/operators';
 import { GoogleAnalyticsService, GAEventCategory } from '@app/core/data-access-core';
 import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
 import { Location, PAGE_SIZE } from '@app/shared/models';
-import { untilDestroyed } from '@app/shared/pipes';
 import {
   CharacterDialogData,
   CharactersDialogComponent,
 } from '@app/shared/components/characters-dialog/characters-dialog.component';
 
+@UntilDestroy()
 @Component({
   selector: 'app-locations-list',
   templateUrl: './locations-list.component.html',
@@ -43,9 +44,9 @@ export class LocationsListComponent implements OnInit, OnDestroy {
     // Only dispatch on hover location during debounce time
     this.hoverLocation$
       .pipe(
-        untilDestroyed(this),
         debounceTime(300),
-        distinct(({ id }) => id)
+        distinct(({ id }) => id),
+        untilDestroyed(this)
       )
       .subscribe((location) => this.store.dispatch(LocationsActions.hoverLocationLine({ location })));
   }

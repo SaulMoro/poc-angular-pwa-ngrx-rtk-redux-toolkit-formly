@@ -15,8 +15,7 @@
     "lib": ["es2018", "dom"],
     "paths": {
       "@app/*": ["src/app/*"],
-      "@environments/*": ["src/environments/*"],
-      "@saulmoro/transloco-localize-router/*": ["src/app/core/transloco-localize-router/*"]
+      "@environments/*": ["src/environments/*"]
     }
   },
   "exclude": ["node_modules", "**/node_modules/*", "tmp", "tools"]

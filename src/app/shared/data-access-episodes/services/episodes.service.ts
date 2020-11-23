@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { EpisodesFilter } from '@app/shared/models';
-import { handleNotResultsError } from '@app/shared/pipes';
+import { handleNotResultsError } from '@app/shared/utils';
 import { environment } from '@environments/environment';
 import { EpisodesResponse } from '../models/episodes-response.model';
 import { EpisodeResponse } from '../models/episode-response.model';

@@ -3,8 +3,9 @@ import { MatInput } from '@angular/material/input';
 import { MatDatepickerInput } from '@angular/material/datepicker';
 import { ɵdefineHiddenProp as defineHiddenProp } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
-import { untilDestroyed } from '@app/shared/pipes';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-datepicker-default-dynamic-form',
   template: `
@@ -41,7 +42,7 @@ import { untilDestroyed } from '@app/shared/pipes';
     </ng-template>
   `,
 })
-export class DatepickerDefaultComponent extends FieldType implements OnInit, AfterViewInit, OnDestroy {
+export class DatepickerDefaultComponent extends FieldType implements OnInit, AfterViewInit {
   @ViewChild(MatInput, { static: true }) formFieldControl!: MatInput;
   @ViewChild(MatDatepickerInput) datepickerInput!: MatDatepickerInput<any>;
   @ViewChild('datepickerToggle') datepickerToggle!: TemplateRef<any>;
@@ -81,8 +82,6 @@ export class DatepickerDefaultComponent extends FieldType implements OnInit, Aft
       this.checkInputs();
     });
   }
-
-  ngOnDestroy(): void {}
 
   private checkInputs(): void {
     this.disabledValue = !!this.to.disabledValue ? this.to.disabledValue : '-';
