@@ -7,9 +7,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { asyncScheduler, of } from 'rxjs';
 import { map, debounceTime, exhaustMap, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
 
-import { CoreActions, GAEventCategory, GoogleAnalyticsService } from '@app/core/data-access-core';
 import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
 import { ofFilterForm } from '@app/core/dynamic-forms';
+import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { FormIds } from '@app/shared/models';
 import { fromStore } from '@app/shared/utils';
 import { AlertDialogComponent } from '@app/shared/components/alert-dialog/alert-dialog.component';
@@ -143,13 +143,6 @@ export class EpisodesEffects {
           catchError((error) => of(EpisodesApiActions.loadEpisodesFromIdsFailure({ error })))
         )
       )
-    )
-  );
-
-  updateTitleOnLoadEpisodeDetails$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(EpisodesApiActions.loadEpisodeSuccess),
-      map(({ episode }) => CoreActions.enterEpisodeDetailsPage({ title: episode.name }))
     )
   );
 

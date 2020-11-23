@@ -4,10 +4,11 @@
 
 export const environment = {
   production: false,
+  url: 'https://saulmoro.github.io/poc-angular-pwa-ngrx-entity-formly-routerstate/#',
   apiUrl: '/api',
+  gaTrackingId: '',
   supportedLanguages: ['en', 'es'],
   defaultLanguage: 'en',
-  gaTrackingId: '',
 };
 
 /*

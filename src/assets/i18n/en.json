@@ -1,6 +1,28 @@
 {
   "LANGUAGE": "English",
-  "APP_TITLE": "Rick & Morty",
+  "APP_SEO": {
+    "title": "Rick & Morty",
+    "description": "PoC Angular + PWA + NgRx + Router State + Formly + NgRx-Entity with Rick&Morty API",
+    "keywords": [
+      "Angular",
+      "PWA",
+      "NgRx",
+      "Router State",
+      "Router",
+      "Formly",
+      "NgRx-Entity",
+      "Rick & Morty",
+      "Rick&Morty",
+      "Rick & Morty API",
+      "Rick&Morty API",
+      "Rick",
+      "Morty",
+      "Characters Rick&Morty",
+      "Characters Rick & Morty"
+    ],
+    "locale": "en_US",
+    "locale_alternate": "es_ES"
+  },
   "CHARACTERS": {
     "TITLE": "Characters",
     "FILTER_CHARACTERS": "Filter Characters",
@@ -8,6 +30,21 @@
     "FIRST_SEEN": "First seen:",
     "CHARACTER_INFO": "Character Info",
     "CHARACTER_EPISODES": "Episodes with {{ name }}",
+    "SEO": {
+      "title": "{{CHARACTERS.TITLE}}",
+      "description": "Characters list of Rick & Morty with filter and information of gender, species, type, origin and location",
+      "keywords": [
+        "Characters",
+        "Characters list of Rick&Morty",
+        "Characters list of Rick & Morty",
+        "All Characters of Rick&Morty"
+      ]
+    },
+    "SEO_DETAILS": {
+      "title": "{{ name }}",
+      "description": "Information about the character {{ name }} of Rick & Morty with gender, species, type, origin, location and the episodes list",
+      "keywords": ["Character", "Rick&Morty Character", "Character of Rick & Morty"]
+    },
     "FIELDS": {
       "NAME": "Name",
       "STATUS": "Status",
@@ -56,6 +93,21 @@
     "LOCATION_RESIDENTS": "Residents in {{ name }}",
     "RESIDENTS": "{{ number }} Residents",
     "NO_RESIDENTS": "No Residents",
+    "SEO": {
+      "title": "{{LOCATIONS.TITLE}}",
+      "description": "Locations list of Rick & Morty with filter and information of name, type, dimension and residents",
+      "keywords": [
+        "Locations",
+        "Locations list of Rick&Morty",
+        "Locations list of Rick & Morty",
+        "All Locations of Rick&Morty"
+      ]
+    },
+    "SEO_DETAILS": {
+      "title": "{{ name }}",
+      "description": "Information about the location {{ name }} of Rick & Morty with name, type, dimension and the residents list",
+      "keywords": ["Location", "Rick&Morty Location", "Location of Rick & Morty"]
+    },
     "FIELDS": {
       "NUM": "Num.",
       "NAME": "Name",
@@ -71,6 +123,16 @@
     "EPISODE_CHARACTERS": "Characters in {{ name }}",
     "CHARACTERS": "{{ number }} Characters",
     "NO_CHARATERS": "No Characters",
+    "SEO": {
+      "title": "{{EPISODES.TITLE}}",
+      "description": "Episodes of Rick & Morty with filter and information of number, episode, name, air date and characters",
+      "keywords": ["Episodes", "Episodes of Rick&Morty", "Episodes of Rick & Morty", "All Episodes of Rick&Morty"]
+    },
+    "SEO_DETAILS": {
+      "title": "{{ name }}",
+      "description": "Information about the episode {{ name }} of Rick & Morty with number, episode, name, air date and the characters list",
+      "keywords": ["Episode", "Rick&Morty Episode", "Episode of Rick & Morty"]
+    },
     "FIELDS": {
       "NUM": "Num.",
       "EPISODE": "Episode",

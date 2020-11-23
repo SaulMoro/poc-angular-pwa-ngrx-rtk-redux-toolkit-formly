@@ -7,9 +7,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { asyncScheduler, of } from 'rxjs';
 import { map, debounceTime, exhaustMap, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
 
-import { CoreActions, GAEventCategory, GoogleAnalyticsService } from '@app/core/data-access-core';
 import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
 import { ofFilterForm } from '@app/core/dynamic-forms';
+import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
 import { EpisodesActions, EpisodesApiActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { FormIds } from '@app/shared/models';
@@ -158,13 +158,6 @@ export class CharactersEffects {
           catchError((error) => of(CharactersApiActions.loadCharactersFromIdsFailure({ error })))
         )
       )
-    )
-  );
-
-  updateTitleOnLoadCharacterDetails$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CharactersApiActions.loadCharacterSuccess),
-      map(({ character }) => CoreActions.enterCharacterDetailsPage({ title: character.name }))
     )
   );
 

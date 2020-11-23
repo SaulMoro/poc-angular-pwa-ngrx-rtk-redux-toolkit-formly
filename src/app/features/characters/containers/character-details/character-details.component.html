@@ -4,6 +4,17 @@
 
 <ng-container *ngrxLet="character$ as character">
   <ng-container *ngIf="character; else loadingCharacter">
+    <seo
+      *transloco="let t"
+      [config]="{
+        title: t('CHARACTERS.SEO_DETAILS.title', { name: character.name }),
+        description: t('CHARACTERS.SEO_DETAILS.description', { name: character.name }),
+        keywords: t('CHARACTERS.SEO_DETAILS.keywords'),
+        details_keywords: [character.name, t('CHARACTERS.CHARACTER_EPISODES', { name: character.name })],
+        image: character.image
+      }"
+    ></seo>
+
     <h1>{{ character.name }}</h1>
     <mat-divider></mat-divider>
     <app-character-details-card

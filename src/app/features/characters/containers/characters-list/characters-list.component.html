@@ -1,3 +1,12 @@
+<seo
+  *transloco="let t"
+  [config]="{
+    title: t('CHARACTERS.SEO.title'),
+    description: t('CHARACTERS.SEO.description'),
+    keywords: t('CHARACTERS.SEO.keywords')
+  }"
+></seo>
+
 <app-characters-filter-form></app-characters-filter-form>
 
 <ng-container *ngrxLet="loading$ as loading">

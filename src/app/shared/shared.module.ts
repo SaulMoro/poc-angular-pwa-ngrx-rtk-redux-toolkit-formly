@@ -74,12 +74,12 @@ const EXPORTED_DECLARATIONS = [
 const IMPORTED_EXPORTS = [
   CommonModule,
   DynamicFormsModule,
+  SeoModule,
   TranslocoModule,
   TranslocoLocalizeRouterModule,
   FlexLayoutModule,
   ReactiveComponentModule,
   ContentLoaderModule,
-  SeoModule,
   ...MATERIAL_MODULES,
 ];
 

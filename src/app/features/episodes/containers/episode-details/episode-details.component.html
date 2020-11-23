@@ -5,6 +5,16 @@
 <ng-container *transloco="let t">
   <ng-container *ngrxLet="episode$ as episode">
     <ng-container *ngIf="episode; else loadingEpisode">
+      <seo
+        *transloco="let t"
+        [config]="{
+          title: t('EPISODES.SEO_DETAILS.title', { name: episode.name }),
+          description: t('EPISODES.SEO_DETAILS.description', { name: episode.name }),
+          keywords: t('EPISODES.SEO_DETAILS.keywords'),
+          details_keywords: [episode.name, t('EPISODES.EPISODE_CHARACTERS', { name: episode.name })]
+        }"
+      ></seo>
+
       <h1>{{ episode.episode }}: {{ episode.name }} ({{ episode.air_date }})</h1>
       <mat-divider></mat-divider>
       <mat-card>

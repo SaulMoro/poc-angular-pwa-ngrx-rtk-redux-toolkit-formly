@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinct, map } from 'rxjs/operators';
 
-import { GoogleAnalyticsService, GAEventCategory } from '@app/core/data-access-core';
+import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
 import { Location, PAGE_SIZE } from '@app/shared/models';
 import {

@@ -45,23 +45,23 @@ const MATERIAL_MODULES = [
 ];
 
 const EXPORTED_IMPORTS = [ReactiveFormsModule];
-const EXPORTED_DECLARATIONS = [
-  DynamicFormComponent,
-  SpacerComponent,
-  SelectAutocompleteComponent,
-  ButtonComponent,
-  ButtonToggleComponent,
-  InputUploadComponent,
-  InputDefaultComponent,
-  WrapperAddonsComponent,
-  LabeledFormPanelComponent,
-  LabelFromOptionsComponent,
-  DatepickerDefaultComponent,
-  SelectDefaultComponent,
-];
+const EXPORTED_DECLARATIONS = [DynamicFormComponent];
 
 @NgModule({
-  declarations: [...EXPORTED_DECLARATIONS],
+  declarations: [
+    ...EXPORTED_DECLARATIONS,
+    SpacerComponent,
+    SelectAutocompleteComponent,
+    ButtonComponent,
+    ButtonToggleComponent,
+    InputUploadComponent,
+    InputDefaultComponent,
+    WrapperAddonsComponent,
+    LabeledFormPanelComponent,
+    LabelFromOptionsComponent,
+    DatepickerDefaultComponent,
+    SelectDefaultComponent,
+  ],
   imports: [
     ...EXPORTED_IMPORTS,
     ...MATERIAL_MODULES,

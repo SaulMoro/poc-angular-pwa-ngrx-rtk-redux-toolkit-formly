@@ -5,6 +5,16 @@
 <ng-container *transloco="let t">
   <ng-container *ngrxLet="location$ as location">
     <ng-container *ngIf="location; else loadingLocation">
+      <seo
+        *transloco="let t"
+        [config]="{
+          title: t('LOCATIONS.SEO_DETAILS.title', { name: location.name }),
+          description: t('LOCATIONS.SEO_DETAILS.description', { name: location.name }),
+          keywords: t('LOCATIONS.SEO_DETAILS.keywords'),
+          details_keywords: [location.name, t('LOCATIONS.LOCATION_RESIDENTS', { name: location.name })]
+        }"
+      ></seo>
+
       <h1>{{ location.name }}</h1>
       <h3>{{ t('LOCATIONS.FIELDS.TYPE') }}: {{ location.type }}</h3>
       <h3>{{ t('LOCATIONS.FIELDS.DIMENSION') }}: {{ location.dimension }}</h3>

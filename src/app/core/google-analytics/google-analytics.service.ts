@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { GAEvent, GAEventCategory, GAPageView } from '../models';
+import { GAEvent, GAEventCategory, GAPageView } from './types';
 
 declare let gtag;
 
@@ -9,7 +9,7 @@ declare let gtag;
 })
 export class GoogleAnalyticsService {
   constructor() {
-    this._init();
+    this.init();
   }
 
   sendEvent({ name, category, label = null, value = null }: GAEvent): void {
@@ -41,7 +41,7 @@ export class GoogleAnalyticsService {
     this.sendEvent({ name: 'External Link click', category: GAEventCategory.ENGAGEMENT, label: ref });
   }
 
-  private _init(): void {
+  private init(): void {
     if (environment.gaTrackingId) {
       // register google tag manager
       const gTagManagerScript = document.createElement('script');
