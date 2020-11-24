@@ -122,6 +122,44 @@
           "options": {}
         }
       }
+    },
+    "@saulmoro/transloco-localize-router": {
+      "projectType": "library",
+      "root": "projects/saulmoro/transloco-localize-router",
+      "sourceRoot": "projects/saulmoro/transloco-localize-router/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/saulmoro/transloco-localize-router/tsconfig.lib.json",
+            "project": "projects/saulmoro/transloco-localize-router/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/saulmoro/transloco-localize-router/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/saulmoro/transloco-localize-router/src/test.ts",
+            "tsConfig": "projects/saulmoro/transloco-localize-router/tsconfig.spec.json",
+            "karmaConfig": "projects/saulmoro/transloco-localize-router/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/saulmoro/transloco-localize-router/tsconfig.lib.json",
+              "projects/saulmoro/transloco-localize-router/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
     }
   },
   "defaultProject": "angular-pwa-ngrx-formly-routerstate",

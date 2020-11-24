@@ -1,3 +1,4 @@
+import { Injectable, NgModule } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {
   TRANSLOCO_LOADER,
@@ -7,9 +8,8 @@ import {
   translocoConfig,
   TranslocoModule,
 } from '@ngneat/transloco';
-import { Injectable, NgModule } from '@angular/core';
+import { getRouterLang } from '@saulmoro/transloco-localize-router';
 import { Observable } from 'rxjs';
-import { getRouterLang } from '@app/core/transloco-localize-router';
 import { environment } from '@environments/environment';
 
 @Injectable({ providedIn: 'root' })

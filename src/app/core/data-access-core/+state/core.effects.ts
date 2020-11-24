@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { TranslocoLocalizeRouterService } from '@saulmoro/transloco-localize-router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, tap } from 'rxjs/operators';
 
-import { TranslocoLocalizeRouterService } from '@app/core/transloco-localize-router';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import * as CoreActions from './core.actions';
 

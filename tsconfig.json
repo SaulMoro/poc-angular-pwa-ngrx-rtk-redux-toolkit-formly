@@ -1,4 +1,3 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -15,7 +14,8 @@
     "lib": ["es2018", "dom"],
     "paths": {
       "@app/*": ["src/app/*"],
-      "@environments/*": ["src/environments/*"]
+      "@environments/*": ["src/environments/*"],
+      "@saulmoro/transloco-localize-router": ["./projects/saulmoro/transloco-localize-router/src/public-api.ts"]
     }
   },
   "exclude": ["node_modules", "**/node_modules/*", "tmp", "tools"]

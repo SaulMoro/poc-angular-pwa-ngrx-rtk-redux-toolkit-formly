@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ContentLoaderModule } from '@ngneat/content-loader';
 import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoLocalizeRouterModule } from '@saulmoro/transloco-localize-router';
 import { ReactiveComponentModule } from '@ngrx/component';
 
 // Material
@@ -31,7 +32,6 @@ import { DataAccessLocationsModule } from './data-access-locations';
 import { DataAccessEpisodesModule } from './data-access-episodes';
 
 import { DynamicFormsModule } from '@app/core/dynamic-forms';
-import { TranslocoLocalizeRouterModule } from '@app/core/transloco-localize-router';
 import { SeoModule } from '@app/core/seo';
 import { PrefetchDirective } from './directives/prefetch.directive';
 import { LazyImgDirective } from './directives/lazy-img.directive';
