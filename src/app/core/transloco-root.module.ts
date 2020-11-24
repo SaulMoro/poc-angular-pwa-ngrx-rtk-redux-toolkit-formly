@@ -21,6 +21,8 @@ export class TranslocoHttpLoader implements TranslocoLoader {
   }
 }
 
+const ROUTER_LANG = getRouterLang(environment.supportedLanguages);
+
 @NgModule({
   exports: [TranslocoModule],
   providers: [
@@ -28,7 +30,7 @@ export class TranslocoHttpLoader implements TranslocoLoader {
       provide: TRANSLOCO_CONFIG,
       useValue: translocoConfig({
         availableLangs: environment.supportedLanguages,
-        defaultLang: getRouterLang(environment.supportedLanguages) ?? environment.defaultLanguage,
+        defaultLang: ROUTER_LANG ?? environment.defaultLanguage,
         reRenderOnLangChange: false,
         prodMode: environment.production,
         flatten: {

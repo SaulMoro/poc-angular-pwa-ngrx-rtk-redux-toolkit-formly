@@ -8,7 +8,15 @@ export function getRouterLang(supportedLangs: string[]): string {
     return undefined;
   }
 
+  // Find in pathname
   const path = window.location?.pathname;
-  const lang = path?.split('/')[1];
+  let lang = path?.split('/')[1];
+
+  // Find in hash
+  if (!lang) {
+    const hash = window.location?.hash.replace('#', '');
+    lang = hash?.split('/')[1];
+  }
+
   return supportedLangs.find((supportedLang) => supportedLang === lang);
 }

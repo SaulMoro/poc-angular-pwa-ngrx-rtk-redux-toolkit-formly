@@ -4,7 +4,6 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o --proxy-config proxy.conf.js",
-    "start:ie": "npm run start -- --configuration=es5",
     "start:hmr": "npm run start -- --hmr",
     "build": "ng build --prod && npm run transloco:optimize",
     "deploy": "ng deploy --base-href=/poc-angular-pwa-ngrx-entity-formly-routerstate/",
@@ -41,14 +40,11 @@
     "@ngx-formly/core": "^5.10.6",
     "@ngx-formly/material": "^5.10.6",
     "bootstrap": "^4.5.3",
-    "classlist.js": "^1.1.20150312",
-    "core-js": "^3.7.0",
     "ngrx-store-localstorage": "^10.1.1",
     "ngx-mat-select-search": "^3.1.4",
     "normalize.css": "^8.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
-    "web-animations-js": "^2.3.2",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
