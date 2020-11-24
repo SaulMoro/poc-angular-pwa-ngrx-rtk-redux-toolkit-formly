@@ -10,13 +10,15 @@ export function getRouterLang(supportedLangs: string[]): string {
 
   // Find in pathname
   const path = window.location?.pathname;
-  let lang = supportedLangs.find((supportedLang) => supportedLang === path?.split('/')[1]);
+  const lang = path?.split('/')[1];
+  let foundLang = lang && supportedLangs.find((supportedLang) => supportedLang === lang);
 
   // Find in hash
-  if (!lang && window.location?.hash) {
+  if (!foundLang && window.location?.hash) {
     const hash = window.location.hash.replace('#', '');
-    lang = supportedLangs.find((supportedLang) => supportedLang === hash.split('/')[1]);
+    const hashLang = hash.split('/')[1];
+    foundLang = hashLang && supportedLangs.find((supportedLang) => supportedLang === hashLang);
   }
 
-  return lang;
+  return foundLang;
 }
