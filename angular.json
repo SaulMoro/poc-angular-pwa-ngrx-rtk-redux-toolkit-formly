@@ -27,17 +27,12 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/manifest.webmanifest",
               {
                 "glob": "**/*",
                 "input": "./node_modules/@fortawesome/fontawesome-free/webfonts",
                 "output": "./assets/fonts/fontawesome/"
-              },
-              {
-                "glob": "**/*.{eot,ttf,woff,woff2}",
-                "input": "./node_modules/material-design-icons/iconfont",
-                "output": "./assets/fonts/material-design-icons/"
-              },
-              "src/manifest.webmanifest"
+              }
             ],
             "styles": ["src/styles.scss"],
             "scripts": []
@@ -71,15 +66,6 @@
               ],
               "serviceWorker": true,
               "ngswConfigPath": "ngsw-config.json"
-            },
-            "es5": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "tsConfig": "tsconfig-es5.app.json"
             }
           }
         },
@@ -91,9 +77,6 @@
           "configurations": {
             "production": {
               "browserTarget": "angular-pwa-ngrx-formly-routerstate:build:production"
-            },
-            "es5": {
-              "browserTarget": "angular-pwa-ngrx-formly-routerstate:build:es5"
             }
           }
         },
