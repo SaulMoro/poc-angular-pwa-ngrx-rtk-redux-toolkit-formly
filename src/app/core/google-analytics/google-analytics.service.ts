@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { environment } from '@environments/environment';
 import { GAEvent, GAEventCategory, GAPageView } from './types';
 
@@ -8,7 +9,7 @@ declare let gtag;
   providedIn: 'root',
 })
 export class GoogleAnalyticsService {
-  constructor() {
+  constructor(@Inject(DOCUMENT) private document: Document) {
     this.init();
   }
 
@@ -44,13 +45,13 @@ export class GoogleAnalyticsService {
   private init(): void {
     if (environment.gaTrackingId) {
       // register google tag manager
-      const gTagManagerScript = document.createElement('script');
+      const gTagManagerScript = this.document.createElement('script');
       gTagManagerScript.async = true;
       gTagManagerScript.src = `https://www.googletagmanager.com/gtag/js?id=${environment.gaTrackingId}`;
-      document.head.appendChild(gTagManagerScript);
+      this.document.head.appendChild(gTagManagerScript);
 
       // register google analytics
-      const gaScript = document.createElement('script');
+      const gaScript = this.document.createElement('script');
       gaScript.innerHTML = `
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
@@ -59,7 +60,7 @@ export class GoogleAnalyticsService {
         /** Disable automatic page view hit to fix duplicate page view count **/
         gtag('config', '${environment.gaTrackingId}', { send_page_view: false });
       `;
-      document.head.appendChild(gaScript);
+      this.document.head.appendChild(gaScript);
     }
   }
 }

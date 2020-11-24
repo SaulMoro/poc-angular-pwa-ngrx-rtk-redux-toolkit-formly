@@ -25,7 +25,7 @@ PoC of an Angular project with:
 - **Lazy Loading Features**
 - **Container / Presentational Components**(Smart / Dumb Components)
 - **Formly** for generating dynamic forms
-- [**Multilingual site**](https://developers.google.com/search/docs/advanced/crawling/managing-multi-regional-sites) with my own Transloco Localize Router plugin
+- [**Multilingual site**](https://developers.google.com/search/docs/advanced/crawling/managing-multi-regional-sites) with my own Transloco Localize Router plugin and adds automatically [**hreflang links**](https://developers.google.com/search/docs/advanced/crawling/localized-versions)
 - **Google Analytics** with page views and events
 - **Multilingual SEO**
 - **Performance** with the use of trackBy, OnPush, Intersection Observer ...

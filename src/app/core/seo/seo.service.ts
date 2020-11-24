@@ -75,7 +75,7 @@ export class SeoService {
     });
     this.meta.updateTag({
       property: 'og:url',
-      content: `${environment.url}${config.route}`,
+      content: `${environment.url}${config.route === '/' ? config.route : config.route + '/'}`,
     });
     this.meta.updateTag({
       property: 'og:image',

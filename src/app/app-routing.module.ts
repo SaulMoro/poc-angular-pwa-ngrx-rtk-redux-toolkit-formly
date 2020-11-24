@@ -5,6 +5,7 @@ import {
   initTranslocoLocalizeRouter,
   TranslocoLocalizeRouter,
 } from '@app/core/transloco-localize-router';
+import { environment } from '@environments/environment';
 
 const routes: Routes = [
   {
@@ -34,7 +35,11 @@ const routes: Routes = [
   },
 ];
 
-const TRANSLOCO_LOCALIZE_ROUTER: TranslocoLocalizeRouter = initTranslocoLocalizeRouter(routes);
+const TRANSLOCO_LOCALIZE_ROUTER: TranslocoLocalizeRouter = initTranslocoLocalizeRouter(routes, {
+  noPrefixLang: environment.defaultLanguage,
+  hrefLangs: true,
+  hrefLangsBaseUrl: environment.url,
+});
 
 @NgModule({
   imports: [

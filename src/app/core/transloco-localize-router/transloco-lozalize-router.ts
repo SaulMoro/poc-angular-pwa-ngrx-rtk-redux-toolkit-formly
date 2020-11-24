@@ -17,12 +17,9 @@ export const initTranslocoLocalizeRouter = (
   };
 };
 
-export const localizeRoutes = (
-  routes: Routes,
-  { alwaysPrefix, noPrefixLang, langPath }: TranslocoLocalizeRouterConfig
-): Routes => {
+export const localizeRoutes = (routes: Routes, { noPrefixLang, langPath }: TranslocoLocalizeRouterConfig): Routes => {
   const hasWildCard = routes[routes.length - 1]?.path === '**';
-  return alwaysPrefix
+  return !noPrefixLang
     ? [
         { path: '', redirectTo: noPrefixLang, pathMatch: 'full' },
         {

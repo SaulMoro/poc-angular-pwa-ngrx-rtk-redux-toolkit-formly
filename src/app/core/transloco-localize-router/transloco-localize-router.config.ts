@@ -7,15 +7,16 @@ export interface TranslocoLocalizeRouter {
 }
 
 export interface TranslocoLocalizeRouterConfig {
-  alwaysPrefix: boolean;
-  noPrefixLang: string;
+  noPrefixLang?: string;
   langPath: string;
+  hrefLangs: boolean;
+  hrefLangsBaseUrl: string;
 }
 
 export const defaultConfig: TranslocoLocalizeRouterConfig = {
-  alwaysPrefix: false,
-  noPrefixLang: 'en',
   langPath: ':lang',
+  hrefLangs: false,
+  hrefLangsBaseUrl: '',
 };
 
 export const LOCALIZE_ROUTER_CONFIG = new InjectionToken<TranslocoLocalizeRouterConfig>('LOCALIZE_ROUTER_CONFIG');
