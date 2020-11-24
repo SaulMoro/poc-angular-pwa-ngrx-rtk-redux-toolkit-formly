@@ -1,10 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import {
-  TranslocoLocalizeRouterModule,
-  initTranslocoLocalizeRouter,
-  TranslocoLocalizeRouter,
-} from '@app/core/transloco-localize-router';
+import { TranslocoLocalizeRouterModule } from '@app/core/transloco-localize-router';
 import { environment } from '@environments/environment';
 
 const routes: Routes = [
@@ -35,19 +31,17 @@ const routes: Routes = [
   },
 ];
 
-const TRANSLOCO_LOCALIZE_ROUTER: TranslocoLocalizeRouter = initTranslocoLocalizeRouter(routes, {
-  noPrefixLang: environment.defaultLanguage,
-  hrefLangs: true,
-  hrefLangsBaseUrl: environment.url,
-});
-
 @NgModule({
   imports: [
-    TranslocoLocalizeRouterModule.forRoot(TRANSLOCO_LOCALIZE_ROUTER.config),
-    RouterModule.forRoot(TRANSLOCO_LOCALIZE_ROUTER.routes, {
+    RouterModule.forRoot(routes, {
       preloadingStrategy: PreloadAllModules,
       scrollPositionRestoration: 'enabled',
       useHash: true, // Supports github.io demo page
+    }),
+    TranslocoLocalizeRouterModule.forRoot({
+      noPrefixLang: environment.defaultLanguage,
+      hrefLangs: true,
+      hrefLangsBaseUrl: environment.url,
     }),
   ],
   exports: [RouterModule],

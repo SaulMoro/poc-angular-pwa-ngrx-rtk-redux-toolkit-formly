@@ -20,7 +20,7 @@ export class CharactersFilterFormComponent implements OnInit {
   genders: Option[];
   species: Option[];
 
-  constructor(private translate: TranslocoService) {}
+  constructor(private translocoService: TranslocoService) {}
 
   ngOnInit(): void {
     this._initOptions();
@@ -46,7 +46,7 @@ export class CharactersFilterFormComponent implements OnInit {
                 floatLabel: 'always',
               },
               expressionProperties: {
-                'templateOptions.label': this.translate.selectTranslate('CHARACTERS.FIELDS.NAME'),
+                'templateOptions.label': this.translocoService.selectTranslate('CHARACTERS.FIELDS.NAME'),
               },
             },
             {
@@ -61,7 +61,7 @@ export class CharactersFilterFormComponent implements OnInit {
                 searchOptions: this.status,
               },
               expressionProperties: {
-                'templateOptions.label': this.translate.selectTranslate('CHARACTERS.FIELDS.STATUS'),
+                'templateOptions.label': this.translocoService.selectTranslate('CHARACTERS.FIELDS.STATUS'),
               },
             },
             {
@@ -76,7 +76,7 @@ export class CharactersFilterFormComponent implements OnInit {
                 searchOptions: this.genders,
               },
               expressionProperties: {
-                'templateOptions.label': this.translate.selectTranslate('CHARACTERS.FIELDS.GENDER'),
+                'templateOptions.label': this.translocoService.selectTranslate('CHARACTERS.FIELDS.GENDER'),
               },
             },
             {
@@ -91,7 +91,7 @@ export class CharactersFilterFormComponent implements OnInit {
                 searchOptions: this.species,
               },
               expressionProperties: {
-                'templateOptions.label': this.translate.selectTranslate('CHARACTERS.FIELDS.SPECIES'),
+                'templateOptions.label': this.translocoService.selectTranslate('CHARACTERS.FIELDS.SPECIES'),
               },
             },
           ],

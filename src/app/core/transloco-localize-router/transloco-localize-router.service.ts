@@ -1,9 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { ActivatedRoute, NavigationEnd, NavigationExtras, Router } from '@angular/router';
-import { TranslocoService } from '@ngneat/transloco';
-import { from } from 'rxjs';
-import { concatMap, filter, map, tap } from 'rxjs/operators';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { AvailableLangs, TranslocoService } from '@ngneat/transloco';
 
 import { LOCALIZE_ROUTER_CONFIG, TranslocoLocalizeRouterConfig } from './transloco-localize-router.config';
 
@@ -17,19 +14,14 @@ export function translateRoute<T = any>(route: string | any[], lang?: string): T
 export class TranslocoLocalizeRouterService {
   constructor(
     @Inject(LOCALIZE_ROUTER_CONFIG) private config: TranslocoLocalizeRouterConfig,
-    @Inject(DOCUMENT) private document: Document,
-    private transloco: TranslocoService,
+    private translocoService: TranslocoService,
     private router: Router,
     private route: ActivatedRoute
   ) {
     service = this;
-
-    if (this.config.hrefLangs) {
-      this.hrefLangs();
-    }
   }
 
-  translateRoute<T = any>(route: string | any[], lang: string = this.transloco.getActiveLang()): T {
+  translateRoute<T = any>(route: string | any[], lang: string = this.activeLang): T {
     const startPath = this.showPrefix(lang) ? `/${lang}` : '';
     const translatedRoute = Array.isArray(route)
       ? startPath
@@ -41,9 +33,8 @@ export class TranslocoLocalizeRouterService {
   }
 
   changeLanguage(lang: string, extras: NavigationExtras = {}): void {
-    const currentLang = this.transloco.getActiveLang();
-    if (lang !== currentLang) {
-      const route = this.router.url.split('?')[0]?.replace(`/${currentLang}/`, '/');
+    if (lang !== this.activeLang) {
+      const route = this.router.url.split('?')[0]?.replace(`/${this.activeLang}/`, '/');
       const queryParams = this.route.snapshot.queryParams;
       this.router.navigate([this.translateRoute(route, lang)], {
         ...extras,
@@ -60,37 +51,18 @@ export class TranslocoLocalizeRouterService {
   }
 
   isSupportedLang(lang: string): boolean {
-    return this.showPrefix(lang) && this.transloco.isLang(lang);
+    return this.showPrefix(lang) && this.translocoService.isLang(lang);
   }
 
   get noPrefixLang(): string {
     return this.config.noPrefixLang;
   }
 
-  private hrefLangs(): void {
-    const links: HTMLLinkElement[] = (this.transloco.getAvailableLangs() as string[]).map((lang: string) => {
-      const link: HTMLLinkElement = this.document.createElement('link');
-      link.setAttribute('rel', 'alternate');
-      link.setAttribute('hreflang', !this.showPrefix(lang) ? 'x-default' : lang);
-      this.document.head.appendChild(link);
-      return link;
-    });
+  get activeLang(): string {
+    return this.translocoService.getActiveLang();
+  }
 
-    this.router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        map((event: NavigationEnd) => event.urlAfterRedirects),
-        concatMap((route) => from(links).pipe(map((link) => ({ link, route })))),
-        tap(({ link, route }) => {
-          const currentLang = this.transloco.getActiveLang();
-          const lang = link.getAttribute('hreflang');
-          const fixedRoute = this.translateRoute(
-            route.replace(`/${currentLang}/`, '/'),
-            lang === 'x-default' ? this.noPrefixLang : lang
-          );
-          link.setAttribute('href', `${this.config.hrefLangsBaseUrl}${fixedRoute}`);
-        })
-      )
-      .subscribe();
+  get availableLangs(): AvailableLangs {
+    return this.translocoService.getAvailableLangs();
   }
 }

@@ -13,9 +13,9 @@ import { MenuItem } from '@app/core/layout/models';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  supportedLanguages = this.translate.getAvailableLangs();
-  language$ = this.translate.langChanges$;
-  menu$: Observable<MenuItem[]> = this.translate
+  supportedLanguages = this.translocoService.getAvailableLangs();
+  language$ = this.translocoService.langChanges$;
+  menu$: Observable<MenuItem[]> = this.translocoService
     .selectTranslate(['CHARACTERS.TITLE', 'LOCATIONS.TITLE', 'EPISODES.TITLE'])
     .pipe(
       map(([charactersTitle, locationsTitle, episodesTitle]) => [
@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
       ])
     );
 
-  constructor(private translate: TranslocoService, private store: Store) {}
+  constructor(private translocoService: TranslocoService, private store: Store) {}
 
   ngOnInit(): void {}
 

@@ -17,7 +17,7 @@ export class EpisodesFilterFormComponent implements OnInit {
     fields: [],
   });
 
-  constructor(private translate: TranslocoService) {}
+  constructor(private translocoService: TranslocoService) {}
 
   ngOnInit(): void {
     this._initForm();
@@ -42,7 +42,7 @@ export class EpisodesFilterFormComponent implements OnInit {
                 floatLabel: 'always',
               },
               expressionProperties: {
-                'templateOptions.label': this.translate.selectTranslate('EPISODES.FIELDS.NAME'),
+                'templateOptions.label': this.translocoService.selectTranslate('EPISODES.FIELDS.NAME'),
               },
             },
             {
@@ -53,7 +53,7 @@ export class EpisodesFilterFormComponent implements OnInit {
                 floatLabel: 'always',
               },
               expressionProperties: {
-                'templateOptions.label': this.translate.selectTranslate('EPISODES.FIELDS.EPISODE'),
+                'templateOptions.label': this.translocoService.selectTranslate('EPISODES.FIELDS.EPISODE'),
               },
             },
           ],

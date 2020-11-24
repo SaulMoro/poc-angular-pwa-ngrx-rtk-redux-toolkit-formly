@@ -30,7 +30,7 @@ const ROUTER_LANG = getRouterLang(environment.supportedLanguages);
       provide: TRANSLOCO_CONFIG,
       useValue: translocoConfig({
         availableLangs: environment.supportedLanguages,
-        defaultLang: ROUTER_LANG ?? environment.defaultLanguage,
+        defaultLang: ROUTER_LANG || environment.defaultLanguage,
         reRenderOnLangChange: false,
         prodMode: environment.production,
         flatten: {

@@ -1,10 +1,4 @@
 import { InjectionToken } from '@angular/core';
-import { Routes } from '@angular/router';
-
-export interface TranslocoLocalizeRouter {
-  readonly routes: Routes;
-  readonly config: TranslocoLocalizeRouterConfig;
-}
 
 export interface TranslocoLocalizeRouterConfig {
   noPrefixLang?: string;
