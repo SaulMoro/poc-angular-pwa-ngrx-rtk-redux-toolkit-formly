@@ -27,7 +27,7 @@ PoC of an Angular project with:
 - **Formly** for generating dynamic forms
 - [**Multilingual site**](https://developers.google.com/search/docs/advanced/crawling/managing-multi-regional-sites) with my own Transloco Localize Router plugin and adds automatically [**hreflang links**](https://developers.google.com/search/docs/advanced/crawling/localized-versions)
 - **Google Analytics** with page views and events
-- **Multilingual SEO**
+- **Multilingual SEO** (Important: It would have to be transformed to SSR/SSG application for optimal SEO)
 - **Performance** with the use of trackBy, OnPush, Intersection Observer ...
 
 **State Management**
