@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { environment } from '@environments/environment';
 import { TranslocoService } from '@ngneat/transloco';
-import { Store } from '@ngrx/store';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import { CoreActions } from '@app/core/data-access-core';
 import { SeoArticle, SeoConfig, SeoProfile } from './types';
 import { getAbsoluteImageUrl, getOGImageUrl, getTwitterImageUrl } from './helpers';
 
@@ -18,10 +17,12 @@ export const defaultConfig: Partial<SeoConfig> = {
   providedIn: 'root',
 })
 export class SeoService {
+  private config: BehaviorSubject<SeoConfig> = new BehaviorSubject<SeoConfig>({ ...defaultConfig });
   private appConfig: Partial<SeoConfig>;
+  seoChanges$: Observable<SeoConfig> = this.config.asObservable();
 
-  constructor(private title: Title, private meta: Meta, private transloco: TranslocoService, private store: Store) {
-    this.transloco.selectTranslateObject('APP_SEO').subscribe((translatedSEO) => {
+  constructor(private title: Title, private meta: Meta, private translocoService: TranslocoService) {
+    this.translocoService.selectTranslateObject('APP_SEO').subscribe((translatedSEO) => {
       this.appConfig = {
         ...defaultConfig,
         ...translatedSEO,
@@ -47,7 +48,7 @@ export class SeoService {
       twitter_image: getTwitterImageUrl(seoConfig.twitter_image),
       og_image: getOGImageUrl(seoConfig.og_image),
     };
-    this.store.dispatch(CoreActions.newSeoConfig({ config }));
+    this.config.next(config);
 
     this.updateTitle(config.title);
     this.updateGeneralMetaTags(config);
