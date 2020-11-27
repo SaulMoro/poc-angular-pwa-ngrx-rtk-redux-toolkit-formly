@@ -1,6 +1,4 @@
-<ng-container *ngrxLet="loading$ as loading">
-  <mat-progress-bar *ngIf="loading" class="progress-bar--top" mode="indeterminate"></mat-progress-bar>
-</ng-container>
+<mat-progress-bar *ngIf="loading$ | ngrxPush" class="progress-bar--top" mode="indeterminate"></mat-progress-bar>
 
 <ng-container *ngrxLet="character$ as character">
   <ng-container *ngIf="character; else loadingCharacter">

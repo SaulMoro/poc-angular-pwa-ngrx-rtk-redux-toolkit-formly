@@ -8,10 +8,7 @@
 ></seo>
 
 <app-characters-filter-form></app-characters-filter-form>
-
-<ng-container *ngrxLet="loading$ as loading">
-  <mat-progress-bar *ngIf="loading" class="progress-bar--top" mode="indeterminate"></mat-progress-bar>
-</ng-container>
+<mat-progress-bar *ngIf="loading$ | ngrxPush" class="progress-bar--top" mode="indeterminate"></mat-progress-bar>
 
 <ng-container *ngrxLet="characters$ as characters">
   <div class="content">
