@@ -2,7 +2,6 @@ export interface SeoConfig {
   title?: string;
   description?: string;
   keywords?: string[];
-  details_keywords?: string[];
   route?: string;
   robots?: string;
   image?: string;

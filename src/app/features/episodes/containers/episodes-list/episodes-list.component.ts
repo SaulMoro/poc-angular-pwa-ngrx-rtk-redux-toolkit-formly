@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslocoService } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
@@ -27,6 +28,7 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
   loading$: Observable<boolean> = this.store.select(EpisodesSelectors.getLoading);
   totalEpisodes$: Observable<number> = this.store.select(EpisodesSelectors.getTotalEpisodes);
   pageIndex$: Observable<number> = this.store.select(EpisodesSelectors.getCurrentPage).pipe(map((page) => page - 1));
+  seoConfig$ = this.translocoService.selectTranslateObject('EPISODES.SEO');
 
   pageSize = PAGE_SIZE;
   displayedColumns = ['id', 'episode', 'name', 'air_date', 'characters'];
@@ -37,7 +39,8 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
     private readonly store: Store,
     private router: Router,
     private dialog: MatDialog,
-    private googleAnalytics: GoogleAnalyticsService
+    private googleAnalytics: GoogleAnalyticsService,
+    private translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {

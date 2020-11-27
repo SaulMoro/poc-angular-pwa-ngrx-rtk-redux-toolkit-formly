@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
+import { TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -20,9 +21,10 @@ export class CharactersListComponent implements OnInit {
   loading$: Observable<boolean> = this.store.select(CharactersSelectors.getLoading);
   totalCharacters$: Observable<number> = this.store.select(CharactersSelectors.getTotalCharacters);
   pageIndex$: Observable<number> = this.store.select(CharactersSelectors.getCurrentPage).pipe(map((page) => page - 1));
+  seoConfig$ = this.translocoService.selectTranslateObject('CHARACTERS.SEO');
   pageSize = PAGE_SIZE;
 
-  constructor(private readonly store: Store, private router: Router) {}
+  constructor(private readonly store: Store, private router: Router, private translocoService: TranslocoService) {}
 
   ngOnInit(): void {}
 

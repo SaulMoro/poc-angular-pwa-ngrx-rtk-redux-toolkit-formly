@@ -35,15 +35,9 @@ export class SeoService {
       ...this.appConfig,
       ...seoConfig,
       title: seoConfig.title ? `${seoConfig.title} - ${this.appConfig.title}` : this.appConfig.title,
-      keywords:
-        seoConfig.keywords || seoConfig.details_keywords
-          ? [
-              ...(seoConfig.article?.tag || []),
-              ...(seoConfig.details_keywords || []),
-              ...(seoConfig.keywords || []),
-              ...this.appConfig.keywords,
-            ]
-          : this.appConfig.keywords,
+      keywords: seoConfig.keywords
+        ? [...(seoConfig.article?.tag || []), ...(seoConfig.keywords || []), ...this.appConfig.keywords]
+        : this.appConfig.keywords,
       image: seoConfig.image ? getAbsoluteImageUrl(seoConfig.image) : this.appConfig.image,
       twitter_image: getTwitterImageUrl(seoConfig.twitter_image),
       og_image: getOGImageUrl(seoConfig.og_image),
