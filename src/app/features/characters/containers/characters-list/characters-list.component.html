@@ -1,4 +1,4 @@
-<seo [config]="seoConfig$ | ngrxPush"></seo>
+<seo *ngIf="seoConfig$ | ngrxPush as seoConfig" [config]="seoConfig"></seo>
 <app-characters-filter-form></app-characters-filter-form>
 <mat-progress-bar *ngIf="loading$ | ngrxPush" class="progress-bar--top" mode="indeterminate"></mat-progress-bar>
 

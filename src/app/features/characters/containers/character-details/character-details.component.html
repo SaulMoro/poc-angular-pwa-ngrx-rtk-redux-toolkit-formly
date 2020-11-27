@@ -1,4 +1,4 @@
-<seo [config]="seoConfig$ | ngrxPush"></seo>
+<seo *ngIf="seoConfig$ | ngrxPush as seoConfig" [config]="seoConfig"></seo>
 <mat-progress-bar *ngIf="loading$ | ngrxPush" class="progress-bar--top" mode="indeterminate"></mat-progress-bar>
 
 <ng-container *ngrxLet="character$ as character">
