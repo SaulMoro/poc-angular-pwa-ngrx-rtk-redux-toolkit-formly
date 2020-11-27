@@ -1,12 +1,4 @@
-<seo
-  *transloco="let t"
-  [config]="{
-    title: t('EPISODES.SEO.title'),
-    description: t('EPISODES.SEO.description'),
-    keywords: t('EPISODES.SEO.keywords')
-  }"
-></seo>
-
+<seo [config]="seoConfig$ | ngrxPush"></seo>
 <app-episodes-filter-form></app-episodes-filter-form>
 <mat-progress-bar *ngIf="loading$ | ngrxPush" class="progress-bar--top" mode="indeterminate"></mat-progress-bar>
 

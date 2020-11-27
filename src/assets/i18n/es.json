@@ -33,7 +33,7 @@
     "CHARACTER_INFO": "Información de Personaje",
     "CHARACTER_EPISODES": "Episodios con {{ name }}",
     "SEO": {
-      "title": "{{CHARACTERS.TITLE}}",
+      "title": "Personajes",
       "description": "Listado de personajes de Rick & Morty con filtrado e información del género, especie, tipo, origen y localización",
       "keywords": [
         "Personajes",
@@ -45,7 +45,13 @@
     "SEO_DETAILS": {
       "title": "{{ name }}",
       "description": "Información sobre el personaje {{ name }} de Rick & Morty con género, especie, tipo, origen, localización y la lista de episodios",
-      "keywords": ["Personaje", "Personaje de Rick&Morty", "Personaje de Rick & Morty"]
+      "keywords": [
+        "{{ name }}",
+        "Episodios con {{ name }}",
+        "Personaje",
+        "Personaje de Rick&Morty",
+        "Personaje de Rick & Morty"
+      ]
     },
     "FIELDS": {
       "NAME": "Nombre",
@@ -96,7 +102,7 @@
     "RESIDENTS": "{{ number }} Residentes",
     "NO_RESIDENTS": "Sin Residentes",
     "SEO": {
-      "title": "{{LOCATIONS.TITLE}}",
+      "title": "Localizaciones",
       "description": "Listado de localizaciones de Rick & Morty con filtrado e información del nombre, tipo, dimensión y residentes",
       "keywords": [
         "Localizaciones",
@@ -108,7 +114,13 @@
     "SEO_DETAILS": {
       "title": "{{ name }}",
       "description": "Información sobre la localización {{ name }} de Rick & Morty con nombre, tipo, dimensión y lista de residentes",
-      "keywords": ["Localización", "Localización de Rick&Morty", "Localización de Rick & Morty"]
+      "keywords": [
+        "{{ name }}",
+        "Residentes en {{ name }}",
+        "Localización",
+        "Localización de Rick&Morty",
+        "Localización de Rick & Morty"
+      ]
     },
     "FIELDS": {
       "NUM": "Num.",
@@ -126,7 +138,7 @@
     "CHARACTERS": "{{ number }} Personajes",
     "NO_CHARATERS": "Sin Personajes",
     "SEO": {
-      "title": "{{EPISODES.TITLE}}",
+      "title": "Episodios",
       "description": "Listado de episodios de Rick & Morty con filtrado e información del número, episodio, nombre, fecha de emisión y personajes",
       "keywords": [
         "Episodios",
@@ -138,7 +150,13 @@
     "SEO_DETAILS": {
       "title": "{{ name }}",
       "description": "Información sobre el episodio {{ name }} de Rick & Morty con número, episodio, nombre, fecha de emisión y lista de personajes",
-      "keywords": ["Episodio", "Episodio de Rick&Morty", "Episodio de Rick & Morty"]
+      "keywords": [
+        "{{ name }}",
+        "Personajes en el episodio {{ name }}",
+        "Episodio",
+        "Episodio de Rick&Morty",
+        "Episodio de Rick & Morty"
+      ]
     },
     "FIELDS": {
       "NUM": "Num.",
