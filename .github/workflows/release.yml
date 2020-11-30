@@ -1,12 +1,8 @@
-name: Deploy to GitHub Pages via angular-cli-ghpages
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+    branches: [master]
 
 jobs:
   deploy:
@@ -22,11 +18,18 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
       - name: Use cached node_modules
         uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: nodeModules-${{ hashFiles('**/package-lock.json') }}-${{ matrix.node-version }}
+          restore-keys: |
+            nodeModules-
 
       - name: Install dependencies
         run: npm install

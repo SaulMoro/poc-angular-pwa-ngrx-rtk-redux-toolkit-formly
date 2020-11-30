@@ -1,0 +1,50 @@
+name: Check Pull Request
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  ckeckup:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Use cached node_modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: nodeModules-${{ hashFiles('**/package-lock.json') }}-${{ matrix.node-version }}
+          restore-keys: |
+            nodeModules-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint and Test
+        run: |
+          npm run ng lint
+          ###
+          # Configure Angular first!
+          ####
+          # npm test -- --watch=false --progress=false --browsers=ChromeHeadlessCI
+          # npm run webdriver-update-ci
+          # npm run e2e -- --protractor-config=e2e/protractor-ci.conf.js --webdriver-update=false
+          ####
+
+      - name: Build it 👷🏻‍♂️
+        run: |
+          npm run build
