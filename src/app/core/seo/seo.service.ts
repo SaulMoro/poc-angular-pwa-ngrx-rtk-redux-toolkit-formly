@@ -17,8 +17,8 @@ export const defaultConfig: Partial<SeoConfig> = {
   providedIn: 'root',
 })
 export class SeoService {
-  private config: BehaviorSubject<SeoConfig> = new BehaviorSubject<SeoConfig>({ ...defaultConfig });
   private appConfig: Partial<SeoConfig>;
+  private config: BehaviorSubject<SeoConfig> = new BehaviorSubject<SeoConfig>({ ...defaultConfig });
   seoChanges$: Observable<SeoConfig> = this.config.asObservable();
 
   constructor(private title: Title, private meta: Meta, private translocoService: TranslocoService) {
