@@ -37,11 +37,11 @@
     "unit-allowed-list": ["px", "%", "em", "rem", "vw", "vh", "deg", "s", "fr", "ms"],
     "max-empty-lines": 2,
     "max-line-length": 120,
-    "font-family-no-missing-generic-family-keyword": [
-        true,
-        {
-          "ignoreFontFamilies": ["Helvetica-Neue-65-Medium"]
-        }
+    "scss/at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": ["/^layer/"]
+      }
     ]
   }
 }

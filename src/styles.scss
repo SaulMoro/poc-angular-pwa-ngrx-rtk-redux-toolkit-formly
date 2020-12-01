@@ -1,1 +1,8 @@
-@import 'theme/index';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+// custom components purgable
+@layer components {
+  @import 'theme/components/index';
+}
