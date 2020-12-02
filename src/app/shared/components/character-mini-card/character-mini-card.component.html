@@ -1,10 +1,30 @@
-<mat-card class="character-card" [routerLink]="['/characters', character?.id] | localize" *transloco="let t">
-  <mat-card-header>
-    <img mat-card-avatar class="placeholder" [src]="character?.image" [alt]="character?.name" />
-    <mat-card-title>{{ character?.name }}</mat-card-title>
-    <mat-card-subtitle>
+<a
+  class="flex items-center p-6 mx-auto space-x-4 transition-colors bg-white shadow-md rounded-xl hover:bg-gray-100"
+  [routerLink]="['/characters', character?.id]"
+  *transloco="let t"
+>
+  <div class="flex-shrink-0">
+    <img class="w-12 h-12 bg-gray-600 rounded-full" [src]="character?.image" [alt]="character?.name" />
+  </div>
+  <div class="w-full">
+    <div class="flex items-center justify-between w-full">
+      <span class="text-xl font-medium text-black">{{ character?.name }}</span>
+      <span
+        class="block px-4 py-1 text-center text-white rounded-lg w-36"
+        [ngClass]="
+          character?.status.toLowerCase() === statusTypes.dead
+            ? 'bg-red-400'
+            : character?.status.toLowerCase() === statusTypes.alive
+            ? 'bg-green-400'
+            : 'bg-indigo-400'
+        "
+      >
+        {{ t('CHARACTERS.STATUS.' + character?.status | uppercase) }}
+      </span>
+    </div>
+    <p class="text-gray-500">
       {{ t('CHARACTERS.SPECIES.' + character?.species | uppercase) }} -
       {{ t('CHARACTERS.GENDER.' + character?.gender | uppercase) }}
-    </mat-card-subtitle>
-  </mat-card-header>
-</mat-card>
+    </p>
+  </div>
+</a>

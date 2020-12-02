@@ -1,36 +1,95 @@
-<mat-toolbar color="primary">
-  <div class="space"></div>
-  <div class="container">
-    <a [routerLink]="['/'] | localize: language" class="logo">
-      <img src="./assets/img/logo.svg" alt="logo" height="40" />
-    </a>
-    <nav>
-      <button
-        *ngFor="let item of menu; trackBy: trackByFn"
-        mat-button
-        [routerLink]="[item.path] | localize: language"
-        routerLinkActive="active"
-      >
-        {{ item.name }}
-      </button>
-      <button mat-button class="lang-button">
-        <mat-select [ngModel]="language" (selectionChange)="onLanguageSelect($event)">
-          <mat-option *ngFor="let l of languages; trackBy: trackByFn" [value]="l">
-            {{ l | uppercase }}
-          </mat-option>
-        </mat-select>
-      </button>
-    </nav>
+<nav class="bg-indigo-500">
+  <div class="px-4 mx-auto sm:container sm:px-0">
+    <div class="flex items-center justify-between h-16">
+      <div class="flex items-center">
+        <!-- Icon -->
+        <div class="flex-shrink-0">
+          <a [routerLink]="['/'] | localize: language">
+            <img class="w-auto h-8" src="./assets/img/logo.svg" alt="Rick & Morty" />
+          </a>
+        </div>
 
-    <div class="mobile-menu">
-      <button mat-button [matMenuTriggerFor]="appMenu">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <mat-menu #appMenu="matMenu">
-        <button *ngFor="let item of menu; trackBy: trackByFn" mat-menu-item>
-          <span *ngIf="item" [routerLink]="[item.path] | localize: language">{{ item.name }}</span>
+        <div class="hidden sm:block">
+          <div class="flex items-baseline ml-8 space-x-4">
+            <a
+              *ngFor="let item of menu; trackBy: trackByFn"
+              [routerLink]="[item.path] | localize: language"
+              class="px-3 py-2 text-sm font-medium text-white rounded-md hover:text-yellow-400 hover:bg-indigo-600"
+              routerLinkActive="text-yellow-400"
+            >
+              {{ item.name }}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="hidden ml-4 sm:block">
+        <app-language-dropdown
+          [language]="language"
+          [languages]="languages"
+          (selectLanguage)="onLanguageSelect($event)"
+        ></app-language-dropdown>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="flex -mr-2 sm:hidden">
+        <button
+          type="button"
+          class="inline-flex items-center justify-center p-2 text-gray-200 rounded-md hover:text-white hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-700 focus:ring-white"
+          [attr.aria-expanded]="menuPanelOpened"
+          (click)="toggleMenuPanel()"
+        >
+          <span class="sr-only">Open main menu</span>
+          <svg
+            *ngIf="menuPanelOpened; else menuPanelClosed"
+            class="w-6 h-6"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          <ng-template #menuPanelClosed>
+            <svg
+              class="w-6 h-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </ng-template>
         </button>
-      </mat-menu>
+      </div>
     </div>
   </div>
-</mat-toolbar>
+
+  <!-- Mobile menu, toggle classes based on menu state. -->
+  <ng-container *ngIf="menuPanelOpened">
+    <div class="px-2 pt-2 pb-3 space-y-1">
+      <a
+        *ngFor="let item of menu; trackBy: trackByFn"
+        [routerLink]="[item.path] | localize: language"
+        class="block px-3 py-2 text-base font-medium text-white rounded-md hover:text-yellow-400 hover:bg-indigo-600"
+        routerLinkActive="bg-indigo-600 text-yellow-400"
+      >
+        {{ item.name }}
+      </a>
+    </div>
+    <div class="pt-4 pb-3 border-t border-gray-700">
+      <div class="px-2 space-y-1">
+        <div class="w-24">
+          <app-language-dropdown
+            [language]="language"
+            [languages]="languages"
+            (selectLanguage)="onLanguageSelect($event)"
+          ></app-language-dropdown>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</nav>

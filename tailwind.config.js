@@ -6,7 +6,11 @@ module.exports = (isProd) => ({
   },
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      minHeight: {
+        container: '65vh',
+      },
+    },
   },
   variants: {
     extend: {},

@@ -13,11 +13,18 @@ export class HeaderComponent implements OnInit {
   @Input() languages: string[];
   @Output() languageChange = new EventEmitter<string>();
 
+  menuPanelOpened = false;
+
   constructor() {}
 
   ngOnInit(): void {}
 
-  onLanguageSelect({ value: language }): void {
+  toggleMenuPanel(): void {
+    this.menuPanelOpened = !this.menuPanelOpened;
+    console.log(this.menuPanelOpened);
+  }
+
+  onLanguageSelect(language: string): void {
     this.languageChange.emit(language);
   }
 

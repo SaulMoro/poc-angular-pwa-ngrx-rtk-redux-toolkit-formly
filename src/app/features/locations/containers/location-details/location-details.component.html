@@ -1,19 +1,21 @@
 <seo *ngIf="seoConfig$ | ngrxPush as seoConfig" [config]="seoConfig"></seo>
-<mat-progress-bar *ngIf="loading$ | ngrxPush" class="progress-bar--top" mode="indeterminate"></mat-progress-bar>
+<app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar>
 
 <ng-container *transloco="let t">
   <ng-container *ngrxLet="location$ as location">
     <ng-container *ngIf="location; else loadingLocation">
-      <h1>{{ location.name }}</h1>
-      <h3>{{ t('LOCATIONS.FIELDS.TYPE') }}: {{ location.type }}</h3>
-      <h3>{{ t('LOCATIONS.FIELDS.DIMENSION') }}: {{ location.dimension }}</h3>
-      <mat-divider></mat-divider>
-      <mat-card>
-        <h2>{{ t('LOCATIONS.LOCATION_RESIDENTS', { name: location.name }) }}</h2>
-        <div class="row">
-          <ng-container *ngIf="location.residents?.length; else emptyCharacters">
-            <ng-container *ngrxLet="characters$ as characters">
-              <div class="col-12 col-md-6" *ngFor="let characterId of location.residents; trackBy: characterId">
+      <div class="p-4 mb-4 bg-white sm:rounded-md sm:shadow">
+        <h1 class="mb-2 text-lg font-bold text-black">{{ location.name }}</h1>
+        <h3>{{ t('LOCATIONS.FIELDS.TYPE') }}: {{ location.type }}</h3>
+        <h3>{{ t('LOCATIONS.FIELDS.DIMENSION') }}: {{ location.dimension }}</h3>
+      </div>
+
+      <div class="p-4 bg-white sm:rounded-md sm:shadow">
+        <h2 class="mb-4">{{ t('LOCATIONS.LOCATION_RESIDENTS', { name: location.name }) }}</h2>
+        <ng-container *ngIf="location.residents?.length; else emptyCharacters">
+          <ng-container *ngrxLet="characters$ as characters">
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-3">
+              <ng-container *ngFor="let characterId of location.residents; trackBy: characterId">
                 <app-character-mini-card
                   *ngIf="characters[characterId]; else loadingCharacter"
                   [character]="characters[characterId]"
@@ -21,15 +23,15 @@
                 <ng-template #loadingCharacter>
                   <app-loading-character-mini-card></app-loading-character-mini-card>
                 </ng-template>
-              </div>
-            </ng-container>
-
-            <ng-template #emptyCharacters>
-              <p>{{ t('LOCATIONS.NO_RESIDENTS') }}</p>
-            </ng-template>
+              </ng-container>
+            </div>
           </ng-container>
-        </div>
-      </mat-card>
+        </ng-container>
+
+        <ng-template #emptyCharacters>
+          <p class="mt-8 font-bold text-gray-500">{{ t('LOCATIONS.NO_RESIDENTS') }}</p>
+        </ng-template>
+      </div>
     </ng-container>
 
     <ng-template #loadingLocation>
