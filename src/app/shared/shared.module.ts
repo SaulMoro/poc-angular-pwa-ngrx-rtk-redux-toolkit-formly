@@ -40,7 +40,6 @@ import { TableComponent } from './components/table/table.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 import { CharacterMiniCardComponent } from './components/character-mini-card/character-mini-card.component';
-import { CharactersDialogComponent } from './components/characters-dialog/characters-dialog.component';
 import { LoadingCharacterMiniCardComponent } from './components/loading-character-mini-card/loading-character-mini-card.component';
 import { LoadingDetailsContentComponent } from './components/loading-details-content/loading-details-content.component';
 
@@ -73,7 +72,6 @@ const EXPORTED_DECLARATIONS = [
   ProgressBarComponent,
   CharacterMiniCardComponent,
   LoadingCharacterMiniCardComponent,
-  CharactersDialogComponent,
   LoadingDetailsContentComponent,
 ];
 

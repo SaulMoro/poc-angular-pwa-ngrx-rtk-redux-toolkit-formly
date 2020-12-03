@@ -1,18 +1,18 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { TranslocoService } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinct, map, switchMap, take } from 'rxjs/operators';
 
+import { LazyModalService } from '@app/core/lazy-modal';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
+import {
+  CharactersDialogComponent as CharactersDialogComponentType,
+  CharacterDialogData,
+} from '@app/modals/characters-dialog/characters-dialog.component';
 import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
 import { Location } from '@app/shared/models';
-import {
-  CharacterDialogData,
-  CharactersDialogComponent,
-} from '@app/shared/components/characters-dialog/characters-dialog.component';
 import { TableConfig } from '@app/shared/components/table/table.component';
 
 @UntilDestroy()
@@ -52,7 +52,7 @@ export class LocationsListComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly store: Store,
-    private dialog: MatDialog,
+    private lazyModal: LazyModalService<CharactersDialogComponentType>,
     private googleAnalytics: GoogleAnalyticsService,
     private translocoService: TranslocoService
   ) {}
@@ -72,13 +72,16 @@ export class LocationsListComponent implements OnInit, OnDestroy {
     this.hoverLocation$.next(location);
   }
 
-  openResidentsDialog(location: Location): void {
-    this.dialog.open(CharactersDialogComponent, {
-      data: {
-        title: location.name,
-        characterIds: location.residents,
-      } as CharacterDialogData,
-    });
+  async openResidentsDialog(location: Location): Promise<void> {
+    const { CharactersDialogComponent } = await import(
+      /* webpackPrefetch: true */
+      '@app/modals/characters-dialog/characters-dialog.component'
+    );
+    this.lazyModal.open(CharactersDialogComponent, {
+      title: location.name,
+      characterIds: location.residents,
+    } as CharacterDialogData);
+
     this.googleAnalytics.sendEvent({
       name: 'Open Characters Dialog Of Location',
       category: GAEventCategory.INTERACTION,
@@ -88,6 +91,6 @@ export class LocationsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.dialog.closeAll();
+    this.lazyModal.close();
   }
 }

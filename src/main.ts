@@ -10,7 +10,7 @@ if (environment.production) {
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule, {
-    // Zone less (ngrx-component). Necessary in Angular Material (Remove on update to TailwindCSS)
+    // Zone less (ngrx-component)
     // https://christiankohler.net/reactive-angular-with-ngrx-component
     // ngZone: 'noop',
 

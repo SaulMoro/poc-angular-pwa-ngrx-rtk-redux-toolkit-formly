@@ -10,8 +10,10 @@
         <button
           type="button"
           class="w-3/5 ml-2 btn-outline btn-outline-primary md:w-full md:ml-0"
-          (click)="openResidentsDialog(item)"
           [disabled]="!item.residents.length"
+          [prefetchHovered]="true"
+          (prefetch)="prefetchResidentsOnHover(item)"
+          (click)="openResidentsDialog(item)"
         >
           {{
             t(item.residents?.length ? 'LOCATIONS.RESIDENTS' : 'LOCATIONS.NO_RESIDENTS', {
