@@ -5,13 +5,13 @@
   <ng-container *ngrxLet="location$ as location">
     <ng-container *ngIf="location; else loadingLocation">
       <div class="p-4 mb-4 bg-white sm:rounded-md sm:shadow">
-        <h1 class="mb-2 text-lg font-bold text-black">{{ location.name }}</h1>
+        <h1 class="mb-2 text-2xl font-medium text-gray-800">{{ location.name }}</h1>
         <h3>{{ t('LOCATIONS.FIELDS.TYPE') }}: {{ location.type }}</h3>
         <h3>{{ t('LOCATIONS.FIELDS.DIMENSION') }}: {{ location.dimension }}</h3>
       </div>
 
       <div class="p-4 bg-white sm:rounded-md sm:shadow">
-        <h2 class="mb-4">{{ t('LOCATIONS.LOCATION_RESIDENTS', { name: location.name }) }}</h2>
+        <h2 class="mb-4 font-medium">{{ t('LOCATIONS.LOCATION_RESIDENTS', { name: location.name }) }}</h2>
         <ng-container *ngIf="location.residents?.length; else emptyCharacters">
           <ng-container *ngrxLet="characters$ as characters">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-3">
