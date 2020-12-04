@@ -1,10 +1,5 @@
 <div class="flex flex-col min-h-screen">
-  <app-header
-    [menu]="menu$ | ngrxPush"
-    [languages]="supportedLanguages"
-    [language]="language$ | ngrxPush"
-    (languageChange)="onChangeLanguage($event)"
-  ></app-header>
+  <app-header [menu]="menu$ | ngrxPush" [languages]="supportedLanguages" [language]="language$ | ngrxPush"></app-header>
   <main class="container flex-grow pt-4 mx-auto">
     <router-outlet></router-outlet>
   </main>

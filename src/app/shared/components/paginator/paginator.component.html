@@ -1,10 +1,10 @@
-<div *ngIf="pages > 1" class="flex flex-col items-center">
+<div *ngIf="pages > 1" class="relative flex flex-col items-center">
   <div class="flex text-gray-700">
     <button
       class="flex items-center justify-center w-12 h-12 mr-1 transition-colors duration-200 bg-gray-200 rounded-full"
       [ngClass]="currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'"
       [disabled]="currentPage === 1"
-      [routerLink]="['./']"
+      [routerLink]="['./'] | localize"
       [queryParams]="{ page: currentPage - 1 }"
     >
       <svg
@@ -26,14 +26,14 @@
       <a
         *ngIf="currentPage > 2"
         class="page-button hover:bg-indigo-300"
-        [routerLink]="['./']"
+        [routerLink]="['./'] | localize"
         [queryParams]="{ page: 1 }"
         >1</a
       >
       <a
         *ngIf="currentPage > 3"
         class="page-button hover:bg-indigo-300"
-        [routerLink]="['./']"
+        [routerLink]="['./'] | localize"
         [queryParams]="{ page: 2 }"
         >2</a
       >
@@ -41,6 +41,7 @@
         type="button"
         *ngIf="currentPage > 4"
         class="page-button hover:bg-gray-300 focus:outline-none focus:bg-gray-300"
+        (click)="togglePaginatorPanel('prev')"
       >
         ...
       </button>
@@ -48,18 +49,18 @@
       <a
         *ngIf="currentPage - 1 >= 1"
         class="page-button hover:bg-indigo-300"
-        [routerLink]="['./']"
+        [routerLink]="['./'] | localize"
         [queryParams]="{ page: currentPage - 1 }"
       >
         {{ currentPage - 1 }}
       </a>
-      <a class="bg-indigo-500 page-button" [routerLink]="['./']" [queryParams]="{ page: currentPage }">
+      <a class="bg-indigo-500 page-button" [routerLink]="['./'] | localize" [queryParams]="{ page: currentPage }">
         {{ currentPage }}
       </a>
       <a
         *ngIf="currentPage < pages"
         class="page-button hover:bg-indigo-300"
-        [routerLink]="['./']"
+        [routerLink]="['./'] | localize"
         [queryParams]="{ page: currentPage + 1 }"
       >
         {{ currentPage + 1 }}
@@ -69,13 +70,14 @@
         type="button"
         *ngIf="currentPage + 3 < pages"
         class="page-button hover:bg-gray-300 focus:outline-none focus:bg-gray-300"
+        (click)="togglePaginatorPanel('post')"
       >
         ...
       </button>
       <a
         *ngIf="currentPage + 2 < pages"
         class="page-button hover:bg-indigo-300"
-        [routerLink]="['./']"
+        [routerLink]="['./'] | localize"
         [queryParams]="{ page: pages - 1 }"
       >
         {{ pages - 1 }}
@@ -83,7 +85,7 @@
       <a
         *ngIf="currentPage + 1 < pages"
         class="page-button hover:bg-indigo-300"
-        [routerLink]="['./']"
+        [routerLink]="['./'] | localize"
         [queryParams]="{ page: pages }"
       >
         {{ pages }}
@@ -93,7 +95,7 @@
       class="flex items-center justify-center w-12 h-12 ml-1 transition-colors duration-200 bg-gray-200 rounded-full"
       [ngClass]="currentPage === +pages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'"
       [disabled]="currentPage === +pages"
-      [routerLink]="['./']"
+      [routerLink]="['./'] | localize"
       [queryParams]="{ page: currentPage + 1 }"
     >
       <svg
@@ -111,5 +113,31 @@
         <polyline points="9 18 15 12 9 6"></polyline>
       </svg>
     </button>
+  </div>
+
+  <!-- Paginator dropdown panel, show/hide based on dropdown state.-->
+  <div
+    *ngIf="paginatorPanelOpened"
+    class="absolute w-20 overflow-y-auto bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+    [ngClass]="
+      (paginator === 'post' ? pages - (currentPage + 3) : currentPage - 4) <= 3 ? '-top-20 h-20' : '-top-32 h-32'
+    "
+  >
+    <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+      <a
+        *ngFor="
+          let p of [].constructor(paginator === 'post' ? pages - (currentPage + 3) : currentPage - 4);
+          let i = index;
+          trackBy: trackByFn
+        "
+        class="block px-4 py-2 text-sm text-center text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+        role="menuitem"
+        [routerLink]="['./'] | localize"
+        [queryParams]="{ page: i + (paginator === 'post' ? currentPage + 2 : 3) }"
+        (click)="onPageSelect()"
+      >
+        {{ i + (paginator === 'post' ? currentPage + 2 : 3) }}
+      </a>
+    </div>
   </div>
 </div>

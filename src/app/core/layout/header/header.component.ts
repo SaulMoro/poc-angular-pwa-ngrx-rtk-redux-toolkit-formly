@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { MenuItem } from '../models';
 
 @Component({
@@ -11,7 +11,6 @@ export class HeaderComponent implements OnInit {
   @Input() menu: MenuItem[];
   @Input() language: string;
   @Input() languages: string[];
-  @Output() languageChange = new EventEmitter<string>();
 
   menuPanelOpened = false;
 
@@ -21,11 +20,6 @@ export class HeaderComponent implements OnInit {
 
   toggleMenuPanel(): void {
     this.menuPanelOpened = !this.menuPanelOpened;
-    console.log(this.menuPanelOpened);
-  }
-
-  onLanguageSelect(language: string): void {
-    this.languageChange.emit(language);
   }
 
   trackByFn(index: number): number {

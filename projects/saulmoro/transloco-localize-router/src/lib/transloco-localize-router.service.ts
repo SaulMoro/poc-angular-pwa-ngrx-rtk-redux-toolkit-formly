@@ -23,6 +23,13 @@ export class TranslocoLocalizeRouterService {
 
   translateRoute<T = any>(route: string | any[], lang: string = this.activeLang): T {
     const startPath = this.showPrefix(lang) ? `/${lang}` : '';
+
+    if (Array.isArray(route) && String(route[0]).startsWith('./')) {
+      route = `${this.router.url.split('?')[0]?.replace(`/${this.activeLang}/`, '/')}/${route.slice(1)?.join('/')}`;
+    } else if (!String(route).startsWith('/')) {
+      route = `${this.router.url.split('?')[0]?.replace(`/${this.activeLang}/`, '/')}/${route ?? ''}`;
+    }
+
     const translatedRoute = Array.isArray(route)
       ? startPath
         ? [startPath, ...route?.map((path: string) => String(path).replace('/', '')).filter(Boolean)]
@@ -34,9 +41,8 @@ export class TranslocoLocalizeRouterService {
 
   changeLanguage(lang: string, extras: NavigationExtras = {}): void {
     if (lang !== this.activeLang) {
-      const route = this.router.url.split('?')[0]?.replace(`/${this.activeLang}/`, '/');
       const queryParams = this.route.snapshot.queryParams;
-      this.router.navigate([this.translateRoute(route, lang)], {
+      this.router.navigate([this.translateRoute('', lang)], {
         ...extras,
         queryParams: {
           ...queryParams,

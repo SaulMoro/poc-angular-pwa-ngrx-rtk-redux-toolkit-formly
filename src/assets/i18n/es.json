@@ -28,7 +28,7 @@
   "CHARACTERS": {
     "TITLE": "Personajes",
     "FILTER_CHARACTERS": "Filtrar Personajes",
-    "LAST_KNOWN_LOCATION": "Última localización conocida:",
+    "LAST_KNOWN_LOCATION": "Última localización:",
     "FIRST_SEEN": "Visto por primera vez en:",
     "CHARACTER_INFO": "Información de Personaje",
     "CHARACTER_EPISODES": "Episodios con {{ name }}",

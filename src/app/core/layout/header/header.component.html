@@ -23,7 +23,7 @@
             <a
               *ngFor="let item of menu; trackBy: trackByFn"
               [routerLink]="[item.path] | localize: language"
-              class="px-3 py-2 text-sm font-medium text-white transition-colors duration-200 rounded-md hover:text-yellow-400 hover:bg-indigo-600"
+              class="px-3 py-2 text-sm font-medium text-white transition-colors duration-200 rounded-md hover:text-yellow-400 hover:bg-indigo-500"
               routerLinkActive="text-yellow-400"
             >
               {{ item.name }}
@@ -33,18 +33,14 @@
       </div>
 
       <div class="hidden ml-4 sm:block">
-        <app-language-dropdown
-          [language]="language"
-          [languages]="languages"
-          (selectLanguage)="onLanguageSelect($event)"
-        ></app-language-dropdown>
+        <app-language-dropdown [language]="language" [languages]="languages"></app-language-dropdown>
       </div>
 
       <!-- Mobile menu button -->
       <div class="flex -mr-2 sm:hidden">
         <button
           type="button"
-          class="inline-flex items-center justify-center p-2 text-gray-200 transition-colors duration-200 rounded-md hover:text-white hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-700 focus:ring-white"
+          class="inline-flex items-center justify-center p-2 text-gray-200 transition-colors duration-200 rounded-md hover:text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-700 focus:ring-white"
           [attr.aria-expanded]="menuPanelOpened"
           (click)="toggleMenuPanel()"
         >
@@ -83,7 +79,7 @@
       <a
         *ngFor="let item of menu; trackBy: trackByFn"
         [routerLink]="[item.path] | localize: language"
-        class="block px-3 py-2 text-base font-medium text-white transition-colors duration-200 rounded-md hover:text-yellow-400 hover:bg-indigo-600"
+        class="block px-3 py-2 text-base font-medium text-white transition-colors duration-200 rounded-md hover:text-yellow-400 hover:bg-indigo-500"
         routerLinkActive="bg-indigo-600 text-yellow-400"
       >
         {{ item.name }}
@@ -92,11 +88,7 @@
     <div class="pt-4 pb-3 border-t border-gray-700">
       <div class="px-2 space-y-1">
         <div class="w-24">
-          <app-language-dropdown
-            [language]="language"
-            [languages]="languages"
-            (selectLanguage)="onLanguageSelect($event)"
-          ></app-language-dropdown>
+          <app-language-dropdown [language]="language" [languages]="languages"></app-language-dropdown>
         </div>
       </div>
     </div>

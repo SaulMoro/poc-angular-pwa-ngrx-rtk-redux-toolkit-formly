@@ -10,7 +10,23 @@ export class PaginatorComponent implements OnInit {
   @Input() currentPage = 1;
   @Input() pages = 1;
 
+  paginatorPanelOpened = false;
+  paginator: 'prev' | 'post';
+
   constructor() {}
 
   ngOnInit(): void {}
+
+  togglePaginatorPanel(paginator: 'prev' | 'post'): void {
+    this.paginator = paginator;
+    this.paginatorPanelOpened = !this.paginatorPanelOpened;
+  }
+
+  onPageSelect(): void {
+    this.paginatorPanelOpened = false;
+  }
+
+  trackByFn(index: number): number {
+    return index;
+  }
 }

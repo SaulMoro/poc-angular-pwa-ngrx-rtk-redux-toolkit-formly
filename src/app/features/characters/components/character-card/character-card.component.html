@@ -7,21 +7,22 @@
   </div>
 
   <h2 class="mt-4 text-xl font-bold">{{ character.name }}</h2>
+  <h6 class="mt-1 text-sm font-medium">
+    {{ t('CHARACTERS.SPECIES.' + character?.species | uppercase) }} -
+    {{ t('CHARACTERS.GENDER.' + character?.gender | uppercase) }}
+  </h6>
   <div class="flex items-center mt-1 space-x-2">
     <span
       class="w-3 h-3 rounded-full shadow"
       [ngClass]="
         character.status.toLowerCase() === statusTypes.dead
           ? 'bg-red-400'
-          : character?.status.toLowerCase() === statusTypes.alive
+          : character.status.toLowerCase() === statusTypes.alive
           ? 'bg-green-400'
           : 'bg-gray-400'
       "
     ></span>
-    <h6 class="text-sm font-medium">
-      {{ t('CHARACTERS.STATUS.' + character.status | uppercase) }} -
-      {{ t('CHARACTERS.SPECIES.' + character.species | uppercase) }}
-    </h6>
+    <h6 class="text-sm font-medium">{{ t('CHARACTERS.STATUS.' + character.status | uppercase) }}</h6>
   </div>
 
   <p class="self-start mt-3 text-xs text-gray-500">

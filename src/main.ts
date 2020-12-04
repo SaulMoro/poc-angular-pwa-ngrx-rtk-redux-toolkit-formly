@@ -10,7 +10,7 @@ if (environment.production) {
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule, {
-    // Zone less (ngrx-component)
+    // Zone less (with ngrx-component)
     // https://christiankohler.net/reactive-angular-with-ngrx-component
     // ngZone: 'noop',
 

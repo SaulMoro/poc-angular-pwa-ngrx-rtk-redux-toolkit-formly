@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
   selector: 'app-language-dropdown',
@@ -34,15 +34,16 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, EventEmitter, Output
         class="absolute right-0 w-24 mt-1 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
       >
         <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-          <span
+          <a
             *ngFor="let l of languages; trackBy: trackByFn"
             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
             [ngClass]="l === language ? 'bg-gray-100 text-gray-900 cursor-not-allowed' : 'cursor-pointer'"
             role="menuitem"
-            (click)="onLanguageSelect(l)"
+            [routerLink]="['./'] | localize: l"
+            (click)="onLanguageSelect()"
           >
             {{ l | uppercase }}
-          </span>
+          </a>
         </div>
       </div>
     </div>
@@ -53,7 +54,6 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, EventEmitter, Output
 export class LanguageDropdownComponent implements OnInit {
   @Input() language: string;
   @Input() languages: string[];
-  @Output() selectLanguage = new EventEmitter<string>();
 
   langPanelOpened = false;
 
@@ -65,11 +65,8 @@ export class LanguageDropdownComponent implements OnInit {
     this.langPanelOpened = !this.langPanelOpened;
   }
 
-  onLanguageSelect(language: string): void {
-    this.toggleLanguagePanel();
-    if (language !== this.language) {
-      this.selectLanguage.emit(language);
-    }
+  onLanguageSelect(): void {
+    this.langPanelOpened = false;
   }
 
   trackByFn(index: number): number {
