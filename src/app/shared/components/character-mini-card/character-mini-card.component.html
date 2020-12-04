@@ -1,16 +1,16 @@
 <a
-  class="flex items-center p-6 mx-auto space-x-4 transition-colors bg-white shadow-md rounded-xl hover:bg-gray-100"
+  class="flex items-center p-6 mx-auto space-x-4 transition-colors duration-200 bg-white shadow-md rounded-xl hover:bg-gray-100"
   [routerLink]="['/characters', character?.id]"
   *transloco="let t"
 >
-  <div class="flex-shrink-0">
-    <img class="w-12 h-12 bg-gray-500 rounded-full" [src]="character?.image" [alt]="character?.name" />
+  <div class="inline-flex flex-shrink-0 w-12 h-12 overflow-hidden border border-gray-200 rounded-full shadow-lg">
+    <img [src]="character?.image" [alt]="character?.name" class="w-full h-full" />
   </div>
   <div class="w-full">
     <div class="flex items-center justify-between w-full">
       <span class="text-xl font-medium text-black">{{ character?.name }}</span>
       <span
-        class="block px-4 py-1 text-center text-white rounded-lg w-36"
+        class="block px-4 py-1 text-center text-white rounded w-36"
         [ngClass]="
           character?.status.toLowerCase() === statusTypes.dead
             ? 'bg-red-400'

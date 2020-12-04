@@ -8,7 +8,7 @@
       (prefetchLocation)="prefetchLocation($event)"
     ></app-character-details-card>
 
-    <div class="p-4 mt-4 bg-white sm:rounded-md sm:shadow" *transloco="let t">
+    <div class="p-4 mx-4 mt-4 bg-white rounded sm:mx-0 sm:shadow" *transloco="let t">
       <h2 class="mb-4 font-medium">{{ t('CHARACTERS.CHARACTER_EPISODES', { name: character.name }) }}</h2>
 
       <div *ngrxLet="episodes$ as episodes" class="relative h-full px-10 overflow-hidden wrap">
@@ -21,14 +21,14 @@
           <div class="md:w-5/12"></div>
           <ng-container *ngIf="episode; else loadingEpisode">
             <a
-              class="z-10 flex items-center h-8 -ml-8 bg-gray-800 rounded-full shadow-xl w-28 hover:bg-gray-900 md:ml-0 md:w-24"
+              class="z-10 flex items-center h-8 -ml-8 transition-colors duration-200 bg-gray-800 rounded-full shadow-xl w-28 hover:bg-gray-900 md:ml-0 md:w-24"
               [routerLink]="['/episodes', episode.id] | localize"
             >
               <h1 class="mx-auto text-lg font-semibold text-white">{{ episode.episode }}</h1>
             </a>
 
             <a
-              class="w-full px-6 py-4 ml-8 bg-gray-400 rounded-lg shadow-xl hover:bg-gray-500 md:w-5/12 md:ml-0"
+              class="w-full px-6 py-4 ml-8 transition-colors duration-200 bg-gray-400 rounded shadow-xl hover:bg-gray-500 md:w-5/12 md:ml-0"
               [routerLink]="['/episodes', episode.id] | localize"
             >
               <h3 class="mb-3 text-xl font-bold text-gray-800">{{ episode.name }}</h3>
@@ -45,7 +45,7 @@
               <div class="w-3/4 h-4 mx-auto bg-gray-400 rounded animate-pulse"></div>
             </div>
 
-            <div class="w-full px-6 py-4 ml-8 bg-gray-400 rounded-lg shadow-xl hover:bg-gray-500 md:w-5/12 md:ml-0">
+            <div class="w-full px-6 py-4 ml-8 bg-gray-400 rounded shadow-xl hover:bg-gray-500 md:w-5/12 md:ml-0">
               <div class="space-y-4 animate-pulse">
                 <div class="w-2/3 h-4 bg-gray-700 rounded"></div>
                 <div class="w-1/3 h-4 bg-gray-700 rounded"></div>

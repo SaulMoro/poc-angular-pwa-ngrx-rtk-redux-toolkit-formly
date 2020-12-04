@@ -1,8 +1,8 @@
 <div *ngIf="pages > 1" class="flex flex-col items-center">
   <div class="flex text-gray-700">
     <button
-      class="flex items-center justify-center w-12 h-12 mr-1 bg-gray-200 rounded-full"
-      [ngClass]="{ 'opacity-50 cursor-not-allowed': currentPage === 1 }"
+      class="flex items-center justify-center w-12 h-12 mr-1 transition-colors duration-200 bg-gray-200 rounded-full"
+      [ngClass]="currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'"
       [disabled]="currentPage === 1"
       [routerLink]="['./']"
       [queryParams]="{ page: currentPage - 1 }"
@@ -23,13 +23,31 @@
       </svg>
     </button>
     <div class="flex h-12 font-medium bg-gray-200 rounded-full">
-      <a *ngIf="currentPage > 2" class="page-button" [routerLink]="['./']" [queryParams]="{ page: 1 }">1</a>
-      <a *ngIf="currentPage > 3" class="page-button" [routerLink]="['./']" [queryParams]="{ page: 2 }">2</a>
-      <div *ngIf="currentPage > 4" class="page-button">...</div>
+      <a
+        *ngIf="currentPage > 2"
+        class="page-button hover:bg-indigo-300"
+        [routerLink]="['./']"
+        [queryParams]="{ page: 1 }"
+        >1</a
+      >
+      <a
+        *ngIf="currentPage > 3"
+        class="page-button hover:bg-indigo-300"
+        [routerLink]="['./']"
+        [queryParams]="{ page: 2 }"
+        >2</a
+      >
+      <button
+        type="button"
+        *ngIf="currentPage > 4"
+        class="page-button hover:bg-gray-300 focus:outline-none focus:bg-gray-300"
+      >
+        ...
+      </button>
 
       <a
         *ngIf="currentPage - 1 >= 1"
-        class="page-button"
+        class="page-button hover:bg-indigo-300"
         [routerLink]="['./']"
         [queryParams]="{ page: currentPage - 1 }"
       >
@@ -40,25 +58,41 @@
       </a>
       <a
         *ngIf="currentPage < pages"
-        class="page-button"
+        class="page-button hover:bg-indigo-300"
         [routerLink]="['./']"
         [queryParams]="{ page: currentPage + 1 }"
       >
         {{ currentPage + 1 }}
       </a>
 
-      <div *ngIf="currentPage + 3 < pages" class="page-button">...</div>
-      <a *ngIf="currentPage + 2 < pages" class="page-button" [routerLink]="['./']" [queryParams]="{ page: pages - 1 }">
+      <button
+        type="button"
+        *ngIf="currentPage + 3 < pages"
+        class="page-button hover:bg-gray-300 focus:outline-none focus:bg-gray-300"
+      >
+        ...
+      </button>
+      <a
+        *ngIf="currentPage + 2 < pages"
+        class="page-button hover:bg-indigo-300"
+        [routerLink]="['./']"
+        [queryParams]="{ page: pages - 1 }"
+      >
         {{ pages - 1 }}
       </a>
-      <a *ngIf="currentPage + 1 < pages" class="page-button" [routerLink]="['./']" [queryParams]="{ page: pages }">
+      <a
+        *ngIf="currentPage + 1 < pages"
+        class="page-button hover:bg-indigo-300"
+        [routerLink]="['./']"
+        [queryParams]="{ page: pages }"
+      >
         {{ pages }}
       </a>
     </div>
     <button
-      class="flex items-center justify-center w-12 h-12 ml-1 bg-gray-200 rounded-full"
-      [ngClass]="{ 'opacity-50 cursor-not-allowed': currentPage === pages }"
-      [disabled]="currentPage === pages"
+      class="flex items-center justify-center w-12 h-12 ml-1 transition-colors duration-200 bg-gray-200 rounded-full"
+      [ngClass]="currentPage === +pages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'"
+      [disabled]="currentPage === +pages"
       [routerLink]="['./']"
       [queryParams]="{ page: currentPage + 1 }"
     >

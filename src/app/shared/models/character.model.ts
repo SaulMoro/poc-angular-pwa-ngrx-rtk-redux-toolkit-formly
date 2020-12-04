@@ -1,14 +1,14 @@
-import { CharacterGenderStrings } from './character-gender.enum';
-import { CharacterSpeciesStrings } from './character-species.enum';
-import { CharacterStatusStrings } from './character-status.enum';
+import { CharacterGender } from './character-gender.enum';
+import { CharacterSpecies } from './character-species.enum';
+import { CharacterStatus } from './character-status.enum';
 
 export interface Character {
   id: number;
   name: string;
-  status: CharacterStatusStrings;
-  species: CharacterSpeciesStrings;
+  status: CharacterStatus;
+  species: CharacterSpecies;
   type: string;
-  gender: CharacterGenderStrings;
+  gender: CharacterGender;
   origin: {
     id: number;
     name?: string;

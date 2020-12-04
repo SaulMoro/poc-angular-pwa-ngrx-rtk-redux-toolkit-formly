@@ -1,14 +1,12 @@
-import { Character, CharacterGenderStrings } from '@app/shared/models';
-import { CharacterStatusStrings } from '@app/shared/models';
-import { CharacterSpeciesStrings } from '@app/shared/models/character-species.enum';
+import { Character, CharacterGender, CharacterStatus, CharacterSpecies } from '@app/shared/models';
 
 export interface CharacterResponse {
   id: number;
   name: string;
-  status: CharacterStatusStrings;
-  species: CharacterSpeciesStrings;
+  status: CharacterStatus;
+  species: CharacterSpecies;
   type: string;
-  gender: CharacterGenderStrings;
+  gender: CharacterGender;
   origin: {
     name: string;
     url: string;

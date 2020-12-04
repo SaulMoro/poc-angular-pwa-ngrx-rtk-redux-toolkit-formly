@@ -1,4 +1,13 @@
-<nav class="bg-indigo-500">
+<nav class="relative bg-indigo-600">
+  <div class="space">
+    <div class="stars"></div>
+    <div class="stars"></div>
+    <div class="stars"></div>
+    <div class="stars"></div>
+    <div class="stars"></div>
+    <div class="stars"></div>
+    <div class="stars"></div>
+  </div>
   <div class="px-4 mx-auto sm:container sm:px-0">
     <div class="flex items-center justify-between h-16">
       <div class="flex items-center">
@@ -14,7 +23,7 @@
             <a
               *ngFor="let item of menu; trackBy: trackByFn"
               [routerLink]="[item.path] | localize: language"
-              class="px-3 py-2 text-sm font-medium text-white rounded-md hover:text-yellow-400 hover:bg-indigo-600"
+              class="px-3 py-2 text-sm font-medium text-white transition-colors duration-200 rounded-md hover:text-yellow-400 hover:bg-indigo-600"
               routerLinkActive="text-yellow-400"
             >
               {{ item.name }}
@@ -35,7 +44,7 @@
       <div class="flex -mr-2 sm:hidden">
         <button
           type="button"
-          class="inline-flex items-center justify-center p-2 text-gray-200 rounded-md hover:text-white hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-700 focus:ring-white"
+          class="inline-flex items-center justify-center p-2 text-gray-200 transition-colors duration-200 rounded-md hover:text-white hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-700 focus:ring-white"
           [attr.aria-expanded]="menuPanelOpened"
           (click)="toggleMenuPanel()"
         >
@@ -74,7 +83,7 @@
       <a
         *ngFor="let item of menu; trackBy: trackByFn"
         [routerLink]="[item.path] | localize: language"
-        class="block px-3 py-2 text-base font-medium text-white rounded-md hover:text-yellow-400 hover:bg-indigo-600"
+        class="block px-3 py-2 text-base font-medium text-white transition-colors duration-200 rounded-md hover:text-yellow-400 hover:bg-indigo-600"
         routerLinkActive="bg-indigo-600 text-yellow-400"
       >
         {{ item.name }}
