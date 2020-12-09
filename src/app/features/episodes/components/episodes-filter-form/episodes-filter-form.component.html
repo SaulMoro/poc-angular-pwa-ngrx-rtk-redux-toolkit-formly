@@ -1,9 +1,10 @@
-<mat-card *transloco="let t">
-  <mat-card-header>
-    <mat-card-title>{{ t('EPISODES.FILTER_EPISODES') }}</mat-card-title>
-    <button mat-button (click)="resetFilter()">{{ t('FORMS.CLEAR_FILTER') }}</button>
-  </mat-card-header>
-  <mat-card-content>
-    <app-dynamic-form [form]="form" [config]="formConfig"></app-dynamic-form>
-  </mat-card-content>
-</mat-card>
+<div class="w-full p-4 bg-white sm:rounded-md sm:shadow" *transloco="let t">
+  <div class="flex justify-between">
+    <h1 class="mb-2 text-lg font-bold text-black">{{ t('EPISODES.FILTER_EPISODES') }}</h1>
+    <button type="button" class="btn btn-primary" (click)="resetFilter()">
+      {{ t('FORMS.CLEAR_FILTER') }}
+    </button>
+  </div>
+
+  <app-dynamic-form [form]="form" [config]="formConfig"></app-dynamic-form>
+</div>

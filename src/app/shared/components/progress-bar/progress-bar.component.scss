@@ -1,0 +1,27 @@
+.progress-bar-container {
+  height: 0.64rem;
+  margin-top: -0.48rem;
+
+  .progress-bar {
+    height: 100%;
+    background: rgba(0, 120, 212, 0);
+    background: -webkit-gradient(
+      left top,
+      right top,
+      color-stop(0%, rgba(0, 120, 212, 0)),
+      color-stop(51%, rgba(0, 120, 212, 1)),
+      color-stop(100%, rgba(0, 120, 212, 0))
+    );
+    background: linear-gradient(to right, rgba(0, 120, 212, 0) 0%, rgba(0, 120, 212, 1) 51%, rgba(0, 120, 212, 0) 100%);
+    animation: progressBarAnimation 1.5s linear infinite;
+  }
+}
+
+@keyframes progressBarAnimation {
+  0% {
+    left: -50%;
+  }
+  100% {
+    left: 100%;
+  }
+}

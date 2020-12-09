@@ -1,20 +1,19 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
 import { TranslocoService } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, distinct, map } from 'rxjs/operators';
+import { debounceTime, distinct, map, switchMap, take } from 'rxjs/operators';
 
+import { LazyModalService } from '@app/core/lazy-modal';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
-import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
-import { Location, PAGE_SIZE } from '@app/shared/models';
 import {
+  CharactersDialogComponent as CharactersDialogComponentType,
   CharacterDialogData,
-  CharactersDialogComponent,
-} from '@app/shared/components/characters-dialog/characters-dialog.component';
+} from '@app/modals/characters-dialog/characters-dialog.component';
+import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
+import { Location } from '@app/shared/models';
+import { TableConfig } from '@app/shared/components/table/table.component';
 
 @UntilDestroy()
 @Component({
@@ -24,21 +23,36 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationsListComponent implements OnInit, OnDestroy {
-  locations$: Observable<Location[]> = this.store.select(LocationsSelectors.getLocations);
+  locations$: Observable<TableConfig<Location>> = this.store.select(LocationsSelectors.getLocations).pipe(
+    switchMap((locations: Location[]) =>
+      this.translocoService.selectTranslateObject('LOCATIONS.FIELDS').pipe(
+        take(1),
+        map(
+          (translateTitles): TableConfig<Location> => ({
+            headers: {
+              id: translateTitles.NUM,
+              name: translateTitles.NAME,
+              type: translateTitles.TYPE,
+              dimension: translateTitles.DIMENSION,
+            },
+            data: locations,
+            linkData: (location: Location) => `/locations/${location.id}`,
+            actionsHeader: translateTitles.RESIDENTS,
+          })
+        )
+      )
+    )
+  );
   loading$: Observable<boolean> = this.store.select(LocationsSelectors.getLoading);
-  totalLocations$: Observable<number> = this.store.select(LocationsSelectors.getTotalLocations);
-  pageIndex$: Observable<number> = this.store.select(LocationsSelectors.getCurrentPage).pipe(map((page) => page - 1));
+  page$: Observable<number> = this.store.select(LocationsSelectors.getCurrentPage);
+  pages$: Observable<number> = this.store.select(LocationsSelectors.getTotalPages);
   seoConfig$ = this.translocoService.selectTranslateObject('LOCATIONS.SEO');
-
-  pageSize = PAGE_SIZE;
-  displayedColumns = ['id', 'name', 'type', 'dimension', 'residents'];
 
   private readonly hoverLocation$ = new Subject<Location>();
 
   constructor(
     private readonly store: Store,
-    private router: Router,
-    private dialog: MatDialog,
+    private lazyModal: LazyModalService<CharactersDialogComponentType>,
     private googleAnalytics: GoogleAnalyticsService,
     private translocoService: TranslocoService
   ) {}
@@ -58,20 +72,16 @@ export class LocationsListComponent implements OnInit, OnDestroy {
     this.hoverLocation$.next(location);
   }
 
-  changePage(page: PageEvent): void {
-    this.router.navigate([], {
-      queryParams: { page: page.pageIndex + 1 },
-      queryParamsHandling: 'merge',
-    });
-  }
+  async openResidentsDialog(location: Location): Promise<void> {
+    const { CharactersDialogComponent } = await import(
+      /* webpackPrefetch: true */
+      '@app/modals/characters-dialog/characters-dialog.component'
+    );
+    this.lazyModal.open(CharactersDialogComponent, {
+      title: location.name,
+      characterIds: location.residents,
+    } as CharacterDialogData);
 
-  openResidentsDialog(location: Location): void {
-    this.dialog.open(CharactersDialogComponent, {
-      data: {
-        title: location.name,
-        characterIds: location.residents,
-      } as CharacterDialogData,
-    });
     this.googleAnalytics.sendEvent({
       name: 'Open Characters Dialog Of Location',
       category: GAEventCategory.INTERACTION,
@@ -81,6 +91,6 @@ export class LocationsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.dialog.closeAll();
+    this.lazyModal.close();
   }
 }

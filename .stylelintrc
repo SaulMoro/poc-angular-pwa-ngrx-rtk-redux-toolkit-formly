@@ -36,12 +36,21 @@
     ],
     "unit-allowed-list": ["px", "%", "em", "rem", "vw", "vh", "deg", "s", "fr", "ms"],
     "max-empty-lines": 2,
-    "max-line-length": 120,
-    "font-family-no-missing-generic-family-keyword": [
-        true,
-        {
-          "ignoreFontFamilies": ["Helvetica-Neue-65-Medium"]
-        }
-    ]
+    "max-line-length": null,
+    "scss/at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": [
+          "/^layer/",
+          "tailwind",
+          "apply",
+          "variants",
+          "responsive",
+          "screen",
+        ]
+      }
+    ],
+    "declaration-block-trailing-semicolon": null,
+    "no-descending-specificity": null,
   }
 }

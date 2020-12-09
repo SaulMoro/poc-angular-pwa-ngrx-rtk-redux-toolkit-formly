@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
-import { TranslocoLocalizeRouterService } from '@saulmoro/transloco-localize-router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { filter, map, tap } from 'rxjs/operators';
+import { Actions, createEffect } from '@ngrx/effects';
+import { filter, map } from 'rxjs/operators';
 
 import { SeoService } from '@app/core/seo';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
-import * as CoreActions from './core.actions';
+import { ofRouteLangChange } from '@app/core/data-access-router';
+import { environment } from '@environments/environment';
 
 @Injectable()
 export class CoreEffects {
-  changeLanguage$ = createEffect(
+  trackGAChangeLanguage$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(CoreActions.changeLanguage),
-        tap(({ lang }) =>
+        ofRouteLangChange(/.*/),
+        map(({ params }) => params.lang ?? environment.defaultLanguage),
+        map((lang) =>
           this.googleAnalytics.sendEvent({
             name: 'Changed Language',
             category: GAEventCategory.INTERACTION,
             label: lang,
           })
-        ),
-        map(({ lang }) => this.translocoLocalizeRouter.changeLanguage(lang))
+        )
       ),
     { dispatch: false }
   );
@@ -36,7 +36,6 @@ export class CoreEffects {
 
   constructor(
     private actions$: Actions,
-    private translocoLocalizeRouter: TranslocoLocalizeRouterService,
     private seoService: SeoService,
     private googleAnalytics: GoogleAnalyticsService
   ) {}

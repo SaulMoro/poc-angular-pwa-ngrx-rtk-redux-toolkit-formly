@@ -2,5 +2,6 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "git.enableSmartCommit": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "explorer.compactFolders": false
+  "explorer.compactFolders": false,
+  "scss.validate": false
 }

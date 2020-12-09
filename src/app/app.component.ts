@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { CoreActions } from '@app/core/data-access-core';
 import { MenuItem } from '@app/core/layout/models';
 
 @Component({
@@ -34,11 +32,7 @@ export class AppComponent implements OnInit {
       ])
     );
 
-  constructor(private translocoService: TranslocoService, private store: Store) {}
+  constructor(private translocoService: TranslocoService) {}
 
   ngOnInit(): void {}
-
-  onChangeLanguage(lang: string): void {
-    this.store.dispatch(CoreActions.changeLanguage({ lang }));
-  }
 }

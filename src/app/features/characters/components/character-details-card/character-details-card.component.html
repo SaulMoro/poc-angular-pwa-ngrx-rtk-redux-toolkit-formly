@@ -1,51 +1,44 @@
-<mat-card *transloco="let t">
-  <div class="row">
-    <div class="col-lg-4">
-      <img class="placeholder" [src]="character.image" [alt]="character.name" />
-    </div>
-    <div class="col-lg-8">
-      <h2>{{ t('CHARACTERS.CHARACTER_INFO') }}</h2>
-      <mat-list role="list">
-        <mat-list-item role="listitem">
-          {{ t('CHARACTERS.FIELDS.STATUS') }}:
-          {{ t('CHARACTERS.STATUS.' + character.status | uppercase) }}
-        </mat-list-item>
-        <mat-list-item role="listitem">
-          {{ t('CHARACTERS.FIELDS.GENDER') }}:
-          {{ t('CHARACTERS.GENDER.' + character.gender | uppercase) }}
-        </mat-list-item>
-        <mat-list-item role="listitem">
-          {{ t('CHARACTERS.FIELDS.SPECIES') }}:
-          {{ t('CHARACTERS.SPECIES.' + character.species | uppercase) }}
-        </mat-list-item>
-        <mat-list-item *ngIf="character.type" role="listitem">
-          {{ t('CHARACTERS.FIELDS.TYPE') }}: {{ character.type }}
-        </mat-list-item>
-        <mat-list-item role="listitem">
-          {{ t('CHARACTERS.FIELDS.ORIGIN') }}:
-          <button
-            mat-button
-            color="primary"
-            *ngIf="character.origin"
-            [routerLink]="['/locations', character.origin.id] | localize"
-            (prefetch)="prefetchOnHoverLocation(character.origin?.id)"
-          >
-            {{ character.origin.name }}
-          </button>
-        </mat-list-item>
-        <mat-list-item role="listitem">
-          {{ t('CHARACTERS.FIELDS.LOCATION') }}:
-          <button
-            mat-button
-            color="primary"
-            *ngIf="character.location"
-            [routerLink]="['/locations', character.location.id] | localize"
-            (prefetch)="prefetchOnHoverLocation(character.location?.id)"
-          >
-            {{ character.location.name }}
-          </button>
-        </mat-list-item>
-      </mat-list>
+<div class="mx-4 mt-2 sm:mx-0" *transloco="let t">
+  <div class="flex w-full overflow-hidden rounded shadow-lg">
+    <img class="w-56 h-56 bg-gray-300 sm:h-80 sm:w-80" [src]="character.image" [alt]="character.name" />
+    <div class="p-2 space-y-1 sm:p-4 sm:pl-8 sm:space-y-2 md:space-y-4">
+      <h1 class="text-xl font-bold text-gray-900 sm:text-2xl">{{ character.name }}</h1>
+      <p class="text-sm text-gray-700 sm:text-base">
+        {{ t('CHARACTERS.FIELDS.STATUS') }}: {{ t('CHARACTERS.STATUS.' + character.status | uppercase) }}
+      </p>
+      <p class="text-sm text-gray-700 sm:text-base">
+        {{ t('CHARACTERS.FIELDS.GENDER') }}:
+        {{ t('CHARACTERS.GENDER.' + character.gender | uppercase) }}
+      </p>
+      <p class="text-sm text-gray-700 sm:text-base">
+        {{ t('CHARACTERS.FIELDS.SPECIES') }}:
+        {{ t('CHARACTERS.SPECIES.' + character.species | uppercase) }}
+      </p>
+      <p *ngIf="character.type" class="text-sm text-gray-700 sm:text-base">
+        {{ t('CHARACTERS.FIELDS.TYPE') }}: {{ character.type }}
+      </p>
+      <p class="text-sm text-gray-700 sm:text-base">
+        {{ t('CHARACTERS.FIELDS.ORIGIN') }}:
+        <a
+          *ngIf="character.origin"
+          class="inline-block text-indigo-700 hover:text-indigo-800"
+          [routerLink]="['/locations', character.origin.id] | localize"
+          (prefetch)="prefetchOnHoverLocation(character.origin?.id)"
+        >
+          {{ character.origin.name }}
+        </a>
+      </p>
+      <p class="text-sm text-gray-700 sm:text-base">
+        {{ t('CHARACTERS.FIELDS.LOCATION') }}:
+        <a
+          *ngIf="character.location"
+          class="inline-block text-indigo-700 hover:text-indigo-800"
+          [routerLink]="['/locations', character.location.id] | localize"
+          (prefetch)="prefetchOnHoverLocation(character.location?.id)"
+        >
+          {{ character.location.name }}
+        </a>
+      </p>
     </div>
   </div>
-</mat-card>
+</div>

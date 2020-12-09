@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { translate } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { asyncScheduler, of } from 'rxjs';
-import { map, debounceTime, exhaustMap, switchMap, filter, catchError, mergeMap, takeUntil, tap } from 'rxjs/operators';
+import { map, debounceTime, switchMap, filter, catchError, mergeMap, takeUntil, tap } from 'rxjs/operators';
 
 import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
 import { ofFilterForm } from '@app/core/dynamic-forms';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { FormIds } from '@app/shared/models';
 import { fromStore } from '@app/shared/utils';
-import { AlertDialogComponent } from '@app/shared/components/alert-dialog/alert-dialog.component';
 import * as LocationsActions from './locations.actions';
 import * as LocationsApiActions from './locations-api.actions';
 import * as LocationsSelectors from './locations.selectors';
@@ -154,7 +151,7 @@ export class LocationsEffects {
     )
   );
 
-  showErrorLoadDialog$ = createEffect(() =>
+  /* showErrorLoadDialog$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LocationsApiActions.loadLocationsFailure, LocationsApiActions.loadLocationFailure),
       exhaustMap(({ error }) =>
@@ -165,14 +162,13 @@ export class LocationsEffects {
           .afterClosed()
       )
     )
-  );
+  ); */
 
   constructor(
     private actions$: Actions,
     private store: Store,
     private locationsService: LocationsService,
     private router: Router,
-    private dialog: MatDialog,
     private googleAnalytics: GoogleAnalyticsService
   ) {}
 }

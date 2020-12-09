@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { translate } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { asyncScheduler, of } from 'rxjs';
-import { map, debounceTime, exhaustMap, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
+import { map, debounceTime, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
 
 import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
 import { ofFilterForm } from '@app/core/dynamic-forms';
@@ -14,7 +12,6 @@ import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-l
 import { EpisodesActions, EpisodesApiActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { FormIds } from '@app/shared/models';
 import { fromStore } from '@app/shared/utils';
-import { AlertDialogComponent } from '@app/shared/components/alert-dialog/alert-dialog.component';
 import * as CharactersActions from './characters.actions';
 import * as CharactersApiActions from './characters-api.actions';
 import * as CharactersSelectors from './characters.selectors';
@@ -180,7 +177,7 @@ export class CharactersEffects {
     )
   );
 
-  showErrorLoadDialog$ = createEffect(() =>
+  /* showErrorLoadDialog$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
         CharactersApiActions.loadCharactersFailure,
@@ -195,14 +192,13 @@ export class CharactersEffects {
           .afterClosed()
       )
     )
-  );
+  ); */
 
   constructor(
     private actions$: Actions,
     private store: Store,
     private charactersService: CharactersService,
     private router: Router,
-    private dialog: MatDialog,
     private googleAnalytics: GoogleAnalyticsService
   ) {}
 }

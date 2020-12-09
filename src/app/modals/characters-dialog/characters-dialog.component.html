@@ -1,0 +1,36 @@
+<lazy-modal #modalComponent>
+  <div class="fixed w-full"><app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar></div>
+
+  <div class="flex items-center w-full">
+    <div class="flex items-center justify-between space-x-4">
+      <div class="text-lg font-medium text-gray-900">{{ data.title }}</div>
+      <span class="block px-4 py-1 text-center text-white bg-indigo-400 rounded" *transloco="let t">
+        {{ data.characterIds.length }} {{ t('CHARACTERS.TITLE') }}
+      </span>
+    </div>
+    <svg
+      class="w-6 h-6 ml-auto text-gray-500 cursor-pointer fill-current hover:text-gray-700"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 18 18"
+      (click)="close()"
+    >
+      <path
+        d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
+      />
+    </svg>
+  </div>
+
+  <ng-container *ngrxLet="characters$ as characters">
+    <div class="grid grid-cols-1 gap-4 mt-4 xl:grid-cols-2">
+      <div class="w-full" *ngFor="let characterId of data.characterIds; trackBy: characterId">
+        <app-character-mini-card
+          *ngIf="characters[characterId]; else loadingCharacter"
+          [character]="characters[characterId]"
+        ></app-character-mini-card>
+        <ng-template #loadingCharacter>
+          <app-loading-character-mini-card></app-loading-character-mini-card>
+        </ng-template>
+      </div>
+    </div>
+  </ng-container>
+</lazy-modal>

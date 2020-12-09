@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { ReactiveComponentModule } from '@ngrx/component';
 
 import { environment } from '@environments/environment';
 import { TranslocoRootModule } from './transloco-root.module';
@@ -34,7 +35,7 @@ import { LayoutModule } from './layout/layout.module';
     DataAccessCoreModule,
     DataAccessRouterModule,
   ],
-  exports: [LayoutModule],
+  exports: [LayoutModule, ReactiveComponentModule],
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {

@@ -1,21 +1,17 @@
-<div *ngIf="form$ | async as form" class="dynamic-form">
-  <form
-    [id]="form.formId"
-    class="dynamic-form__form"
-    [formGroup]="formGroup"
-    (ngSubmit)="onSubmitForm(form.model)"
-    #dynamicForm
-  >
-    <div fxFlexFill fxLayout="column" fxLayoutAlign="start stretch">
-      <formly-form
-        class="dynamic-form__form__content"
-        [form]="formGroup"
-        [model]="form.model"
-        [fields]="config.fields"
-        [options]="config.options"
-        (modelChange)="onModelChange($event, form.model)"
-      ></formly-form>
-      <ng-content></ng-content>
-    </div>
-  </form>
-</div>
+<form
+  *ngrxLet="form$ as form"
+  [id]="form.formId"
+  [formGroup]="formGroup"
+  (ngSubmit)="onSubmitForm(form.model)"
+  #dynamicForm
+>
+  <formly-form
+    class="dynamic-form__form__content"
+    [form]="formGroup"
+    [model]="form.model"
+    [fields]="config.fields"
+    [options]="config.options"
+    (modelChange)="onModelChange($event, form.model)"
+  ></formly-form>
+  <ng-content></ng-content>
+</form>

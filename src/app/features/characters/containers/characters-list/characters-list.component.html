@@ -1,23 +1,15 @@
 <seo *ngIf="seoConfig$ | ngrxPush as seoConfig" [config]="seoConfig"></seo>
 <app-characters-filter-form></app-characters-filter-form>
-<mat-progress-bar *ngIf="loading$ | ngrxPush" class="progress-bar--top" mode="indeterminate"></mat-progress-bar>
+<app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar>
 
 <ng-container *ngrxLet="characters$ as characters">
-  <div class="content">
-    <div class="row">
-      <div class="col-lg-6 character" *ngFor="let item of characters; trackBy: item?.id">
-        <app-character-card [character]="item" (prefetchLocation)="prefetchLocation($event)"></app-character-card>
-      </div>
-    </div>
+  <div class="grid grid-cols-1 gap-4 mx-4 mt-4 sm:mx-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <a *ngFor="let character of characters; trackBy: character?.id" [routerLink]="character.id | localize">
+      <app-character-card [character]="character" (prefetchLocation)="prefetchLocation($event)"></app-character-card>
+    </a>
+  </div>
 
-    <mat-paginator
-      *ngIf="!!characters.length"
-      [pageIndex]="pageIndex$ | ngrxPush"
-      [length]="totalCharacters$ | ngrxPush"
-      [pageSize]="pageSize"
-      (page)="changePage($event)"
-      showFirstLastButtons
-    >
-    </mat-paginator>
+  <div class="mt-4">
+    <app-paginator [currentPage]="page$ | ngrxPush" [pages]="pages$ | ngrxPush"></app-paginator>
   </div>
 </ng-container>

@@ -1,20 +1,19 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
 import { TranslocoService } from '@ngneat/transloco';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, distinct, map } from 'rxjs/operators';
+import { debounceTime, distinct, map, switchMap, take } from 'rxjs/operators';
 
+import { LazyModalService } from '@app/core/lazy-modal';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
-import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
-import { Episode, PAGE_SIZE } from '@app/shared/models';
 import {
+  CharactersDialogComponent as CharactersDialogComponentType,
   CharacterDialogData,
-  CharactersDialogComponent,
-} from '@app/shared/components/characters-dialog/characters-dialog.component';
+} from '@app/modals/characters-dialog/characters-dialog.component';
+import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
+import { Episode } from '@app/shared/models';
+import { TableConfig } from '@app/shared/components/table/table.component';
 
 @UntilDestroy()
 @Component({
@@ -24,21 +23,36 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EpisodesListComponent implements OnInit, OnDestroy {
-  episodes$: Observable<Episode[]> = this.store.select(EpisodesSelectors.getEpisodes);
+  episodes$: Observable<TableConfig<Episode>> = this.store.select(EpisodesSelectors.getEpisodes).pipe(
+    switchMap((episodes: Episode[]) =>
+      this.translocoService.selectTranslateObject('EPISODES.FIELDS').pipe(
+        take(1),
+        map(
+          (translateTitles): TableConfig<Episode> => ({
+            headers: {
+              id: translateTitles.NUM,
+              episode: translateTitles.EPISODE,
+              name: translateTitles.NAME,
+              air_date: translateTitles.AIR_DATE,
+            },
+            data: episodes,
+            linkData: (episode: Episode) => `/episodes/${episode.id}`,
+            actionsHeader: translateTitles.CHARACTERS,
+          })
+        )
+      )
+    )
+  );
   loading$: Observable<boolean> = this.store.select(EpisodesSelectors.getLoading);
-  totalEpisodes$: Observable<number> = this.store.select(EpisodesSelectors.getTotalEpisodes);
-  pageIndex$: Observable<number> = this.store.select(EpisodesSelectors.getCurrentPage).pipe(map((page) => page - 1));
+  page$: Observable<number> = this.store.select(EpisodesSelectors.getCurrentPage);
+  pages$: Observable<number> = this.store.select(EpisodesSelectors.getTotalPages);
   seoConfig$ = this.translocoService.selectTranslateObject('EPISODES.SEO');
-
-  pageSize = PAGE_SIZE;
-  displayedColumns = ['id', 'episode', 'name', 'air_date', 'characters'];
 
   private readonly hoverEpisode$ = new Subject<Episode>();
 
   constructor(
     private readonly store: Store,
-    private router: Router,
-    private dialog: MatDialog,
+    private lazyModal: LazyModalService<CharactersDialogComponentType>,
     private googleAnalytics: GoogleAnalyticsService,
     private translocoService: TranslocoService
   ) {}
@@ -58,20 +72,16 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
     this.hoverEpisode$.next(episode);
   }
 
-  changePage(page: PageEvent): void {
-    this.router.navigate([], {
-      queryParams: { page: page.pageIndex + 1 },
-      queryParamsHandling: 'merge',
-    });
-  }
+  async openCharactersDialog(episode: Episode): Promise<void> {
+    const { CharactersDialogComponent } = await import(
+      /* webpackPrefetch: true */
+      '@app/modals/characters-dialog/characters-dialog.component'
+    );
+    this.lazyModal.open(CharactersDialogComponent, {
+      title: episode.name,
+      characterIds: episode.characters,
+    } as CharacterDialogData);
 
-  openCharactersDialog(episode: Episode): void {
-    this.dialog.open(CharactersDialogComponent, {
-      data: {
-        title: episode.name,
-        characterIds: episode.characters,
-      } as CharacterDialogData,
-    });
     this.googleAnalytics.sendEvent({
       name: 'Open Characters Dialog Of Episode',
       category: GAEventCategory.INTERACTION,
@@ -81,6 +91,6 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.dialog.closeAll();
+    this.lazyModal.close();
   }
 }

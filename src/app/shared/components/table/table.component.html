@@ -1,0 +1,32 @@
+<table class="flex flex-row flex-no-wrap mx-3 overflow-hidden rounded sm:bg-white sm:mx-0 sm:w-full sm:shadow">
+  <thead class="text-white">
+    <tr
+      *ngFor="let data of config.data; trackBy: trackByFn"
+      class="flex flex-col mb-2 bg-indigo-500 rounded-l-lg flex-no wrap sm:table-row sm:rounded-none sm:mb-0"
+    >
+      <th *ngFor="let header of config.headers | keyvalue: keepOriginalOrder; trackBy: trackByFn" class="p-3 text-left">
+        {{ header.value }}
+      </th>
+      <th *ngIf="config.actionsHeader" class="p-3 text-left" width="auto" height="auto">{{ config.actionsHeader }}</th>
+    </tr>
+  </thead>
+  <tbody class="flex-1 sm:flex-none">
+    <tr
+      *ngFor="let data of config.data; trackBy: trackByFn"
+      class="flex flex-col mb-2 flex-no wrap sm:table-row sm:mb-0"
+    >
+      <td
+        *ngFor="let header of config.headers | keyvalue: keepOriginalOrder; trackBy: trackByFn"
+        class="p-3 truncate border border-grey-light hover:bg-gray-100"
+      >
+        <ng-container *ngIf="config.linkData(data) as link; else noLink">
+          <a [routerLink]="link | localize">{{ data[header.key] }}</a>
+        </ng-container>
+        <ng-template #noLink>{{ data[header.key] }}</ng-template>
+      </td>
+      <td *ngIf="config.actionsHeader" class="p-1 border border-grey-light hover:bg-gray-100">
+        <template [ngTemplateOutlet]="actions" [ngTemplateOutletContext]="{ item: data }"></template>
+      </td>
+    </tr>
+  </tbody>
+</table>
