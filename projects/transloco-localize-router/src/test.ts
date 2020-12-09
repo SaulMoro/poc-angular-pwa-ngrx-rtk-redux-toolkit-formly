@@ -4,6 +4,12 @@ import 'zone.js/dist/zone';
 import 'zone.js/dist/zone-testing';
 import { getTestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
+import { ɵDomSharedStylesHost } from '@angular/platform-browser';
+
+// https://github.com/angular/angular/issues/31834
+afterEach(() => {
+  getTestBed().inject(ɵDomSharedStylesHost).ngOnDestroy();
+});
 
 declare const require: {
   context(
