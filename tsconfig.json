@@ -15,7 +15,7 @@
     "paths": {
       "@app/*": ["src/app/*"],
       "@environments/*": ["src/environments/*"],
-      "@saulmoro/transloco-localize-router": ["./projects/saulmoro/transloco-localize-router/src/public-api.ts"]
+      "transloco-localize-router": ["./projects/transloco-localize-router/src/public-api.ts"]
     }
   },
   "exclude": ["node_modules", "**/node_modules/*", "tmp", "tools"]

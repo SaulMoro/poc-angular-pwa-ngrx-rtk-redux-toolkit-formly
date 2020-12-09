@@ -8,7 +8,7 @@ import {
   translocoConfig,
   TranslocoModule,
 } from '@ngneat/transloco';
-import { getRouterLang } from '@saulmoro/transloco-localize-router';
+import { getRouterLang } from 'transloco-localize-router';
 import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
 

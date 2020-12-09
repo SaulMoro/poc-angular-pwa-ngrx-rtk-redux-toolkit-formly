@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ContentLoaderModule } from '@ngneat/content-loader';
 import { TranslocoModule } from '@ngneat/transloco';
-import { TranslocoLocalizeRouterModule } from '@saulmoro/transloco-localize-router';
 import { ReactiveComponentModule } from '@ngrx/component';
+import { TranslocoLocalizeRouterModule } from 'transloco-localize-router';
 
 // Shared Data Access
 import { DataAccessCharactersModule } from './data-access-characters';

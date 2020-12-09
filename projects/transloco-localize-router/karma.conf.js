@@ -16,7 +16,7 @@ module.exports = function (config) {
       clearContext: false, // leave Jasmine Spec Runner output visible in browser
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, '../../../coverage/saulmoro/transloco-localize-router'),
+      dir: require('path').join(__dirname, '../../../coverage/transloco-localize-router'),
       subdir: '.',
       reporters: [{ type: 'html' }, { type: 'text-summary' }],
     },

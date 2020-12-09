@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { TranslocoLocalizeRouterModule } from '@saulmoro/transloco-localize-router';
+import { TranslocoLocalizeRouterModule } from 'transloco-localize-router';
 import { environment } from '@environments/environment';
 
 const routes: Routes = [
