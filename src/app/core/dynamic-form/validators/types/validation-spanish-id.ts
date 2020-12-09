@@ -1,3 +1,5 @@
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+
 const DNI_REGEX = /^(\d{8})([A-Z])$/;
 const CIF_REGEX = /^([ABCDEFGHJKLMNPQRSUVW])(\d{7})([0-9A-J])$/;
 const NIE_REGEX = /^[XYZ]\d{7,8}[A-Z]$/;
@@ -116,3 +118,11 @@ export const validateSpanishId = (str) => {
 
   return valid;
 };
+
+export function dniValidator(control: AbstractControl): ValidationErrors {
+  return validDNI(control?.value) ? null : { dni: true };
+}
+
+export function spanishIdValidator(control: AbstractControl): ValidationErrors {
+  return validateSpanishId(control?.value) ? null : { spanishId: true };
+}

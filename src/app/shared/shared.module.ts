@@ -11,7 +11,7 @@ import { DataAccessCharactersModule } from './data-access-characters';
 import { DataAccessLocationsModule } from './data-access-locations';
 import { DataAccessEpisodesModule } from './data-access-episodes';
 
-import { DynamicFormsModule } from '@app/core/dynamic-forms';
+import { DynamicFormModule } from '@app/core/dynamic-form';
 import { SeoModule } from '@app/core/seo';
 import { PrefetchDirective } from './directives/prefetch.directive';
 import { LazyImgDirective } from './directives/lazy-img.directive';
@@ -37,7 +37,7 @@ const EXPORTED_DECLARATIONS = [
 
 const IMPORTED_EXPORTS = [
   CommonModule,
-  DynamicFormsModule,
+  DynamicFormModule,
   SeoModule,
   TranslocoModule,
   TranslocoLocalizeRouterModule,

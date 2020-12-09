@@ -203,12 +203,9 @@
     "REQUIRED": "This field is required",
     "EMAIL": "The email address is not valid",
     "PATTERN": "This field must comply with the specified format",
-    "MUST_BE_NUMBER": "This field must be a numeric value",
-    "MUST_BE_INTEGER": "This field must be an integer value",
-    "FILE_INCORRECT": "File with incorrect format",
-    "PHONE_NOT_VALID": "The phone must have the following format {{validFormatExample}}",
-    "FAX_NOT_VALID": "The fax must have the following format {{validFormatExample}}",
-    "PASSWORD_NOT_MATCH": "Passwords do not match"
+    "PHONE_NOT_VALID": "The phone is not valid",
+    "DNI": "The DNI is not valid",
+    "SPANISH_ID": "The document ID is not valid"
   },
   "ERRORS": {
     "OK": "Operation completed successfully",

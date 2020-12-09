@@ -1,15 +1,15 @@
-import { FieldConfig } from './field-config.model';
-import { FormOptions } from './form-options.model';
+import { FormlyFormOptions } from '@ngx-formly/core';
+import { DynamicFormField } from './dynamic-form-field';
 
 export interface FormConfig {
   formId: string;
-  fields: FieldConfig[];
+  fields: DynamicFormField[];
   initialModel?: any;
   filter?: boolean;
   filterOnSubmit?: boolean;
   reset?: boolean;
   disable?: boolean;
-  options?: FormOptions;
+  options?: FormlyFormOptions;
 }
 
 export const generateForm = ({

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-language-dropdown',
@@ -40,7 +40,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
             [ngClass]="l === language ? 'bg-gray-100 text-gray-900 cursor-not-allowed' : 'cursor-pointer'"
             role="menuitem"
             [routerLink]="['./'] | localize: l"
-            (click)="onLanguageSelect()"
+            (click)="onLanguageSelect(l)"
           >
             {{ l | uppercase }}
           </a>
@@ -54,6 +54,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
 export class LanguageDropdownComponent implements OnInit {
   @Input() language: string;
   @Input() languages: string[];
+  @Output() languageSelected = new EventEmitter<string>();
 
   langPanelOpened = false;
 
@@ -65,8 +66,9 @@ export class LanguageDropdownComponent implements OnInit {
     this.langPanelOpened = !this.langPanelOpened;
   }
 
-  onLanguageSelect(): void {
+  onLanguageSelect(lang: string): void {
     this.langPanelOpened = false;
+    this.languageSelected.emit(lang);
   }
 
   trackByFn(index: number): number {

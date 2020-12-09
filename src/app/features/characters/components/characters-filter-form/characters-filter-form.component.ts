@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TranslocoService } from '@ngneat/transloco';
-import { FormConfig, generateFilterForm } from '@app/core/dynamic-forms';
+import { FormConfig, generateFilterForm } from '@app/core/dynamic-form';
 import { CharacterGender, CharacterSpecies, CharacterStatus, FormIds, Option } from '@app/shared/models';
 
 @Component({

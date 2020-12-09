@@ -33,7 +33,11 @@
       </div>
 
       <div class="hidden ml-4 sm:block">
-        <app-language-dropdown [language]="language" [languages]="languages"></app-language-dropdown>
+        <app-language-dropdown
+          [language]="language"
+          [languages]="languages"
+          (languageSelected)="onLanguageSelected($event)"
+        ></app-language-dropdown>
       </div>
 
       <!-- Mobile menu button -->
@@ -88,7 +92,11 @@
     <div class="pt-4 pb-3 border-t border-gray-700">
       <div class="px-2 space-y-1">
         <div class="w-24">
-          <app-language-dropdown [language]="language" [languages]="languages"></app-language-dropdown>
+          <app-language-dropdown
+            [language]="language"
+            [languages]="languages"
+            (languageSelected)="onLanguageSelected($event)"
+          ></app-language-dropdown>
         </div>
       </div>
     </div>

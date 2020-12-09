@@ -7,8 +7,8 @@
   "rules": {
     "font-family-name-quotes": "always-where-recommended",
     "selector-attribute-quotes": "always",
-    "max-nesting-depth": 4,
-    "selector-max-compound-selectors": 4,
+    "max-nesting-depth": 5,
+    "selector-max-compound-selectors": 5,
     "selector-max-specificity": "0,4,3",
     "declaration-no-important": true,
     "at-rule-no-vendor-prefix": true,

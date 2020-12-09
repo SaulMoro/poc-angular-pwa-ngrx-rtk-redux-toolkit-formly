@@ -4,24 +4,39 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { take, map, skipWhile, distinctUntilChanged } from 'rxjs/operators';
 
-import { FormsEntity, FormsFacade } from '../data-access-forms';
-import { FormConfig } from '../models/form-config.model';
+import { FormsEntity, FormsFacade } from './data-access-forms';
+import { FormConfig } from './dynamic-form-config';
 
 const FORM_VALID = 'VALID';
 
 @UntilDestroy()
 @Component({
   selector: 'app-dynamic-form',
-  templateUrl: './dynamic-form.component.html',
-  styleUrls: ['./dynamic-form.component.scss'],
+  template: `
+    <form
+      *ngrxLet="form$ as form"
+      [id]="form.formId"
+      [formGroup]="formGroup"
+      (ngSubmit)="onSubmitForm(form.model)"
+      novalidate
+    >
+      <formly-form
+        [form]="formGroup"
+        [fields]="config.fields"
+        [model]="form.model"
+        [options]="config.options"
+        (modelChange)="onModelChange($event, form.model)"
+      ></formly-form>
+      <ng-content></ng-content>
+    </form>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynamicFormComponent implements OnInit, OnChanges {
   // tslint:disable-next-line: no-input-rename
   @Input('form') formGroup = new FormGroup({});
   @Input() config: FormConfig;
-  // tslint:disable-next-line: no-output-native
-  @Output() submit = new EventEmitter<any>();
+  @Output() submitForm = new EventEmitter<any>();
   @Output() modelChanges = new EventEmitter<any>();
 
   form$: Observable<FormsEntity>;
@@ -66,6 +81,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   onSubmitForm(model: any): void {
     this.formsFacade.submitForm(this.config.formId, model, this.config.initialModel, this.config.filterOnSubmit);
-    this.submit.emit(model);
+    this.submitForm.emit(model);
   }
 }

@@ -6,7 +6,7 @@ import { asyncScheduler, of } from 'rxjs';
 import { map, debounceTime, switchMap, filter, catchError, mergeMap, takeUntil, tap } from 'rxjs/operators';
 
 import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
-import { ofFilterForm } from '@app/core/dynamic-forms';
+import { ofFilterForm } from '@app/core/dynamic-form';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { FormIds } from '@app/shared/models';
 import { fromStore } from '@app/shared/utils';

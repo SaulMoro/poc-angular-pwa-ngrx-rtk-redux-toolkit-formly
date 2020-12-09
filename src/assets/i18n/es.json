@@ -210,12 +210,9 @@
     "REQUIRED": "Este campo es obligatorio",
     "EMAIL": "La dirección de correo electrónico no es válida",
     "PATTERN": "Este campo debe de cumplir el formato especificado",
-    "MUST_BE_NUMBER": "Este campo debe ser un valor numérico",
-    "MUST_BE_INTEGER": "Este campo debe ser un valor entero",
-    "FILE_INCORRECT": "Fichero con formato incorrecto",
-    "PHONE_NOT_VALID": "El teléfono debe tener el siguiente formato {{validFormatExample}}",
-    "FAX_NOT_VALID": "El fax debe tener el siguiente formato {{validFormatExample}}",
-    "PASSWORD_NOT_MATCH": "Las contraseñas no coinciden"
+    "PHONE": "El teléfono no es válido",
+    "DNI": "El DNI no es válido",
+    "SPANISH_ID": "El documento de identidad no es válido"
   },
   "ERRORS": {
     "OK": "Operación finalizada satisfactoriamente",

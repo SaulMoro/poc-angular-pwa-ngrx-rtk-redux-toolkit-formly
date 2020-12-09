@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
 import { MenuItem } from '../models';
 
 @Component({
@@ -14,12 +14,16 @@ export class HeaderComponent implements OnInit {
 
   menuPanelOpened = false;
 
-  constructor() {}
+  constructor(private cdRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {}
 
   toggleMenuPanel(): void {
     this.menuPanelOpened = !this.menuPanelOpened;
+  }
+
+  onLanguageSelected(lang: string): void {
+    this.cdRef.detectChanges();
   }
 
   trackByFn(index: number): number {
