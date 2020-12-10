@@ -1,6 +1,6 @@
 import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
 
-export class DynamicFormField implements FormlyFieldConfig {
+export class FormField implements FormlyFieldConfig {
   static field(
     key: string,
     type?: string,
@@ -29,7 +29,7 @@ export class DynamicFormField implements FormlyFieldConfig {
     templateOptions: FormlyTemplateOptions = {},
     config: FormlyFieldConfig = {}
   ): FormlyFieldConfig {
-    return DynamicFormField.field(key, 'input', templateOptions, config);
+    return FormField.field(key, 'input', templateOptions, config);
   }
 
   static email(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
@@ -39,27 +39,27 @@ export class DynamicFormField implements FormlyFieldConfig {
     };
     const defaultOptions = { validators: { validation: ['email'] } };
 
-    return DynamicFormField.input(key, { ...defaults, ...templateOptions }, { ...defaultOptions, ...options });
+    return FormField.input(key, { ...defaults, ...templateOptions }, { ...defaultOptions, ...options });
   }
 
   static date(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
-    return DynamicFormField.input(key, { ...templateOptions, type: 'date' }, { ...options });
+    return FormField.input(key, { ...templateOptions, type: 'date' }, { ...options });
   }
 
   static datetime(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
-    return DynamicFormField.input(key, { ...templateOptions, type: 'datetime-local' }, { ...options });
+    return FormField.input(key, { ...templateOptions, type: 'datetime-local' }, { ...options });
   }
 
   static checkbox(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
-    return DynamicFormField.field(key, 'checkbox', templateOptions, options);
+    return FormField.field(key, 'checkbox', templateOptions, options);
   }
 
   static multicheckbox(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
-    return DynamicFormField.field(key, 'multicheckbox', templateOptions, options);
+    return FormField.field(key, 'multicheckbox', templateOptions, options);
   }
 
   static number(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
-    return DynamicFormField.input(key, { ...templateOptions, type: 'number' }, { ...options });
+    return FormField.input(key, { ...templateOptions, type: 'number' }, { ...options });
   }
 
   static password(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
@@ -70,24 +70,24 @@ export class DynamicFormField implements FormlyFieldConfig {
       required: true,
     };
 
-    return DynamicFormField.input(key, { ...templateOptions, ...defaults }, options);
+    return FormField.input(key, { ...templateOptions, ...defaults }, options);
   }
 
   static radio(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
-    return DynamicFormField.field(key, 'radio', templateOptions, options);
+    return FormField.field(key, 'radio', templateOptions, options);
   }
 
   static select(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
-    return DynamicFormField.field(key, 'select', templateOptions, options);
+    return FormField.field(key, 'select', templateOptions, options);
   }
   static textarea(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
     const defaultTemplateOptions = { rows: 5 };
 
-    return DynamicFormField.field(key, 'textarea', { ...defaultTemplateOptions, ...templateOptions }, options);
+    return FormField.field(key, 'textarea', { ...defaultTemplateOptions, ...templateOptions }, options);
   }
 
   static time(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
-    return DynamicFormField.input(key, { ...templateOptions, type: 'time' }, { ...options });
+    return FormField.input(key, { ...templateOptions, type: 'time' }, { ...options });
   }
 
   static template(template: string): FormlyFieldConfig {

@@ -21,4 +21,4 @@ import { dniValidator, spanishIdValidator } from './types/validation-spanish-id'
     }),
   ],
 })
-export class UiFormValidatorsModule {}
+export class FormValidatorsModule {}

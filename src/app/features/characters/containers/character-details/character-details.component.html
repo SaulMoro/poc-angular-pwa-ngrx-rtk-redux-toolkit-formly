@@ -23,14 +23,14 @@
           <div class="md:w-5/12"></div>
           <ng-container *ngIf="episode; else loadingEpisode">
             <a
-              class="z-10 flex items-center w-32 h-8 transition-colors duration-200 bg-gray-800 rounded-full shadow-xl hover:bg-gray-900 md:w-24"
+              class="z-10 flex items-center w-32 h-8 bg-gray-800 rounded-full shadow-xl transition-colors duration-200 hover:bg-gray-900 md:w-24"
               [routerLink]="['/episodes', episode.id] | localize"
             >
               <h1 class="mx-auto text-sm font-semibold text-white md:text-lg">{{ episode.episode }}</h1>
             </a>
 
             <a
-              class="w-full px-6 py-4 ml-4 transition-colors duration-200 bg-gray-400 rounded shadow-xl hover:bg-gray-500 md:w-5/12 md:ml-0"
+              class="w-full px-6 py-4 ml-4 bg-gray-400 rounded shadow-xl transition-colors duration-200 hover:bg-gray-500 md:w-5/12 md:ml-0"
               [routerLink]="['/episodes', episode.id] | localize"
             >
               <h3 class="mb-3 font-bold text-gray-800 md:text-xl">{{ episode.name }}</h3>

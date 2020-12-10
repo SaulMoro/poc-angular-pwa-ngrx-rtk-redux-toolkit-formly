@@ -13,13 +13,13 @@ import { FieldWrapper } from '@ngx-formly/core';
         <span *ngIf="to.required && to.hideRequiredMarker !== true">*</span>
       </label>
 
-      <div class="mt-1 relative">
+      <div class="relative mt-1">
         <ng-template #fieldComponent></ng-template>
 
-        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none" *ngIf="showError">
+        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none" *ngIf="showError">
           <!-- Heroicon name: exclamation-circle -->
           <svg
-            class="h-5 w-5 text-red-500"
+            class="w-5 h-5 text-red-500"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -43,4 +43,4 @@ import { FieldWrapper } from '@ngx-formly/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UiFormFieldComponent extends FieldWrapper {}
+export class FormFieldComponent extends FieldWrapper {}

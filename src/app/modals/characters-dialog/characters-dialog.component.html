@@ -21,7 +21,7 @@
   </div>
 
   <ng-container *ngrxLet="characters$ as characters">
-    <div class="grid grid-cols-1 gap-4 mt-4 xl:grid-cols-2">
+    <div class="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-2">
       <div class="w-full" *ngFor="let characterId of data.characterIds; trackBy: characterId">
         <app-character-mini-card
           *ngIf="characters[characterId]; else loadingCharacter"

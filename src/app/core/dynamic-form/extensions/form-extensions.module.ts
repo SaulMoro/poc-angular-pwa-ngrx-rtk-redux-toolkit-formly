@@ -11,4 +11,4 @@ import { registerTranslateExtension } from './translate.extension';
     { provide: FORMLY_CONFIG, multi: true, useFactory: registerTranslateExtension, deps: [TranslocoService] },
   ],
 })
-export class ExtensionsModule {}
+export class FormExtensionsModule {}

@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { UiFormInputComponent } from './ui-form-input.component';
+import { FormInputComponent } from './form-input.component';
 
 @NgModule({
-  declarations: [UiFormInputComponent],
+  declarations: [FormInputComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -13,7 +13,7 @@ import { UiFormInputComponent } from './ui-form-input.component';
       types: [
         {
           name: 'input',
-          component: UiFormInputComponent,
+          component: FormInputComponent,
           wrappers: ['form-field'],
         },
         { name: 'string', extends: 'input' },
@@ -46,4 +46,4 @@ import { UiFormInputComponent } from './ui-form-input.component';
     }),
   ],
 })
-export class UiFormInputModule {}
+export class FormInputModule {}

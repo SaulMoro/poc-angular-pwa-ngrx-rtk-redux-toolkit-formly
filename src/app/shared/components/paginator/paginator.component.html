@@ -1,7 +1,7 @@
 <div *ngIf="pages > 1" class="relative flex flex-col items-center">
   <div class="flex text-gray-700">
     <button
-      class="flex items-center justify-center w-12 h-12 mr-1 transition-colors duration-200 bg-gray-200 rounded-full"
+      class="flex items-center justify-center w-12 h-12 mr-1 bg-gray-200 rounded-full transition-colors duration-200"
       [ngClass]="currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'"
       [disabled]="currentPage === 1"
       [routerLink]="['./'] | localize"
@@ -92,7 +92,7 @@
       </a>
     </div>
     <button
-      class="flex items-center justify-center w-12 h-12 ml-1 transition-colors duration-200 bg-gray-200 rounded-full"
+      class="flex items-center justify-center w-12 h-12 ml-1 bg-gray-200 rounded-full transition-colors duration-200"
       [ngClass]="currentPage === +pages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'"
       [disabled]="currentPage === +pages"
       [routerLink]="['./'] | localize"
@@ -118,7 +118,7 @@
   <!-- Paginator dropdown panel, show/hide based on dropdown state.-->
   <div
     *ngIf="paginatorPanelOpened"
-    class="absolute w-20 overflow-y-auto bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+    class="absolute w-20 overflow-y-auto bg-white shadow-lg rounded-md ring-1 ring-black ring-opacity-5"
     [ngClass]="
       (paginator === 'post' ? pages - (currentPage + 3) : currentPage - 4) <= 3 ? '-top-20 h-20' : '-top-32 h-32'
     "

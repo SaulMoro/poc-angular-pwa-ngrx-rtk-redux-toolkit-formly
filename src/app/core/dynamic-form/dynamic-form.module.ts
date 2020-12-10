@@ -8,19 +8,19 @@ import { DynamicFormComponent } from './dynamic-form.component';
 import { DataAccessFormsModule } from './data-access-forms';
 
 // Extensions
-import { ExtensionsModule } from './extensions/extensions.module';
+import { FormExtensionsModule } from './extensions/form-extensions.module';
 // Wrappers
-import { UiFormAddonsModule } from './wrappers/addons/ui-form-addons.module';
-import { UiFormFieldModule } from './wrappers/form-field/ui-form-field.module';
+import { FormAddonsModule } from './wrappers/addons/form-addons.module';
+import { FormFieldModule } from './wrappers/form-field/form-field.module';
 // Validators
-import { UiFormValidatorsModule } from './validators/ui-form-validators.module';
+import { FormValidatorsModule } from './validators/form-validators.module';
 // Types
-import { UiFormInputModule } from './types/input/ui-form-input.module';
-import { UiFormCheckboxModule } from './types/checkbox/ui-form-checkbox.module';
-import { UiFormMulticheckboxModule } from './types/multicheckbox/ui-form-multicheckbox.module';
-import { UiFormRadioModule } from './types/radio/ui-form-radio.module';
-import { UiFormSelectModule } from './types/select/ui-form-select.module';
-import { UiFormTextareaModule } from './types/textarea/ui-form-textarea.module';
+import { FormInputModule } from './types/input/form-input.module';
+import { FormCheckboxModule } from './types/checkbox/form-checkbox.module';
+import { FormMulticheckboxModule } from './types/multicheckbox/form-multicheckbox.module';
+import { FormRadioModule } from './types/radio/form-radio.module';
+import { FormSelectModule } from './types/select/form-select.module';
+import { FormTextareaModule } from './types/textarea/form-textarea.module';
 
 @NgModule({
   declarations: [DynamicFormComponent],
@@ -35,19 +35,19 @@ import { UiFormTextareaModule } from './types/textarea/ui-form-textarea.module';
     }),
 
     // Extensions
-    ExtensionsModule,
+    FormExtensionsModule,
     // Wrappers
-    UiFormAddonsModule,
-    UiFormFieldModule,
+    FormAddonsModule,
+    FormFieldModule,
     // Validators
-    UiFormValidatorsModule,
-    // Types
-    UiFormInputModule,
-    UiFormCheckboxModule,
-    UiFormMulticheckboxModule,
-    UiFormRadioModule,
-    UiFormSelectModule,
-    UiFormTextareaModule,
+    FormValidatorsModule,
+    // Types (after wrappers)
+    FormInputModule,
+    FormCheckboxModule,
+    FormMulticheckboxModule,
+    FormRadioModule,
+    FormSelectModule,
+    FormTextareaModule,
   ],
   exports: [DynamicFormComponent],
 })

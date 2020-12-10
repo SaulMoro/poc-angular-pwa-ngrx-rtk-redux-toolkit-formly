@@ -1,9 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { DynamicFormField, FormConfig, generateFilterForm } from '@app/core/dynamic-form';
+import { FormField, FormConfig, generateFilterForm } from '@app/core/dynamic-form';
 import { FormIds } from '@app/shared/models';
 
-const row = (fieldGroup: DynamicFormField[]) => DynamicFormField.fieldRow(fieldGroup, 'grid grid-cols-4 mt-4 gap-6');
+const row = (fieldGroup: FormField[]) => FormField.fieldRow(fieldGroup, 'grid grid-cols-4 mt-4 gap-6');
 const fieldClass = 'col-span-2 sm:col-span-1';
 
 @Component({
@@ -18,9 +18,9 @@ export class LocationsFilterFormComponent implements OnInit {
     formId: FormIds.FORM_LOCATIONS_FILTER_ID,
     fields: [
       row([
-        DynamicFormField.input('name', { translate: true, label: 'LOCATIONS.FIELDS.NAME' }, { className: fieldClass }),
-        DynamicFormField.input('type', { translate: true, label: 'LOCATIONS.FIELDS.TYPE' }, { className: fieldClass }),
-        DynamicFormField.input(
+        FormField.input('name', { translate: true, label: 'LOCATIONS.FIELDS.NAME' }, { className: fieldClass }),
+        FormField.input('type', { translate: true, label: 'LOCATIONS.FIELDS.TYPE' }, { className: fieldClass }),
+        FormField.input(
           'dimension',
           { translate: true, label: 'LOCATIONS.FIELDS.DIMENSION' },
           { className: fieldClass }

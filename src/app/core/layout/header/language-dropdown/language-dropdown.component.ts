@@ -31,7 +31,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter
       <!-- Language dropdown panel, show/hide based on dropdown state.-->
       <div
         *ngIf="langPanelOpened"
-        class="absolute right-0 w-24 mt-1 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+        class="absolute right-0 w-24 mt-1 bg-white shadow-lg origin-top-right rounded-md ring-1 ring-black ring-opacity-5"
       >
         <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
           <a

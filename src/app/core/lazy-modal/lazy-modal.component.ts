@@ -6,7 +6,7 @@ import { LazyModalService } from './lazy-modal.service';
   selector: 'lazy-modal',
   template: `
     <section
-      class="fixed z-50 inset-0 overflow-y-auto transition-opacity duration-300"
+      class="fixed inset-0 z-50 overflow-y-auto transition-opacity duration-300"
       [ngClass]="{
         'visible opacity-100 ease-out': display,
         'invisible opacity-0 ease-in': !display
@@ -14,11 +14,11 @@ import { LazyModalService } from './lazy-modal.service';
       (click)="close()"
     >
       <div
-        class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0 bg-gray-900 bg-opacity-40"
+        class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center bg-gray-900 sm:p-0 bg-opacity-40"
       >
         <div
           (click)="$event.stopPropagation()"
-          class="inline-block w-full align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all duration-300 sm:my-8 sm:align-middle sm:max-w-lg xl:max-w-4xl"
+          class="inline-block w-full overflow-hidden text-left align-bottom bg-white rounded-lg shadow-xl transform transition-all duration-300 sm:my-8 sm:align-middle sm:max-w-lg xl:max-w-4xl"
           [ngClass]="{
             'visible opacity-100 translate-y-0 sm:scale-100': display,
             'invisible opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95': !display

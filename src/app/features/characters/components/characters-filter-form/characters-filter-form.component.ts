@@ -4,10 +4,10 @@ import { TranslocoService } from '@ngneat/transloco';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { DynamicFormField, FormConfig, generateFilterForm, SelectOption } from '@app/core/dynamic-form';
+import { FormField, FormConfig, generateFilterForm, SelectOption } from '@app/core/dynamic-form';
 import { CharacterGender, CharacterSpecies, CharacterStatus, FormIds } from '@app/shared/models';
 
-const row = (fieldGroup: DynamicFormField[]) => DynamicFormField.fieldRow(fieldGroup, 'grid grid-cols-4 mt-4 gap-6');
+const row = (fieldGroup: FormField[]) => FormField.fieldRow(fieldGroup, 'grid grid-cols-4 mt-4 gap-6');
 const fieldClass = 'col-span-2 sm:col-span-1';
 
 @Component({
@@ -22,8 +22,8 @@ export class CharactersFilterFormComponent implements OnInit {
     formId: FormIds.FORM_CHARACTERS_FILTER_ID,
     fields: [
       row([
-        DynamicFormField.input('name', { translate: true, label: 'CHARACTERS.FIELDS.NAME' }, { className: fieldClass }),
-        DynamicFormField.select(
+        FormField.input('name', { translate: true, label: 'CHARACTERS.FIELDS.NAME' }, { className: fieldClass }),
+        FormField.select(
           'status',
           {
             translate: true,
@@ -33,7 +33,7 @@ export class CharactersFilterFormComponent implements OnInit {
           },
           { className: fieldClass }
         ),
-        DynamicFormField.select(
+        FormField.select(
           'gender',
           {
             translate: true,
@@ -43,7 +43,7 @@ export class CharactersFilterFormComponent implements OnInit {
           },
           { className: fieldClass }
         ),
-        DynamicFormField.select(
+        FormField.select(
           'species',
           {
             translate: true,

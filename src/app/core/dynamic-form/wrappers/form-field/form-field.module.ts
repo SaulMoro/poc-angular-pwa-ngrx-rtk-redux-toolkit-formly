@@ -19,4 +19,4 @@ import { UiFormFieldComponent } from './ui-form-field.component';
     }),
   ],
 })
-export class UiFormFieldModule {}
+export class FormFieldModule {}

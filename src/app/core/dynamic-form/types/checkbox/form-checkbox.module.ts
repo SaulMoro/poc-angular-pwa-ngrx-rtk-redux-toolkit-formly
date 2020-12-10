@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormlyModule } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { UiFormCheckboxComponent } from './ui-form-checkbox.component';
+import { FormCheckboxComponent } from './form-checkbox.component';
 
 @NgModule({
-  declarations: [UiFormCheckboxComponent],
+  declarations: [FormCheckboxComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -14,7 +14,7 @@ import { UiFormCheckboxComponent } from './ui-form-checkbox.component';
       types: [
         {
           name: 'checkbox',
-          component: UiFormCheckboxComponent,
+          component: FormCheckboxComponent,
           wrappers: ['form-field'],
         },
         {
@@ -25,4 +25,4 @@ import { UiFormCheckboxComponent } from './ui-form-checkbox.component';
     }),
   ],
 })
-export class UiFormCheckboxModule {}
+export class FormCheckboxModule {}

@@ -3,7 +3,7 @@
 <app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar>
 
 <ng-container *ngrxLet="characters$ as characters">
-  <div class="grid grid-cols-1 gap-4 mx-4 mt-4 sm:mx-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  <div class="mx-4 mt-4 grid grid-cols-1 gap-4 sm:mx-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
     <a *ngFor="let character of characters; trackBy: character?.id" [routerLink]="character.id | localize">
       <app-character-card [character]="character" (prefetchLocation)="prefetchLocation($event)"></app-character-card>
     </a>
