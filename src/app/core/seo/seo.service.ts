@@ -164,8 +164,8 @@ export class SeoService {
       name: 'twitter:card',
       content: 'summary_large_image',
     });
-    this.meta.updateTag({ name: 'twitter:site', content: '@herzau_' });
-    this.meta.updateTag({ name: 'twitter:creator', content: '@herzau_' });
+    this.meta.updateTag({ name: 'twitter:site', content: '@SaulMoroDev' });
+    this.meta.updateTag({ name: 'twitter:creator', content: '@SaulMoroDev' });
     this.meta.updateTag({ name: 'twitter:title', content: config.title });
     this.meta.updateTag({
       name: 'twitter:description',
