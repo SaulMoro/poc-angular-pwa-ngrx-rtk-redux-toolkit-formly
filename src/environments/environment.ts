@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url: 'http://localhost:4200/#',
+  url: 'https://poc-angular-rick-morty.web.app',
   apiUrl: '/api',
   gaTrackingId: '',
   supportedLanguages: ['en', 'es'],
