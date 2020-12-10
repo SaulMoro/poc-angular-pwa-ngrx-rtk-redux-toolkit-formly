@@ -3,10 +3,10 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 
-import { UiFormTextareaComponent } from './ui-form-textarea.component';
+import { FormTextareaComponent } from './form-textarea.component';
 
 @NgModule({
-  declarations: [UiFormTextareaComponent],
+  declarations: [FormTextareaComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -14,11 +14,11 @@ import { UiFormTextareaComponent } from './ui-form-textarea.component';
       types: [
         {
           name: 'textarea',
-          component: UiFormTextareaComponent,
+          component: FormTextareaComponent,
           wrappers: ['form-field'],
         },
       ],
     }),
   ],
 })
-export class UiFormTextareaModule {}
+export class FormTextareaModule {}

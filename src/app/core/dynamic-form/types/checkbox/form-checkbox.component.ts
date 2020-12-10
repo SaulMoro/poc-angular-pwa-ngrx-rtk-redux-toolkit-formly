@@ -8,7 +8,7 @@ import { FieldType } from '@ngx-formly/core';
       <div class="flex items-center h-5">
         <input
           type="checkbox"
-          class="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 dark:bg-gray-800 dark:border-gray-600"
+          class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600"
           [class.is-invalid]="showError"
           [class.static]="to.formCheck === 'nolabel'"
           [indeterminate]="to.indeterminate && formControl.value == null"

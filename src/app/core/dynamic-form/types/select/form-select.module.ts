@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 
-import { UiFormMulticheckboxComponent } from './ui-form-multicheckbox.component';
+import { FormSelectComponent } from './form-select.component';
 
 @NgModule({
-  declarations: [UiFormMulticheckboxComponent],
+  declarations: [FormSelectComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -15,12 +15,13 @@ import { UiFormMulticheckboxComponent } from './ui-form-multicheckbox.component'
     FormlyModule.forChild({
       types: [
         {
-          name: 'multicheckbox',
-          component: UiFormMulticheckboxComponent,
+          name: 'select',
+          component: FormSelectComponent,
           wrappers: ['form-field'],
         },
+        { name: 'enum', extends: 'select' },
       ],
     }),
   ],
 })
-export class UiFormMulticheckboxModule {}
+export class FormSelectModule {}

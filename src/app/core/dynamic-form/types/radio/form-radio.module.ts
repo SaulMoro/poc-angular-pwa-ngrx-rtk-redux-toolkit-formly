@@ -4,10 +4,10 @@ import { FormlyModule } from '@ngx-formly/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlySelectModule } from '@ngx-formly/core/select';
 
-import { UiFormRadioComponent } from './ui-form-radio.component';
+import { FormRadioComponent } from './form-radio.component';
 
 @NgModule({
-  declarations: [UiFormRadioComponent],
+  declarations: [FormRadioComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -16,11 +16,11 @@ import { UiFormRadioComponent } from './ui-form-radio.component';
       types: [
         {
           name: 'radio',
-          component: UiFormRadioComponent,
+          component: FormRadioComponent,
           wrappers: ['form-field'],
         },
       ],
     }),
   ],
 })
-export class UiFormRadioModule {}
+export class FormRadioModule {}

@@ -8,7 +8,7 @@ import { FieldType } from '@ngx-formly/core';
       [formControl]="formControl"
       [cols]="to.cols"
       [rows]="to.rows"
-      class="block w-full border-gray-300 shadow-sm dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md"
+      class="block w-full border-gray-300 rounded-md shadow-sm dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
       [class.is-invalid]="showError"
       [formlyAttributes]="field"
     >
@@ -16,7 +16,7 @@ import { FieldType } from '@ngx-formly/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UiFormTextareaComponent extends FieldType {
+export class FormTextareaComponent extends FieldType {
   formControl!: FormControl;
   defaultOptions = {
     templateOptions: {
