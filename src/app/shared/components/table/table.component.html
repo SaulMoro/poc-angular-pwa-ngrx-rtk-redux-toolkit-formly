@@ -2,7 +2,7 @@
   <thead class="text-white">
     <tr
       *ngFor="let data of config.data; trackBy: trackByFn"
-      class="flex flex-col mb-2 bg-indigo-500 rounded-l-lg flex-no wrap sm:table-row sm:rounded-none sm:mb-0"
+      class="flex flex-col mb-2 bg-indigo-500 rounded-l-lg flex-nowrap sm:table-row sm:rounded-none sm:mb-0"
     >
       <th *ngFor="let header of config.headers | keyvalue: keepOriginalOrder; trackBy: trackByFn" class="p-3 text-left">
         {{ header.value }}
@@ -13,7 +13,7 @@
   <tbody class="flex-1 sm:flex-none">
     <tr
       *ngFor="let data of config.data; trackBy: trackByFn"
-      class="flex flex-col mb-2 flex-no wrap sm:table-row sm:mb-0"
+      class="flex flex-col mb-2 flex-nowrap sm:table-row sm:mb-0"
     >
       <td
         *ngFor="let header of config.headers | keyvalue: keepOriginalOrder; trackBy: trackByFn"
@@ -24,7 +24,7 @@
         </ng-container>
         <ng-template #noLink>{{ data[header.key] }}</ng-template>
       </td>
-      <td *ngIf="config.actionsHeader" class="p-1 border border-grey-light hover:bg-gray-100">
+      <td *ngIf="config.actionsHeader" class="p-1 pr-3 border border-grey-light hover:bg-gray-100">
         <template [ngTemplateOutlet]="actions" [ngTemplateOutletContext]="{ item: data }"></template>
       </td>
     </tr>

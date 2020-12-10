@@ -2,9 +2,9 @@
   <div class="fixed w-full"><app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar></div>
 
   <div class="flex items-center w-full">
-    <div class="flex items-center justify-between space-x-4">
-      <div class="text-lg font-medium text-gray-900">{{ data.title }}</div>
-      <span class="block px-4 py-1 text-center text-white bg-indigo-400 rounded" *transloco="let t">
+    <div class="flex items-center justify-between pr-4 space-x-2 sm:space-x-4">
+      <div class="font-medium text-gray-900 sm:text-lg">{{ data.title }}</div>
+      <span class="px-4 py-1 text-xs text-center text-white bg-indigo-400 rounded sm:text-base" *transloco="let t">
         {{ data.characterIds.length }} {{ t('CHARACTERS.TITLE') }}
       </span>
     </div>

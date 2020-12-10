@@ -1,23 +1,25 @@
 <div class="mx-4 mt-2 sm:mx-0" *transloco="let t">
-  <div class="flex w-full overflow-hidden rounded shadow-lg">
-    <img class="w-56 h-56 bg-gray-300 sm:h-80 sm:w-80" [src]="character.image" [alt]="character.name" />
-    <div class="p-2 space-y-1 sm:p-4 sm:pl-8 sm:space-y-2 md:space-y-4">
+  <div class="flex flex-col overflow-hidden rounded shadow-lg sm:flex-row">
+    <img
+      class="self-center mt-4 bg-gray-300 rounded w-72 h-72 sm:w-80 sm:h-80 sm:mt-0 sm:rounded-none"
+      [src]="character.image"
+      [alt]="character.name"
+    />
+    <div class="p-4 space-y-1 sm:pl-8 sm:space-y-2 md:space-y-4">
       <h1 class="text-xl font-bold text-gray-900 sm:text-2xl">{{ character.name }}</h1>
-      <p class="text-sm text-gray-700 sm:text-base">
+      <p class="character-text">
         {{ t('CHARACTERS.FIELDS.STATUS') }}: {{ t('CHARACTERS.STATUS.' + character.status | uppercase) }}
       </p>
-      <p class="text-sm text-gray-700 sm:text-base">
+      <p class="character-text">
         {{ t('CHARACTERS.FIELDS.GENDER') }}:
         {{ t('CHARACTERS.GENDER.' + character.gender | uppercase) }}
       </p>
-      <p class="text-sm text-gray-700 sm:text-base">
+      <p class="character-text">
         {{ t('CHARACTERS.FIELDS.SPECIES') }}:
         {{ t('CHARACTERS.SPECIES.' + character.species | uppercase) }}
       </p>
-      <p *ngIf="character.type" class="text-sm text-gray-700 sm:text-base">
-        {{ t('CHARACTERS.FIELDS.TYPE') }}: {{ character.type }}
-      </p>
-      <p class="text-sm text-gray-700 sm:text-base">
+      <p *ngIf="character.type" class="character-text">{{ t('CHARACTERS.FIELDS.TYPE') }}: {{ character.type }}</p>
+      <p class="character-text">
         {{ t('CHARACTERS.FIELDS.ORIGIN') }}:
         <a
           *ngIf="character.origin"
@@ -28,7 +30,7 @@
           {{ character.origin.name }}
         </a>
       </p>
-      <p class="text-sm text-gray-700 sm:text-base">
+      <p class="character-text">
         {{ t('CHARACTERS.FIELDS.LOCATION') }}:
         <a
           *ngIf="character.location"
