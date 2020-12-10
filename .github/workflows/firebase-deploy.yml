@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to Firebase on Merge
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Setup node
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
@@ -32,7 +32,7 @@ jobs:
             nodeModules-
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Lint and Test
         run: |
@@ -45,8 +45,16 @@ jobs:
           # npm run e2e -- --protractor-config=e2e/protractor-ci.conf.js --webdriver-update=false
           ####
 
-      - name: Deploy 🚀
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Build it 👷🏻‍♂️
         run: |
-          npm run deploy -- --name="SaulMoro" --email=smoro@atsistemas.com
+          npm run build
+
+      - name: Deploy 🚀
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_POC_ANGULAR_RICK_MORTY }}'
+          channelId: live
+          projectId: poc-angular-rick-morty
+        env:
+          FIREBASE_CLI_PREVIEWS: hostingchannels
