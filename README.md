@@ -1,6 +1,6 @@
 # **PoC Angular + PWA + NgRx + Router State + NgRx-Entity + TailwindCSS + Formly**
 
-[Demo of project](https://SaulMoro.github.io/poc-angular-pwa-ngrx-entity-formly-routerstate)
+[Demo of project](https://poc-angular-rick-morty.web.app)
 
 ## Table of Contents
 
@@ -46,7 +46,7 @@ PoC of an Angular project with:
 - **Prefetch Directive** to preload information when a component is hovered over or displayed on the screen
 - **Auto Lazy Load Images Directive** to automatically add lazy load to images if browser supports it
 - **Skeleton content loader** with TailwindCSS and @ngneat/content-loader
-- **Auto deploy** with Github Actions
+- **Auto deploy on Merge and preview on PR** with Github Actions
 - **CodeQL** analysis
 - **Husky and lint-staged** to pass lint and prettier to changed code on commit
 - **Commitlint** to use [Convetional Commits](https://www.conventionalcommits.org/)
