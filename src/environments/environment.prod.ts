@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  url: 'https://saulmoro.github.io/poc-angular-pwa-ngrx-entity-formly-routerstate/#',
+  url: 'https://poc-angular-rick-morty.web.app',
   apiUrl: 'https://rickandmortyapi.com/api',
   gaTrackingId: 'G-4MNDX3NZP2',
   supportedLanguages: ['en', 'es'],
