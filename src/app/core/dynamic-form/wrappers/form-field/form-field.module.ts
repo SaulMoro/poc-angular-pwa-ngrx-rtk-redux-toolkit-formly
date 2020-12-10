@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
-import { UiFormFieldComponent } from './ui-form-field.component';
+import { FormFieldComponent } from './form-field.component';
 
 @NgModule({
-  declarations: [UiFormFieldComponent],
+  declarations: [FormFieldComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -13,7 +13,7 @@ import { UiFormFieldComponent } from './ui-form-field.component';
       wrappers: [
         {
           name: 'form-field',
-          component: UiFormFieldComponent,
+          component: FormFieldComponent,
         },
       ],
     }),
