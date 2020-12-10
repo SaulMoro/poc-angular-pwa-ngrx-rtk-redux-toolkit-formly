@@ -36,7 +36,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes, {
       preloadingStrategy: PreloadAllModules,
       scrollPositionRestoration: 'enabled',
-      useHash: true, // Supports github.io demo page
     }),
     TranslocoLocalizeRouterModule.forRoot({
       noPrefixLang: environment.defaultLanguage,
