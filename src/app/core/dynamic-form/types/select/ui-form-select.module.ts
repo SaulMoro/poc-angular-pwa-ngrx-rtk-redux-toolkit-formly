@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlySelectModule } from '@ngx-formly/core/select';
-import { UiFormFieldModule } from '../../wrappers/form-field/ui-form-field.module';
 
 import { UiFormSelectComponent } from './ui-form-select.component';
 
@@ -12,7 +11,6 @@ import { UiFormSelectComponent } from './ui-form-select.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    UiFormFieldModule,
     FormlySelectModule,
     FormlyModule.forChild({
       types: [

@@ -86,12 +86,12 @@ export class DynamicFormField implements FormlyFieldConfig {
     return DynamicFormField.field(key, 'textarea', { ...defaultTemplateOptions, ...templateOptions }, options);
   }
 
-  static template(template: string): FormlyFieldConfig {
-    return { type: 'formly-template', template };
-  }
-
   static time(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
     return DynamicFormField.input(key, { ...templateOptions, type: 'time' }, { ...options });
+  }
+
+  static template(template: string): FormlyFieldConfig {
+    return { type: 'formly-template', template };
   }
 }
 

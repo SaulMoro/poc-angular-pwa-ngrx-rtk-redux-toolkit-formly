@@ -7,7 +7,7 @@ import { take } from 'rxjs/operators';
   template: `
     <select
       *ngIf="to.multiple; else singleSelect"
-      class="mt-1 block w-full pl-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md"
+      [class]="classNames"
       multiple
       [class.custom-select]="to.customSelect"
       [formControl]="formControl"
@@ -41,7 +41,8 @@ import { take } from 'rxjs/operators';
 
     <ng-template #singleSelect>
       <select
-        class="pr-10 mt-1 block w-full pl-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md"
+        class="pr-10"
+        [class]="classNames"
         [formControl]="formControl"
         [compareWith]="to.compareWith"
         [class.custom-select]="to.customSelect"
@@ -116,6 +117,10 @@ export class UiFormSelectComponent extends FieldType {
           });
       }
     };
+  }
+
+  get classNames(): string {
+    return 'mt-1 block w-full pl-3 py-2 text-base dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md';
   }
 
   constructor(private ngZone: NgZone) {

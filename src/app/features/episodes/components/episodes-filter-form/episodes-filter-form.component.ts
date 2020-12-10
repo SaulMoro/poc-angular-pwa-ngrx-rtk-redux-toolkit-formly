@@ -1,9 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { TranslocoService } from '@ngneat/transloco';
-
-import { FormConfig, generateFilterForm } from '@app/core/dynamic-form';
+import { DynamicFormField, FormConfig, generateFilterForm } from '@app/core/dynamic-form';
 import { FormIds } from '@app/shared/models';
+
+const row = (fieldGroup: DynamicFormField[]) => DynamicFormField.fieldRow(fieldGroup, 'grid grid-cols-4 mt-4 gap-6');
+const fieldClass = 'col-span-2 sm:col-span-1';
 
 @Component({
   selector: 'app-episodes-filter-form',
@@ -15,51 +16,23 @@ export class EpisodesFilterFormComponent implements OnInit {
   form = new FormGroup({});
   formConfig: FormConfig = generateFilterForm({
     formId: FormIds.FORM_EPISODES_FILTER_ID,
-    fields: [],
+    fields: [
+      row([
+        DynamicFormField.input('name', { translate: true, label: 'EPISODES.FIELDS.NAME' }, { className: fieldClass }),
+        DynamicFormField.input(
+          'episode',
+          { translate: true, label: 'EPISODES.FIELDS.EPISODE' },
+          { className: fieldClass }
+        ),
+      ]),
+    ],
   });
 
-  constructor(private translocoService: TranslocoService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this._initForm();
-  }
+  ngOnInit(): void {}
 
   resetFilter(): void {
     this.form.reset();
-  }
-
-  private _initForm(): void {
-    this.formConfig = {
-      ...this.formConfig,
-      fields: [
-        {
-          fieldGroupClassName: 'flex-container no-margin no-padding',
-          fieldGroup: [
-            {
-              key: 'name',
-              type: 'input',
-              className: 'flex-25',
-              templateOptions: {
-                floatLabel: 'always',
-              },
-              expressionProperties: {
-                'templateOptions.label': this.translocoService.selectTranslate('EPISODES.FIELDS.NAME'),
-              },
-            },
-            {
-              key: 'episode',
-              type: 'input',
-              className: 'flex-25',
-              templateOptions: {
-                floatLabel: 'always',
-              },
-              expressionProperties: {
-                'templateOptions.label': this.translocoService.selectTranslate('EPISODES.FIELDS.EPISODE'),
-              },
-            },
-          ],
-        },
-      ],
-    };
   }
 }
