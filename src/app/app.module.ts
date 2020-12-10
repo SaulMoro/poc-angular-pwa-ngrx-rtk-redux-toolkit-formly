@@ -19,7 +19,10 @@ import { AppRoutingModule } from './app-routing.module';
 
     // app
     AppRoutingModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      registrationStrategy: 'registerImmediately',
+    }),
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
