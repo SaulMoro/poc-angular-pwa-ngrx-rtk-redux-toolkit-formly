@@ -5,6 +5,7 @@ export class TranslateExtension {
   constructor(private translocoService: TranslocoService) {}
 
   prePopulate(field: FormlyFieldConfig): void {
+    console.log('entro', field);
     const to = field.templateOptions || {};
     if (!to.translate || to._translated) {
       return;

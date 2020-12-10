@@ -1,8 +1,14 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TranslocoService } from '@ngneat/transloco';
-import { FormConfig, generateFilterForm } from '@app/core/dynamic-form';
-import { CharacterGender, CharacterSpecies, CharacterStatus, FormIds, Option } from '@app/shared/models';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { DynamicFormField, FormConfig, generateFilterForm, SelectOption } from '@app/core/dynamic-form';
+import { CharacterGender, CharacterSpecies, CharacterStatus, FormIds } from '@app/shared/models';
+
+const row = (fieldGroup: DynamicFormField[]) => DynamicFormField.fieldRow(fieldGroup, 'grid grid-cols-4 mt-4 gap-6');
+const fieldClass = 'col-span-2 sm:col-span-1';
 
 @Component({
   selector: 'app-characters-filter-form',
@@ -14,172 +20,141 @@ export class CharactersFilterFormComponent implements OnInit {
   form = new FormGroup({});
   formConfig: FormConfig = generateFilterForm({
     formId: FormIds.FORM_CHARACTERS_FILTER_ID,
-    fields: [],
+    fields: [
+      row([
+        DynamicFormField.input('name', { translate: true, label: 'CHARACTERS.FIELDS.NAME' }, { className: fieldClass }),
+        DynamicFormField.select(
+          'status',
+          {
+            translate: true,
+            label: 'CHARACTERS.FIELDS.STATUS',
+            placeholder: 'CHARACTERS.PLACEHOLDERS.STATUS',
+            options: this._status$,
+          },
+          { className: fieldClass }
+        ),
+        DynamicFormField.select(
+          'gender',
+          {
+            translate: true,
+            label: 'CHARACTERS.FIELDS.GENDER',
+            placeholder: 'CHARACTERS.PLACEHOLDERS.GENDER',
+            options: this._genders$,
+          },
+          { className: fieldClass }
+        ),
+        DynamicFormField.select(
+          'species',
+          {
+            translate: true,
+            label: 'CHARACTERS.FIELDS.SPECIES',
+            placeholder: 'CHARACTERS.PLACEHOLDERS.SPECIES',
+            options: this._species$,
+          },
+          { className: fieldClass }
+        ),
+      ]),
+    ],
   });
-  status: Option[];
-  genders: Option[];
-  species: Option[];
 
   constructor(private translocoService: TranslocoService) {}
 
-  ngOnInit(): void {
-    this._initOptions();
-    this._initForm();
-  }
+  ngOnInit(): void {}
 
   resetFilter(): void {
     this.form.reset();
   }
 
-  private _initForm(): void {
-    this.formConfig = {
-      ...this.formConfig,
-      fields: [
+  private get _status$(): Observable<SelectOption[]> {
+    return this.translocoService.selectTranslateObject('CHARACTERS.STATUS').pipe(
+      map((translated) => [
         {
-          fieldGroupClassName: 'flex-container no-margin no-padding',
-          fieldGroup: [
-            {
-              key: 'name',
-              type: 'input',
-              className: 'flex-25',
-              templateOptions: {
-                floatLabel: 'always',
-              },
-              expressionProperties: {
-                'templateOptions.label': this.translocoService.selectTranslate('CHARACTERS.FIELDS.NAME'),
-              },
-            },
-            {
-              key: 'status',
-              type: 'select-autocomplete',
-              className: 'flex-25',
-              templateOptions: {
-                floatLabel: 'always',
-                placeholder: 'CHARACTERS.PLACEHOLDERS.STATUS',
-                autocomplete: true,
-                showIcon: false,
-                searchOptions: this.status,
-              },
-              expressionProperties: {
-                'templateOptions.label': this.translocoService.selectTranslate('CHARACTERS.FIELDS.STATUS'),
-              },
-            },
-            {
-              key: 'gender',
-              type: 'select-autocomplete',
-              className: 'flex-25',
-              templateOptions: {
-                floatLabel: 'always',
-                placeholder: 'CHARACTERS.PLACEHOLDERS.GENDER',
-                autocomplete: true,
-                showIcon: false,
-                searchOptions: this.genders,
-              },
-              expressionProperties: {
-                'templateOptions.label': this.translocoService.selectTranslate('CHARACTERS.FIELDS.GENDER'),
-              },
-            },
-            {
-              key: 'species',
-              type: 'select-autocomplete',
-              className: 'flex-25',
-              templateOptions: {
-                floatLabel: 'always',
-                placeholder: 'CHARACTERS.PLACEHOLDERS.SPECIES',
-                autocomplete: true,
-                showIcon: false,
-                searchOptions: this.species,
-              },
-              expressionProperties: {
-                'templateOptions.label': this.translocoService.selectTranslate('CHARACTERS.FIELDS.SPECIES'),
-              },
-            },
-          ],
+          value: CharacterStatus.alive,
+          label: translated[CharacterStatus.alive.toUpperCase()],
         },
-      ],
-    };
+        {
+          value: CharacterStatus.dead,
+          label: translated[CharacterStatus.dead.toUpperCase()],
+        },
+        {
+          value: CharacterStatus.unknown,
+          label: translated[CharacterStatus.unknown.toUpperCase()],
+        },
+      ])
+    );
   }
 
-  private _initOptions(): void {
-    this.status = [
-      {
-        id: CharacterStatus.alive,
-        label: 'CHARACTERS.STATUS.' + CharacterStatus.alive.toUpperCase(),
-      },
-      {
-        id: CharacterStatus.dead,
-        label: 'CHARACTERS.STATUS.' + CharacterStatus.dead.toUpperCase(),
-      },
-      {
-        id: CharacterStatus.unknown,
-        label: 'CHARACTERS.STATUS.' + CharacterStatus.unknown.toUpperCase(),
-      },
-    ];
+  private get _genders$(): Observable<SelectOption[]> {
+    return this.translocoService.selectTranslateObject('CHARACTERS.GENDER').pipe(
+      map((translated) => [
+        {
+          value: CharacterGender.male,
+          label: translated[CharacterGender.male.toUpperCase()],
+        },
+        {
+          value: CharacterGender.female,
+          label: translated[CharacterGender.female.toUpperCase()],
+        },
+        {
+          value: CharacterGender.genderless,
+          label: translated[CharacterGender.genderless.toUpperCase()],
+        },
+        {
+          value: CharacterGender.unknown,
+          label: translated[CharacterGender.unknown.toUpperCase()],
+        },
+      ])
+    );
+  }
 
-    this.genders = [
-      {
-        id: CharacterGender.male,
-        label: 'CHARACTERS.GENDER.' + CharacterGender.male.toUpperCase(),
-      },
-      {
-        id: CharacterGender.female,
-        label: 'CHARACTERS.GENDER.' + CharacterGender.female.toUpperCase(),
-      },
-      {
-        id: CharacterGender.genderless,
-        label: 'CHARACTERS.GENDER.' + CharacterGender.genderless.toUpperCase(),
-      },
-      {
-        id: CharacterGender.unknown,
-        label: 'CHARACTERS.GENDER.' + CharacterGender.unknown.toUpperCase(),
-      },
-    ];
-
-    this.species = [
-      {
-        id: CharacterSpecies.alien,
-        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.alien.toUpperCase(),
-      },
-      {
-        id: CharacterSpecies.animal,
-        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.animal.toUpperCase(),
-      },
-      {
-        id: CharacterSpecies.human,
-        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.human.toUpperCase(),
-      },
-      {
-        id: CharacterSpecies.humanoid,
-        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.humanoid.toUpperCase(),
-      },
-      {
-        id: CharacterSpecies.mytholog,
-        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.mytholog.toUpperCase(),
-      },
-      {
-        id: CharacterSpecies.poopybutthole,
-        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.poopybutthole.toUpperCase(),
-      },
-      {
-        id: CharacterSpecies.robot,
-        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.robot.toUpperCase(),
-      },
-      {
-        id: CharacterSpecies.vampire,
-        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.vampire.toUpperCase(),
-      },
-      {
-        id: CharacterSpecies.cronenberg,
-        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.cronenberg.toUpperCase(),
-      },
-      {
-        id: CharacterSpecies.disease,
-        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.disease.toUpperCase(),
-      },
-      {
-        id: CharacterSpecies.unknown,
-        label: 'CHARACTERS.SPECIES.' + CharacterSpecies.unknown.toUpperCase(),
-      },
-    ];
+  private get _species$(): Observable<SelectOption[]> {
+    return this.translocoService.selectTranslateObject('CHARACTERS.SPECIES').pipe(
+      map((translated) => [
+        {
+          value: CharacterSpecies.alien,
+          label: translated[CharacterSpecies.alien.toUpperCase()],
+        },
+        {
+          value: CharacterSpecies.animal,
+          label: translated[CharacterSpecies.animal.toUpperCase()],
+        },
+        {
+          value: CharacterSpecies.human,
+          label: translated[CharacterSpecies.human.toUpperCase()],
+        },
+        {
+          value: CharacterSpecies.humanoid,
+          label: translated[CharacterSpecies.humanoid.toUpperCase()],
+        },
+        {
+          value: CharacterSpecies.mytholog,
+          label: translated[CharacterSpecies.mytholog.toUpperCase()],
+        },
+        {
+          value: CharacterSpecies.poopybutthole,
+          label: translated[CharacterSpecies.poopybutthole.toUpperCase()],
+        },
+        {
+          value: CharacterSpecies.robot,
+          label: translated[CharacterSpecies.robot.toUpperCase()],
+        },
+        {
+          value: CharacterSpecies.vampire,
+          label: translated[CharacterSpecies.vampire.toUpperCase()],
+        },
+        {
+          value: CharacterSpecies.cronenberg,
+          label: translated[CharacterSpecies.cronenberg.toUpperCase()],
+        },
+        {
+          value: CharacterSpecies.disease,
+          label: translated[CharacterSpecies.disease.toUpperCase()],
+        },
+        {
+          value: CharacterSpecies.unknown,
+          label: translated[CharacterSpecies.unknown.toUpperCase()],
+        },
+      ])
+    );
   }
 }

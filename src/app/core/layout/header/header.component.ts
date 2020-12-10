@@ -14,16 +14,12 @@ export class HeaderComponent implements OnInit {
 
   menuPanelOpened = false;
 
-  constructor(private cdRef: ChangeDetectorRef) {}
+  constructor() {}
 
   ngOnInit(): void {}
 
   toggleMenuPanel(): void {
     this.menuPanelOpened = !this.menuPanelOpened;
-  }
-
-  onLanguageSelected(lang: string): void {
-    this.cdRef.detectChanges();
   }
 
   trackByFn(index: number): number {

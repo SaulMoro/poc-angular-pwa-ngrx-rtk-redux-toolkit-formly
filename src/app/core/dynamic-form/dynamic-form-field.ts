@@ -1,35 +1,6 @@
 import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
 
 export class DynamicFormField implements FormlyFieldConfig {
-  static checkbox(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
-    return DynamicFormField.field(key, 'checkbox', templateOptions, options);
-  }
-
-  static date(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
-    return DynamicFormField.input(key, { ...templateOptions, type: 'date' }, { ...options });
-  }
-
-  static datetime(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
-    return DynamicFormField.input(key, { ...templateOptions, type: 'datetime-local' }, { ...options });
-  }
-
-  static email(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
-    const defaults = {
-      type: 'email',
-      label: 'Email',
-    };
-    const defaultOptions = { validators: { validation: ['email'] } };
-
-    return DynamicFormField.input(key, { ...defaults, ...templateOptions }, { ...defaultOptions, ...options });
-  }
-
-  static fieldRow(fieldGroup: FormlyFieldConfig[] = [], fieldGroupClassName: string = 'flex'): FormlyFieldConfig {
-    return {
-      fieldGroup,
-      fieldGroupClassName,
-    };
-  }
-
   static field(
     key: string,
     type?: string,
@@ -46,12 +17,41 @@ export class DynamicFormField implements FormlyFieldConfig {
     };
   }
 
+  static fieldRow(fieldGroup: FormlyFieldConfig[] = [], fieldGroupClassName: string = 'flex'): FormlyFieldConfig {
+    return {
+      fieldGroup,
+      fieldGroupClassName,
+    };
+  }
+
   static input(
     key: string,
     templateOptions: FormlyTemplateOptions = {},
     config: FormlyFieldConfig = {}
   ): FormlyFieldConfig {
     return DynamicFormField.field(key, 'input', templateOptions, config);
+  }
+
+  static email(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
+    const defaults = {
+      type: 'email',
+      label: 'Email',
+    };
+    const defaultOptions = { validators: { validation: ['email'] } };
+
+    return DynamicFormField.input(key, { ...defaults, ...templateOptions }, { ...defaultOptions, ...options });
+  }
+
+  static date(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
+    return DynamicFormField.input(key, { ...templateOptions, type: 'date' }, { ...options });
+  }
+
+  static datetime(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
+    return DynamicFormField.input(key, { ...templateOptions, type: 'datetime-local' }, { ...options });
+  }
+
+  static checkbox(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
+    return DynamicFormField.field(key, 'checkbox', templateOptions, options);
   }
 
   static multicheckbox(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
@@ -93,4 +93,9 @@ export class DynamicFormField implements FormlyFieldConfig {
   static time(key: string, templateOptions?: FormlyTemplateOptions, options?: any): FormlyFieldConfig {
     return DynamicFormField.input(key, { ...templateOptions, type: 'time' }, { ...options });
   }
+}
+
+export interface SelectOption {
+  label: string;
+  value: string | null;
 }

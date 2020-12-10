@@ -11,7 +11,8 @@ const FORM_VALID = 'VALID';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-dynamic-form',
+  // tslint:disable-next-line: component-selector
+  selector: 'dynamic-form',
   template: `
     <form
       *ngrxLet="form$ as form"
