@@ -1,4 +1,4 @@
-# **PoC Angular + PWA + NgRx + Router State + NgRx-Entity + Formly**
+# **PoC Angular + PWA + NgRx + Router State + NgRx-Entity + TailwindCSS + Formly**
 
 [Demo of project](https://SaulMoro.github.io/poc-angular-pwa-ngrx-entity-formly-routerstate)
 
@@ -24,6 +24,7 @@ PoC of an Angular project with:
 - **Core and Shared modules**
 - **Lazy Loading Features**
 - **Container / Presentational Components**(Smart / Dumb Components)
+- **TailwindCSS**
 - **Formly** for generating dynamic forms
 - [**Multilingual site**](https://developers.google.com/search/docs/advanced/crawling/managing-multi-regional-sites) with my own Transloco Localize Router plugin and adds automatically [**hreflang links**](https://developers.google.com/search/docs/advanced/crawling/localized-versions)
 - **Google Analytics** with page views and events
@@ -44,7 +45,7 @@ PoC of an Angular project with:
 
 - **Prefetch Directive** to preload information when a component is hovered over or displayed on the screen
 - **Auto Lazy Load Images Directive** to automatically add lazy load to images if browser supports it
-- **Skeleton content loader**
+- **Skeleton content loader** with TailwindCSS and @ngneat/content-loader
 - **Auto deploy** with Github Actions
 - **CodeQL** analysis
 - **Husky and lint-staged** to pass lint and prettier to changed code on commit
