@@ -2,10 +2,22 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-// custom components not purgable
-@import 'theme/buttons.scss';
-
 // custom components purgable
 @layer components {
-  //
+  .btn {
+    @apply px-4 py-2 font-semibold transition duration-300 ease-in rounded-md shadow-md select-none focus:outline-none focus:ring-2 focus:ring-opacity-75 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply text-white bg-indigo-500 hover:bg-indigo-600 focus:ring-indigo-400;
+  }
+
+  .btn-outline {
+    @extend .btn;
+    @apply border;
+  }
+
+  .btn-outline-primary {
+    @apply text-indigo-500 border-indigo-500 hover:text-white hover:bg-indigo-600;
+  }
 }
