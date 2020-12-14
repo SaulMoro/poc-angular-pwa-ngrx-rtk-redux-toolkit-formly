@@ -43,6 +43,7 @@ PoC of an Angular project with:
 
 **Other**
 
+- **Dark Mode** by TailwindCSS
 - **Prefetch Directive** to preload information when a component is hovered over or displayed on the screen
 - **Auto Lazy Load Images Directive** to automatically add lazy load to images if browser supports it
 - **Skeleton content loader** with TailwindCSS and @ngneat/content-loader

@@ -1,8 +1,8 @@
 <div
-  class="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow transition-colors duration-200 hover:bg-gray-100"
+  class="flex flex-col items-center justify-center p-4 transition-colors duration-200 bg-white rounded-lg shadow hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
   *transloco="let t"
 >
-  <div class="inline-flex w-40 h-40 overflow-hidden border border-gray-200 rounded-full shadow-lg">
+  <div class="inline-flex w-40 h-40 overflow-hidden border border-gray-200 rounded-full shadow-lg dark:border-gray-800">
     <img [src]="character.image" [alt]="character.name" class="w-full h-full" />
   </div>
 
@@ -25,21 +25,21 @@
     <h6 class="text-sm font-medium">{{ t('CHARACTERS.STATUS.' + character.status | uppercase) }}</h6>
   </div>
 
-  <p class="self-start mt-3 text-xs text-gray-500">
+  <p class="self-start mt-3 text-xs text-gray-500 dark:text-gray-400">
     {{ t('CHARACTERS.LAST_KNOWN_LOCATION') }}
     <a
-      class="inline-block text-indigo-700 hover:text-indigo-800"
+      class="inline-block text-indigo-700 hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-200"
       [routerLink]="['/locations', character.location.id] | localize"
       (prefetch)="prefetchOnHoverLocation(character.location.id)"
     >
       {{ character.location?.name }}
     </a>
   </p>
-  <p class="self-start mt-3 text-xs text-gray-500">
+  <p class="self-start mt-3 text-xs text-gray-500 dark:text-gray-400">
     {{ t('CHARACTERS.FIRST_SEEN') }}
     <a
       *ngIf="character.firstEpisode?.name; else loadingFirstEpisode"
-      class="inline-block text-indigo-700 hover:text-indigo-800"
+      class="inline-block text-indigo-700 hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-200"
       [routerLink]="['/episodes', character.firstEpisode.id] | localize"
     >
       {{ character.firstEpisode.name }}

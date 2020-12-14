@@ -1,12 +1,12 @@
 <div class="mx-4 mt-2 sm:mx-0" *transloco="let t">
-  <div class="flex flex-col overflow-hidden rounded shadow-lg sm:flex-row">
+  <div class="flex flex-col overflow-hidden rounded shadow-lg sm:flex-row dark:bg-gray-700">
     <img
       class="self-center mt-4 bg-gray-300 rounded w-72 h-72 sm:w-80 sm:h-80 sm:mt-0 sm:rounded-none"
       [src]="character.image"
       [alt]="character.name"
     />
-    <div class="p-4 space-y-1 sm:pl-8 sm:space-y-2 md:space-y-4">
-      <h1 class="text-xl font-bold text-gray-900 sm:text-2xl">{{ character.name }}</h1>
+    <div class="w-full p-4 space-y-1 sm:pl-8 sm:space-y-2 md:space-y-4">
+      <h1 class="text-xl font-bold text-gray-900 sm:text-2xl dark:text-gray-100">{{ character.name }}</h1>
       <p class="character-text">
         {{ t('CHARACTERS.FIELDS.STATUS') }}: {{ t('CHARACTERS.STATUS.' + character.status | uppercase) }}
       </p>
@@ -23,7 +23,7 @@
         {{ t('CHARACTERS.FIELDS.ORIGIN') }}:
         <a
           *ngIf="character.origin"
-          class="inline-block text-indigo-700 hover:text-indigo-800"
+          class="inline-block text-indigo-700 hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-200"
           [routerLink]="['/locations', character.origin.id] | localize"
           (prefetch)="prefetchOnHoverLocation(character.origin?.id)"
         >
@@ -34,7 +34,7 @@
         {{ t('CHARACTERS.FIELDS.LOCATION') }}:
         <a
           *ngIf="character.location"
-          class="inline-block text-indigo-700 hover:text-indigo-800"
+          class="inline-block text-indigo-700 hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-200"
           [routerLink]="['/locations', character.location.id] | localize"
           (prefetch)="prefetchOnHoverLocation(character.location?.id)"
         >

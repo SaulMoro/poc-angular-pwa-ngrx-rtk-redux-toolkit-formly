@@ -1,8 +1,8 @@
 <div *ngIf="pages > 1" class="relative flex flex-col items-center">
   <div class="flex text-gray-700">
     <button
-      class="flex items-center justify-center w-12 h-12 mr-1 bg-gray-200 rounded-full transition-colors duration-200"
-      [ngClass]="currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'"
+      class="flex items-center justify-center w-12 h-12 mr-1 transition-colors duration-200 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"
+      [ngClass]="currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300 dark:hover:bg-gray-600'"
       [disabled]="currentPage === 1"
       [routerLink]="['./'] | localize"
       [queryParams]="{ page: currentPage - 1 }"
@@ -22,17 +22,17 @@
         <polyline points="15 18 9 12 15 6"></polyline>
       </svg>
     </button>
-    <div class="flex h-12 font-medium bg-gray-200 rounded-full">
+    <div class="flex h-12 font-medium bg-gray-200 rounded-full dark:bg-gray-700">
       <a
         *ngIf="currentPage > 2"
-        class="page-button hover:bg-indigo-300"
+        class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: 1 }"
         >1</a
       >
       <a
         *ngIf="currentPage > 3"
-        class="page-button hover:bg-indigo-300"
+        class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: 2 }"
         >2</a
@@ -40,7 +40,7 @@
       <button
         type="button"
         *ngIf="currentPage > 4"
-        class="page-button hover:bg-gray-300 focus:outline-none focus:bg-gray-300"
+        class="page-button hover:bg-gray-300 focus:outline-none focus:bg-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600"
         (click)="togglePaginatorPanel('prev')"
       >
         ...
@@ -48,7 +48,7 @@
 
       <a
         *ngIf="currentPage - 1 >= 1"
-        class="page-button hover:bg-indigo-300"
+        class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: currentPage - 1 }"
       >
@@ -59,7 +59,7 @@
       </a>
       <a
         *ngIf="currentPage < pages"
-        class="page-button hover:bg-indigo-300"
+        class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: currentPage + 1 }"
       >
@@ -69,14 +69,14 @@
       <button
         type="button"
         *ngIf="currentPage + 3 < pages"
-        class="page-button hover:bg-gray-300 focus:outline-none focus:bg-gray-300"
+        class="page-button hover:bg-gray-300 focus:outline-none focus:bg-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600"
         (click)="togglePaginatorPanel('post')"
       >
         ...
       </button>
       <a
         *ngIf="currentPage + 2 < pages"
-        class="page-button hover:bg-indigo-300"
+        class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: pages - 1 }"
       >
@@ -84,7 +84,7 @@
       </a>
       <a
         *ngIf="currentPage + 1 < pages"
-        class="page-button hover:bg-indigo-300"
+        class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: pages }"
       >
@@ -92,8 +92,8 @@
       </a>
     </div>
     <button
-      class="flex items-center justify-center w-12 h-12 ml-1 bg-gray-200 rounded-full transition-colors duration-200"
-      [ngClass]="currentPage === +pages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'"
+      class="flex items-center justify-center w-12 h-12 ml-1 transition-colors duration-200 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"
+      [ngClass]="currentPage === +pages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300 dark:hover:bg-gray-600'"
       [disabled]="currentPage === +pages"
       [routerLink]="['./'] | localize"
       [queryParams]="{ page: currentPage + 1 }"
@@ -118,7 +118,7 @@
   <!-- Paginator dropdown panel, show/hide based on dropdown state.-->
   <div
     *ngIf="paginatorPanelOpened"
-    class="absolute w-20 overflow-y-auto bg-white shadow-lg rounded-md ring-1 ring-black ring-opacity-5"
+    class="absolute w-20 overflow-y-auto bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-gray-700"
     [ngClass]="
       (paginator === 'post' ? pages - (currentPage + 3) : currentPage - 4) <= 3 ? '-top-20 h-20' : '-top-32 h-32'
     "
@@ -130,7 +130,7 @@
           let i = index;
           trackBy: trackByFn
         "
-        class="block px-4 py-2 text-sm text-center text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+        class="block px-4 py-2 text-sm text-center text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-gray-200"
         role="menuitem"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: i + (paginator === 'post' ? currentPage + 2 : 3) }"

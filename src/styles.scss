@@ -9,7 +9,7 @@
   }
 
   .btn-primary {
-    @apply text-white bg-indigo-500 hover:bg-indigo-600 focus:ring-indigo-400;
+    @apply text-white bg-indigo-500 hover:bg-indigo-600 focus:ring-indigo-400 dark:text-gray-300;
   }
 
   .btn-outline {
@@ -18,6 +18,6 @@
   }
 
   .btn-outline-primary {
-    @apply text-indigo-500 border-indigo-500 hover:text-white hover:bg-indigo-600;
+    @apply text-indigo-500 border-indigo-500 hover:text-white hover:bg-indigo-600 dark:text-indigo-400 dark:border-indigo-400 dark:hover:text-gray-300 dark:hover:bg-indigo-500;
   }
 }

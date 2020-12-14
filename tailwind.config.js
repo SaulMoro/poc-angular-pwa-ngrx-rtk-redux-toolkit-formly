@@ -4,7 +4,7 @@ module.exports = (isProd) => ({
     enabled: isProd,
     content: ['./src/**/*.{html,ts}', './projects/**/*.{html,ts}'],
   },
-  darkMode: false, // or 'media' or 'class'
+  darkMode: 'media', // or 'media' or 'class'
   theme: {
     extend: {},
   },

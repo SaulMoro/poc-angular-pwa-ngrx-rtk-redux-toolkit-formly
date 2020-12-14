@@ -4,13 +4,13 @@
 <ng-container *transloco="let t">
   <ng-container *ngrxLet="episode$ as episode">
     <ng-container *ngIf="episode; else loadingEpisode">
-      <div class="p-4 mb-4 bg-white sm:rounded-md sm:shadow">
-        <h1 class="text-2xl font-medium text-gray-800">
+      <div class="p-4 mb-4 bg-white sm:rounded-md sm:shadow dark:bg-gray-700">
+        <h1 class="text-2xl font-medium text-gray-800 dark:text-gray-100">
           {{ episode.episode }}: {{ episode.name }} ({{ episode.air_date }})
         </h1>
       </div>
 
-      <div class="p-4 bg-white sm:rounded-md sm:shadow">
+      <div class="p-4 bg-white sm:rounded-md sm:shadow dark:bg-gray-800">
         <h2 class="mb-4 font-medium">{{ t('EPISODES.EPISODE_CHARACTERS', { name: episode.name }) }}</h2>
         <ng-container *ngIf="episode.characters?.length; else emptyCharacters">
           <ng-container *ngrxLet="characters$ as characters">

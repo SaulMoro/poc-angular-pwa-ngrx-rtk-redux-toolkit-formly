@@ -31,13 +31,13 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter
       <!-- Language dropdown panel, show/hide based on dropdown state.-->
       <div
         *ngIf="langPanelOpened"
-        class="absolute right-0 w-24 mt-1 bg-white shadow-lg origin-top-right rounded-md ring-1 ring-black ring-opacity-5"
+        class="absolute right-0 w-24 mt-1 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-gray-700"
       >
         <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
           <a
             *ngFor="let l of languages; trackBy: trackByFn"
-            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-            [ngClass]="l === language ? 'bg-gray-100 text-gray-900 cursor-not-allowed' : 'cursor-pointer'"
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-gray-200"
+            [ngClass]="{ 'text-gray-900 bg-gray-100 cursor-not-allowed dark:bg-gray-600': l === language }"
             role="menuitem"
             [routerLink]="['./'] | localize: l"
             (click)="onLanguageSelect(l)"

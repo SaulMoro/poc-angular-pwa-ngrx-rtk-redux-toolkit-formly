@@ -51,13 +51,13 @@ export class GoogleAnalyticsService {
       this.document.head.appendChild(gTagManagerScript);
 
       // register google analytics
+      // Disable automatic page view hit to fix duplicate page view count
       const gaScript = this.document.createElement('script');
       gaScript.innerHTML = `
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
-        /** Disable automatic page view hit to fix duplicate page view count **/
         gtag('config', '${environment.gaTrackingId}', { send_page_view: false });
       `;
       this.document.head.appendChild(gaScript);

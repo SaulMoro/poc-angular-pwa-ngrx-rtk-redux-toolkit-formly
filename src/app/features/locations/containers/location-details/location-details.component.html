@@ -4,13 +4,13 @@
 <ng-container *transloco="let t">
   <ng-container *ngrxLet="location$ as location">
     <ng-container *ngIf="location; else loadingLocation">
-      <div class="p-4 mb-4 bg-white sm:rounded-md sm:shadow">
-        <h1 class="mb-2 text-2xl font-medium text-gray-800">{{ location.name }}</h1>
+      <div class="p-4 mb-4 bg-white sm:rounded-md sm:shadow dark:bg-gray-700">
+        <h1 class="mb-2 text-2xl font-medium text-gray-800 dark:text-gray-100">{{ location.name }}</h1>
         <h3>{{ t('LOCATIONS.FIELDS.TYPE') }}: {{ location.type }}</h3>
         <h3>{{ t('LOCATIONS.FIELDS.DIMENSION') }}: {{ location.dimension }}</h3>
       </div>
 
-      <div class="p-4 bg-white sm:rounded-md sm:shadow">
+      <div class="p-4 bg-white sm:rounded-md sm:shadow dark:bg-gray-800">
         <h2 class="mb-4 font-medium">{{ t('LOCATIONS.LOCATION_RESIDENTS', { name: location.name }) }}</h2>
         <ng-container *ngIf="location.residents?.length; else emptyCharacters">
           <ng-container *ngrxLet="characters$ as characters">
