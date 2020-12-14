@@ -9,7 +9,7 @@ import { Character, CharacterStatus } from '@app/shared/models';
 })
 export class CharacterCardComponent implements OnInit {
   @Input() character: Character;
-  @Output() prefetchLocation = new EventEmitter<number>();
+  @Output() hoverLocation = new EventEmitter<number>();
 
   statusTypes = CharacterStatus;
 
@@ -17,7 +17,7 @@ export class CharacterCardComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  prefetchOnHoverLocation(locationId: number): void {
-    this.prefetchLocation.next(locationId);
+  onHoverLocation(locationId: number): void {
+    this.hoverLocation.next(locationId);
   }
 }

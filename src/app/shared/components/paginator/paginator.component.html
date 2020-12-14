@@ -1,11 +1,12 @@
 <div *ngIf="pages > 1" class="relative flex flex-col items-center">
   <div class="flex text-gray-700 dark:text-gray-300">
     <button
-      class="flex items-center justify-center w-12 h-12 mr-1 transition-colors duration-200 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"
+      class="flex items-center justify-center w-12 h-12 mr-1 transition-colors duration-200 bg-gray-200 rounded-full dark:bg-gray-700"
       [ngClass]="currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300 dark:hover:bg-gray-600'"
       [disabled]="currentPage === 1"
       [routerLink]="['./'] | localize"
       [queryParams]="{ page: currentPage - 1 }"
+      queryParamsHandling="merge"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -28,15 +29,19 @@
         class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: 1 }"
-        >1</a
+        queryParamsHandling="merge"
       >
+        1
+      </a>
       <a
         *ngIf="currentPage > 3"
         class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: 2 }"
-        >2</a
+        queryParamsHandling="merge"
       >
+        2
+      </a>
       <button
         type="button"
         *ngIf="currentPage > 4"
@@ -51,10 +56,16 @@
         class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: currentPage - 1 }"
+        queryParamsHandling="merge"
       >
         {{ currentPage - 1 }}
       </a>
-      <a class="bg-indigo-500 page-button" [routerLink]="['./'] | localize" [queryParams]="{ page: currentPage }">
+      <a
+        class="bg-indigo-500 page-button"
+        [routerLink]="['./'] | localize"
+        [queryParams]="{ page: currentPage }"
+        queryParamsHandling="merge"
+      >
         {{ currentPage }}
       </a>
       <a
@@ -62,6 +73,7 @@
         class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: currentPage + 1 }"
+        queryParamsHandling="merge"
       >
         {{ currentPage + 1 }}
       </a>
@@ -79,6 +91,7 @@
         class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: pages - 1 }"
+        queryParamsHandling="merge"
       >
         {{ pages - 1 }}
       </a>
@@ -87,6 +100,7 @@
         class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: pages }"
+        queryParamsHandling="merge"
       >
         {{ pages }}
       </a>
@@ -97,6 +111,7 @@
       [disabled]="currentPage === +pages"
       [routerLink]="['./'] | localize"
       [queryParams]="{ page: currentPage + 1 }"
+      queryParamsHandling="merge"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -134,6 +149,7 @@
         role="menuitem"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: i + (paginator === 'post' ? currentPage + 2 : 3) }"
+        queryParamsHandling="merge"
         (click)="onPageSelect()"
       >
         {{ i + (paginator === 'post' ? currentPage + 2 : 3) }}

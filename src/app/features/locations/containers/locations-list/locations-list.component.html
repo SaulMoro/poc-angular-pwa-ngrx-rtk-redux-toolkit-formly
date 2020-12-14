@@ -23,8 +23,8 @@
         </button>
       </ng-template>
     </app-table>
-    <div class="mt-4">
-      <app-paginator [currentPage]="page$ | ngrxPush" [pages]="pages$ | ngrxPush"></app-paginator>
+    <div class="mt-4" *ngIf="pages$ | ngrxPush as pages">
+      <app-paginator [currentPage]="page$ | ngrxPush" [pages]="pages"></app-paginator>
     </div>
   </div>
 </ng-container>

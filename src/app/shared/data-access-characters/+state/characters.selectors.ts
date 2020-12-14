@@ -2,8 +2,10 @@ import { Params } from '@angular/router';
 import { createFeatureSelector, createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 
 import { RouterSelectors } from '@app/core/data-access-router';
+import { FormSelectors } from '@app/core/dynamic-form';
 import { Character, CharactersFilter, DataState, Episode, PAGE_SIZE } from '@app/shared/models';
 import { filterContainsData, isEqual } from '@app/shared/utils';
+import { FORM_CHARACTERS_FILTER_ID } from '@app/shared/models';
 import { EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { charactersAdapter, CHARACTERS_FEATURE_KEY, State } from './characters.reducer';
 
@@ -61,19 +63,23 @@ export const getCharactersOfCurrentPage = createSelector(
     characters?.filter((character) => character?.page === currentPage)
 );
 
+export const getCurrentFormFilter = createSelector(
+  FormSelectors.getFormsEntities,
+  (forms): CharactersFilter => forms[FORM_CHARACTERS_FILTER_ID]?.model
+);
+
 export const getCurrentFilter = createSelector(
+  getCurrentFormFilter,
   RouterSelectors.getRouteQueryParams,
-  (params: Params): CharactersFilter => {
-    return (
-      params && {
-        name: params.name,
-        status: params.status,
-        species: params.species,
-        type: params.type,
-        gender: params.gender,
-      }
-    );
-  }
+  (formFilter: CharactersFilter, params: Params): CharactersFilter =>
+    formFilter ??
+    (params && {
+      name: params.name,
+      status: params.status,
+      species: params.species,
+      type: params.type,
+      gender: params.gender,
+    })
 );
 
 export const getCharactersFiltered = createSelector(
@@ -85,7 +91,7 @@ export const getCharactersFiltered = createSelector(
 export const getCharactersFilteredWithPage = createSelector(
   getCharactersFiltered,
   getCurrentPage,
-  (characters: Character[], page: number): Character[] => characters.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  (characters: Character[], page: number): Character[] => characters?.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 );
 
 export const getCharacters = createSelectorFactory((projector) =>

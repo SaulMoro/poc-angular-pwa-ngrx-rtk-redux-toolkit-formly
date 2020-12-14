@@ -10,7 +10,7 @@ import { ofFilterForm } from '@app/core/dynamic-form';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
 import { EpisodesActions, EpisodesApiActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
-import { FormIds } from '@app/shared/models';
+import { FORM_CHARACTERS_FILTER_ID } from '@app/shared/models';
 import { fromStore } from '@app/shared/utils';
 import * as CharactersActions from './characters.actions';
 import * as CharactersApiActions from './characters-api.actions';
@@ -30,17 +30,9 @@ export class CharactersEffects {
     )
   );
 
-  filterCharacters$ = createEffect(() => ({ debounce = 300, scheduler = asyncScheduler } = {}) =>
+  filterCharacters$ = createEffect(() =>
     this.actions$.pipe(
-      ofFilterForm(FormIds.FORM_CHARACTERS_FILTER_ID),
-      debounceTime(debounce, scheduler),
-      switchMap(() =>
-        // Reset Filter Page
-        this.router.navigate([], {
-          queryParams: { page: null },
-          queryParamsHandling: 'merge',
-        })
-      ),
+      ofFilterForm(FORM_CHARACTERS_FILTER_ID),
       map(() => CharactersActions.filterCharacters())
     )
   );

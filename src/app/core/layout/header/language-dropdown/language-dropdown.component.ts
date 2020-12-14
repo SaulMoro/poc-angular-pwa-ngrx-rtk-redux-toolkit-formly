@@ -40,6 +40,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter
             [ngClass]="{ 'text-gray-900 bg-gray-100 cursor-not-allowed dark:bg-gray-600': l === language }"
             role="menuitem"
             [routerLink]="['./'] | localize: l"
+            queryParamsHandling="merge"
             (click)="onLanguageSelect(l)"
           >
             {{ l | uppercase }}

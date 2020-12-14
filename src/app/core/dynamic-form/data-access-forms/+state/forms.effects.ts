@@ -31,7 +31,7 @@ export class FormsEffects {
           });
 
           return this.router.navigate([], {
-            queryParams: newModel,
+            queryParams: { ...newModel, page: null },
             queryParamsHandling: 'merge',
           });
         })

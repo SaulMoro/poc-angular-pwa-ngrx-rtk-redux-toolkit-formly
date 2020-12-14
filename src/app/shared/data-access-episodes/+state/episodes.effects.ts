@@ -8,7 +8,7 @@ import { map, debounceTime, switchMap, filter, catchError, mergeMap, tap } from 
 import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
 import { ofFilterForm } from '@app/core/dynamic-form';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
-import { FormIds } from '@app/shared/models';
+import { FORM_EPISODES_FILTER_ID } from '@app/shared/models';
 import { fromStore } from '@app/shared/utils';
 import * as EpisodesActions from './episodes.actions';
 import * as EpisodesApiActions from './episodes-api.actions';
@@ -42,8 +42,7 @@ export class EpisodesEffects {
 
   filterEpisodes$ = createEffect(() => ({ debounce = 300, scheduler = asyncScheduler } = {}) =>
     this.actions$.pipe(
-      // ofRouteFilter('/episodes'), // (Same function)
-      ofFilterForm(FormIds.FORM_EPISODES_FILTER_ID),
+      ofFilterForm(FORM_EPISODES_FILTER_ID),
       debounceTime(debounce, scheduler),
       switchMap(() =>
         // Reset Filter Page

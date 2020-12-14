@@ -10,7 +10,6 @@ export class ThemeService {
   }
 
   setTheme(theme: 'light' | 'dark'): void {
-    this.body.classList.remove('light', 'dark');
-    this.body.classList.add(theme);
+    this.body.classList.toggle('dark', theme === 'dark');
   }
 }
