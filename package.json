@@ -9,7 +9,7 @@
     "lint": "ng lint && stylelint \"**/*.scss\" --syntax scss && htmlhint \"src/app/**/*.html\" --config .htmlhintrc",
     "test": "ng test",
     "e2e": "ng e2e",
-    "analyze": "npm run build -- --stats-json && webpack-bundle-analyzer ./dist/angular-pwa-ngrx-formly-routerstate/stats-es2015.json",
+    "analyze": "ng build --prod --stats-json && webpack-bundle-analyzer ./dist/angular-pwa-ngrx-formly-routerstate/stats.json",
     "transloco:optimize": "transloco-optimize dist/angular-pwa-ngrx-formly-routerstate/assets/i18n",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
   },
