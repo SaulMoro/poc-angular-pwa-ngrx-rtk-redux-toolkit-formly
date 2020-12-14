@@ -42,14 +42,14 @@ export const charactersReducer = createReducer(
       error: null,
     })
   ),
-  on(CharactersActions.pageChange, (state, { page }) => ({
+  on(CharactersActions.filterPageChange, (state, { page }) => ({
     ...state,
     dataState: state.loadedPages.includes(page) ? DataState.REFRESHING : DataState.LOADING,
     error: null,
   })),
-  on(CharactersActions.enterCharacterDetailsPage, (state, { characterId }) => ({
+  on(CharactersActions.enterCharacterDetailsPage, (state) => ({
     ...state,
-    dataState: !!state.entities[characterId] ? DataState.REFRESHING : DataState.LOADING,
+    dataState: DataState.LOADING,
     error: null,
   })),
 

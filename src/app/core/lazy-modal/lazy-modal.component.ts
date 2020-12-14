@@ -14,7 +14,7 @@ import { LazyModalService } from './lazy-modal.service';
       (click)="close()"
     >
       <div
-        class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center bg-gray-900 sm:p-0 bg-opacity-40 dark:bg-black"
+        class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center bg-gray-900 bg-opacity-40 sm:p-0"
       >
         <div
           (click)="$event.stopPropagation()"

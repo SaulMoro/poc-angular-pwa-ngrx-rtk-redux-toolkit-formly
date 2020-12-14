@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { CharactersSelectors } from '@app/shared/data-access-characters';
+import { CharactersActions, CharactersSelectors } from '@app/shared/data-access-characters';
 import { Character, Episode } from '@app/shared/models';
 import { LocationsActions } from '@app/shared/data-access-locations';
 
@@ -31,7 +31,9 @@ export class CharacterDetailsComponent implements OnInit {
 
   constructor(private readonly store: Store, private translocoService: TranslocoService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.store.dispatch(CharactersActions.enterCharacterDetailsPage());
+  }
 
   prefetchLocation(locationId: number): void {
     if (locationId) {

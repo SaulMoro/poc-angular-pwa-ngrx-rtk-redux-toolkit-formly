@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { asyncScheduler, of } from 'rxjs';
 import { map, debounceTime, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
 
-import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
+import { ofRoutePageChange } from '@app/core/data-access-router';
 import { ofFilterForm } from '@app/core/dynamic-form';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
@@ -23,31 +23,15 @@ import {
 
 @Injectable()
 export class CharactersEffects {
-  enterCharactersPage$ = createEffect(() =>
-    this.actions$.pipe(
-      ofRouteEnter('/characters'),
-      map(() => CharactersActions.enterCharactersPage())
-    )
-  );
-
-  pageChange$ = createEffect(() =>
+  filterPageChange$ = createEffect(() =>
     this.actions$.pipe(
       ofRoutePageChange('/characters'),
-      map((page) => CharactersActions.pageChange({ page }))
-    )
-  );
-
-  enterCharacterDetailsOnNav$ = createEffect(() =>
-    this.actions$.pipe(
-      ofRouteEnter('/characters/:id'),
-      map(({ params }) => params?.id),
-      map((characterId: number) => CharactersActions.enterCharacterDetailsPage({ characterId }))
+      map((page) => CharactersActions.filterPageChange({ page }))
     )
   );
 
   filterCharacters$ = createEffect(() => ({ debounce = 300, scheduler = asyncScheduler } = {}) =>
     this.actions$.pipe(
-      // ofRouteFilter('/characters'), // (Same function)
       ofFilterForm(FormIds.FORM_CHARACTERS_FILTER_ID),
       debounceTime(debounce, scheduler),
       switchMap(() =>
@@ -63,14 +47,17 @@ export class CharactersEffects {
 
   loadCharacters$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(CharactersActions.enterCharactersPage, CharactersActions.pageChange, CharactersActions.filterCharacters),
+      ofType(
+        CharactersActions.enterCharactersPage,
+        CharactersActions.filterPageChange,
+        CharactersActions.filterCharacters
+      ),
       fromStore(CharactersSelectors.getCurrentFilter, CharactersSelectors.getCurrentPage)(this.store),
       tap(([, currentFilter, page]) =>
         this.googleAnalytics.sendEvent({
           name: 'New Characters Filter',
           category: GAEventCategory.FILTER,
-          label: JSON.stringify(currentFilter),
-          value: page,
+          label: JSON.stringify({ currentFilter, page }),
         })
       ),
       switchMap(([, currentFilter, page]) =>
@@ -119,7 +106,8 @@ export class CharactersEffects {
   loadCharacter$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CharactersActions.enterCharacterDetailsPage),
-      switchMap(({ characterId }) =>
+      fromStore(CharactersSelectors.getSelectedId)(this.store),
+      switchMap(([, characterId]) =>
         this.charactersService.getCharacter(characterId).pipe(
           map((character) =>
             CharactersApiActions.loadCharacterSuccess({
