@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { UiActions, UiSelectors } from '@app/core/data-access-ui';
 import { MenuItem } from '@app/core/layout/models';
 
 @Component({
@@ -11,8 +13,9 @@ import { MenuItem } from '@app/core/layout/models';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  theme$: Observable<'light' | 'dark'> = this.store.select(UiSelectors.getTheme);
   supportedLanguages = this.translocoService.getAvailableLangs();
-  language$ = this.translocoService.langChanges$;
+  language$: Observable<string> = this.translocoService.langChanges$;
   menu$: Observable<MenuItem[]> = this.translocoService
     .selectTranslate(['CHARACTERS.TITLE', 'LOCATIONS.TITLE', 'EPISODES.TITLE'])
     .pipe(
@@ -32,7 +35,11 @@ export class AppComponent implements OnInit {
       ])
     );
 
-  constructor(private translocoService: TranslocoService) {}
+  constructor(private store: Store, private translocoService: TranslocoService) {}
 
   ngOnInit(): void {}
+
+  changeTheme(theme: 'light' | 'dark'): void {
+    this.store.dispatch(UiActions.changeTheme({ theme }));
+  }
 }

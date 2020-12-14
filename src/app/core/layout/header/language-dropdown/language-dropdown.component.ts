@@ -6,7 +6,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter
     <div class="relative">
       <button
         type="button"
-        class="inline-flex justify-center w-full px-3 py-2 text-sm font-medium text-white rounded-md hover:text-yellow-300 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-700 focus:ring-white"
+        class="inline-flex justify-center w-16 px-3 py-2 text-sm font-medium text-white rounded-md hover:text-yellow-300 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-700 focus:ring-white"
         aria-haspopup="true"
         [attr.aria-expanded]="langPanelOpened"
         (click)="toggleLanguagePanel()"

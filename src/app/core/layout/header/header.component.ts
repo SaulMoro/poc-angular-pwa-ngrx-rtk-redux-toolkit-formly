@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
 import { MenuItem } from '../models';
 
 @Component({
@@ -11,6 +11,8 @@ export class HeaderComponent implements OnInit {
   @Input() menu: MenuItem[];
   @Input() language: string;
   @Input() languages: string[];
+  @Input() theme: 'light' | 'dark';
+  @Output() changeTheme = new EventEmitter<'light' | 'dark'>();
 
   menuPanelOpened = false;
 
@@ -20,6 +22,10 @@ export class HeaderComponent implements OnInit {
 
   toggleMenuPanel(): void {
     this.menuPanelOpened = !this.menuPanelOpened;
+  }
+
+  toggleTheme(): void {
+    this.changeTheme.emit(this.theme === 'dark' ? 'light' : 'dark');
   }
 
   trackByFn(index: number): number {

@@ -2,13 +2,23 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect } from '@ngrx/effects';
 import { filter, map } from 'rxjs/operators';
 
-import { SeoService } from '@app/core/seo';
-import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { ofRouteLangChange } from '@app/core/data-access-router';
+import { SeoService } from '@app/core/seo';
 import { environment } from '@environments/environment';
+import { GoogleAnalyticsService } from './google-analytics.service';
+import { GAEventCategory } from './types';
 
 @Injectable()
-export class CoreEffects {
+export class GoogleAnalyticsEffects {
+  trackGAPageViewOnSeoChanges$ = createEffect(
+    () =>
+      this.seoService.seoChanges$.pipe(
+        filter(({ title }) => !!title),
+        map(({ route: url, title }) => this.googleAnalytics.sendPageView({ url, title }))
+      ),
+    { dispatch: false }
+  );
+
   trackGAChangeLanguage$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -25,18 +35,9 @@ export class CoreEffects {
     { dispatch: false }
   );
 
-  trackGAPageView$ = createEffect(
-    () =>
-      this.seoService.seoChanges$.pipe(
-        filter(({ title }) => !!title),
-        map(({ route: url, title }) => this.googleAnalytics.sendPageView({ url, title }))
-      ),
-    { dispatch: false }
-  );
-
   constructor(
     private actions$: Actions,
-    private seoService: SeoService,
-    private googleAnalytics: GoogleAnalyticsService
+    private googleAnalytics: GoogleAnalyticsService,
+    private seoService: SeoService
   ) {}
 }

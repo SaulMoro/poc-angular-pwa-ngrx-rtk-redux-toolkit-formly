@@ -1,5 +1,11 @@
 <div class="flex flex-col h-full min-h-screen bg-gray-50 dark:bg-gray-900 dark:text-gray-200">
-  <app-header [menu]="menu$ | ngrxPush" [languages]="supportedLanguages" [language]="language$ | ngrxPush"></app-header>
+  <app-header
+    [menu]="menu$ | ngrxPush"
+    [languages]="supportedLanguages"
+    [language]="language$ | ngrxPush"
+    [theme]="theme$ | ngrxPush"
+    (changeTheme)="changeTheme($event)"
+  ></app-header>
   <div class="flex flex-col justify-between flex-grow overflow-auto">
     <main class="container flex-grow py-4 mx-auto">
       <router-outlet></router-outlet>

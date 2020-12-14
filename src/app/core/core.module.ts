@@ -8,8 +8,9 @@ import { ReactiveComponentModule } from '@ngrx/component';
 
 import { environment } from '@environments/environment';
 import { TranslocoRootModule } from './transloco-root.module';
-import { DataAccessCoreModule } from './data-access-core';
 import { DataAccessRouterModule } from './data-access-router';
+import { DataAccessUiModule } from './data-access-ui';
+import { GoogleAnalyticsEffects } from './google-analytics';
 import { LayoutModule } from './layout/layout.module';
 
 @NgModule({
@@ -28,12 +29,12 @@ import { LayoutModule } from './layout/layout.module';
         },
       }
     ),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([GoogleAnalyticsEffects]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
 
     // core data access
-    DataAccessCoreModule,
     DataAccessRouterModule,
+    DataAccessUiModule,
   ],
   exports: [LayoutModule, ReactiveComponentModule],
 })

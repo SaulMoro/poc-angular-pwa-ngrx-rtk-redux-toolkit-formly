@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 import { DIALOG_DATA, LazyModalComponent, LazyModalModule } from '@app/core/lazy-modal';
 import { SharedModule } from '@app/shared/shared.module';
-import { DataState, Character } from '@app/shared/models';
+import { Character } from '@app/shared/models';
 import { CharactersSelectors } from '@app/shared/data-access-characters';
 
 export interface CharacterDialogData {
@@ -20,7 +20,6 @@ export interface CharacterDialogData {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CharactersDialogComponent {
-  charactersDataState$: Observable<DataState> = this.store.select(CharactersSelectors.getDataState);
   characters$: Observable<Dictionary<Character>> = this.store.select(CharactersSelectors.getCharatersEntities);
   loading$: Observable<boolean> = this.store.select(CharactersSelectors.getLoading);
 
