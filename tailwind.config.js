@@ -9,7 +9,10 @@ module.exports = (isProd) => ({
     extend: {},
   },
   variants: {
-    extend: {},
+    extend: {
+      opacity: ['disabled'],
+      cursor: ['disabled'],
+    },
   },
   plugins: [require('@tailwindcss/forms')],
 });
