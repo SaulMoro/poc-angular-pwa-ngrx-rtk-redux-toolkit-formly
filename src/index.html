@@ -27,10 +27,8 @@
         height: 100%;
       }
 
-      @media (prefers-color-scheme: dark) {
-        .app-loading {
-          background-color: rgba(17, 24, 39, 1);
-        }
+      .dark .app-loading {
+        background-color: rgba(17, 24, 39, 1);
       }
 
       .app-loading .spinner {
@@ -78,6 +76,15 @@
     <meta name="google-site-verification" content="9jPtYVTbLx8ayy5jHMbDqTTi6KN0LD-9TZu23Ytvkqw" />
   </head>
   <body class="font-sans antialiased">
+    <script>
+      // prevent theme flicker
+      const storedTheme = window.localStorage && window.localStorage.getItem('theme');
+      document.body.classList.toggle(
+        'dark',
+        storedTheme ? storedTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches
+      );
+    </script>
+
     <app-root>
       <div class="app-loading">
         <div class="logo">

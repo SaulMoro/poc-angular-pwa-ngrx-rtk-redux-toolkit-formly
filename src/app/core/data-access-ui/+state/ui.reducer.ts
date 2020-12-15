@@ -22,7 +22,6 @@ export const localStorageSyncReducer = (reducer: ActionReducer<State>): ActionRe
     keys: Object.keys(initialState),
     rehydrate: true,
     removeOnUndefined: true,
-    storageKeySerializer: (key) => `${UI_FEATURE_KEY}_${key}`,
   })(reducer);
 
 export const metaReducers: Array<MetaReducer<State, Action>> = [localStorageSyncReducer];

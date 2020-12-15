@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Actions, createEffect } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { tap } from 'rxjs/operators';
 
-import * as UiSelectors from './ui.selectors';
+import * as UiSActions from './ui.actions';
 import { ThemeService } from '../services/theme.service';
 
 @Injectable()
 export class UiEffects {
-  loadUis$ = createEffect(
-    () => this.store.select(UiSelectors.getTheme).pipe(tap((theme) => this.themeService.setTheme(theme))),
+  changeTheme$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(UiSActions.changeTheme),
+        tap(({ theme }) => this.themeService.setTheme(theme))
+      ),
     { dispatch: false }
   );
 
-  constructor(private actions$: Actions, private store: Store, private themeService: ThemeService) {}
+  constructor(private actions$: Actions, private themeService: ThemeService) {}
 }
