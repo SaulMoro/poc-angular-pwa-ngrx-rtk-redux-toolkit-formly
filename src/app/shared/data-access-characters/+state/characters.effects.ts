@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { asyncScheduler, of } from 'rxjs';
+import { asyncScheduler, merge, of } from 'rxjs';
 import { map, debounceTime, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
 
 import { ofRoutePageChange } from '@app/core/data-access-router';
@@ -33,26 +33,30 @@ export class CharactersEffects {
   filterCharacters$ = createEffect(() =>
     this.actions$.pipe(
       ofFilterForm(FORM_CHARACTERS_FILTER_ID),
-      map(() => CharactersActions.filterCharacters())
+      map((model) => CharactersActions.filterCharacters({ filter: model }))
     )
   );
 
   loadCharacters$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(
-        CharactersActions.enterCharactersPage,
-        CharactersActions.filterPageChange,
-        CharactersActions.filterCharacters
+    merge(
+      this.actions$.pipe(
+        ofType(CharactersActions.enterCharactersPage, CharactersActions.filterPageChange),
+        fromStore(CharactersSelectors.getCurrentFilter, CharactersSelectors.getCurrentPage)(this.store),
+        map(([, currentFilter, page]) => ({ currentFilter, page }))
       ),
-      fromStore(CharactersSelectors.getCurrentFilter, CharactersSelectors.getCurrentPage)(this.store),
-      tap(([, currentFilter, page]) =>
+      this.actions$.pipe(
+        ofType(CharactersActions.filterCharacters),
+        map(({ filter: currentFilter }) => ({ currentFilter, page: 1 }))
+      )
+    ).pipe(
+      tap(({ currentFilter, page }) =>
         this.googleAnalytics.sendEvent({
           name: 'New Characters Filter',
           category: GAEventCategory.FILTER,
           label: JSON.stringify({ currentFilter, page }),
         })
       ),
-      switchMap(([, currentFilter, page]) =>
+      switchMap(({ currentFilter, page }) =>
         this.charactersService.getCharacters(currentFilter, page).pipe(
           map(({ info, results }) =>
             CharactersApiActions.loadCharactersSuccess({

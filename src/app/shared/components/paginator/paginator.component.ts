@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-paginator',
@@ -7,8 +7,9 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginatorComponent implements OnInit {
-  @Input() currentPage = 1;
-  @Input() pages = 1;
+  @Input() currentPage: number;
+  @Input() pages: number;
+  @Output() page = new EventEmitter<number>();
 
   paginatorPanelOpened = false;
   paginator: 'prev' | 'post';
@@ -22,8 +23,9 @@ export class PaginatorComponent implements OnInit {
     this.paginatorPanelOpened = !this.paginatorPanelOpened;
   }
 
-  onPageSelect(): void {
+  onPageSelect(page: number): void {
     this.paginatorPanelOpened = false;
+    this.page.emit(page);
   }
 
   trackByFn(index: number): number {
