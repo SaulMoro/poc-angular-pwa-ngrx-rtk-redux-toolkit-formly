@@ -6,38 +6,22 @@ import { RouterStateUrl, ROUTER_FEATURE_KEY } from './router.model';
 
 export const getRouter = createFeatureSelector<RouterReducerState<RouterStateUrl>>(ROUTER_FEATURE_KEY);
 
-export const {
-  selectQueryParams, // select the current route query params
-  selectRouteParams, // select the current route params
-  selectRouteData, // select the current route data
-} = getSelectors(getRouter);
+export const getState = createSelector(getRouter, (router: RouterReducerState<RouterStateUrl>) => router?.state);
 
-export const getRouterState = createSelector(getRouter, (router: RouterReducerState<RouterStateUrl>) => router?.state);
+export const getCurrentRoute = createSelector(getState, (state: RouterStateUrl) => state?.route);
 
-export const getCurrentRoute = createSelector(getRouterState, (state: RouterStateUrl) => state?.route);
+export const getCurrentUrl = createSelector(getState, (state: RouterStateUrl) => state?.url);
 
-export const getCurrentUrl = createSelector(getRouterState, (state: RouterStateUrl) => state?.url);
+export const getCurrentPage = createSelector(getState, (state: RouterStateUrl) => +state?.page || undefined);
 
-export const getCurrentPage = createSelector(getRouterState, (state: RouterStateUrl) => +state?.page);
+export const getQueryParams = createSelector(getState, (state: RouterStateUrl) => state?.queryParams);
 
-export const getRouteQueryParams = createSelector(getRouterState, (state: RouterStateUrl) => state?.queryParams);
+export const getParams = createSelector(getState, (state: RouterStateUrl) => state?.params);
 
-export const getRouteQueryParam = createSelector(
-  getRouteQueryParams,
-  (params: Params, paramName: string) => paramName && params?.paramName
-);
+export const getIdParam = createSelector(getParams, (params: Params) => params?.id);
 
-export const getRouteParams = createSelector(getRouterState, (state: RouterStateUrl) => state?.params);
+export const getLangParam = createSelector(getParams, (params: Params) => params?.lang);
 
-export const getRouteParam = createSelector(
-  getRouteParams,
-  (params: Params, paramName: string) => paramName && params?.paramName
-);
+export const getData = createSelector(getState, (state: RouterStateUrl) => state?.data);
 
-export const getRouteIdParam = createSelector(getRouteParams, (params: Params) => params?.id);
-
-export const getRouteLangParam = createSelector(getRouteParams, (params: Params) => params?.lang);
-
-export const getRouteData = createSelector(getRouterState, (state: RouterStateUrl) => state?.data);
-
-export const getRouteTitleData = createSelector(getRouteData, (data: Data) => data?.title);
+export const getTitleData = createSelector(getData, (data: Data) => data?.title);

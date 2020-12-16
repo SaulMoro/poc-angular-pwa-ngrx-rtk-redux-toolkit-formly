@@ -34,7 +34,7 @@ export const getEpisodesEntities = createSelector(
 
 export const getEpisodesIds = createSelector(selectEpisodesState, (state: State) => state && selectIds(state));
 
-export const getSelectedId = createSelector(RouterSelectors.getRouteIdParam, (id: string): number => +id);
+export const getSelectedId = createSelector(RouterSelectors.getIdParam, (id: string): number => +id);
 
 export const getTotalEpisodes = createSelector(selectEpisodesState, (state: State) => state?.count);
 
@@ -54,7 +54,7 @@ export const getEpisodesOfCurrentPage = createSelector(
 );
 
 export const getCurrentFilter = createSelector(
-  RouterSelectors.getRouteQueryParams,
+  RouterSelectors.getQueryParams,
   (params: Params): EpisodesFilter => {
     return (
       params && {

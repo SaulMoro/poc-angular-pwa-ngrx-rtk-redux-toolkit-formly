@@ -12,6 +12,7 @@ export class HeaderComponent implements OnInit {
   @Input() language: string;
   @Input() languages: string[];
   @Input() theme: 'light' | 'dark';
+  @Output() changeLanguage = new EventEmitter<string>();
   @Output() changeTheme = new EventEmitter<'light' | 'dark'>();
 
   menuPanelOpened = false;
@@ -22,6 +23,10 @@ export class HeaderComponent implements OnInit {
 
   toggleMenuPanel(): void {
     this.menuPanelOpened = !this.menuPanelOpened;
+  }
+
+  selectLanguage(language: string): void {
+    this.changeLanguage.emit(language);
   }
 
   toggleTheme(): void {

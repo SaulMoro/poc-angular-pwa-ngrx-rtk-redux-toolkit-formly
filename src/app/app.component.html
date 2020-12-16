@@ -4,6 +4,7 @@
     [languages]="supportedLanguages"
     [language]="language$ | ngrxPush"
     [theme]="theme$ | ngrxPush"
+    (changeLanguage)="changeLanguage($event)"
     (changeTheme)="changeTheme($event)"
   ></app-header>
   <div class="flex flex-col justify-between flex-grow overflow-auto">

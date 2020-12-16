@@ -35,7 +35,7 @@ export const getCharatersEntities = createSelector(
 
 export const getCharactersIds = createSelector(selectCharactersState, (state: State) => state && selectIds(state));
 
-export const getSelectedId = createSelector(RouterSelectors.getRouteIdParam, (id: string): number => +id);
+export const getSelectedId = createSelector(RouterSelectors.getIdParam, (id: string): number => +id);
 
 export const getTotalCharacters = createSelector(selectCharactersState, (state: State) => state?.count);
 
@@ -66,7 +66,7 @@ export const getCharactersOfCurrentPage = createSelector(
 );
 
 export const getCurrentFilter = createSelector(
-  RouterSelectors.getRouteQueryParams,
+  RouterSelectors.getQueryParams,
   (params: Params): CharactersFilter =>
     params && {
       name: params.name,

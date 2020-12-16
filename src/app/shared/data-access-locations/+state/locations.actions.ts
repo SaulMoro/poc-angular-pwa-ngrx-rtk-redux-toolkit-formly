@@ -1,7 +1,11 @@
 import { createAction, props } from '@ngrx/store';
-import { LocationsFilter } from '@app/shared/models';
+import { Location, LocationsFilter } from '@app/shared/models';
 
 export const enterLocationsPage = createAction('[Locations Page] Enter Locations Page');
+export const openCharactersDialog = createAction(
+  '[Locations Page] Open Characters Dialog',
+  props<{ location: Location }>()
+);
 export const enterLocationDetailsPage = createAction('[Locations Details Page] Enter Location Details Page');
 
 export const filterLocations = createAction(

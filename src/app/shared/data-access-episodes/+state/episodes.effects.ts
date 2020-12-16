@@ -114,6 +114,22 @@ export class EpisodesEffects {
     )
   );
 
+  gaTrackOnOpenCharactersDialog$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(EpisodesActions.openCharactersDialog),
+        tap(({ episode }) =>
+          this.googleAnalytics.sendEvent({
+            name: 'Open Characters Dialog Of Episode',
+            category: GAEventCategory.INTERACTION,
+            label: episode.name,
+            value: episode.id,
+          })
+        )
+      ),
+    { dispatch: false }
+  );
+
   /* showErrorLoadDialog$ = createEffect(() =>
     this.actions$.pipe(
       ofType(

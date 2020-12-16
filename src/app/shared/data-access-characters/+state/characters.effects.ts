@@ -6,7 +6,7 @@ import { map, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operator
 
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { ofRouteFilter, ofRoutePageChange } from '@app/core/data-access-router';
-import { LocationsApiActions } from '@app/shared/data-access-locations';
+import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
 import { EpisodesActions, EpisodesApiActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { fromStore } from '@app/shared/utils';
 import * as CharactersActions from './characters.actions';
@@ -105,7 +105,12 @@ export class CharactersEffects {
 
   loadCharactersFromIds$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(LocationsApiActions.loadLocationSuccess, EpisodesApiActions.loadEpisodeSuccess),
+      ofType(
+        LocationsApiActions.loadLocationSuccess,
+        EpisodesApiActions.loadEpisodeSuccess,
+        LocationsActions.openCharactersDialog,
+        EpisodesActions.openCharactersDialog
+      ),
       map((action: any) => action.location?.residents ?? action.episode?.characters),
       fromStore(CharactersSelectors.getCharactersIds)(this.store),
       map(([characterIds, ids]) => characterIds?.filter((characterId) => !ids.includes(characterId))),

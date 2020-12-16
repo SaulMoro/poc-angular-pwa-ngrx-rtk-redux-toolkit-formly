@@ -122,6 +122,22 @@ export class LocationsEffects {
     )
   );
 
+  gaTrackOnOpenCharactersDialog$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(LocationsActions.openCharactersDialog),
+        tap(({ location }) =>
+          this.googleAnalytics.sendEvent({
+            name: 'Open Characters Dialog Of Location',
+            category: GAEventCategory.INTERACTION,
+            label: location.name,
+            value: location.id,
+          })
+        )
+      ),
+    { dispatch: false }
+  );
+
   /* showErrorLoadDialog$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LocationsApiActions.loadLocationsFailure, LocationsApiActions.loadLocationFailure),

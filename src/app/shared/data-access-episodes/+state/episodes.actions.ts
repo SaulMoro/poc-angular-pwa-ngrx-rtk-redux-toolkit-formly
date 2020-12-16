@@ -2,6 +2,10 @@ import { createAction, props } from '@ngrx/store';
 import { Episode, EpisodesFilter } from '@app/shared/models';
 
 export const enterEpisodesPage = createAction('[Episodes Page] Enter Episodes Page');
+export const openCharactersDialog = createAction(
+  '[Episodes Page] Open Characters Dialog',
+  props<{ episode: Episode }>()
+);
 export const enterEpisodeDetailsPage = createAction('[Episodes Details Page] Enter Episode Details Page');
 
 export const filterEpisodes = createAction(

@@ -23,7 +23,7 @@ export class FormsEffects {
         of(action).pipe(
           withLatestFrom(
             action.filter
-              ? this.store$.pipe(select(RouterSelectors.getRouteQueryParams), map(fixDataFromQueryParams))
+              ? this.store$.pipe(select(RouterSelectors.getQueryParams), map(fixDataFromQueryParams))
               : of(action.model)
           )
         )

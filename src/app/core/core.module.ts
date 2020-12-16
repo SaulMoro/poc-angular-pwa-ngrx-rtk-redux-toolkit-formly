@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { routerReducer, RouterState, RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { ReactiveComponentModule } from '@ngrx/component';
 
 import { environment } from '@environments/environment';
@@ -12,6 +13,7 @@ import { DataAccessRouterModule } from './data-access-router';
 import { DataAccessUiModule } from './data-access-ui';
 import { GoogleAnalyticsEffects } from './google-analytics';
 import { LayoutModule } from './layout/layout.module';
+import { CustomSerializer } from './data-access-router/+state/custom-serializer';
 
 @NgModule({
   imports: [

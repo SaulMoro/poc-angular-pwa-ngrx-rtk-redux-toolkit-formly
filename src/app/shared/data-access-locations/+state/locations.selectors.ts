@@ -34,7 +34,7 @@ export const getLocationEntities = createSelector(
 
 export const getLocationsIds = createSelector(selectLocationsState, (state: State) => state && selectIds(state));
 
-export const getSelectedId = createSelector(RouterSelectors.getRouteIdParam, (id: string): number => +id);
+export const getSelectedId = createSelector(RouterSelectors.getIdParam, (id: string): number => +id);
 
 export const getTotalLocations = createSelector(selectLocationsState, (state: State) => state?.count);
 
@@ -55,7 +55,7 @@ export const getLocationsOfCurrentPage = createSelector(
 );
 
 export const getCurrentFilter = createSelector(
-  RouterSelectors.getRouteQueryParams,
+  RouterSelectors.getQueryParams,
   (params: Params): LocationsFilter => {
     return (
       params && {

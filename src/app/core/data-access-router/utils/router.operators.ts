@@ -1,9 +1,8 @@
-import { Params } from '@angular/router';
 import { Action } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
 import { OperatorFunction, pipe } from 'rxjs';
-import { distinctUntilChanged, filter, map, pairwise, startWith, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 import { RouterStateUrl } from '../+state/router.model';
 
@@ -42,14 +41,6 @@ export function ofRoutePageChange(routeCheck: string | string[] | RegExp): Opera
     ofRoute(routeCheck),
     distinctUntilChanged(({ page: prevPage }, { page: currPage }) => prevPage === currPage),
     filter(({ route, prevRoute, page }) => route === prevRoute && !!page)
-  );
-}
-
-export function ofRouteLangChange(routeCheck: string | string[] | RegExp): OperatorFunction<Action, RouterStateUrl> {
-  return pipe(
-    ofRoute(routeCheck),
-    filter(({ route, prevRoute }) => route === prevRoute),
-    distinctUntilChanged(({ params: prevParams }, { params: currParams }) => prevParams?.lang === currParams?.lang)
   );
 }
 

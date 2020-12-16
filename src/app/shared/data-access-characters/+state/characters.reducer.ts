@@ -3,8 +3,8 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { localStorageSync } from 'ngrx-store-localstorage';
 
 import { Character, DataState } from '@app/shared/models';
-import { LocationsApiActions } from '@app/shared/data-access-locations';
-import { EpisodesApiActions } from '@app/shared/data-access-episodes';
+import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
+import { EpisodesActions, EpisodesApiActions } from '@app/shared/data-access-episodes';
 import * as CharactersActions from './characters.actions';
 import * as CharactersApiActions from './characters-api.actions';
 
@@ -53,7 +53,7 @@ export const charactersReducer = createReducer(
     error: null,
   })),
 
-  on(LocationsApiActions.loadLocationSuccess, (state, { location }) =>
+  on(LocationsActions.openCharactersDialog, LocationsApiActions.loadLocationSuccess, (state, { location }) =>
     location.residents?.some((characterId) => !state.entities[characterId])
       ? {
           ...state,
@@ -62,7 +62,7 @@ export const charactersReducer = createReducer(
         }
       : state
   ),
-  on(EpisodesApiActions.loadEpisodeSuccess, (state, { episode }) =>
+  on(EpisodesActions.openCharactersDialog, EpisodesApiActions.loadEpisodeSuccess, (state, { episode }) =>
     episode.characters?.some((characterId) => !state.entities[characterId])
       ? {
           ...state,

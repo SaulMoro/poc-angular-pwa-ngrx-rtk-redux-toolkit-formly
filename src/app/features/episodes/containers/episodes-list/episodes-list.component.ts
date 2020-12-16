@@ -5,14 +5,13 @@ import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
 import { LazyModalService } from '@app/core/lazy-modal';
-import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
+import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
+import { Episode } from '@app/shared/models';
+import { TableConfig } from '@app/shared/components/table/table.component';
 import {
   CharactersDialogComponent as CharactersDialogComponentType,
   CharacterDialogData,
 } from '@app/modals/characters-dialog/characters-dialog.component';
-import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
-import { Episode } from '@app/shared/models';
-import { TableConfig } from '@app/shared/components/table/table.component';
 
 @Component({
   selector: 'app-episodes-list',
@@ -49,7 +48,6 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
   constructor(
     private readonly store: Store,
     private lazyModal: LazyModalService<CharactersDialogComponentType>,
-    private googleAnalytics: GoogleAnalyticsService,
     private translocoService: TranslocoService
   ) {}
 
@@ -67,12 +65,7 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
       characterIds: episode.characters,
     } as CharacterDialogData);
 
-    this.googleAnalytics.sendEvent({
-      name: 'Open Characters Dialog Of Episode',
-      category: GAEventCategory.INTERACTION,
-      label: episode.name,
-      value: episode.id,
-    });
+    this.store.dispatch(EpisodesActions.openCharactersDialog({ episode }));
   }
 
   ngOnDestroy(): void {

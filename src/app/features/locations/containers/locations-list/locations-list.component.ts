@@ -5,14 +5,13 @@ import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
 import { LazyModalService } from '@app/core/lazy-modal';
-import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
+import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
+import { Location } from '@app/shared/models';
+import { TableConfig } from '@app/shared/components/table/table.component';
 import {
   CharactersDialogComponent as CharactersDialogComponentType,
   CharacterDialogData,
 } from '@app/modals/characters-dialog/characters-dialog.component';
-import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
-import { Location } from '@app/shared/models';
-import { TableConfig } from '@app/shared/components/table/table.component';
 
 @Component({
   selector: 'app-locations-list',
@@ -49,7 +48,6 @@ export class LocationsListComponent implements OnInit, OnDestroy {
   constructor(
     private readonly store: Store,
     private lazyModal: LazyModalService<CharactersDialogComponentType>,
-    private googleAnalytics: GoogleAnalyticsService,
     private translocoService: TranslocoService
   ) {}
 
@@ -67,12 +65,7 @@ export class LocationsListComponent implements OnInit, OnDestroy {
       characterIds: location.residents,
     } as CharacterDialogData);
 
-    this.googleAnalytics.sendEvent({
-      name: 'Open Characters Dialog Of Location',
-      category: GAEventCategory.INTERACTION,
-      label: location.name,
-      value: location.id,
-    });
+    this.store.dispatch(LocationsActions.openCharactersDialog({ location }));
   }
 
   ngOnDestroy(): void {
