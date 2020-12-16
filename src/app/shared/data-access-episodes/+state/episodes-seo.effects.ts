@@ -27,8 +27,8 @@ export class EpisodesSeoEffects {
     () =>
       this.actions$.pipe(
         ofType(EpisodesApiActions.loadEpisodeSuccess),
-        map(({ episode }) => episode),
-        concatMap(({ name }) =>
+        map(({ episode }) => episode?.name),
+        concatMap((name) =>
           of(name).pipe(
             withLatestFrom(
               this.translocoService.selectTranslateObject('EPISODES.SEO_DETAILS', {

@@ -27,8 +27,8 @@ export class CharactersSeoEffects {
     () =>
       this.actions$.pipe(
         ofType(CharactersApiActions.loadCharacterSuccess),
-        map(({ character }) => character),
-        concatMap(({ name }) =>
+        map(({ character }) => character?.name),
+        concatMap((name) =>
           of(name).pipe(
             withLatestFrom(
               this.translocoService.selectTranslateObject('CHARACTERS.SEO_DETAILS', {

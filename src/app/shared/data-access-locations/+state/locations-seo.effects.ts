@@ -27,8 +27,8 @@ export class LocationsSeoEffects {
     () =>
       this.actions$.pipe(
         ofType(LocationsApiActions.loadLocationSuccess),
-        map(({ location }) => location),
-        concatMap(({ name }) =>
+        map(({ location }) => location?.name),
+        concatMap((name) =>
           of(name).pipe(
             withLatestFrom(
               this.translocoService.selectTranslateObject('LOCATIONS.SEO_DETAILS', {
