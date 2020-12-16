@@ -5,6 +5,7 @@ import { EffectsModule } from '@ngrx/effects';
 
 import * as fromCharacters from './+state/characters.reducer';
 import { CharactersEffects } from './+state/characters.effects';
+import { CharactersSeoEffects } from './+state/characters-seo.effects';
 
 @NgModule({
   declarations: [],
@@ -14,7 +15,7 @@ import { CharactersEffects } from './+state/characters.effects';
       initialState: fromCharacters.initialState,
       metaReducers: fromCharacters.metaReducers,
     }),
-    EffectsModule.forFeature([CharactersEffects]),
+    EffectsModule.forFeature([CharactersEffects, CharactersSeoEffects]),
   ],
 })
 export class DataAccessCharactersModule {

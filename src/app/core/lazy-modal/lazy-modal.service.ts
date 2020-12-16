@@ -19,7 +19,7 @@ export class LazyModalService<T> {
     private injector: Injector
   ) {}
 
-  async open(component: Type<T>, data?: any): Promise<void> {
+  open(component: Type<T>, data?: any): void {
     if (this.componentRef) {
       return;
     }
@@ -32,7 +32,7 @@ export class LazyModalService<T> {
     document.body.appendChild(domElem);
   }
 
-  async close(): Promise<void> {
+  close(): void {
     if (!this.componentRef) {
       return;
     }

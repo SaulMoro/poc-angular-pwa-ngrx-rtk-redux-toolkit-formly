@@ -1,9 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Dictionary } from '@ngrx/entity';
 import { combineLatest, Observable } from 'rxjs';
-import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { Character, Location } from '@app/shared/models';
 import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
@@ -25,18 +24,8 @@ export class LocationDetailsComponent implements OnInit {
     map(([locationLoading, charactersLoading]) => locationLoading || charactersLoading),
     distinctUntilChanged()
   );
-  seoConfig$ = this.location$.pipe(
-    switchMap(({ name }) =>
-      this.translocoService.selectTranslateObject('LOCATIONS.SEO_DETAILS', {
-        title: { name },
-        description: { name },
-        'keywords.0': { name },
-        'keywords.1': { name },
-      })
-    )
-  );
 
-  constructor(private readonly store: Store, private translocoService: TranslocoService) {}
+  constructor(private readonly store: Store) {}
 
   ngOnInit(): void {
     this.store.dispatch(LocationsActions.enterLocationDetailsPage());

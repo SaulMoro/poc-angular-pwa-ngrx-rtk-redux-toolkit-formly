@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -18,9 +17,8 @@ export class CharactersListComponent implements OnInit {
   loading$: Observable<boolean> = this.store.select(CharactersSelectors.getLoading);
   page$: Observable<number> = this.store.select(CharactersSelectors.getCurrentPage);
   pages$: Observable<number> = this.store.select(CharactersSelectors.getTotalPages);
-  seoConfig$ = this.translocoService.selectTranslateObject('CHARACTERS.SEO');
 
-  constructor(private readonly store: Store, private translocoService: TranslocoService) {}
+  constructor(private readonly store: Store) {}
 
   ngOnInit(): void {
     this.store.dispatch(CharactersActions.enterCharactersPage());

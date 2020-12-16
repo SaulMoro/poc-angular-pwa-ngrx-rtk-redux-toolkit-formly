@@ -5,6 +5,7 @@ import { EffectsModule } from '@ngrx/effects';
 
 import * as fromLocations from './+state/locations.reducer';
 import { LocationsEffects } from './+state/locations.effects';
+import { LocationsSeoEffects } from './+state/locations-seo.effects';
 
 @NgModule({
   declarations: [],
@@ -14,7 +15,7 @@ import { LocationsEffects } from './+state/locations.effects';
       initialState: fromLocations.initialState,
       metaReducers: fromLocations.metaReducers,
     }),
-    EffectsModule.forFeature([LocationsEffects]),
+    EffectsModule.forFeature([LocationsEffects, LocationsSeoEffects]),
   ],
 })
 export class DataAccessLocationsModule {

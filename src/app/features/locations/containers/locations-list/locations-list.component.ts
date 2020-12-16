@@ -43,7 +43,6 @@ export class LocationsListComponent implements OnInit, OnDestroy {
   loading$: Observable<boolean> = this.store.select(LocationsSelectors.getLoading);
   page$: Observable<number> = this.store.select(LocationsSelectors.getCurrentPage);
   pages$: Observable<number> = this.store.select(LocationsSelectors.getTotalPages);
-  seoConfig$ = this.translocoService.selectTranslateObject('LOCATIONS.SEO');
 
   constructor(
     private readonly store: Store,

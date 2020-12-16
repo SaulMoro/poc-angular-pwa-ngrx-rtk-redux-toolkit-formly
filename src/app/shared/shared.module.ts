@@ -12,7 +12,6 @@ import { DataAccessLocationsModule } from './data-access-locations';
 import { DataAccessEpisodesModule } from './data-access-episodes';
 
 import { NgRxFormModule } from '@app/core/ngrx-form';
-import { SeoModule } from '@app/core/seo';
 import { PrefetchDirective } from './directives/prefetch.directive';
 import { LazyImgDirective } from './directives/lazy-img.directive';
 import { AutofocusDirective } from './directives/autofocus.directive';
@@ -38,7 +37,6 @@ const EXPORTED_DECLARATIONS = [
 const IMPORTED_EXPORTS = [
   CommonModule,
   NgRxFormModule,
-  SeoModule,
   TranslocoModule,
   TranslocoLocalizeRouterModule,
   ReactiveComponentModule,
