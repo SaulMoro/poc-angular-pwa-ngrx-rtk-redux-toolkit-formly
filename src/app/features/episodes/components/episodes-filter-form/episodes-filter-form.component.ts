@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormField, FormConfig, generateFilterForm } from '@app/core/dynamic-form';
+import { FormField, FormConfig, generateFilterForm } from '@app/core/ngrx-form';
 import { FORM_EPISODES_FILTER_ID } from '@app/shared/models';
 
 const row = (fieldGroup: FormField[]) => FormField.fieldRow(fieldGroup, 'grid grid-cols-4 mt-4 gap-6');

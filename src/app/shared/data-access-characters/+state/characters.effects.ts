@@ -6,7 +6,7 @@ import { asyncScheduler, merge, of } from 'rxjs';
 import { map, debounceTime, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
 
 import { ofRoutePageChange } from '@app/core/data-access-router';
-import { ofFilterForm } from '@app/core/dynamic-form';
+import { ofFilterForm } from '@app/core/ngrx-form';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
 import { EpisodesActions, EpisodesApiActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
@@ -40,7 +40,7 @@ export class CharactersEffects {
   loadCharacters$ = createEffect(() =>
     merge(
       this.actions$.pipe(
-        ofType(CharactersActions.enterCharactersPage, CharactersActions.filterPageChange),
+        ofType(CharactersActions.filterPageChange),
         fromStore(CharactersSelectors.getCurrentFilter, CharactersSelectors.getCurrentPage)(this.store),
         map(([, currentFilter, page]) => ({ currentFilter, page }))
       ),

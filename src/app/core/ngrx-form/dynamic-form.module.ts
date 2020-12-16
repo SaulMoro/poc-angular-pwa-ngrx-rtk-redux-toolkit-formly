@@ -3,17 +3,20 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 import { ReactiveComponentModule } from '@ngrx/component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
+import { FormsEffects } from './+state/forms.effects';
+import { FORMS_FEATURE_KEY, formsReducer } from './+state/forms.reducer';
 import { DynamicFormComponent } from './dynamic-form.component';
-import { DataAccessFormsModule } from './data-access-forms';
 
 // Extensions
 import { FormExtensionsModule } from './extensions/form-extensions.module';
+// Validators
+import { FormValidatorsModule } from './validators/form-validators.module';
 // Wrappers
 import { FormAddonsModule } from './wrappers/addons/form-addons.module';
 import { FormFieldModule } from './wrappers/form-field/form-field.module';
-// Validators
-import { FormValidatorsModule } from './validators/form-validators.module';
 // Types
 import { FormInputModule } from './types/input/form-input.module';
 import { FormCheckboxModule } from './types/checkbox/form-checkbox.module';
@@ -28,7 +31,9 @@ import { FormTextareaModule } from './types/textarea/form-textarea.module';
     CommonModule,
     ReactiveFormsModule,
     ReactiveComponentModule,
-    DataAccessFormsModule,
+
+    StoreModule.forFeature(FORMS_FEATURE_KEY, formsReducer),
+    EffectsModule.forFeature([FormsEffects]),
 
     FormlyModule.forRoot({
       extras: { checkExpressionOn: 'modelChange', immutable: true },
@@ -36,11 +41,11 @@ import { FormTextareaModule } from './types/textarea/form-textarea.module';
 
     // Extensions
     FormExtensionsModule,
+    // Validators
+    FormValidatorsModule,
     // Wrappers
     FormAddonsModule,
     FormFieldModule,
-    // Validators
-    FormValidatorsModule,
     // Types (after wrappers)
     FormInputModule,
     FormCheckboxModule,
@@ -51,6 +56,6 @@ import { FormTextareaModule } from './types/textarea/form-textarea.module';
   ],
   exports: [DynamicFormComponent],
 })
-export class DynamicFormModule {
+export class NgRxFormModule {
   constructor() {}
 }

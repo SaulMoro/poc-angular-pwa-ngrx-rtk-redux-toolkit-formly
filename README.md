@@ -196,7 +196,7 @@ Trigger the effect when a **Init** of any of the indicated forms is made
 
 Input: string | string[] | RegExp
 
-Output: { formId: string; initialModel: any; filter: boolean }
+Output: { formId: string; model: any; filter: boolean }
 
 ```javascript
 xxxeffect$ = createEffect(() =>

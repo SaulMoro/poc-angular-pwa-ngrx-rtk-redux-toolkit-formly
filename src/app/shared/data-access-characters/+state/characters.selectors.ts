@@ -2,7 +2,7 @@ import { Params } from '@angular/router';
 import { createFeatureSelector, createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
 
 import { RouterSelectors } from '@app/core/data-access-router';
-import { FormSelectors } from '@app/core/dynamic-form';
+import { FormsSelectors } from '@app/core/ngrx-form';
 import { Character, CharactersFilter, DataState, Episode, PAGE_SIZE } from '@app/shared/models';
 import { filterContainsData, isEqual } from '@app/shared/utils';
 import { FORM_CHARACTERS_FILTER_ID } from '@app/shared/models';
@@ -64,8 +64,8 @@ export const getCharactersOfCurrentPage = createSelector(
 );
 
 export const getCurrentFormFilter = createSelector(
-  FormSelectors.getFormsEntities,
-  (forms): CharactersFilter => forms[FORM_CHARACTERS_FILTER_ID]?.model
+  FormsSelectors.selectFormsEntities,
+  (forms): CharactersFilter => forms && forms[FORM_CHARACTERS_FILTER_ID]?.model
 );
 
 export const getCurrentFilter = createSelector(
