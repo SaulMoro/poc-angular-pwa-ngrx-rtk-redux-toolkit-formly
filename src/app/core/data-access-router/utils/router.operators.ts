@@ -3,7 +3,7 @@ import { Action } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
 import { OperatorFunction, pipe } from 'rxjs';
-import { distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, pairwise, startWith, tap } from 'rxjs/operators';
 
 import { RouterStateUrl } from '../+state/router.model';
 
@@ -28,21 +28,20 @@ export function ofRouteEnter(routeCheck: string | string[] | RegExp): OperatorFu
   );
 }
 
-export function ofRouteFilter(routeCheck: string | string[] | RegExp): OperatorFunction<Action, Params> {
+export function ofRouteFilter(routeCheck: string | string[] | RegExp): OperatorFunction<Action, RouterStateUrl> {
   return pipe(
     ofRoute(routeCheck),
-    filter(({ route, prevRoute }) => route === prevRoute),
-    map(({ queryParams }) => ({ ...queryParams, page: null })),
-    distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr))
+    distinctUntilChanged(
+      (prev, curr) => prev.route === curr.route && JSON.stringify(prev.queryParams) === JSON.stringify(curr.queryParams)
+    )
   );
 }
 
-export function ofRoutePageChange(routeCheck: string | string[] | RegExp): OperatorFunction<Action, number> {
+export function ofRoutePageChange(routeCheck: string | string[] | RegExp): OperatorFunction<Action, RouterStateUrl> {
   return pipe(
     ofRoute(routeCheck),
-    distinctUntilChanged((prev, curr) => prev.queryParams?.page === curr.queryParams?.page),
-    filter(({ route, prevRoute, queryParams }) => route === prevRoute && !!queryParams.page),
-    map(({ queryParams }) => +queryParams.page)
+    distinctUntilChanged(({ page: prevPage }, { page: currPage }) => prevPage === currPage),
+    filter(({ route, prevRoute, page }) => route === prevRoute && !!page)
   );
 }
 

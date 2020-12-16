@@ -1,9 +1,15 @@
 import { Params } from '@angular/router';
-import { createFeatureSelector, createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
+import {
+  createFeatureSelector,
+  createSelector,
+  createSelectorFactory,
+  defaultMemoize,
+  resultMemoize,
+} from '@ngrx/store';
 
 import { RouterSelectors } from '@app/core/data-access-router';
 import { Location, LocationsFilter, DataState, PAGE_SIZE } from '@app/shared/models';
-import { filterContainsData, isEqual } from '@app/shared/utils';
+import { argumentsStringifyComparer, filterContainsData, isEqual } from '@app/shared/utils';
 import { locationsAdapter, LOCATIONS_FEATURE_KEY, State } from './locations.reducer';
 
 export const selectLocationsState = createFeatureSelector<State>(LOCATIONS_FEATURE_KEY);
@@ -36,9 +42,7 @@ export const getTotalPages = createSelector(selectLocationsState, (state: State)
 
 export const getLoadedPages = createSelector(selectLocationsState, (state: State) => state?.loadedPages);
 
-export const getCurrentPage = createSelector(RouterSelectors.getRouteQueryParams, (params: Params): number =>
-  params?.page ? +params?.page : 1
-);
+export const getCurrentPage = createSelector(RouterSelectors.getCurrentPage, (page: number): number => page || 1);
 
 /*
  * Locations List Selectors
@@ -63,10 +67,10 @@ export const getCurrentFilter = createSelector(
   }
 );
 
-export const getLocationsFiltered = createSelector(
-  getAllLocation,
-  getCurrentFilter,
-  (locations: Location[], filter: LocationsFilter): Location[] => filterContainsData<Location>(locations, filter)
+export const getLocationsFiltered = createSelectorFactory((projection) =>
+  defaultMemoize(projection, argumentsStringifyComparer())
+)(getAllLocation, getCurrentFilter, (locations: Location[], filter: LocationsFilter): Location[] =>
+  filterContainsData<Location>(locations, filter)
 );
 
 export const getLocationsFilteredWithPage = createSelector(

@@ -1,9 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
-import { debounceTime, distinct, map, switchMap, take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
 
 import { LazyModalService } from '@app/core/lazy-modal';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
@@ -15,7 +14,6 @@ import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-epis
 import { Episode } from '@app/shared/models';
 import { TableConfig } from '@app/shared/components/table/table.component';
 
-@UntilDestroy()
 @Component({
   selector: 'app-episodes-list',
   templateUrl: './episodes-list.component.html',
@@ -48,8 +46,6 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
   pages$: Observable<number> = this.store.select(EpisodesSelectors.getTotalPages);
   seoConfig$ = this.translocoService.selectTranslateObject('EPISODES.SEO');
 
-  private readonly hoverEpisode$ = new Subject<Episode>();
-
   constructor(
     private readonly store: Store,
     private lazyModal: LazyModalService<CharactersDialogComponentType>,
@@ -58,18 +54,7 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Only dispatch on hover episode during debounce time
-    this.hoverEpisode$
-      .pipe(
-        debounceTime(300),
-        distinct(({ id }) => id),
-        untilDestroyed(this)
-      )
-      .subscribe((episode) => this.store.dispatch(EpisodesActions.hoverEpisodeLine({ episode })));
-  }
-
-  prefetchCharactersOnHover(episode: Episode): void {
-    this.hoverEpisode$.next(episode);
+    this.store.dispatch(EpisodesActions.enterEpisodesPage());
   }
 
   async openCharactersDialog(episode: Episode): Promise<void> {

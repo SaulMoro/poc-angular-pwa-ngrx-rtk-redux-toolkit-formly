@@ -18,6 +18,8 @@ export const getCurrentRoute = createSelector(getRouterState, (state: RouterStat
 
 export const getCurrentUrl = createSelector(getRouterState, (state: RouterStateUrl) => state?.url);
 
+export const getCurrentPage = createSelector(getRouterState, (state: RouterStateUrl) => +state?.page);
+
 export const getRouteQueryParams = createSelector(getRouterState, (state: RouterStateUrl) => state?.queryParams);
 
 export const getRouteQueryParam = createSelector(

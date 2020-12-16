@@ -34,11 +34,3 @@ export function ofSubmitForm(
     filter(({ formId }) => isForm(id, formId))
   );
 }
-
-export function ofFilterForm(id: string | string[] | RegExp): OperatorFunction<Action, any> {
-  return pipe(
-    ofType(FormsActions.initForm, FormsActions.updatedFormModel),
-    filter(({ formId, filter: formFilter }) => !!formFilter && isForm(id, formId)),
-    map(({ model }) => model)
-  );
-}

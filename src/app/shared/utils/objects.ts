@@ -12,3 +12,20 @@ export const isEqual = (o1: any, o2: any) => {
   }
   return o1 === o2 || JSON.stringify(o1) === JSON.stringify(o2);
 };
+
+export function argumentsStringifyComparer(): any {
+  let currentJson = '';
+  return (incoming, current) => {
+    if (incoming === current) {
+      return true;
+    }
+
+    const incomingJson = JSON.stringify(incoming);
+    if (currentJson !== incomingJson) {
+      currentJson = incomingJson;
+      return false;
+    }
+
+    return true;
+  };
+}

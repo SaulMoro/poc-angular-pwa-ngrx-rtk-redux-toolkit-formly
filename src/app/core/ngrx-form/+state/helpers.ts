@@ -34,14 +34,15 @@ export const fixDataUTCDates = (model: any): any => {
 };
 
 export const fixDataFromQueryParams = (model: any): any => {
-  const { page, ...newModel } = model;
-
+  const newModel = { ...model };
   // Fix data
   Object.keys(newModel).forEach((key) => {
     newModel[key] =
       typeof newModel[key] === 'string'
         ? newModel[key].match(DATE_FORMAT_REGEXP)
           ? convertYYYYMMDDToDate(newModel[key])
+          : key === 'page'
+          ? +newModel[key] || undefined
           : newModel[key].replace(/%20/g, ' ')
         : newModel[key];
   });
@@ -51,7 +52,6 @@ export const fixDataFromQueryParams = (model: any): any => {
 
 export const fixDataForQueryParams = (model: any): any => {
   const newModel = { ...model };
-
   // Fix data
   Object.keys(newModel).forEach((key) => {
     newModel[key] =

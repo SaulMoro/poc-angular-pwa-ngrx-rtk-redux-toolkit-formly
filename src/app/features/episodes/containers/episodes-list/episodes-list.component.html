@@ -11,8 +11,6 @@
           type="button"
           class="w-3/5 ml-2 btn-outline btn-outline-primary md:w-full md:ml-0"
           [disabled]="!item.characters.length"
-          [prefetchHovered]="true"
-          (prefetch)="prefetchCharactersOnHover(item)"
           (click)="openCharactersDialog(item)"
         >
           {{

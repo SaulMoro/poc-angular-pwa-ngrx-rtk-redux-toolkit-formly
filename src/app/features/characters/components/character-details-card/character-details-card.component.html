@@ -27,7 +27,7 @@
           *ngIf="character.origin"
           class="inline-block text-indigo-700 hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-200"
           [routerLink]="['/locations', character.origin.id] | localize"
-          (prefetch)="prefetchOnHoverLocation(character.origin?.id)"
+          (prefetch)="onHoverLocation(character.origin?.id)"
         >
           {{ character.origin.name }}
         </a>
@@ -38,7 +38,7 @@
           *ngIf="character.location"
           class="inline-block text-indigo-700 hover:text-indigo-800 dark:text-indigo-300 dark:hover:text-indigo-200"
           [routerLink]="['/locations', character.location.id] | localize"
-          (prefetch)="prefetchOnHoverLocation(character.location?.id)"
+          (prefetch)="onHoverLocation(character.location?.id)"
         >
           {{ character.location.name }}
         </a>

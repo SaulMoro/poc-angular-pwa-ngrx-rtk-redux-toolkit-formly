@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { asyncScheduler, of } from 'rxjs';
 import { map, debounceTime, switchMap, filter, catchError, mergeMap, takeUntil, tap } from 'rxjs/operators';
 
-import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
-import { ofFilterForm } from '@app/core/ngrx-form';
+import { ofRouteFilter, ofRoutePageChange } from '@app/core/data-access-router';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
-import { FORM_LOCATIONS_FILTER_ID } from '@app/shared/models';
 import { fromStore } from '@app/shared/utils';
 import * as LocationsActions from './locations.actions';
 import * as LocationsApiActions from './locations-api.actions';
@@ -18,56 +15,30 @@ import { fromLocationResponsesToLocations, fromLocationResponseToLocation } from
 
 @Injectable()
 export class LocationsEffects {
-  enterLocationsPage$ = createEffect(() =>
+  filterLocations$ = createEffect(() =>
     this.actions$.pipe(
-      ofRouteEnter('/locations'),
-      map(() => LocationsActions.enterLocationsPage())
+      ofRouteFilter('/locations'),
+      map(({ queryParams, page }) => LocationsActions.filterLocations({ filter: queryParams, page: page || 1 }))
     )
   );
 
-  pageChange$ = createEffect(() =>
+  filterPageChange$ = createEffect(() =>
     this.actions$.pipe(
       ofRoutePageChange('/locations'),
-      map((page) => LocationsActions.pageChange({ page }))
-    )
-  );
-
-  enterLocationDetailsOnNav$ = createEffect(() =>
-    this.actions$.pipe(
-      ofRouteEnter('/locations/:id'),
-      map(({ params }) => params?.id),
-      map((locationId: number) => LocationsActions.enterLocationDetailsPage({ locationId }))
-    )
-  );
-
-  filterLocations$ = createEffect(() => ({ debounce = 300, scheduler = asyncScheduler } = {}) =>
-    this.actions$.pipe(
-      ofFilterForm(FORM_LOCATIONS_FILTER_ID),
-      debounceTime(debounce, scheduler),
-      switchMap(() =>
-        // Reset Filter Page
-        this.router.navigate([], {
-          queryParams: { page: null },
-          queryParamsHandling: 'merge',
-        })
-      ),
-      map(() => LocationsActions.filterLocations())
+      map(({ queryParams, page }) => LocationsActions.filterPageChange({ filter: queryParams, page }))
     )
   );
 
   loadLocations$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(LocationsActions.enterLocationsPage, LocationsActions.pageChange, LocationsActions.filterLocations),
-      fromStore(LocationsSelectors.getCurrentFilter, LocationsSelectors.getCurrentPage)(this.store),
-      tap(([, currentFilter, page]) =>
+    this.actions$.pipe(ofType(LocationsActions.filterLocations, LocationsActions.filterPageChange)).pipe(
+      tap(({ filter: currentFilter, page }) =>
         this.googleAnalytics.sendEvent({
           name: 'New Locations Filter',
           category: GAEventCategory.FILTER,
-          label: JSON.stringify(currentFilter),
-          value: page,
+          label: JSON.stringify({ currentFilter, page }),
         })
       ),
-      switchMap(([, currentFilter, page]) =>
+      switchMap(({ filter: currentFilter, page }) =>
         this.locationsService.getLocations(currentFilter, page).pipe(
           map(({ info, results }) =>
             LocationsApiActions.loadLocationsSuccess({
@@ -113,7 +84,8 @@ export class LocationsEffects {
   loadLocation$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LocationsActions.enterLocationDetailsPage),
-      switchMap(({ locationId }) =>
+      fromStore(LocationsSelectors.getSelectedId)(this.store),
+      switchMap(([, locationId]) =>
         this.locationsService.getLocation(locationId).pipe(
           map((location) =>
             LocationsApiActions.loadLocationSuccess({
@@ -167,7 +139,6 @@ export class LocationsEffects {
     private actions$: Actions,
     private store: Store,
     private locationsService: LocationsService,
-    private router: Router,
     private googleAnalytics: GoogleAnalyticsService
   ) {}
 }

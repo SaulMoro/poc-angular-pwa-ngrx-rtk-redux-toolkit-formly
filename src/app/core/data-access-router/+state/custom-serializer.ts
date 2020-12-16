@@ -20,7 +20,8 @@ export class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {
       route = route.concat(!!path && LANG_PARAM !== path ? `/${path}` : '');
     }
 
-    const { params, data, queryParams } = routeSnapshot;
+    const { params, data, queryParams: queryParamsWithPage } = routeSnapshot;
+    const { page, ...queryParams } = queryParamsWithPage;
 
     const state = {
       url: routerState.url,
@@ -29,6 +30,7 @@ export class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {
       queryParams,
       params,
       data,
+      page: +page || undefined,
     };
     this.lastRoute = state.route;
 

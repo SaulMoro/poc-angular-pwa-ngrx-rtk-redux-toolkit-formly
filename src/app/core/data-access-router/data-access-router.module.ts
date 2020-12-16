@@ -12,10 +12,7 @@ import { ROUTER_FEATURE_KEY } from './+state/router.model';
 
 @NgModule({
   imports: [
-    StoreRouterConnectingModule.forRoot({
-      stateKey: ROUTER_FEATURE_KEY,
-      navigationActionTiming: NavigationActionTiming.PostActivation,
-    }),
+    StoreRouterConnectingModule.forRoot({ stateKey: ROUTER_FEATURE_KEY }),
     StoreModule.forFeature(ROUTER_FEATURE_KEY, routerReducer),
   ],
   providers: [{ provide: RouterStateSerializer, useClass: CustomSerializer }],

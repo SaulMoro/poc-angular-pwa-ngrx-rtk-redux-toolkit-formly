@@ -98,14 +98,14 @@ Trigger the effect when a queryParam is added or modified to the current route. 
 
 Input: string | string [] | RegExp
 
-Output: QueryParams (ignore "page" param)
+Output: RouterStateUrl
 
 ```javascript
 xxxeffect$ = createEffect(() =>
     this.actions$.pipe(
       ofRouteFilter('/characters'),
       // We can take advantage to use the queryParams for map or filter
-      map((filter) => CharactersActions.filterCharacters({ filter })) // Example
+      map(({ queryparams: filter }) => CharactersActions.filterCharacters({ filter })) // Example
     )
   );
 ```
@@ -116,13 +116,13 @@ Trigger the effect when the queryParam "page" is changed in the same route.
 
 Input: string | string[] | RegExp
 
-Output: number (page number)
+Output: RouterStateUrl
 
 ```javascript
 xxxeffect$ = createEffect(() =>
     this.actions$.pipe(
       ofRoutePageChange('/characters'),
-      map((page) => CharactersActions.pageChange({ page })) // Example
+      map(({ page }) => CharactersActions.pageChange({ page })) // Example
     )
   );
 ```
@@ -159,33 +159,6 @@ xxxeffect$ = createEffect(() =>
       ofUpdateForm([FormIds.CHARACTERS_DETAILS_FORM_ID, FormIds.XXXX_FORM_ID]),
       // We can take advantage of the form data here for map, filter, ...
       // ...
-    )
-  );
-```
-
-#### **ofFilterForm**
-
-Trigger the effect when a **Update** of any of the indicated forms is made and this is **filter** type
-
-Input: string | string[] | RegExp
-
-Output: model of form
-
-```javascript
-// Example
-filterCharacters$ = createEffect(() => ({ debounce = 300, scheduler = asyncScheduler } = {}) =>
-    this.actions$.pipe(
-      // ofRouteFilter('/characters'), // (Same function)
-      ofFilterForm(FormIds.FORM_CHARACTERS_FILTER_ID),
-      debounceTime(debounce, scheduler),
-      switchMap(() =>
-        // Reset Filter Page (Example)
-        this.router.navigate([], {
-          queryParams: { page: null },
-          queryParamsHandling: 'merge',
-        })
-      ),
-      map(() => CharactersActions.filterCharacters()) // Example
     )
   );
 ```

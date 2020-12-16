@@ -29,7 +29,7 @@ export const initialState: State = episodesAdapter.getInitialState({
 
 export const episodesReducer = createReducer(
   initialState,
-  on(EpisodesActions.enterEpisodesPage, EpisodesActions.filterEpisodes, (state) =>
+  on(EpisodesActions.filterEpisodes, (state) =>
     // Remove the page from episodes in state (not in current filter)
     episodesAdapter.map((episode) => ({ ...episode, page: null }), {
       ...state,
@@ -40,17 +40,12 @@ export const episodesReducer = createReducer(
       error: null,
     })
   ),
-  on(EpisodesActions.pageChange, (state, { page }) => ({
+  on(EpisodesActions.filterPageChange, (state, { page }) => ({
     ...state,
     dataState: state.loadedPages.includes(page) ? DataState.REFRESHING : DataState.LOADING,
     error: null,
   })),
-  on(EpisodesActions.enterEpisodeDetailsPage, (state, { episodeId }) => ({
-    ...state,
-    dataState: !!state.entities[episodeId] ? DataState.REFRESHING : DataState.LOADING,
-    error: null,
-  })),
-  on(EpisodesActions.requiredCharactersEpisodes, (state) => ({
+  on(EpisodesActions.enterEpisodeDetailsPage, EpisodesActions.requiredCharactersEpisodes, (state) => ({
     ...state,
     dataState: DataState.LOADING,
     error: null,

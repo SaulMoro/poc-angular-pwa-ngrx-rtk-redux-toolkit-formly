@@ -1,16 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { asyncScheduler, merge, of } from 'rxjs';
-import { map, debounceTime, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { map, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
 
-import { ofRoutePageChange } from '@app/core/data-access-router';
-import { ofFilterForm } from '@app/core/ngrx-form';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
-import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
+import { ofRouteFilter, ofRoutePageChange } from '@app/core/data-access-router';
+import { LocationsApiActions } from '@app/shared/data-access-locations';
 import { EpisodesActions, EpisodesApiActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
-import { FORM_CHARACTERS_FILTER_ID } from '@app/shared/models';
 import { fromStore } from '@app/shared/utils';
 import * as CharactersActions from './characters.actions';
 import * as CharactersApiActions from './characters-api.actions';
@@ -23,40 +20,30 @@ import {
 
 @Injectable()
 export class CharactersEffects {
-  filterPageChange$ = createEffect(() =>
+  filterCharacters$ = createEffect(() =>
     this.actions$.pipe(
-      ofRoutePageChange('/characters'),
-      map((page) => CharactersActions.filterPageChange({ page }))
+      ofRouteFilter('/characters'),
+      map(({ queryParams, page }) => CharactersActions.filterCharacters({ filter: queryParams, page: page || 1 }))
     )
   );
 
-  filterCharacters$ = createEffect(() =>
+  filterPageChange$ = createEffect(() =>
     this.actions$.pipe(
-      ofFilterForm(FORM_CHARACTERS_FILTER_ID),
-      map((model) => CharactersActions.filterCharacters({ filter: model }))
+      ofRoutePageChange('/characters'),
+      map(({ queryParams, page }) => CharactersActions.filterPageChange({ filter: queryParams, page }))
     )
   );
 
   loadCharacters$ = createEffect(() =>
-    merge(
-      this.actions$.pipe(
-        ofType(CharactersActions.filterPageChange),
-        fromStore(CharactersSelectors.getCurrentFilter, CharactersSelectors.getCurrentPage)(this.store),
-        map(([, currentFilter, page]) => ({ currentFilter, page }))
-      ),
-      this.actions$.pipe(
-        ofType(CharactersActions.filterCharacters),
-        map(({ filter: currentFilter }) => ({ currentFilter, page: 1 }))
-      )
-    ).pipe(
-      tap(({ currentFilter, page }) =>
+    this.actions$.pipe(ofType(CharactersActions.filterCharacters, CharactersActions.filterPageChange)).pipe(
+      tap(({ filter: currentFilter, page }) =>
         this.googleAnalytics.sendEvent({
           name: 'New Characters Filter',
           category: GAEventCategory.FILTER,
           label: JSON.stringify({ currentFilter, page }),
         })
       ),
-      switchMap(({ currentFilter, page }) =>
+      switchMap(({ filter: currentFilter, page }) =>
         this.charactersService.getCharacters(currentFilter, page).pipe(
           map(({ info, results }) =>
             CharactersApiActions.loadCharactersSuccess({
@@ -116,15 +103,9 @@ export class CharactersEffects {
     )
   );
 
-  loadCharactersFromIds$ = createEffect(({ debounce = 500, scheduler = asyncScheduler } = {}) => () =>
+  loadCharactersFromIds$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(
-        LocationsActions.hoverLocationLine,
-        LocationsApiActions.loadLocationSuccess,
-        EpisodesActions.hoverEpisodeLine,
-        EpisodesApiActions.loadEpisodeSuccess
-      ),
-      debounceTime(debounce, scheduler),
+      ofType(LocationsApiActions.loadLocationSuccess, EpisodesApiActions.loadEpisodeSuccess),
       map((action: any) => action.location?.residents ?? action.episode?.characters),
       fromStore(CharactersSelectors.getCharactersIds)(this.store),
       map(([characterIds, ids]) => characterIds?.filter((characterId) => !ids.includes(characterId))),
@@ -182,7 +163,6 @@ export class CharactersEffects {
     private actions$: Actions,
     private store: Store,
     private charactersService: CharactersService,
-    private router: Router,
     private googleAnalytics: GoogleAnalyticsService
   ) {}
 }

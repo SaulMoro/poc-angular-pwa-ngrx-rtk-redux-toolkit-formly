@@ -3,8 +3,8 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { localStorageSync } from 'ngrx-store-localstorage';
 
 import { Character, DataState } from '@app/shared/models';
-import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
-import { EpisodesActions, EpisodesApiActions } from '@app/shared/data-access-episodes';
+import { LocationsApiActions } from '@app/shared/data-access-locations';
+import { EpisodesApiActions } from '@app/shared/data-access-episodes';
 import * as CharactersActions from './characters.actions';
 import * as CharactersApiActions from './characters-api.actions';
 
@@ -31,7 +31,7 @@ export const initialState: State = charactersAdapter.getInitialState({
 
 export const charactersReducer = createReducer(
   initialState,
-  on(CharactersActions.enterCharactersPage, CharactersActions.filterCharacters, (state) =>
+  on(CharactersActions.filterCharacters, (state) =>
     // Remove the page from characters in state (not in current filter)
     charactersAdapter.map((character) => ({ ...character, page: null }), {
       ...state,
@@ -53,20 +53,20 @@ export const charactersReducer = createReducer(
     error: null,
   })),
 
-  on(LocationsApiActions.loadLocationSuccess, LocationsActions.hoverLocationLine, (state, { location, type }) =>
+  on(LocationsApiActions.loadLocationSuccess, (state, { location }) =>
     location.residents?.some((characterId) => !state.entities[characterId])
       ? {
           ...state,
-          dataState: type === LocationsActions.hoverLocationLine.type ? DataState.PREFETCHING : DataState.LOADING,
+          dataState: DataState.LOADING,
           error: null,
         }
       : state
   ),
-  on(EpisodesApiActions.loadEpisodeSuccess, EpisodesActions.hoverEpisodeLine, (state, { episode, type }) =>
+  on(EpisodesApiActions.loadEpisodeSuccess, (state, { episode }) =>
     episode.characters?.some((characterId) => !state.entities[characterId])
       ? {
           ...state,
-          dataState: type === EpisodesActions.hoverEpisodeLine.type ? DataState.PREFETCHING : DataState.LOADING,
+          dataState: DataState.LOADING,
           error: null,
         }
       : state

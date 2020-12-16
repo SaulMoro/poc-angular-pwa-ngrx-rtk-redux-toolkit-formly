@@ -29,7 +29,7 @@ export const initialState: State = locationsAdapter.getInitialState({
 
 export const locationsReducer = createReducer(
   initialState,
-  on(LocationsActions.enterLocationsPage, LocationsActions.filterLocations, (state) =>
+  on(LocationsActions.filterLocations, (state) =>
     // Remove the page from locations in state (not in current filter)
     locationsAdapter.map((location) => ({ ...location, page: null }), {
       ...state,
@@ -40,14 +40,14 @@ export const locationsReducer = createReducer(
       error: null,
     })
   ),
-  on(LocationsActions.pageChange, (state, { page }) => ({
+  on(LocationsActions.filterPageChange, (state, { page }) => ({
     ...state,
     dataState: state.loadedPages.includes(page) ? DataState.REFRESHING : DataState.LOADING,
     error: null,
   })),
-  on(LocationsActions.enterLocationDetailsPage, (state, { locationId }) => ({
+  on(LocationsActions.enterLocationDetailsPage, (state) => ({
     ...state,
-    dataState: !!state.entities[locationId] ? DataState.REFRESHING : DataState.LOADING,
+    dataState: DataState.LOADING,
     error: null,
   })),
 

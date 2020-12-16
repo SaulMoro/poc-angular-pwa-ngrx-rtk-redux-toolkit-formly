@@ -6,7 +6,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
 import { Character, Episode } from '@app/shared/models';
-import { EpisodesSelectors } from '@app/shared/data-access-episodes';
+import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { CharactersSelectors } from '@app/shared/data-access-characters';
 
 @Component({
@@ -38,5 +38,7 @@ export class EpisodeDetailsComponent implements OnInit {
 
   constructor(private readonly store: Store, private translocoService: TranslocoService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.store.dispatch(EpisodesActions.enterEpisodeDetailsPage());
+  }
 }

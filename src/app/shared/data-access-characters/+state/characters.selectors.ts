@@ -1,11 +1,15 @@
 import { Params } from '@angular/router';
-import { createFeatureSelector, createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
+import {
+  createFeatureSelector,
+  createSelector,
+  createSelectorFactory,
+  defaultMemoize,
+  resultMemoize,
+} from '@ngrx/store';
 
 import { RouterSelectors } from '@app/core/data-access-router';
-import { FormsSelectors } from '@app/core/ngrx-form';
 import { Character, CharactersFilter, DataState, Episode, PAGE_SIZE } from '@app/shared/models';
-import { filterContainsData, isEqual } from '@app/shared/utils';
-import { FORM_CHARACTERS_FILTER_ID } from '@app/shared/models';
+import { argumentsStringifyComparer, filterContainsData, isEqual } from '@app/shared/utils';
 import { EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { charactersAdapter, CHARACTERS_FEATURE_KEY, State } from './characters.reducer';
 
@@ -39,9 +43,7 @@ export const getTotalPages = createSelector(selectCharactersState, (state: State
 
 export const getLoadedPages = createSelector(selectCharactersState, (state: State) => state?.loadedPages);
 
-export const getCurrentPage = createSelector(RouterSelectors.getRouteQueryParams, (params: Params): number =>
-  params?.page ? +params?.page : 1
-);
+export const getCurrentPage = createSelector(RouterSelectors.getCurrentPage, (page: number): number => page || 1);
 
 /*
  * Characters List Selectors
@@ -63,26 +65,21 @@ export const getCharactersOfCurrentPage = createSelector(
     characters?.filter((character) => character?.page === currentPage)
 );
 
-export const getCurrentFormFilter = createSelector(
-  FormsSelectors.selectFormsEntities,
-  (forms): CharactersFilter => forms && forms[FORM_CHARACTERS_FILTER_ID]?.model
-);
-
 export const getCurrentFilter = createSelector(
-  getCurrentFormFilter,
   RouterSelectors.getRouteQueryParams,
-  (formFilter: CharactersFilter, params: Params): CharactersFilter =>
-    formFilter ??
-    (params && {
+  (params: Params): CharactersFilter =>
+    params && {
       name: params.name,
       status: params.status,
       species: params.species,
       type: params.type,
       gender: params.gender,
-    })
+    }
 );
 
-export const getCharactersFiltered = createSelector(
+export const getCharactersFiltered = createSelectorFactory((projection) =>
+  defaultMemoize(projection, argumentsStringifyComparer())
+)(
   getAllCharactersWithFirstEpisode,
   getCurrentFilter,
   (characters: Character[], filter: CharactersFilter): Character[] => filterContainsData<Character>(characters, filter)

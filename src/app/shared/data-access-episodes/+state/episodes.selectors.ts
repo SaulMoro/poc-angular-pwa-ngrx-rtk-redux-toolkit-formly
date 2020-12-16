@@ -1,9 +1,15 @@
 import { Params } from '@angular/router';
-import { createFeatureSelector, createSelector, createSelectorFactory, resultMemoize } from '@ngrx/store';
+import {
+  createFeatureSelector,
+  createSelector,
+  createSelectorFactory,
+  defaultMemoize,
+  resultMemoize,
+} from '@ngrx/store';
 
 import { RouterSelectors } from '@app/core/data-access-router';
 import { Episode, EpisodesFilter, DataState, PAGE_SIZE } from '@app/shared/models';
-import { filterContainsData, isEqual } from '@app/shared/utils';
+import { argumentsStringifyComparer, filterContainsData, isEqual } from '@app/shared/utils';
 import { episodesAdapter, EPISODES_FEATURE_KEY, State } from './episodes.reducer';
 
 export const selectEpisodesState = createFeatureSelector<State>(EPISODES_FEATURE_KEY);
@@ -36,9 +42,7 @@ export const getTotalPages = createSelector(selectEpisodesState, (state: State) 
 
 export const getLoadedPages = createSelector(selectEpisodesState, (state: State) => state?.loadedPages);
 
-export const getCurrentPage = createSelector(RouterSelectors.getRouteQueryParams, (params: Params): number =>
-  params?.page ? +params?.page : 1
-);
+export const getCurrentPage = createSelector(RouterSelectors.getCurrentPage, (page: number): number => page || 1);
 
 /*
  * Episodes List Selectors
@@ -61,10 +65,10 @@ export const getCurrentFilter = createSelector(
   }
 );
 
-export const getEpisodesFiltered = createSelector(
-  getAllEpisodes,
-  getCurrentFilter,
-  (episodes: Episode[], filter: EpisodesFilter): Episode[] => filterContainsData<Episode>(episodes, filter)
+export const getEpisodesFiltered = createSelectorFactory((projection) =>
+  defaultMemoize(projection, argumentsStringifyComparer())
+)(getAllEpisodes, getCurrentFilter, (episodes: Episode[], filter: EpisodesFilter): Episode[] =>
+  filterContainsData<Episode>(episodes, filter)
 );
 
 export const getEpisodesFilteredWithPage = createSelector(

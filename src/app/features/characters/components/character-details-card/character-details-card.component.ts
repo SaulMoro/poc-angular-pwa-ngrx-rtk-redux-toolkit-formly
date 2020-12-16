@@ -9,13 +9,13 @@ import { Character } from '@app/shared/models';
 })
 export class CharacterDetailsCardComponent implements OnInit {
   @Input() character: Character;
-  @Output() prefetchLocation = new EventEmitter<number>();
+  @Output() hoverLocation = new EventEmitter<number>();
 
   constructor() {}
 
   ngOnInit(): void {}
 
-  prefetchOnHoverLocation(locationId: number): void {
-    this.prefetchLocation.next(locationId);
+  onHoverLocation(locationId: number): void {
+    this.hoverLocation.next(locationId);
   }
 }

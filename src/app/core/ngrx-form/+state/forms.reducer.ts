@@ -18,10 +18,10 @@ export const initialState: FormsState = formsAdapter.getInitialState({});
 export const formsReducer = createReducer(
   initialState,
   on(FormsActions.initForm, (state, { formId, model, valid }) =>
-    formsAdapter.addOne({ formId, model, previousModel: { ...model }, valid }, state)
+    formsAdapter.addOne({ formId, model, previousModel: null, valid }, state)
   ),
-  on(FormsActions.updatedFormModel, (state, { formId, model, previousModel, valid }) => {
-    return formsAdapter.updateOne(
+  on(FormsActions.updatedFormModel, (state, { formId, model, previousModel, valid }) =>
+    formsAdapter.updateOne(
       {
         id: formId,
         changes: {
@@ -31,6 +31,6 @@ export const formsReducer = createReducer(
         },
       },
       state
-    );
-  })
+    )
+  )
 );

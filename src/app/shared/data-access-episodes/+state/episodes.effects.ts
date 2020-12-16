@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { asyncScheduler, of } from 'rxjs';
-import { map, debounceTime, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { map, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
 
-import { ofRouteEnter, ofRoutePageChange } from '@app/core/data-access-router';
-import { ofFilterForm } from '@app/core/ngrx-form';
+import { ofRouteFilter, ofRoutePageChange } from '@app/core/data-access-router';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
-import { FORM_EPISODES_FILTER_ID } from '@app/shared/models';
 import { fromStore } from '@app/shared/utils';
 import * as EpisodesActions from './episodes.actions';
 import * as EpisodesApiActions from './episodes-api.actions';
@@ -18,56 +15,30 @@ import { fromEpisodeResponsesToEpisodes, fromEpisodeResponseToEpisode } from '..
 
 @Injectable()
 export class EpisodesEffects {
-  enterEpisodesPage$ = createEffect(() =>
+  filterEpisodes$ = createEffect(() =>
     this.actions$.pipe(
-      ofRouteEnter('/episodes'),
-      map(() => EpisodesActions.enterEpisodesPage())
+      ofRouteFilter('/episodes'),
+      map(({ queryParams, page }) => EpisodesActions.filterEpisodes({ filter: queryParams, page: page || 1 }))
     )
   );
 
-  pageChange$ = createEffect(() =>
+  filterPageChange$ = createEffect(() =>
     this.actions$.pipe(
       ofRoutePageChange('/episodes'),
-      map((page) => EpisodesActions.pageChange({ page }))
-    )
-  );
-
-  enterEpisodeDetailsOnNav$ = createEffect(() =>
-    this.actions$.pipe(
-      ofRouteEnter('/episodes/:id'),
-      map(({ params }) => params?.id),
-      map((episodeId: number) => EpisodesActions.enterEpisodeDetailsPage({ episodeId }))
-    )
-  );
-
-  filterEpisodes$ = createEffect(() => ({ debounce = 300, scheduler = asyncScheduler } = {}) =>
-    this.actions$.pipe(
-      ofFilterForm(FORM_EPISODES_FILTER_ID),
-      debounceTime(debounce, scheduler),
-      switchMap(() =>
-        // Reset Filter Page
-        this.router.navigate([], {
-          queryParams: { page: null },
-          queryParamsHandling: 'merge',
-        })
-      ),
-      map(() => EpisodesActions.filterEpisodes())
+      map(({ queryParams, page }) => EpisodesActions.filterPageChange({ filter: queryParams, page }))
     )
   );
 
   loadEpisodes$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(EpisodesActions.enterEpisodesPage, EpisodesActions.pageChange, EpisodesActions.filterEpisodes),
-      fromStore(EpisodesSelectors.getCurrentFilter, EpisodesSelectors.getCurrentPage)(this.store),
-      tap(([, currentFilter, page]) =>
+    this.actions$.pipe(ofType(EpisodesActions.filterEpisodes, EpisodesActions.filterPageChange)).pipe(
+      tap(({ filter: currentFilter, page }) =>
         this.googleAnalytics.sendEvent({
           name: 'New Episodes Filter',
           category: GAEventCategory.FILTER,
-          label: JSON.stringify(currentFilter),
-          value: page,
+          label: JSON.stringify({ currentFilter, page }),
         })
       ),
-      switchMap(([, currentFilter, page]) =>
+      switchMap(({ filter: currentFilter, page }) =>
         this.episodesService.getEpisodes(currentFilter, page).pipe(
           map(({ info, results }) =>
             EpisodesApiActions.loadEpisodesSuccess({
@@ -113,7 +84,8 @@ export class EpisodesEffects {
   loadEpisode$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EpisodesActions.enterEpisodeDetailsPage),
-      switchMap(({ episodeId }) =>
+      fromStore(EpisodesSelectors.getSelectedId)(this.store),
+      switchMap(([, episodeId]) =>
         this.episodesService.getEpisode(episodeId).pipe(
           map((episode) =>
             EpisodesApiActions.loadEpisodeSuccess({
@@ -163,7 +135,6 @@ export class EpisodesEffects {
     private actions$: Actions,
     private store: Store,
     private episodesService: EpisodesService,
-    private router: Router,
     private googleAnalytics: GoogleAnalyticsService
   ) {}
 }

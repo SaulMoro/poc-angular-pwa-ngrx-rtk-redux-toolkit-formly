@@ -52,7 +52,7 @@ export class FormsEffects {
         map(({ model, type }) =>
           type === FormsActions.reuseForm.type
             ? { ...fixDataForQueryParams(model) }
-            : // Reset pagination if update or submit form
+            : // Reset pagination if update or submit filter form
               { ...fixDataForQueryParams(model), page: null }
         ),
         concatMap((queryParams) => this.router.navigate([], { queryParams, queryParamsHandling: 'merge' }))

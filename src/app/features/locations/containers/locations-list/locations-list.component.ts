@@ -1,9 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
-import { debounceTime, distinct, map, switchMap, take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
 
 import { LazyModalService } from '@app/core/lazy-modal';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
@@ -15,7 +14,6 @@ import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-lo
 import { Location } from '@app/shared/models';
 import { TableConfig } from '@app/shared/components/table/table.component';
 
-@UntilDestroy()
 @Component({
   selector: 'app-locations-list',
   templateUrl: './locations-list.component.html',
@@ -48,8 +46,6 @@ export class LocationsListComponent implements OnInit, OnDestroy {
   pages$: Observable<number> = this.store.select(LocationsSelectors.getTotalPages);
   seoConfig$ = this.translocoService.selectTranslateObject('LOCATIONS.SEO');
 
-  private readonly hoverLocation$ = new Subject<Location>();
-
   constructor(
     private readonly store: Store,
     private lazyModal: LazyModalService<CharactersDialogComponentType>,
@@ -58,18 +54,7 @@ export class LocationsListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Only dispatch on hover location during debounce time
-    this.hoverLocation$
-      .pipe(
-        debounceTime(300),
-        distinct(({ id }) => id),
-        untilDestroyed(this)
-      )
-      .subscribe((location) => this.store.dispatch(LocationsActions.hoverLocationLine({ location })));
-  }
-
-  prefetchResidentsOnHover(location: Location): void {
-    this.hoverLocation$.next(location);
+    this.store.dispatch(LocationsActions.enterLocationsPage());
   }
 
   async openResidentsDialog(location: Location): Promise<void> {
