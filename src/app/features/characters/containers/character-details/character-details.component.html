@@ -1,13 +1,13 @@
 <app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar>
 
 <ng-container *ngrxLet="character$ as character">
-  <ng-container *ngIf="character; else loadingCharacter">
+  <div class="mx-4 sm:mx-0" *ngIf="character; else loadingCharacter">
     <app-character-details-card
       [character]="character"
       (hoverLocation)="prefetchLocation($event)"
     ></app-character-details-card>
 
-    <div class="p-4 mx-4 mt-4 bg-white rounded sm:mx-0 sm:shadow dark:bg-gray-700" *transloco="let t">
+    <div class="p-4 mt-4 bg-white rounded sm:shadow dark:bg-gray-700" *transloco="let t">
       <h2 class="mb-4 font-medium">{{ t('CHARACTERS.CHARACTER_EPISODES', { name: character.name }) }}</h2>
 
       <div *ngrxLet="episodes$ as episodes" class="relative h-full overflow-hidden sm:px-10 wrap">
@@ -54,7 +54,7 @@
         </div>
       </div>
     </div>
-  </ng-container>
+  </div>
 
   <ng-template #loadingCharacter>
     <app-loading-character></app-loading-character>

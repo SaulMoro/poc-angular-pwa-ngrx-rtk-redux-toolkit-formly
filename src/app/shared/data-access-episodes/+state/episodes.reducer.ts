@@ -2,7 +2,7 @@ import { Action, ActionReducer, createReducer, MetaReducer, on } from '@ngrx/sto
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { localStorageSync } from 'ngrx-store-localstorage';
 
-import { Episode, DataState } from '@app/shared/models';
+import { Episode, DataState, LoadingState } from '@app/shared/models';
 import * as EpisodesActions from './episodes.actions';
 import * as EpisodesApiActions from './episodes-api.actions';
 
@@ -13,7 +13,6 @@ export interface State extends EntityState<Episode> {
   count: number;
   pages: number;
   loadedPages: number[];
-  error?: any;
 }
 
 export const episodesAdapter: EntityAdapter<Episode> = createEntityAdapter<Episode>({
@@ -21,7 +20,7 @@ export const episodesAdapter: EntityAdapter<Episode> = createEntityAdapter<Episo
 });
 
 export const initialState: State = episodesAdapter.getInitialState({
-  dataState: DataState.INIT,
+  dataState: LoadingState.INIT,
   count: 0,
   pages: 0,
   loadedPages: [],
@@ -33,22 +32,19 @@ export const episodesReducer = createReducer(
     // Remove the page from episodes in state (not in current filter)
     episodesAdapter.map((episode) => ({ ...episode, page: null }), {
       ...state,
-      dataState: DataState.LOADING,
+      dataState: LoadingState.LOADING,
       count: 0,
       pages: 0,
       loadedPages: [],
-      error: null,
     })
   ),
   on(EpisodesActions.filterPageChange, (state, { page }) => ({
     ...state,
-    dataState: state.loadedPages.includes(page) ? DataState.REFRESHING : DataState.LOADING,
-    error: null,
+    dataState: state.loadedPages.includes(page) ? LoadingState.REFRESHING : LoadingState.LOADING,
   })),
   on(EpisodesActions.enterEpisodeDetailsPage, EpisodesActions.requiredCharactersEpisodes, (state) => ({
     ...state,
-    dataState: DataState.LOADING,
-    error: null,
+    dataState: LoadingState.LOADING,
   })),
 
   on(
@@ -57,22 +53,22 @@ export const episodesReducer = createReducer(
     (state, { episodes, count, pages, page }) =>
       episodesAdapter.upsertMany(episodes, {
         ...state,
-        dataState: DataState.LOADED,
+        dataState: LoadingState.LOADED,
         count,
         pages,
-        loadedPages: state.dataState !== DataState.REFRESHING ? [...state.loadedPages, page] : state.loadedPages,
+        loadedPages: state.dataState !== LoadingState.REFRESHING ? [...state.loadedPages, page] : state.loadedPages,
       })
   ),
   on(EpisodesApiActions.loadEpisodeSuccess, (state, { episode }) =>
     episodesAdapter.upsertOne(episode, {
       ...state,
-      dataState: DataState.LOADED,
+      dataState: LoadingState.LOADED,
     })
   ),
   on(EpisodesApiActions.loadEpisodesFromIdsSuccess, (state, { episodes }) =>
     episodesAdapter.upsertMany(episodes, {
       ...state,
-      dataState: DataState.LOADED,
+      dataState: LoadingState.LOADED,
     })
   ),
 
@@ -83,8 +79,7 @@ export const episodesReducer = createReducer(
     EpisodesApiActions.loadEpisodesFromIdsFailure,
     (state, { error }) => ({
       ...state,
-      dataState: DataState.ERROR,
-      error,
+      dataState: { error },
     })
   )
 );

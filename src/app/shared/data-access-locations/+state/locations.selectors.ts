@@ -8,7 +8,7 @@ import {
 } from '@ngrx/store';
 
 import { RouterSelectors } from '@app/core/data-access-router';
-import { Location, LocationsFilter, DataState, PAGE_SIZE } from '@app/shared/models';
+import { Location, LocationsFilter, DataState, PAGE_SIZE, isLoadingOrRefreshing, isLoading } from '@app/shared/models';
 import { argumentsStringifyComparer, filterContainsData, isEqual } from '@app/shared/utils';
 import { locationsAdapter, LOCATIONS_FEATURE_KEY, State } from './locations.reducer';
 
@@ -18,12 +18,9 @@ const { selectAll, selectEntities, selectIds } = locationsAdapter.getSelectors()
 
 export const getDataState = createSelector(selectLocationsState, (state: State) => state?.dataState);
 
-export const getLoading = createSelector(
-  getDataState,
-  (state: DataState) => state === DataState.LOADING || state === DataState.REFRESHING
-);
+export const getLoading = createSelector(getDataState, (state: DataState) => isLoadingOrRefreshing(state));
 
-export const getError = createSelector(selectLocationsState, (state: State) => state?.error);
+export const getError = createSelector(selectLocationsState, (state: State) => getError(state));
 
 export const getAllLocation = createSelector(selectLocationsState, (state: State) => state && selectAll(state));
 
@@ -91,7 +88,7 @@ export const getLocations = createSelectorFactory((projector) =>
   getLocationsFilteredWithPage,
   getLocationsOfCurrentPage,
   (state: DataState, locationsFiltered: Location[], locations: Location[]): Location[] =>
-    state === DataState.LOADING ? locationsFiltered : locations
+    isLoading(state) ? locationsFiltered : locations
 );
 
 /*

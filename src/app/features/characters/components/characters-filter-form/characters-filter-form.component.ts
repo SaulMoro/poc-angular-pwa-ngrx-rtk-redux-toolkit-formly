@@ -5,7 +5,9 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { FormField, FormConfig, generateFilterForm, SelectOption } from '@app/core/ngrx-form';
-import { CharacterGender, CharacterSpecies, CharacterStatus, FORM_CHARACTERS_FILTER_ID } from '@app/shared/models';
+import { CharacterGender, CharacterSpecies, CharacterStatus } from '@app/shared/models';
+
+const FORM_CHARACTERS_FILTER_ID = 'FORM_CHARACTERS_FILTER';
 
 const row = (fieldGroup: FormField[]) => FormField.fieldRow(fieldGroup, 'grid grid-cols-4 mt-4 gap-6');
 const fieldClass = 'col-span-2 sm:col-span-1';

@@ -8,7 +8,7 @@ import {
 } from '@ngrx/store';
 
 import { RouterSelectors } from '@app/core/data-access-router';
-import { Episode, EpisodesFilter, DataState, PAGE_SIZE } from '@app/shared/models';
+import { Episode, EpisodesFilter, DataState, PAGE_SIZE, isLoadingOrRefreshing, isLoading } from '@app/shared/models';
 import { argumentsStringifyComparer, filterContainsData, isEqual } from '@app/shared/utils';
 import { episodesAdapter, EPISODES_FEATURE_KEY, State } from './episodes.reducer';
 
@@ -18,12 +18,9 @@ const { selectAll, selectEntities, selectIds } = episodesAdapter.getSelectors();
 
 export const getDataState = createSelector(selectEpisodesState, (state: State) => state?.dataState);
 
-export const getLoading = createSelector(
-  getDataState,
-  (state: DataState) => state === DataState.LOADING || state === DataState.REFRESHING
-);
+export const getLoading = createSelector(getDataState, (state: DataState) => isLoadingOrRefreshing(state));
 
-export const getError = createSelector(selectEpisodesState, (state: State) => state?.error);
+export const getError = createSelector(selectEpisodesState, (state: State) => getError(state));
 
 export const getAllEpisodes = createSelector(selectEpisodesState, (state: State) => state && selectAll(state));
 
@@ -89,7 +86,7 @@ export const getEpisodes = createSelectorFactory((projector) =>
   getEpisodesFilteredWithPage,
   getEpisodesOfCurrentPage,
   (state: DataState, episodesFiltered: Episode[], episodes: Episode[]): Episode[] =>
-    state === DataState.LOADING ? episodesFiltered : episodes
+    isLoading(state) ? episodesFiltered : episodes
 );
 
 /*

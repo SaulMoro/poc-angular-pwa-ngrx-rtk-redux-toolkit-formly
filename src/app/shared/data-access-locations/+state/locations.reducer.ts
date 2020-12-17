@@ -2,7 +2,7 @@ import { Action, ActionReducer, createReducer, MetaReducer, on } from '@ngrx/sto
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { localStorageSync } from 'ngrx-store-localstorage';
 
-import { Location, DataState } from '@app/shared/models';
+import { Location, DataState, LoadingState } from '@app/shared/models';
 import * as LocationsActions from './locations.actions';
 import * as LocationsApiActions from './locations-api.actions';
 
@@ -13,7 +13,6 @@ export interface State extends EntityState<Location> {
   count: number;
   pages: number;
   loadedPages: number[];
-  error?: any;
 }
 
 export const locationsAdapter: EntityAdapter<Location> = createEntityAdapter<Location>({
@@ -21,7 +20,7 @@ export const locationsAdapter: EntityAdapter<Location> = createEntityAdapter<Loc
 });
 
 export const initialState: State = locationsAdapter.getInitialState({
-  dataState: DataState.INIT,
+  dataState: LoadingState.INIT,
   count: 0,
   pages: 0,
   loadedPages: [],
@@ -33,22 +32,19 @@ export const locationsReducer = createReducer(
     // Remove the page from locations in state (not in current filter)
     locationsAdapter.map((location) => ({ ...location, page: null }), {
       ...state,
-      dataState: DataState.LOADING,
+      dataState: LoadingState.LOADING,
       count: 0,
       pages: 0,
       loadedPages: [],
-      error: null,
     })
   ),
   on(LocationsActions.filterPageChange, (state, { page }) => ({
     ...state,
-    dataState: state.loadedPages.includes(page) ? DataState.REFRESHING : DataState.LOADING,
-    error: null,
+    dataState: state.loadedPages.includes(page) ? LoadingState.REFRESHING : LoadingState.LOADING,
   })),
   on(LocationsActions.enterLocationDetailsPage, (state) => ({
     ...state,
-    dataState: DataState.LOADING,
-    error: null,
+    dataState: LoadingState.LOADING,
   })),
 
   on(
@@ -58,8 +54,7 @@ export const locationsReducer = createReducer(
       !state.entities[locationId]
         ? {
             ...state,
-            dataState: DataState.PREFETCHING,
-            error: null,
+            dataState: LoadingState.PREFETCHING,
           }
         : state
   ),
@@ -70,16 +65,16 @@ export const locationsReducer = createReducer(
     (state, { locations, count, pages, page }) =>
       locationsAdapter.upsertMany(locations, {
         ...state,
-        dataState: DataState.LOADED,
+        dataState: LoadingState.LOADED,
         count,
         pages,
-        loadedPages: state.dataState !== DataState.REFRESHING ? [...state.loadedPages, page] : state.loadedPages,
+        loadedPages: state.dataState !== LoadingState.REFRESHING ? [...state.loadedPages, page] : state.loadedPages,
       })
   ),
   on(LocationsApiActions.loadLocationSuccess, LocationsApiActions.prefetchLocationSuccess, (state, { location }) =>
     locationsAdapter.upsertOne(location, {
       ...state,
-      dataState: DataState.LOADED,
+      dataState: LoadingState.LOADED,
     })
   ),
 
@@ -90,8 +85,7 @@ export const locationsReducer = createReducer(
     LocationsApiActions.prefetchLocationFailure,
     (state, { error }) => ({
       ...state,
-      dataState: DataState.ERROR,
-      error,
+      dataState: { error },
     })
   )
 );

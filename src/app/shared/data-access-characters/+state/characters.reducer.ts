@@ -2,7 +2,7 @@ import { Action, ActionReducer, createReducer, MetaReducer, on } from '@ngrx/sto
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { localStorageSync } from 'ngrx-store-localstorage';
 
-import { Character, DataState } from '@app/shared/models';
+import { Character, DataState, LoadingState } from '@app/shared/models';
 import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
 import { EpisodesActions, EpisodesApiActions } from '@app/shared/data-access-episodes';
 import * as CharactersActions from './characters.actions';
@@ -15,7 +15,6 @@ export interface State extends EntityState<Character> {
   count: number;
   pages: number;
   loadedPages: number[];
-  error?: any;
 }
 
 export const charactersAdapter: EntityAdapter<Character> = createEntityAdapter<Character>({
@@ -23,7 +22,7 @@ export const charactersAdapter: EntityAdapter<Character> = createEntityAdapter<C
 });
 
 export const initialState: State = charactersAdapter.getInitialState({
-  dataState: DataState.INIT,
+  dataState: LoadingState.INIT,
   count: 0,
   pages: 0,
   loadedPages: [],
@@ -35,30 +34,26 @@ export const charactersReducer = createReducer(
     // Remove the page from characters in state (not in current filter)
     charactersAdapter.map((character) => ({ ...character, page: null }), {
       ...state,
-      dataState: DataState.LOADING,
+      dataState: LoadingState.LOADING,
       count: 0,
       pages: 0,
       loadedPages: [],
-      error: null,
     })
   ),
   on(CharactersActions.filterPageChange, (state, { page }) => ({
     ...state,
-    dataState: state.loadedPages.includes(page) ? DataState.REFRESHING : DataState.LOADING,
-    error: null,
+    dataState: state.loadedPages.includes(page) ? LoadingState.REFRESHING : LoadingState.LOADING,
   })),
   on(CharactersActions.enterCharacterDetailsPage, (state) => ({
     ...state,
-    dataState: DataState.LOADING,
-    error: null,
+    dataState: LoadingState.LOADING,
   })),
 
   on(LocationsActions.openCharactersDialog, LocationsApiActions.loadLocationSuccess, (state, { location }) =>
     location.residents?.some((characterId) => !state.entities[characterId])
       ? {
           ...state,
-          dataState: DataState.LOADING,
-          error: null,
+          dataState: LoadingState.LOADING,
         }
       : state
   ),
@@ -66,8 +61,7 @@ export const charactersReducer = createReducer(
     episode.characters?.some((characterId) => !state.entities[characterId])
       ? {
           ...state,
-          dataState: DataState.LOADING,
-          error: null,
+          dataState: LoadingState.LOADING,
         }
       : state
   ),
@@ -78,22 +72,22 @@ export const charactersReducer = createReducer(
     (state, { characters, count, pages, page }) =>
       charactersAdapter.upsertMany(characters, {
         ...state,
-        dataState: DataState.LOADED,
+        dataState: LoadingState.LOADED,
         count,
         pages,
-        loadedPages: state.dataState !== DataState.REFRESHING ? [...state.loadedPages, page] : state.loadedPages,
+        loadedPages: state.dataState !== LoadingState.REFRESHING ? [...state.loadedPages, page] : state.loadedPages,
       })
   ),
   on(CharactersApiActions.loadCharacterSuccess, (state, { character }) =>
     charactersAdapter.upsertOne(character, {
       ...state,
-      dataState: DataState.LOADED,
+      dataState: LoadingState.LOADED,
     })
   ),
   on(CharactersApiActions.loadCharactersFromIdsSuccess, (state, { characters }) =>
     charactersAdapter.upsertMany(characters, {
       ...state,
-      dataState: DataState.LOADED,
+      dataState: LoadingState.LOADED,
     })
   ),
 
@@ -104,8 +98,7 @@ export const charactersReducer = createReducer(
     CharactersApiActions.loadCharactersFromIdsFailure,
     (state, { error }) => ({
       ...state,
-      dataState: DataState.ERROR,
-      error,
+      dataState: { error },
     })
   )
 );

@@ -1,5 +1,5 @@
 <lazy-modal #modalComponent>
-  <div class="fixed w-full"><app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar></div>
+  <app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar>
 
   <div class="flex items-center w-full">
     <div class="flex items-center justify-between pr-4 space-x-2 sm:space-x-4">

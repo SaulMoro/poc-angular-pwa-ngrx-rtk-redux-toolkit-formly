@@ -8,7 +8,15 @@ import {
 } from '@ngrx/store';
 
 import { RouterSelectors } from '@app/core/data-access-router';
-import { Character, CharactersFilter, DataState, Episode, PAGE_SIZE } from '@app/shared/models';
+import {
+  Character,
+  CharactersFilter,
+  DataState,
+  Episode,
+  isLoading,
+  isLoadingOrRefreshing,
+  PAGE_SIZE,
+} from '@app/shared/models';
 import { argumentsStringifyComparer, filterContainsData, isEqual } from '@app/shared/utils';
 import { EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { charactersAdapter, CHARACTERS_FEATURE_KEY, State } from './characters.reducer';
@@ -19,12 +27,9 @@ const { selectAll, selectEntities, selectIds } = charactersAdapter.getSelectors(
 
 export const getDataState = createSelector(selectCharactersState, (state: State) => state?.dataState);
 
-export const getLoading = createSelector(
-  getDataState,
-  (state: DataState) => state === DataState.LOADING || state === DataState.REFRESHING
-);
+export const getLoading = createSelector(getDataState, (state: DataState) => isLoadingOrRefreshing(state));
 
-export const getError = createSelector(selectCharactersState, (state: State) => state?.error);
+export const getError = createSelector(selectCharactersState, (state: State) => getError(state));
 
 export const getAllCharacters = createSelector(selectCharactersState, (state: State) => state && selectAll(state));
 
@@ -105,7 +110,7 @@ export const getCharacters = createSelectorFactory((projector) =>
   getCharactersFilteredWithPage,
   getCharactersOfCurrentPage,
   (state: DataState, charactersFiltered: Character[], characters: Character[]): Character[] =>
-    state === DataState.LOADING ? charactersFiltered : characters
+    isLoading(state) ? charactersFiltered : characters
 );
 
 /*
