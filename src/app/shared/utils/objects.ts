@@ -15,7 +15,7 @@ export const isEqual = (o1: any, o2: any) => {
 
 export function argumentsStringifyComparer(): any {
   let currentJson = '';
-  return (incoming, current) => {
+  return (incoming: any, current: any) => {
     if (incoming === current) {
       return true;
     }

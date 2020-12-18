@@ -3,7 +3,7 @@ import { DOCUMENT } from '@angular/common';
 import { environment } from '@environments/environment';
 import { GAEvent, GAEventCategory, GAPageView } from './types';
 
-declare let gtag;
+declare let gtag: any;
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class GoogleAnalyticsService {
     this.init();
   }
 
-  sendEvent({ name, category, label = null, value = null }: GAEvent): void {
+  sendEvent({ name, category, label, value }: GAEvent): void {
     if (!environment.gaTrackingId) {
       console.warn('not triggering analytics event without gtag');
       console.log('sendEvent', { name, category, label, value });

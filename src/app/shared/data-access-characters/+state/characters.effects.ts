@@ -8,6 +8,7 @@ import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analyt
 import { ofRouteFilter, ofRoutePageChange } from '@app/core/data-access-router';
 import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
 import { EpisodesActions, EpisodesApiActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
+import { Character } from '@app/shared/models';
 import { fromStore } from '@app/shared/utils';
 import * as CharactersActions from './characters.actions';
 import * as CharactersApiActions from './characters-api.actions';
@@ -30,7 +31,7 @@ export class CharactersEffects {
   filterPageChange$ = createEffect(() =>
     this.actions$.pipe(
       ofRoutePageChange('/characters'),
-      map(({ queryParams, page }) => CharactersActions.filterPageChange({ filter: queryParams, page }))
+      map(({ queryParams, page }) => CharactersActions.filterPageChange({ filter: queryParams, page: page || 1 }))
     )
   );
 
@@ -51,8 +52,8 @@ export class CharactersEffects {
                 ...character,
                 page,
               })),
-              count: info?.count,
-              pages: info?.pages,
+              count: info?.count || results.length,
+              pages: info?.pages || page,
               page,
             })
           ),
@@ -75,8 +76,8 @@ export class CharactersEffects {
                 ...character,
                 page: action.page + 1,
               })),
-              count: info?.count,
-              pages: info?.pages,
+              count: info?.count || results.length,
+              pages: info?.pages || action.page + 1,
               page: action.page + 1,
             })
           ),
@@ -113,7 +114,9 @@ export class CharactersEffects {
       ),
       map((action: any) => action.location?.residents ?? action.episode?.characters),
       fromStore(CharactersSelectors.getCharactersIds)(this.store),
-      map(([characterIds, ids]) => characterIds?.filter((characterId) => !ids.includes(characterId))),
+      map(([characterIds, ids]: [number[], number[]]) =>
+        characterIds?.filter((characterId) => !ids.includes(characterId))
+      ),
       filter((idsToFetch) => !!idsToFetch?.length),
       switchMap((idsToFetch) =>
         this.charactersService.getCharactersFromIds(idsToFetch).pipe(
@@ -137,11 +140,11 @@ export class CharactersEffects {
       ),
       map((action: any) =>
         action.characters
-          ? [...new Set(action.characters.map((character) => character.firstEpisode?.id))]
+          ? [...new Set(action.characters.map((character: Character) => character.firstEpisode?.id))]
           : action.character.episodes
       ),
       fromStore(EpisodesSelectors.getEpisodesIds)(this.store),
-      map(([episodeIds, ids]) => episodeIds?.filter((episodeId) => !ids.includes(episodeId))),
+      map(([episodeIds, ids]: [number[], number[]]) => episodeIds?.filter((episodeId) => !ids.includes(episodeId))),
       filter((episodeIds) => !!episodeIds?.length),
       map((episodeIds) => EpisodesActions.requiredCharactersEpisodes({ episodeIds }))
     )

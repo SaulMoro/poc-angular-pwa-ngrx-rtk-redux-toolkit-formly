@@ -25,7 +25,7 @@ export class LocationsEffects {
   filterPageChange$ = createEffect(() =>
     this.actions$.pipe(
       ofRoutePageChange('/locations'),
-      map(({ queryParams, page }) => LocationsActions.filterPageChange({ filter: queryParams, page }))
+      map(({ queryParams, page }) => LocationsActions.filterPageChange({ filter: queryParams, page: page || 1 }))
     )
   );
 
@@ -46,8 +46,8 @@ export class LocationsEffects {
                 ...location,
                 page,
               })),
-              count: info?.count,
-              pages: info?.pages,
+              count: info?.count || results.length,
+              pages: info?.pages || page,
               page,
             })
           ),
@@ -70,8 +70,8 @@ export class LocationsEffects {
                 ...location,
                 page: action.page + 1,
               })),
-              count: info?.count,
-              pages: info?.pages,
+              count: info?.count || results.length,
+              pages: info?.pages || action.page + 1,
               page: action.page + 1,
             })
           ),

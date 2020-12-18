@@ -6,6 +6,7 @@ import {
   defaultMemoize,
   resultMemoize,
 } from '@ngrx/store';
+import { Dictionary } from '@ngrx/entity';
 
 import { RouterSelectors } from '@app/core/data-access-router';
 import { Episode, EpisodesFilter, DataState, PAGE_SIZE, isLoadingOrRefreshing, isLoading } from '@app/shared/models';
@@ -20,7 +21,7 @@ export const getDataState = createSelector(selectEpisodesState, (state: State) =
 
 export const getLoading = createSelector(getDataState, (state: DataState) => isLoadingOrRefreshing(state));
 
-export const getError = createSelector(selectEpisodesState, (state: State) => getError(state));
+export const getError = createSelector(selectEpisodesState, (state: State): any => getError(state));
 
 export const getAllEpisodes = createSelector(selectEpisodesState, (state: State) => state && selectAll(state));
 
@@ -29,7 +30,10 @@ export const getEpisodesEntities = createSelector(
   (state: State) => state && selectEntities(state)
 );
 
-export const getEpisodesIds = createSelector(selectEpisodesState, (state: State) => state && selectIds(state));
+export const getEpisodesIds = createSelector(
+  selectEpisodesState,
+  (state: State): number[] => state && (selectIds(state) as number[])
+);
 
 export const getSelectedId = createSelector(RouterSelectors.getIdParam, (id: string): number => +id);
 
@@ -39,7 +43,10 @@ export const getTotalPages = createSelector(selectEpisodesState, (state: State) 
 
 export const getLoadedPages = createSelector(selectEpisodesState, (state: State) => state?.loadedPages);
 
-export const getCurrentPage = createSelector(RouterSelectors.getCurrentPage, (page: number): number => page || 1);
+export const getCurrentPage = createSelector(
+  RouterSelectors.getCurrentPage,
+  (page: number | null): number => page || 1
+);
 
 /*
  * Episodes List Selectors
@@ -75,10 +82,10 @@ export const getEpisodesFilteredWithPage = createSelector(
 );
 
 export const getEpisodes = createSelectorFactory((projector) =>
-  resultMemoize(projector, (l1, l2) =>
+  resultMemoize(projector, (l1: Episode[], l2: Episode[]) =>
     isEqual(
-      l1?.map((c) => c.id),
-      l2?.map((c) => c.id)
+      l1?.map((e: Episode) => e.id),
+      l2?.map((e: Episode) => e.id)
     )
   )
 )(
@@ -95,5 +102,5 @@ export const getEpisodes = createSelectorFactory((projector) =>
 export const getSelectedEpisode = createSelectorFactory((projector) => resultMemoize(projector, isEqual))(
   getEpisodesEntities,
   getSelectedId,
-  (entities, selectedId: number): Location => selectedId && entities[selectedId]
+  (entities: Dictionary<Episode>, selectedId: number): Episode | undefined => entities[selectedId]
 );

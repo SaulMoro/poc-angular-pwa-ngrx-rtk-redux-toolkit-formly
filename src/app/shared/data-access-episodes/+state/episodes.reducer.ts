@@ -30,7 +30,7 @@ export const episodesReducer = createReducer(
   initialState,
   on(EpisodesActions.filterEpisodes, (state) =>
     // Remove the page from episodes in state (not in current filter)
-    episodesAdapter.map((episode) => ({ ...episode, page: null }), {
+    episodesAdapter.map((episode) => ({ ...episode, page: undefined }), {
       ...state,
       dataState: LoadingState.LOADING,
       count: 0,

@@ -6,6 +6,7 @@ import {
   defaultMemoize,
   resultMemoize,
 } from '@ngrx/store';
+import { Dictionary } from '@ngrx/entity';
 
 import { RouterSelectors } from '@app/core/data-access-router';
 import {
@@ -29,7 +30,7 @@ export const getDataState = createSelector(selectCharactersState, (state: State)
 
 export const getLoading = createSelector(getDataState, (state: DataState) => isLoadingOrRefreshing(state));
 
-export const getError = createSelector(selectCharactersState, (state: State) => getError(state));
+export const getError = createSelector(selectCharactersState, (state: State): any => getError(state));
 
 export const getAllCharacters = createSelector(selectCharactersState, (state: State) => state && selectAll(state));
 
@@ -48,7 +49,10 @@ export const getTotalPages = createSelector(selectCharactersState, (state: State
 
 export const getLoadedPages = createSelector(selectCharactersState, (state: State) => state?.loadedPages);
 
-export const getCurrentPage = createSelector(RouterSelectors.getCurrentPage, (page: number): number => page || 1);
+export const getCurrentPage = createSelector(
+  RouterSelectors.getCurrentPage,
+  (page: number | null): number => page || 1
+);
 
 /*
  * Characters List Selectors
@@ -125,11 +129,12 @@ export const getLoadingCharacter = createSelector(
 export const getSelectedCharacter = createSelectorFactory((projector) => resultMemoize(projector, isEqual))(
   getCharatersEntities,
   getSelectedId,
-  (entities, selectedId: number): Character => selectedId && entities[selectedId]
+  (entities: Dictionary<Character>, selectedId: number): Character | undefined => entities[selectedId]
 );
 
 export const getEpisodesOfSelectedCharacter = createSelector(
   getSelectedCharacter,
   EpisodesSelectors.getEpisodesEntities,
-  (character: Character, episodes): Episode[] => character.episodes?.map((episodeId) => episodes[episodeId])
+  (character: Character, episodes: Dictionary<Episode>): (Episode | undefined)[] =>
+    character.episodes?.map((episodeId) => episodes[episodeId])
 );

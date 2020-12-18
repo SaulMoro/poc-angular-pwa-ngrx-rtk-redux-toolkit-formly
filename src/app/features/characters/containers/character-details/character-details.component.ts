@@ -15,7 +15,9 @@ import { LocationsActions } from '@app/shared/data-access-locations';
 export class CharacterDetailsComponent implements OnInit {
   character$: Observable<Character> = this.store.select(CharactersSelectors.getSelectedCharacter);
   loading$: Observable<boolean> = this.store.select(CharactersSelectors.getLoadingCharacter);
-  episodes$: Observable<Episode[]> = this.store.select(CharactersSelectors.getEpisodesOfSelectedCharacter);
+  episodes$: Observable<(Episode | undefined)[]> = this.store.select(
+    CharactersSelectors.getEpisodesOfSelectedCharacter
+  );
 
   constructor(private readonly store: Store) {}
 

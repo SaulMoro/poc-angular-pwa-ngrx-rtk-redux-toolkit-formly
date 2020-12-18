@@ -3,7 +3,7 @@ import { isBrowser } from '@ngneat/transloco';
 /**
  * Returns the language in current route, e.g. "en"
  */
-export function getRouterLang(supportedLangs: string[]): string {
+export function getRouterLang(supportedLangs: string[]): string | undefined {
   if (isBrowser() === false) {
     return undefined;
   }

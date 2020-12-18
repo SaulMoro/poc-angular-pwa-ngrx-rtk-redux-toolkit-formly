@@ -1,4 +1,6 @@
+import { Dictionary } from '@ngrx/entity';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { Form } from './forms.model';
 
 import { FORMS_FEATURE_KEY, FormsState, formsAdapter } from './forms.reducer';
 
@@ -15,15 +17,15 @@ export const selectAllForms = createSelector(selectFormsState, (state: FormsStat
 
 export const selectForm = createSelector(
   selectFormsEntities,
-  (forms, props: { formId: string }) => forms && forms[props.formId]
+  (forms: Dictionary<Form>, props: { formId: string }) => forms[props.formId]
 );
 
 export const selectFormData = createSelector(
   selectFormsEntities,
-  (forms, props: { formId: string }) => forms && forms[props.formId]?.model
+  (forms: Dictionary<Form>, props: { formId: string }) => forms[props.formId]?.model
 );
 
 export const selectFormValid = createSelector(
   selectFormsEntities,
-  (forms, props: { formId: string }) => forms && forms[props.formId]?.valid
+  (forms: Dictionary<Form>, props: { formId: string }) => forms[props.formId]?.valid
 );

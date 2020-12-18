@@ -30,7 +30,7 @@ export const locationsReducer = createReducer(
   initialState,
   on(LocationsActions.filterLocations, (state) =>
     // Remove the page from locations in state (not in current filter)
-    locationsAdapter.map((location) => ({ ...location, page: null }), {
+    locationsAdapter.map((location) => ({ ...location, page: undefined }), {
       ...state,
       dataState: LoadingState.LOADING,
       count: 0,

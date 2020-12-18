@@ -9,6 +9,9 @@
         "@schematics/angular:component": {
           "style": "scss",
           "changeDetection": "OnPush"
+        },
+        "@schematics/angular:application": {
+          "strict": true
         }
       },
       "root": "",
@@ -154,12 +157,6 @@
     }
   },
   "defaultProject": "angular-pwa-ngrx-formly-routerstate",
-  "schematics": {
-    "@schematics/angular:component": {
-      "style": "scss",
-      "changeDetection": "OnPush"
-    }
-  },
   "cli": {
     "defaultCollection": "@ngrx/schematics",
     "analytics": false

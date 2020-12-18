@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { NavigationEnd, Router, Routes } from '@angular/router';
+import { Event, NavigationEnd, Router, Routes } from '@angular/router';
 import { from } from 'rxjs';
 import { concatMap, filter, map, tap } from 'rxjs/operators';
 
@@ -59,11 +59,11 @@ export class TranslocoLocalizeRouterLoader {
 
     this.router.events
       .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        map((event: NavigationEnd) => event.urlAfterRedirects),
+        filter((event: Event) => event instanceof NavigationEnd),
+        map((event: Event) => (event as NavigationEnd).urlAfterRedirects),
         concatMap((route) => from(links).pipe(map((link) => ({ link, route })))),
         tap(({ link, route }) => {
-          const lang = link.getAttribute('hreflang');
+          const lang = link.getAttribute('hreflang') || undefined;
           const fixedRoute = this.localizeRouterSrv.translateRoute(
             route.replace(`/${this.localizeRouterSrv.activeLang}/`, '/'),
             lang === 'x-default' ? this.localizeRouterSrv.noPrefixLang : lang

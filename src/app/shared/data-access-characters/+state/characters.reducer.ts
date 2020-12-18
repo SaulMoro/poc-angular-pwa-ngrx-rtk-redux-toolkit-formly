@@ -32,7 +32,7 @@ export const charactersReducer = createReducer(
   initialState,
   on(CharactersActions.filterCharacters, (state) =>
     // Remove the page from characters in state (not in current filter)
-    charactersAdapter.map((character) => ({ ...character, page: null }), {
+    charactersAdapter.map((character) => ({ ...character, page: undefined }), {
       ...state,
       dataState: LoadingState.LOADING,
       count: 0,

@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { withPayload } from '@app/shared/utils';
-import { lsTheme, mediaTheme } from '../helpers';
+import { createSlice } from '@reduxjs/toolkit';
+import { plainWithPayload } from '@app/shared/utils';
+import { lsTheme, mediaTheme } from '../utils/helpers';
 
 export interface UiState {
   theme: 'light' | 'dark';
@@ -15,7 +15,7 @@ const uiSlice = createSlice({
     toggleTheme: (state) => {
       state.theme = state.theme === 'dark' ? 'light' : 'dark';
     },
-    changeLanguage: withPayload<string>(),
+    changeLanguage: plainWithPayload<string>(),
   },
 });
 

@@ -8,9 +8,9 @@ export const ROUTER_FEATURE_KEY = 'router';
 export interface RouterStateUrl {
   url: string;
   route: string;
-  prevRoute?: string;
+  prevRoute: string;
   queryParams: Params;
   params: Params;
   data: Data;
-  page?: number;
+  page: number | null;
 }

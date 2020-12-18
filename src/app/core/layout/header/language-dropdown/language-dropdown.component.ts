@@ -53,8 +53,8 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LanguageDropdownComponent implements OnInit {
-  @Input() language: string;
-  @Input() languages: string[];
+  @Input() language?: string;
+  @Input() languages?: string[];
   @Output() languageSelected = new EventEmitter<string>();
 
   langPanelOpened = false;

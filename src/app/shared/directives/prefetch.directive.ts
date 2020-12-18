@@ -22,7 +22,7 @@ export class PrefetchDirective implements OnInit, AfterViewInit, OnDestroy {
   @Output()
   prefetch = new EventEmitter<void>();
 
-  observer: IntersectionObserver;
+  observer!: IntersectionObserver;
   loaded = false;
 
   constructor(private elemRef: ElementRef) {}
@@ -63,9 +63,6 @@ export class PrefetchDirective implements OnInit, AfterViewInit, OnDestroy {
   }
 
   prefetchData(): void {
-    if (navigator['connection']?.saveData) {
-      return undefined;
-    }
     this.prefetch.next();
   }
 }

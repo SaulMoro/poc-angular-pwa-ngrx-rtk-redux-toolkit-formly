@@ -28,7 +28,7 @@ export class TranslocoLocalizeRouterGuard implements CanActivate, CanDeactivate<
   }
 
   canDeactivate(): boolean {
-    this.transloco.setActiveLang(this.translocoLocalizeRouter.noPrefixLang);
+    this.transloco.setActiveLang(this.translocoLocalizeRouter.noPrefixLang || this.transloco.getDefaultLang());
     return true;
   }
 }

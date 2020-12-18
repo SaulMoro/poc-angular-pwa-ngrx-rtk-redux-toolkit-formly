@@ -6,9 +6,9 @@ import { of } from 'rxjs';
 import { concatMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
+import { THEME_KEY } from '../utils/helpers';
 import * as UiSelectors from './ui.selectors';
 import { UiActions } from './ui.slice';
-import { THEME_KEY } from '../helpers';
 
 @Injectable()
 export class UiEffects {

@@ -17,9 +17,8 @@ export const defaultConfig: Partial<SeoConfig> = {
   providedIn: 'root',
 })
 export class SeoService {
-  private appConfig: Partial<SeoConfig>;
+  private appConfig: Partial<SeoConfig> = { ...defaultConfig };
   private config: BehaviorSubject<SeoConfig> = new BehaviorSubject<SeoConfig>({ ...defaultConfig });
-  seoChanges$: Observable<SeoConfig> = this.config.asObservable();
 
   constructor(private title: Title, private meta: Meta, private translocoService: TranslocoService) {
     this.translocoService.selectTranslateObject('APP_SEO').subscribe((translatedSEO) => {
@@ -36,15 +35,15 @@ export class SeoService {
       ...seoConfig,
       title: seoConfig.title ? `${seoConfig.title} - ${this.appConfig.title}` : this.appConfig.title,
       keywords: seoConfig.keywords
-        ? [...(seoConfig.article?.tag || []), ...(seoConfig.keywords || []), ...this.appConfig.keywords]
+        ? [...(seoConfig.article?.tag || []), ...(seoConfig.keywords || []), ...(this.appConfig.keywords || [])]
         : this.appConfig.keywords,
       image: seoConfig.image ? getAbsoluteImageUrl(seoConfig.image) : this.appConfig.image,
-      twitter_image: getTwitterImageUrl(seoConfig.twitter_image),
-      og_image: getOGImageUrl(seoConfig.og_image),
+      twitter_image: seoConfig.twitter_image && getTwitterImageUrl(seoConfig.twitter_image),
+      og_image: seoConfig.og_image && getOGImageUrl(seoConfig.og_image),
     };
     this.config.next(config);
 
-    this.updateTitle(config.title);
+    this.updateTitle(config.title || '');
     this.updateGeneralMetaTags(config);
     this.updateOpenGraph(config);
     this.updateTwitterCard(config);
@@ -54,50 +53,44 @@ export class SeoService {
     this.title.setTitle(title);
   }
 
+  private updateOrRemoveTag(name: string, content?: string, type: 'name' | 'property' = 'name'): void {
+    if (!!content) {
+      this.meta.updateTag({ ...(type === 'name' ? { name } : { property: name }), content });
+    } else {
+      this.meta.removeTag(name);
+    }
+  }
+
   private updateGeneralMetaTags({ title, description, robots, keywords }: SeoConfig): void {
-    this.meta.updateTag({ name: 'title', content: title });
-    this.meta.updateTag({ name: 'description', content: description });
-    this.meta.updateTag({ name: 'robots', content: robots });
-    this.meta.updateTag({ name: 'keywords', content: keywords.join(', ') });
+    this.updateOrRemoveTag('title', title);
+    this.updateOrRemoveTag('description', description);
+    this.updateOrRemoveTag('robots', robots);
+    this.updateOrRemoveTag('keywords', keywords?.join(', '));
   }
 
   private updateOpenGraph(config: SeoConfig): void {
-    this.meta.updateTag({ property: 'og:type', content: 'website' });
-    this.meta.updateTag({ property: 'og:title', content: config.title });
-    this.meta.updateTag({
-      property: 'og:description',
-      content: config.description,
-    });
-    this.meta.updateTag({
-      property: 'og:url',
-      content: `${environment.url}${config.route === '/' ? config.route : config.route + '/'}`,
-    });
-    this.meta.updateTag({
-      property: 'og:image',
-      content: config.og_image || config.image,
-    });
-    this.meta.updateTag({
-      property: 'og:image:alt',
-      content: config.description,
-    });
-    this.meta.updateTag({
-      property: 'og:site_name',
-      content: this.appConfig.title,
-    });
-    this.meta.updateTag({
-      property: 'og:locale',
-      content: config.locale,
-    });
-    this.meta.updateTag({
-      property: 'og:locale:alternate',
-      content: config.locale_alternate,
-    });
+    const updatePropertyTag = (property: string, content?: string) =>
+      this.updateOrRemoveTag(property, content, 'property');
+
+    updatePropertyTag('og:type', 'website');
+    updatePropertyTag('og:title', config.title);
+    updatePropertyTag('og:description', config.description);
+    updatePropertyTag('og:url', `${environment.url}${config.route === '/' ? config.route : config.route + '/'}`);
+    updatePropertyTag('og:image', config.og_image || config.image);
+    updatePropertyTag('og:image:alt', config.description);
+    updatePropertyTag('og:site_name', this.appConfig.title);
+    updatePropertyTag('og:locale', config.locale);
+    updatePropertyTag('og:locale:alternate', config.locale_alternate);
 
     this.updateOGArticle(config.article);
     this.updateOGAuthor(config.author);
   }
 
-  private updateOGArticle(article: SeoArticle): void {
+  get seoChanges$(): Observable<SeoConfig> {
+    return this.config.asObservable();
+  }
+
+  private updateOGArticle(article?: SeoArticle): void {
     if (article) {
       this.meta.updateTag({
         property: 'og:type',
@@ -128,7 +121,7 @@ export class SeoService {
     }
   }
 
-  private updateOGAuthor(author: SeoProfile): void {
+  private updateOGAuthor(author?: SeoProfile): void {
     if (author) {
       this.meta.updateTag({
         property: 'og:type',
@@ -160,24 +153,12 @@ export class SeoService {
   }
 
   private updateTwitterCard(config: SeoConfig): void {
-    this.meta.updateTag({
-      name: 'twitter:card',
-      content: 'summary_large_image',
-    });
-    this.meta.updateTag({ name: 'twitter:site', content: '@SaulMoroDev' });
-    this.meta.updateTag({ name: 'twitter:creator', content: '@SaulMoroDev' });
-    this.meta.updateTag({ name: 'twitter:title', content: config.title });
-    this.meta.updateTag({
-      name: 'twitter:description',
-      content: config.description,
-    });
-    this.meta.updateTag({
-      name: 'twitter:image',
-      content: config.twitter_image || config.image,
-    });
-    this.meta.updateTag({
-      name: 'twitter:image:alt',
-      content: config.description,
-    });
+    this.updateOrRemoveTag('twitter:card', 'summary_large_image');
+    this.updateOrRemoveTag('twitter:site', '@SaulMoroDev');
+    this.updateOrRemoveTag('twitter:creator', '@SaulMoroDev');
+    this.updateOrRemoveTag('twitter:title', config.title);
+    this.updateOrRemoveTag('twitter:description', config.description);
+    this.updateOrRemoveTag('twitter:image', config.twitter_image || config.image);
+    this.updateOrRemoveTag('twitter:image:alt', config.description);
   }
 }

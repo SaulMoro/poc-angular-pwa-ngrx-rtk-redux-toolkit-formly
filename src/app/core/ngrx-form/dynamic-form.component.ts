@@ -16,15 +16,15 @@ import { FormConfig } from './dynamic-form-config';
       *ngrxLet="form$ as form"
       [id]="config.formId"
       [formGroup]="formGroup"
-      (ngSubmit)="onSubmitForm(form.model)"
+      (ngSubmit)="onSubmitForm(form?.model)"
       novalidate
     >
       <formly-form
         [form]="formGroup"
         [fields]="config.fields"
-        [model]="form.model"
+        [model]="form?.model"
         [options]="config.options"
-        (modelChange)="onModelChange($event, form.model, formGroup.valid)"
+        (modelChange)="onModelChange($event, form?.model, formGroup?.valid)"
       ></formly-form>
       <ng-content></ng-content>
     </form>
@@ -34,18 +34,22 @@ import { FormConfig } from './dynamic-form-config';
 export class DynamicFormComponent implements OnInit {
   // tslint:disable-next-line: no-input-rename
   @Input('form') formGroup = new FormGroup({});
-  @Input() config: FormConfig;
+  @Input() config!: FormConfig;
   @Output() submitForm = new EventEmitter<any>();
   @Output() modelChanges = new EventEmitter<any>();
 
-  form$: Observable<Form>;
+  form$!: Observable<Form | undefined>;
 
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.config.disable ? this.formGroup.disable() : this.formGroup.enable();
+    if (!this.config) {
+      throw new TypeError('The input "config" is required');
+    }
 
-    const { formId, model, filter, filterOnSubmit, reuse } = this.config;
+    this.config?.disable ? this.formGroup.disable() : this.formGroup.enable();
+
+    const { formId, model, filter = false, filterOnSubmit = false, reuse = false } = this.config;
     this.form$ = this.store.select(FormsSelectors.selectForm, { formId });
 
     this.store.dispatch(
@@ -60,13 +64,13 @@ export class DynamicFormComponent implements OnInit {
   }
 
   onModelChange(model: any, previousModel: any, valid: boolean): void {
-    const { formId, filter } = this.config;
+    const { formId, filter = false } = this.config;
     this.store.dispatch(FormsActions.updatedFormModel({ formId, model, previousModel, filter, valid }));
     this.modelChanges.emit(model);
   }
 
   onSubmitForm(model: any): void {
-    const { model: initialModel, filterOnSubmit: filter } = this.config;
+    const { model: initialModel, filterOnSubmit: filter = false } = this.config;
     this.store.dispatch(FormsActions.submittedForm({ formId: this.config.formId, model, initialModel, filter }));
     this.submitForm.emit(model);
   }

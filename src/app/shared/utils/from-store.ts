@@ -1,8 +1,10 @@
-import { select } from '@ngrx/store';
-import { of } from 'rxjs';
+import { select, Store } from '@ngrx/store';
+import { Observable, of } from 'rxjs';
 import { withLatestFrom, concatMap } from 'rxjs/operators';
 
-export const fromStore = (...selectors) => (store) => (source$) =>
+export const fromStore = (...selectors: any[]) => (store: Store) => (source$: Observable<any>) =>
   source$.pipe(
-    concatMap((action) => of(action).pipe(withLatestFrom(...selectors.map((selector) => store.pipe(select(selector))))))
+    concatMap((action) =>
+      of(action).pipe(withLatestFrom<any, any>(...selectors.map((selector) => store.pipe(select(selector)))))
+    )
   );

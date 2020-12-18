@@ -12,13 +12,13 @@ export const getCurrentRoute = createSelector(getState, (state: RouterStateUrl) 
 
 export const getCurrentUrl = createSelector(getState, (state: RouterStateUrl) => state?.url);
 
-export const getCurrentPage = createSelector(getState, (state: RouterStateUrl) => +state?.page || undefined);
+export const getCurrentPage = createSelector(getState, (state: RouterStateUrl) => state?.page);
 
 export const getQueryParams = createSelector(getState, (state: RouterStateUrl) => state?.queryParams);
 
 export const getParams = createSelector(getState, (state: RouterStateUrl) => state?.params);
 
-export const getIdParam = createSelector(getParams, (params: Params) => params?.id);
+export const getIdParam = createSelector(getParams, (params: Params): string => params?.id);
 
 export const getLangParam = createSelector(getParams, (params: Params) => params?.lang);
 
