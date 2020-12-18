@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
   @Input() languages: string[];
   @Input() theme: 'light' | 'dark';
   @Output() changeLanguage = new EventEmitter<string>();
-  @Output() changeTheme = new EventEmitter<'light' | 'dark'>();
+  @Output() toggleTheme = new EventEmitter();
 
   menuPanelOpened = false;
 
@@ -29,8 +29,8 @@ export class HeaderComponent implements OnInit {
     this.changeLanguage.emit(language);
   }
 
-  toggleTheme(): void {
-    this.changeTheme.emit(this.theme === 'dark' ? 'light' : 'dark');
+  onToggleTheme(): void {
+    this.toggleTheme.emit();
   }
 
   trackByFn(index: number): number {

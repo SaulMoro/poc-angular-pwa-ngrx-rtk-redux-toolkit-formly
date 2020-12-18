@@ -33,6 +33,7 @@
     "@ngrx/router-store": "^10.1.1",
     "@ngrx/store": "^10.1.1",
     "@ngx-formly/core": "^5.10.9",
+    "@reduxjs/toolkit": "^1.5.0",
     "@tailwindcss/forms": "^0.2.1",
     "ngrx-store-localstorage": "^10.1.1",
     "rxjs": "~6.6.0",

@@ -33,7 +33,7 @@
       </div>
 
       <div class="hidden ml-4 sm:flex sm:justify-between sm:items-center sm:space-x-2">
-        <button *ngIf="theme" class="w-5 text-gray-200 hover:text-gray-100" (click)="toggleTheme()">
+        <button *ngIf="theme" class="w-5 text-gray-200 hover:text-gray-100" (click)="onToggleTheme()">
           <ng-container *ngIf="theme === 'light'; else darkTheme">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
@@ -118,7 +118,7 @@
         [languages]="languages"
         (languageSelected)="selectLanguage($event)"
       ></app-language-dropdown>
-      <button *ngIf="theme" class="w-5 text-gray-200 hover:text-gray-100" (click)="toggleTheme()">
+      <button *ngIf="theme" class="w-5 text-gray-200 hover:text-gray-100" (click)="onToggleTheme()">
         <ng-container *ngIf="theme === 'light'; else darkTheme">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path

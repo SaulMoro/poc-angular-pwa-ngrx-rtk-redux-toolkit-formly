@@ -40,10 +40,10 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {}
 
   changeLanguage(language: string): void {
-    this.store.dispatch(UiActions.changeLanguage({ language }));
+    this.store.dispatch(UiActions.changeLanguage(language));
   }
 
-  changeTheme(theme: 'light' | 'dark'): void {
-    this.store.dispatch(UiActions.changeTheme({ theme }));
+  toggleTheme(): void {
+    this.store.dispatch(UiActions.toggleTheme());
   }
 }
