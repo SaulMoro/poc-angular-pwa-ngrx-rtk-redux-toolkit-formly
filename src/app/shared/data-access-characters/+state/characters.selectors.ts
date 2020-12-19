@@ -39,7 +39,10 @@ export const getCharatersEntities = createSelector(
   (state: State) => state && selectEntities(state)
 );
 
-export const getCharactersIds = createSelector(selectCharactersState, (state: State) => state && selectIds(state));
+export const getCharactersIds = createSelector(
+  selectCharactersState,
+  (state: State): number[] => state && (selectIds(state) as number[])
+);
 
 export const getSelectedId = createSelector(RouterSelectors.getIdParam, (id: string): number => +id);
 

@@ -112,11 +112,9 @@ export class CharactersEffects {
         LocationsActions.openCharactersDialog,
         EpisodesActions.openCharactersDialog
       ),
-      map((action: any) => action.location?.residents ?? action.episode?.characters),
+      map((action: any): number[] => action.location?.residents ?? action.episode?.characters),
       fromStore(CharactersSelectors.getCharactersIds)(this.store),
-      map(([characterIds, ids]: [number[], number[]]) =>
-        characterIds?.filter((characterId) => !ids.includes(characterId))
-      ),
+      map(([characterIds, ids]) => characterIds?.filter((characterId) => !ids.includes(characterId))),
       filter((idsToFetch) => !!idsToFetch?.length),
       switchMap((idsToFetch) =>
         this.charactersService.getCharactersFromIds(idsToFetch).pipe(
@@ -138,13 +136,13 @@ export class CharactersEffects {
         CharactersApiActions.prefetchNextCharactersPageSuccess,
         CharactersApiActions.loadCharacterSuccess
       ),
-      map((action: any) =>
+      map((action: any): number[] =>
         action.characters
           ? [...new Set(action.characters.map((character: Character) => character.firstEpisode?.id))]
           : action.character.episodes
       ),
       fromStore(EpisodesSelectors.getEpisodesIds)(this.store),
-      map(([episodeIds, ids]: [number[], number[]]) => episodeIds?.filter((episodeId) => !ids.includes(episodeId))),
+      map(([episodeIds, ids]) => episodeIds?.filter((episodeId) => !ids.includes(episodeId))),
       filter((episodeIds) => !!episodeIds?.length),
       map((episodeIds) => EpisodesActions.requiredCharactersEpisodes({ episodeIds }))
     )
