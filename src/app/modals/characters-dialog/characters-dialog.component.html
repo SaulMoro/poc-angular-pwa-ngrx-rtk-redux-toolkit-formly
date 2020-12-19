@@ -20,16 +20,10 @@
     </svg>
   </div>
 
-  <ng-container *ngrxLet="characters$ as characters">
-    <div class="grid grid-cols-1 gap-4 mt-4 xl:grid-cols-2">
-      <div class="w-full" *ngFor="let characterId of data.characterIds; trackBy: characterId">
-        <app-character-mini-card
-          *ngIf="characters[characterId]; else loadingCharacter"
-          [character]="characters[characterId]"
-        ></app-character-mini-card>
-        <ng-template #loadingCharacter>
-          <app-loading-character-mini-card></app-loading-character-mini-card>
-        </ng-template>
+  <ng-container *ngIf="characters$ | ngrxPush as characters">
+    <div class="grid gap-4 mt-4 xl:grid-cols-2">
+      <div class="w-full" *ngFor="let characterId of data.characterIds; trackBy: trackByFn">
+        <app-character-mini-card [character]="characters[characterId]"></app-character-mini-card>
       </div>
     </div>
   </ng-container>

@@ -4,6 +4,6 @@ export interface Location {
   type: string;
   dimension: string;
   residents: number[];
-  created: string;
   page?: number;
+  created: null;
 }

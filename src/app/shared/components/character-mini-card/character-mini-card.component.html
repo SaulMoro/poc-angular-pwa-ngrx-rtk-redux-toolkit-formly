@@ -1,35 +1,46 @@
-<a
-  class="flex items-center p-6 mx-auto space-x-4 transition-colors duration-200 bg-white shadow-md rounded-xl hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
-  [routerLink]="['/characters', character?.id] | localize"
-  *transloco="let t"
->
-  <div
-    class="inline-flex flex-shrink-0 w-12 h-12 overflow-hidden border border-gray-200 rounded-full shadow-lg dark:border-gray-800"
+<ng-container *ngIf="character; else loading">
+  <a
+    class="flex items-center p-6 mx-auto space-x-4 transition-colors duration-200 bg-white shadow-md rounded-xl hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
+    [routerLink]="['/characters', character.id] | localize"
+    *transloco="let t"
   >
-    <img [src]="character?.image" [alt]="character?.name" class="w-full h-full" />
-  </div>
-  <div class="w-full">
-    <div class="flex items-center justify-between w-full">
-      <span class="text-xl font-medium text-black dark:text-gray-100">{{ character?.name }}</span>
-      <div class="flex items-center mt-1 space-x-2">
-        <span
-          class="w-3 h-3 rounded-full shadow"
-          [ngClass]="
-            character?.status.toLowerCase() === statusTypes.dead
-              ? 'bg-red-400'
-              : character?.status.toLowerCase() === statusTypes.alive
-              ? 'bg-green-400'
-              : 'bg-gray-400'
-          "
-        ></span>
-        <span class="text-sm font-medium dark:text-gray-300">{{
-          t('CHARACTERS.STATUS.' + character?.status | uppercase)
-        }}</span>
-      </div>
+    <div
+      class="inline-flex flex-shrink-0 w-12 h-12 overflow-hidden border border-gray-200 rounded-full shadow-lg dark:border-gray-800"
+    >
+      <img [src]="character.image" [alt]="character.name" class="w-full h-full" />
     </div>
-    <p class="text-gray-500 dark:text-gray-400">
-      {{ t('CHARACTERS.SPECIES.' + character?.species | uppercase) }} -
-      {{ t('CHARACTERS.GENDER.' + character?.gender | uppercase) }}
-    </p>
+    <div class="w-full">
+      <div class="flex items-center justify-between w-full">
+        <span class="text-xl font-medium text-black dark:text-gray-100">{{ character.name }}</span>
+        <div class="flex items-center mt-1 space-x-2">
+          <span
+            class="w-3 h-3 rounded-full shadow"
+            [ngClass]="
+              character.status.toLowerCase() === statusTypes.dead
+                ? 'bg-red-400'
+                : character.status.toLowerCase() === statusTypes.alive
+                ? 'bg-green-400'
+                : 'bg-gray-400'
+            "
+          ></span>
+          <span class="text-sm font-medium dark:text-gray-300">{{
+            t('CHARACTERS.STATUS.' + character.status | uppercase)
+          }}</span>
+        </div>
+      </div>
+      <p class="text-gray-500 dark:text-gray-400">
+        {{ t('CHARACTERS.SPECIES.' + character.species | uppercase) }} -
+        {{ t('CHARACTERS.GENDER.' + character.gender | uppercase) }}
+      </p>
+    </div>
+  </a>
+</ng-container>
+<ng-template #loading>
+  <div class="pb-4 bg-white shadow-md pt-7 rounded-xl dark:bg-gray-700">
+    <content-loader foregroundColor="#b8b8b8" viewBox="0 0 400 50">
+      <svg:rect x="103" y="12" rx="3" ry="3" width="123" height="7" />
+      <svg:circle cx="34" cy="22" r="20" />
+      <svg:rect x="105" y="32" rx="3" ry="3" width="171" height="6" />
+    </content-loader>
   </div>
-</a>
+</ng-template>

@@ -12,22 +12,24 @@ import { FormConfig } from './dynamic-form-config';
   // tslint:disable-next-line: component-selector
   selector: 'dynamic-form',
   template: `
-    <form
-      *ngrxLet="form$ as form"
-      [id]="config.formId"
-      [formGroup]="formGroup"
-      (ngSubmit)="onSubmitForm(form?.model)"
-      novalidate
-    >
-      <formly-form
-        [form]="formGroup"
-        [fields]="config.fields"
-        [model]="form?.model"
-        [options]="config.options"
-        (modelChange)="onModelChange($event, form?.model, formGroup?.valid)"
-      ></formly-form>
-      <ng-content></ng-content>
-    </form>
+    <ng-container *ngIf="config">
+      <form
+        *ngrxLet="form$ as form"
+        [id]="config.formId"
+        [formGroup]="formGroup"
+        (ngSubmit)="onSubmitForm(form?.model)"
+        novalidate
+      >
+        <formly-form
+          [form]="formGroup"
+          [fields]="config.fields"
+          [model]="form?.model"
+          [options]="config.options || {}"
+          (modelChange)="onModelChange($event, form?.model, formGroup.valid)"
+        ></formly-form>
+        <ng-content></ng-content>
+      </form>
+    </ng-container>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

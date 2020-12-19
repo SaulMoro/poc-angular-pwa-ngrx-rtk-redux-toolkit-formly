@@ -4,6 +4,6 @@ export interface Episode {
   air_date: string;
   episode: string;
   characters: number[];
-  created: string;
   page?: number;
+  created: null;
 }

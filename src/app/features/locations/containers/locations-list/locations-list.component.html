@@ -1,9 +1,9 @@
 <app-locations-filter-form></app-locations-filter-form>
 <app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar>
 
-<ng-container *ngrxLet="locations$ as locations">
+<ng-container *ngIf="locationsTableConfig$ | ngrxPush as locationsTableConfig">
   <div class="mt-4" *transloco="let t">
-    <app-table [config]="locations">
+    <app-table [config]="locationsTableConfig">
       <!-- Actions per location -->
       <ng-template let-item="item">
         <button

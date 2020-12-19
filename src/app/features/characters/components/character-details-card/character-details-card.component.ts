@@ -8,7 +8,7 @@ import { Character } from '@app/shared/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CharacterDetailsCardComponent implements OnInit {
-  @Input() character?: Character;
+  @Input() character!: Character;
   @Output() hoverLocation = new EventEmitter<number>();
 
   constructor() {}

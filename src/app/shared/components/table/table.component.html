@@ -21,7 +21,7 @@
         *ngFor="let header of config.headers | keyvalue: keepOriginalOrder; trackBy: trackByFn"
         class="p-3 truncate border border-grey-light hover:bg-gray-100 dark:hover:bg-gray-600"
       >
-        <ng-container *ngIf="config.linkData(data) as link; else noLink">
+        <ng-container *ngIf="getLinkData(data) as link; else noLink">
           <a [routerLink]="link | localize">{{ data[header.key] }}</a>
         </ng-container>
         <ng-template #noLink>{{ data[header.key] }}</ng-template>

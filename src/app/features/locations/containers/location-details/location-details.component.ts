@@ -30,4 +30,8 @@ export class LocationDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(LocationsActions.enterLocationDetailsPage());
   }
+
+  trackByFn(index: number, characterId: number): number {
+    return characterId;
+  }
 }

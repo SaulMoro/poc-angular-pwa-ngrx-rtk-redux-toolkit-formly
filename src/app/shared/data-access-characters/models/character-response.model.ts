@@ -35,6 +35,7 @@ export const fromCharacterResponseToCharacter = (character: CharacterResponse): 
     },
     episodes,
     firstEpisode: { id: episodes[0] },
+    created: null,
   };
 };
 

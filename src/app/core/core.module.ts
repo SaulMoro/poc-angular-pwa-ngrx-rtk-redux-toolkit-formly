@@ -26,8 +26,11 @@ import { CustomSerializer } from './data-access-router/+state/custom-serializer'
       {},
       {
         runtimeChecks: {
-          strictActionImmutability: true,
           strictStateImmutability: true,
+          strictActionImmutability: true,
+          strictStateSerializability: true,
+          strictActionSerializability: true,
+          strictActionTypeUniqueness: true,
         },
       }
     ),

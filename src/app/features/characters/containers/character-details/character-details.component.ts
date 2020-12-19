@@ -30,4 +30,8 @@ export class CharacterDetailsComponent implements OnInit {
       this.store.dispatch(LocationsActions.hoverLocationOfCharacterDetails({ locationId }));
     }
   }
+
+  trackByEpisodeFn(index: number, episode?: Episode): number {
+    return episode?.id || index;
+  }
 }

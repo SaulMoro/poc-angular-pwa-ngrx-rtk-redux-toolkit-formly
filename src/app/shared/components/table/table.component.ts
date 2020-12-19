@@ -28,6 +28,7 @@ export class TableComponent implements OnInit {
     }
   }
 
-  keepOriginalOrder = (a: KeyValue<string, string>, b: KeyValue<string, string>) => a.key;
+  getLinkData = (data: any): string | undefined => this.config.linkData && this.config.linkData(data);
+  keepOriginalOrder = (a: KeyValue<string, string>, b: KeyValue<string, string>): number => 0;
   trackByFn = (index: number) => index;
 }

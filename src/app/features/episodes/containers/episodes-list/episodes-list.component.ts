@@ -20,7 +20,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EpisodesListComponent implements OnInit, OnDestroy {
-  episodes$: Observable<TableConfig<Episode>> = this.store.select(EpisodesSelectors.getEpisodes).pipe(
+  episodesTableConfig$: Observable<TableConfig<Episode>> = this.store.select(EpisodesSelectors.getEpisodes).pipe(
     switchMap((episodes: Episode[]) =>
       this.translocoService.selectTranslateObject('EPISODES.FIELDS').pipe(
         take(1),
