@@ -60,7 +60,7 @@ export class TranslocoLocalizeRouterService {
     return this.showPrefix(lang) && this.translocoService.isLang(lang);
   }
 
-  get noPrefixLang(): string {
+  get noPrefixLang(): string | undefined {
     return this.config.noPrefixLang;
   }
 

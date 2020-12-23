@@ -30,4 +30,8 @@ export class EpisodeDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(EpisodesActions.enterEpisodeDetailsPage());
   }
+
+  trackByFn(index: number, characterId: number): number {
+    return characterId;
+  }
 }

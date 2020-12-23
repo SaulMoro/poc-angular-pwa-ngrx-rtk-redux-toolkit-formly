@@ -30,6 +30,10 @@ export class CharactersDialogComponent {
   close(): void {
     this.modal?.close();
   }
+
+  trackByFn(index: number, characterId: number): number {
+    return characterId;
+  }
 }
 
 @NgModule({

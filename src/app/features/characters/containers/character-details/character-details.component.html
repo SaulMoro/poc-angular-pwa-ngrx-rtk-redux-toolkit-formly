@@ -10,14 +10,14 @@
     <div class="p-4 mt-4 bg-white rounded sm:shadow dark:bg-gray-700" *transloco="let t">
       <h2 class="mb-4 font-medium">{{ t('CHARACTERS.CHARACTER_EPISODES', { name: character.name }) }}</h2>
 
-      <div *ngrxLet="episodes$ as episodes" class="relative h-full overflow-hidden sm:px-10 wrap">
+      <div *ngIf="episodes$ | ngrxPush as episodes" class="relative h-full overflow-hidden sm:px-10 wrap">
         <div
           class="absolute h-full border border-gray-700 border-2-2 border-opacity-20 left-10 sm:left-20 md:left-1/2 dark:border-gray-200"
         ></div>
         <div
-          *ngFor="let episode of episodes; let i = index; trackBy: episode?.id"
+          *ngFor="let episode of episodes; let odd = odd; trackBy: trackByEpisodeFn"
           class="flex items-center w-full mb-8 md:justify-between"
-          [ngClass]="{ 'md:flex-row-reverse': i % 2 !== 0 }"
+          [ngClass]="{ 'md:flex-row-reverse': odd }"
         >
           <div class="md:w-5/12"></div>
           <ng-container *ngIf="episode; else loadingEpisode">

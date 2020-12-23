@@ -20,7 +20,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocationsListComponent implements OnInit, OnDestroy {
-  locations$: Observable<TableConfig<Location>> = this.store.select(LocationsSelectors.getLocations).pipe(
+  locationsTableConfig$: Observable<TableConfig<Location>> = this.store.select(LocationsSelectors.getLocations).pipe(
     switchMap((locations: Location[]) =>
       this.translocoService.selectTranslateObject('LOCATIONS.FIELDS').pipe(
         take(1),

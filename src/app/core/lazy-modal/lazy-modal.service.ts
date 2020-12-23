@@ -1,5 +1,6 @@
 import {
   ApplicationRef,
+  ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
   EmbeddedViewRef,
@@ -43,7 +44,7 @@ export class LazyModalService<T> {
     this.componentRef = undefined;
   }
 
-  private _createDialog(dialogFactory, data): any {
+  private _createDialog(dialogFactory: ComponentFactory<T>, data: any): ComponentRef<T> {
     return dialogFactory.create(
       Injector.create({
         providers: [

@@ -13,6 +13,7 @@ export interface LocationResponse {
 export const fromLocationResponseToLocation = (location: LocationResponse): Location => ({
   ...location,
   residents: [...location.residents?.map((url) => +url.split('character/')[1])],
+  created: null,
 });
 
 export const fromLocationResponsesToLocations = (locations: LocationResponse[]): Location[] =>

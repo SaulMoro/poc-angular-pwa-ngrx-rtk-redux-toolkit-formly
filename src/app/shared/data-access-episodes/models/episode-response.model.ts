@@ -13,6 +13,7 @@ export interface EpisodeResponse {
 export const fromEpisodeResponseToEpisode = (episode: EpisodeResponse): Episode => ({
   ...episode,
   characters: [...episode.characters?.map((url) => +url.split('character/')[1])],
+  created: null,
 });
 
 export const fromEpisodeResponsesToEpisodes = (episodes: EpisodeResponse[]): Episode[] =>

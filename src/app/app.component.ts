@@ -14,7 +14,7 @@ import { MenuItem } from '@app/core/layout/models';
 })
 export class AppComponent implements OnInit {
   theme$: Observable<'light' | 'dark'> = this.store.select(UiSelectors.getTheme);
-  supportedLanguages = this.translocoService.getAvailableLangs();
+  supportedLanguages: string[] = this.translocoService.getAvailableLangs() as string[];
   language$: Observable<string> = this.translocoService.langChanges$;
   menu$: Observable<MenuItem[]> = this.translocoService
     .selectTranslate(['CHARACTERS.TITLE', 'LOCATIONS.TITLE', 'EPISODES.TITLE'])
@@ -40,10 +40,10 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {}
 
   changeLanguage(language: string): void {
-    this.store.dispatch(UiActions.changeLanguage({ language }));
+    this.store.dispatch(UiActions.changeLanguage(language));
   }
 
-  changeTheme(theme: 'light' | 'dark'): void {
-    this.store.dispatch(UiActions.changeTheme({ theme }));
+  toggleTheme(): void {
+    this.store.dispatch(UiActions.toggleTheme());
   }
 }

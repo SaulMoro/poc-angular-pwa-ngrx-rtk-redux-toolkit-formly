@@ -40,7 +40,7 @@ export class FormsEffects {
         of(action).pipe(withLatestFrom(this.store$.pipe(select(FormsSelectors.selectForm, { formId: action.formId }))))
       ),
       filter(([, reuseForm]) => !!reuseForm),
-      map(([action, { model }]) => FormsActions.reuseForm({ ...action, model }))
+      map(([action, reuseForm]) => FormsActions.reuseForm({ ...action, model: reuseForm?.model }))
     )
   );
 

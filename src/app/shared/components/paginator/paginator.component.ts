@@ -7,12 +7,12 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginatorComponent implements OnInit {
-  @Input() currentPage: number;
-  @Input() pages: number;
+  @Input() currentPage = 0;
+  @Input() pages = 0;
   @Output() page = new EventEmitter<number>();
 
   paginatorPanelOpened = false;
-  paginator: 'prev' | 'post';
+  paginator: 'prev' | 'post' = 'prev';
 
   constructor() {}
 

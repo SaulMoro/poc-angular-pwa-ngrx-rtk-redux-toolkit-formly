@@ -30,7 +30,7 @@ export class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {
       queryParams,
       params,
       data,
-      page: +page || undefined,
+      page: +page || null,
     };
     this.lastRoute = state.route;
 

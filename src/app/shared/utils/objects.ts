@@ -1,12 +1,12 @@
-export const isString = (arg: any) => {
+export const isString = (arg: any): boolean => {
   return typeof arg === 'string';
 };
 
-export const isObject = (arg: any) => {
+export const isObject = (arg: any): boolean => {
   return arg && typeof arg === 'object';
 };
 
-export const isEqual = (o1: any, o2: any) => {
+export const isEqual = (o1: any, o2: any): boolean => {
   if (o1?.constructor === Array && o2?.constructor === Array && o1?.length !== o2?.length) {
     return false;
   }
@@ -15,7 +15,7 @@ export const isEqual = (o1: any, o2: any) => {
 
 export function argumentsStringifyComparer(): any {
   let currentJson = '';
-  return (incoming, current) => {
+  return (incoming: any, current: any) => {
     if (incoming === current) {
       return true;
     }

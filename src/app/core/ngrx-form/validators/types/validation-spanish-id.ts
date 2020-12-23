@@ -4,7 +4,7 @@ const DNI_REGEX = /^(\d{8})([A-Z])$/;
 const CIF_REGEX = /^([ABCDEFGHJKLMNPQRSUVW])(\d{7})([0-9A-J])$/;
 const NIE_REGEX = /^[XYZ]\d{7,8}[A-Z]$/;
 
-export const spainIdType = (str) => {
+export const spainIdType = (str: string) => {
   if (str.match(DNI_REGEX)) {
     return 'dni';
   }
@@ -14,9 +14,10 @@ export const spainIdType = (str) => {
   if (str.match(NIE_REGEX)) {
     return 'nie';
   }
+  return null;
 };
 
-export const validDNI = (str) => {
+export const validDNI = (str: string) => {
   // tslint:disable-next-line: variable-name
   const dni_letters = 'TRWAGMYFPDXBNJZSQVHLCKE';
   const letter = dni_letters.charAt(parseInt(str, 10) % 23);
@@ -24,10 +25,10 @@ export const validDNI = (str) => {
   return letter === str.charAt(8);
 };
 
-export const validNIE = (str) => {
+export const validNIE = (str: string) => {
   // Change the initial letter for the corresponding number and validate as DNI
   // tslint:disable-next-line: variable-name
-  let nie_prefix = str.charAt(0);
+  let nie_prefix: string | number = str.charAt(0);
 
   switch (nie_prefix) {
     case 'X':
@@ -44,7 +45,7 @@ export const validNIE = (str) => {
   return validDNI(nie_prefix + str.substr(1));
 };
 
-export const validCIF = (str) => {
+export const validCIF = (str: string) => {
   if (!str || str.length !== 9) {
     return false;
   }
@@ -97,7 +98,7 @@ export const validCIF = (str) => {
   return String(digit) === control || letters[digit] === control;
 };
 
-export const validateSpanishId = (str) => {
+export const validateSpanishId = (str: string) => {
   // Ensure upcase and remove whitespace ang hyphens
   str = str.toUpperCase().replace(/\s/, '').replace('-', '');
 
@@ -119,10 +120,10 @@ export const validateSpanishId = (str) => {
   return valid;
 };
 
-export function dniValidator(control: AbstractControl): ValidationErrors {
+export function dniValidator(control: AbstractControl): ValidationErrors | null {
   return validDNI(control?.value) ? null : { dni: true };
 }
 
-export function spanishIdValidator(control: AbstractControl): ValidationErrors {
+export function spanishIdValidator(control: AbstractControl): ValidationErrors | null {
   return validateSpanishId(control?.value) ? null : { spanishId: true };
 }

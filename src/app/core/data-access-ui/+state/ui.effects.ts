@@ -1,19 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { select, Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { concatMap, tap, withLatestFrom } from 'rxjs/operators';
 
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
-import * as UiActions from './ui.actions';
-import { ThemeService } from '../services/theme.service';
+import { THEME_KEY } from '../utils/helpers';
+import * as UiSelectors from './ui.selectors';
+import { UiActions } from './ui.slice';
 
 @Injectable()
 export class UiEffects {
   changeTheme$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(UiActions.changeTheme),
-        tap(({ theme }) => this.themeService.setTheme(theme)),
-        tap(({ theme }) =>
+        ofType(UiActions.toggleTheme),
+        concatMap((action) => of(action).pipe(withLatestFrom(this.store.pipe(select(UiSelectors.getTheme))))),
+        tap(([, theme]) => {
+          this.document.body.classList.toggle('dark', theme === 'dark');
+          localStorage.setItem(THEME_KEY, theme);
+        }),
+        tap(([, theme]) =>
           this.googleAnalytics.sendEvent({
             name: 'Changed Theme',
             category: GAEventCategory.INTERACTION,
@@ -28,11 +36,11 @@ export class UiEffects {
     () =>
       this.actions$.pipe(
         ofType(UiActions.changeLanguage),
-        tap(({ language }) =>
+        tap(({ payload }) =>
           this.googleAnalytics.sendEvent({
             name: 'Changed Language',
             category: GAEventCategory.INTERACTION,
-            label: language,
+            label: payload,
           })
         )
       ),
@@ -41,7 +49,8 @@ export class UiEffects {
 
   constructor(
     private actions$: Actions,
-    private themeService: ThemeService,
-    private googleAnalytics: GoogleAnalyticsService
+    private store: Store,
+    private googleAnalytics: GoogleAnalyticsService,
+    @Inject(DOCUMENT) private document: Document
   ) {}
 }

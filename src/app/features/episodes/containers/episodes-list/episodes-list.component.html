@@ -1,9 +1,9 @@
 <app-episodes-filter-form></app-episodes-filter-form>
 <app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar>
 
-<ng-container *ngrxLet="episodes$ as episodes">
+<ng-container *ngIf="episodesTableConfig$ | ngrxPush as episodesTableConfig">
   <div class="mt-4" *transloco="let t">
-    <app-table [config]="episodes">
+    <app-table [config]="episodesTableConfig">
       <!-- Actions per episode -->
       <ng-template let-item="item">
         <button

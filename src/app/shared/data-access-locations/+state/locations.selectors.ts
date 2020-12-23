@@ -6,6 +6,7 @@ import {
   defaultMemoize,
   resultMemoize,
 } from '@ngrx/store';
+import { Dictionary } from '@ngrx/entity';
 
 import { RouterSelectors } from '@app/core/data-access-router';
 import { Location, LocationsFilter, DataState, PAGE_SIZE, isLoadingOrRefreshing, isLoading } from '@app/shared/models';
@@ -20,7 +21,7 @@ export const getDataState = createSelector(selectLocationsState, (state: State) 
 
 export const getLoading = createSelector(getDataState, (state: DataState) => isLoadingOrRefreshing(state));
 
-export const getError = createSelector(selectLocationsState, (state: State) => getError(state));
+export const getError = createSelector(selectLocationsState, (state: State): any => getError(state));
 
 export const getAllLocation = createSelector(selectLocationsState, (state: State) => state && selectAll(state));
 
@@ -38,8 +39,10 @@ export const getTotalLocations = createSelector(selectLocationsState, (state: St
 export const getTotalPages = createSelector(selectLocationsState, (state: State) => state?.pages);
 
 export const getLoadedPages = createSelector(selectLocationsState, (state: State) => state?.loadedPages);
-
-export const getCurrentPage = createSelector(RouterSelectors.getCurrentPage, (page: number): number => page || 1);
+export const getCurrentPage = createSelector(
+  RouterSelectors.getCurrentPage,
+  (page: number | null): number => page || 1
+);
 
 /*
  * Locations List Selectors
@@ -77,10 +80,10 @@ export const getLocationsFilteredWithPage = createSelector(
 );
 
 export const getLocations = createSelectorFactory((projector) =>
-  resultMemoize(projector, (l1, l2) =>
+  resultMemoize(projector, (l1: Location[], l2: Location[]) =>
     isEqual(
-      l1?.map((c) => c.id),
-      l2?.map((c) => c.id)
+      l1?.map((l: Location) => l.id),
+      l2?.map((l: Location) => l.id)
     )
   )
 )(
@@ -97,5 +100,5 @@ export const getLocations = createSelectorFactory((projector) =>
 export const getSelectedLocation = createSelectorFactory((projector) => resultMemoize(projector, isEqual))(
   getLocationEntities,
   getSelectedId,
-  (entities, selectedId: number): Location => selectedId && entities[selectedId]
+  (entities: Dictionary<Location>, selectedId: number): Location | undefined => entities[selectedId]
 );

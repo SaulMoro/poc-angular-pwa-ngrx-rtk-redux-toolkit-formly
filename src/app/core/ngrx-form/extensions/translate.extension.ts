@@ -13,8 +13,8 @@ export class TranslateExtension {
     to._translated = true;
     field.expressionProperties = {
       ...(field.expressionProperties || {}),
-      'templateOptions.label': to.label && this.translocoService.selectTranslate(to.label),
-      'templateOptions.placeholder': to.placeholder && this.translocoService.selectTranslate(to.placeholder),
+      'templateOptions.label': to.label ? this.translocoService.selectTranslate(to.label) : '',
+      'templateOptions.placeholder': to.placeholder ? this.translocoService.selectTranslate(to.placeholder) : '',
     };
   }
 }
@@ -24,49 +24,49 @@ export function registerTranslateExtension(translocoService: TranslocoService): 
     validationMessages: [
       {
         name: 'required',
-        message: (err, field) => translocoService.selectTranslate('VALIDATIONS.REQUIRED'),
+        message: () => translocoService.selectTranslate('VALIDATIONS.REQUIRED'),
       },
       {
         name: 'pattern',
-        message: (err, field) => translocoService.selectTranslate('VALIDATIONS.PATTERN'),
+        message: () => translocoService.selectTranslate('VALIDATIONS.PATTERN'),
       },
       {
         name: 'minlength',
-        message: (err, field) =>
-          translocoService.selectTranslate('VALIDATIONS.MIN_LENGTH', { number: field.templateOptions.minLength }),
+        message: (error: any, field: FormlyFieldConfig) =>
+          translocoService.selectTranslate('VALIDATIONS.MIN_LENGTH', { number: field.templateOptions?.minLength }),
       },
       {
         name: 'maxlength',
-        message: (err, field) =>
-          translocoService.selectTranslate('VALIDATIONS.MAX_LENGTH', { number: field.templateOptions.maxLength }),
+        message: (error: any, field: FormlyFieldConfig) =>
+          translocoService.selectTranslate('VALIDATIONS.MAX_LENGTH', { number: field.templateOptions?.maxLength }),
       },
       {
         name: 'min',
-        message: (err, field) =>
-          translocoService.selectTranslate('VALIDATIONS.MIN', { number: field.templateOptions.min }),
+        message: (error: any, field: FormlyFieldConfig) =>
+          translocoService.selectTranslate('VALIDATIONS.MIN', { number: field.templateOptions?.min }),
       },
       {
         name: 'max',
-        message: (err, field) =>
-          translocoService.selectTranslate('VALIDATIONS.MAX', { number: field.templateOptions.max }),
+        message: (error: any, field: FormlyFieldConfig) =>
+          translocoService.selectTranslate('VALIDATIONS.MAX', { number: field.templateOptions?.max }),
       },
 
       // Custom
       {
         name: 'email',
-        message: (err, field) => translocoService.selectTranslate('VALIDATIONS.EMAIL'),
+        message: () => translocoService.selectTranslate('VALIDATIONS.EMAIL'),
       },
       {
         name: 'phone',
-        message: (err, field) => translocoService.selectTranslate('VALIDATIONS.PHONE'),
+        message: () => translocoService.selectTranslate('VALIDATIONS.PHONE'),
       },
       {
         name: 'dni',
-        message: (err, field) => translocoService.selectTranslate('VALIDATIONS.DNI'),
+        message: () => translocoService.selectTranslate('VALIDATIONS.DNI'),
       },
       {
         name: 'spanishId',
-        message: (err, field) => translocoService.selectTranslate('VALIDATIONS.SPANISH_ID'),
+        message: () => translocoService.selectTranslate('VALIDATIONS.SPANISH_ID'),
       },
     ],
     extensions: [

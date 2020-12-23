@@ -29,4 +29,8 @@ export class CharactersListComponent implements OnInit {
       this.store.dispatch(LocationsActions.hoverLocationOfCharacter({ locationId }));
     }
   }
+
+  trackByFn(index: number, character: Character): number {
+    return character.id;
+  }
 }

@@ -8,7 +8,7 @@ import { Character, CharacterStatus } from '@app/shared/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CharacterCardComponent implements OnInit {
-  @Input() character: Character;
+  @Input() character!: Character;
   @Output() hoverLocation = new EventEmitter<number>();
 
   statusTypes = CharacterStatus;

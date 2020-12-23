@@ -44,7 +44,7 @@ export function ofRoutePageChange(routeCheck: string | string[] | RegExp): Opera
   );
 }
 
-export function mapToRouterState(): OperatorFunction<Action, RouterStateUrl> {
+export function mapToRouterState(): OperatorFunction<RouterNavigationAction<RouterStateUrl>, RouterStateUrl> {
   return map((action: RouterNavigationAction<RouterStateUrl>) => action.payload.routerState);
 }
 

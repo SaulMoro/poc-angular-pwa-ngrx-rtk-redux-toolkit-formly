@@ -1,40 +1,31 @@
 <app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar>
 
 <ng-container *transloco="let t">
-  <ng-container *ngrxLet="location$ as location">
-    <ng-container *ngIf="location; else loadingLocation">
-      <div class="p-4 mb-4 bg-white sm:rounded-md sm:shadow dark:bg-gray-700">
-        <h1 class="mb-2 text-2xl font-medium text-gray-800 dark:text-gray-100">{{ location.name }}</h1>
-        <h3>{{ t('LOCATIONS.FIELDS.TYPE') }}: {{ location.type }}</h3>
-        <h3>{{ t('LOCATIONS.FIELDS.DIMENSION') }}: {{ location.dimension }}</h3>
-      </div>
+  <ng-container *ngIf="location$ | ngrxPush as location; else loadingLocation">
+    <div class="p-4 mb-4 bg-white sm:rounded-md sm:shadow dark:bg-gray-700">
+      <h1 class="mb-2 text-2xl font-medium text-gray-800 dark:text-gray-100">{{ location.name }}</h1>
+      <h3>{{ t('LOCATIONS.FIELDS.TYPE') }}: {{ location.type }}</h3>
+      <h3>{{ t('LOCATIONS.FIELDS.DIMENSION') }}: {{ location.dimension }}</h3>
+    </div>
 
-      <div class="p-4 bg-white sm:rounded-md sm:shadow dark:bg-gray-800">
-        <h2 class="mb-4 font-medium">{{ t('LOCATIONS.LOCATION_RESIDENTS', { name: location.name }) }}</h2>
-        <ng-container *ngIf="location.residents?.length; else emptyCharacters">
-          <ng-container *ngrxLet="characters$ as characters">
-            <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-3">
-              <ng-container *ngFor="let characterId of location.residents; trackBy: characterId">
-                <app-character-mini-card
-                  *ngIf="characters[characterId]; else loadingCharacter"
-                  [character]="characters[characterId]"
-                ></app-character-mini-card>
-                <ng-template #loadingCharacter>
-                  <app-loading-character-mini-card></app-loading-character-mini-card>
-                </ng-template>
-              </ng-container>
-            </div>
-          </ng-container>
-        </ng-container>
+    <div class="p-4 bg-white sm:rounded-md sm:shadow dark:bg-gray-800">
+      <h2 class="mb-4 font-medium">{{ t('LOCATIONS.LOCATION_RESIDENTS', { name: location.name }) }}</h2>
+      <ng-container *ngIf="location.residents?.length; else emptyCharacters">
+        <div *ngIf="characters$ | ngrxPush as characters" class="grid gap-4 lg:grid-cols-2 2xl:grid-cols-3">
+          <app-character-mini-card
+            *ngFor="let characterId of location.residents; trackBy: trackByFn"
+            [character]="characters[characterId]"
+          ></app-character-mini-card>
+        </div>
+      </ng-container>
 
-        <ng-template #emptyCharacters>
-          <p class="mt-8 font-bold text-gray-500">{{ t('LOCATIONS.NO_RESIDENTS') }}</p>
-        </ng-template>
-      </div>
-    </ng-container>
-
-    <ng-template #loadingLocation>
-      <app-loading-details-content></app-loading-details-content>
-    </ng-template>
+      <ng-template #emptyCharacters>
+        <p class="mt-8 font-bold text-gray-500">{{ t('LOCATIONS.NO_RESIDENTS') }}</p>
+      </ng-template>
+    </div>
   </ng-container>
+
+  <ng-template #loadingLocation>
+    <app-loading-details-content></app-loading-details-content>
+  </ng-template>
 </ng-container>

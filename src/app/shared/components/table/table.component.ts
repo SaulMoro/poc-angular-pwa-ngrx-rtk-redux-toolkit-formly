@@ -1,3 +1,4 @@
+import { KeyValue } from '@angular/common';
 import { Component, OnInit, ChangeDetectionStrategy, Input, ContentChild, TemplateRef } from '@angular/core';
 
 export interface TableConfig<T> {
@@ -16,14 +17,18 @@ export interface TableConfig<T> {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent implements OnInit {
-  @Input() config: TableConfig<any>;
-
-  @ContentChild(TemplateRef) actions: TemplateRef<any>;
+  @Input() config!: TableConfig<any>;
+  @ContentChild(TemplateRef) actions!: TemplateRef<any>;
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (!this.config) {
+      throw new TypeError('The input "config" is required');
+    }
+  }
 
-  keepOriginalOrder = (a, b) => a.key;
+  getLinkData = (data: any): string | undefined => this.config.linkData && this.config.linkData(data);
+  keepOriginalOrder = (a: KeyValue<string, string>, b: KeyValue<string, string>): number => 0;
   trackByFn = (index: number) => index;
 }
