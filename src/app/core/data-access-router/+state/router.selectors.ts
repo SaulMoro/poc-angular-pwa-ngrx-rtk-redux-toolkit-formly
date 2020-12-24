@@ -1,6 +1,6 @@
 import { Params, Data } from '@angular/router';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { RouterReducerState, getSelectors } from '@ngrx/router-store';
+import { RouterReducerState } from '@ngrx/router-store';
 
 import { RouterStateUrl, ROUTER_FEATURE_KEY } from './router.model';
 

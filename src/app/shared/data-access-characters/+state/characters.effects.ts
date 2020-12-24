@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { map, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
 
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
-import { ofRouteFilter, ofRoutePageChange } from '@app/core/data-access-router';
+import { matchRouteEnter, matchRouteFilter, ofRoute, ofRoutePageChange } from '@app/core/data-access-router';
 import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
 import { EpisodesActions, EpisodesApiActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { Character } from '@app/shared/models';
@@ -23,7 +23,7 @@ import {
 export class CharactersEffects {
   filterCharacters$ = createEffect(() =>
     this.actions$.pipe(
-      ofRouteFilter('/characters'),
+      ofRoute('/characters', matchRouteEnter, matchRouteFilter),
       map(({ queryParams, page }) => CharactersActions.filterCharacters({ filter: queryParams, page: page || 1 }))
     )
   );

@@ -29,13 +29,7 @@ export function fromStore<T1, T2, T3, T4, T5>(
 ): (store: Store) => <A>(source$: Observable<A>) => Observable<[A, T1, T2, T3, T4, T5]>;
 export function fromStore(
   ...selectors: MemoizedSelector<any, any>[]
-): (
-  store: Store
-) => <A>(
-  source$: Observable<A>
-) => Observable<
-  [A, any] | [A, any, any] | [A, any, any, any] | [A, any, any, any, any] | [A, any, any, any, any, any]
-> {
+): (store: Store) => <A>(source$: Observable<A>) => Observable<any> {
   return (store: Store) => <A>(source$: Observable<A>) =>
     source$.pipe(
       concatMap((source) =>

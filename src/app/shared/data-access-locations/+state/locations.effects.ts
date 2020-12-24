@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { asyncScheduler, of } from 'rxjs';
 import { map, debounceTime, switchMap, filter, catchError, mergeMap, takeUntil, tap } from 'rxjs/operators';
 
-import { ofRouteFilter, ofRoutePageChange } from '@app/core/data-access-router';
+import { matchRouteEnter, matchRouteFilter, ofRoute, ofRoutePageChange } from '@app/core/data-access-router';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { fromStore } from '@app/shared/utils';
 import * as LocationsActions from './locations.actions';
@@ -17,7 +17,7 @@ import { fromLocationResponsesToLocations, fromLocationResponseToLocation } from
 export class LocationsEffects {
   filterLocations$ = createEffect(() =>
     this.actions$.pipe(
-      ofRouteFilter('/locations'),
+      ofRoute('/locations', matchRouteEnter, matchRouteFilter),
       map(({ queryParams, page }) => LocationsActions.filterLocations({ filter: queryParams, page: page || 1 }))
     )
   );

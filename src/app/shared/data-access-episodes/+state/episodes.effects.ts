@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { map, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
 
-import { ofRouteFilter, ofRoutePageChange } from '@app/core/data-access-router';
+import { matchRouteEnter, matchRouteFilter, ofRoute, ofRoutePageChange } from '@app/core/data-access-router';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { fromStore } from '@app/shared/utils';
 import * as EpisodesActions from './episodes.actions';
@@ -17,7 +17,7 @@ import { fromEpisodeResponsesToEpisodes, fromEpisodeResponseToEpisode } from '..
 export class EpisodesEffects {
   filterEpisodes$ = createEffect(() =>
     this.actions$.pipe(
-      ofRouteFilter('/episodes'),
+      ofRoute('/episodes', matchRouteEnter, matchRouteFilter),
       map(({ queryParams, page }) => EpisodesActions.filterEpisodes({ filter: queryParams, page: page || 1 }))
     )
   );

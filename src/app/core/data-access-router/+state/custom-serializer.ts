@@ -8,7 +8,8 @@ const LANG_PARAM = ':lang';
 
 @Injectable()
 export class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {
-  private lastRoute = '';
+  private prevRoute: string | null = null;
+  private prevPage: number | null = null;
 
   serialize(routerState: RouterStateSnapshot): RouterStateUrl {
     let routeSnapshot: ActivatedRouteSnapshot = routerState.root;
@@ -26,13 +27,15 @@ export class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {
     const state = {
       url: routerState.url,
       route,
-      prevRoute: this.lastRoute,
+      prevRoute: this.prevRoute,
       queryParams,
       params,
       data,
       page: +page || null,
+      prevPage: this.prevPage,
     };
-    this.lastRoute = state.route;
+    this.prevRoute = state.route;
+    this.prevPage = state.page;
 
     return state;
   }
