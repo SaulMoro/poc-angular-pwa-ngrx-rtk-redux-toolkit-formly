@@ -19,6 +19,6 @@ const uiSlice = createSlice({
   },
 });
 
-const { actions: UiActions, name: UI_FEATURE_KEY } = uiSlice;
-export default uiSlice;
+const { reducer: uiReducer, actions: UiActions, name: UI_FEATURE_KEY } = uiSlice;
+export default uiReducer;
 export { UiActions, UI_FEATURE_KEY };
