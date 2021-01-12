@@ -69,8 +69,7 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "angular-pwa-ngrx-formly-routerstate:build",
-            "hmrWarning": false
+            "browserTarget": "angular-pwa-ngrx-formly-routerstate:build"
           },
           "configurations": {
             "production": {

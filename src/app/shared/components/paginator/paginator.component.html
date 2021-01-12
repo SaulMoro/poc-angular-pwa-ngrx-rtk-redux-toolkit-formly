@@ -27,7 +27,7 @@
     <div class="flex h-12 font-medium bg-gray-200 rounded-full dark:bg-gray-700">
       <a
         *ngIf="currentPage > 2"
-        class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
+        class="items-center justify-center hidden w-12 leading-5 transition duration-200 ease-in rounded-full md:flex dark:text-gray-300 hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: 1 }"
         queryParamsHandling="merge"
@@ -37,7 +37,7 @@
       </a>
       <a
         *ngIf="currentPage > 3"
-        class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
+        class="items-center justify-center hidden w-12 leading-5 transition duration-200 ease-in rounded-full md:flex dark:text-gray-300 hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: 2 }"
         queryParamsHandling="merge"
@@ -48,7 +48,7 @@
       <button
         type="button"
         *ngIf="currentPage > 4"
-        class="page-button hover:bg-gray-300 focus:outline-none focus:bg-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600"
+        class="items-center justify-center hidden w-12 leading-5 transition duration-200 ease-in rounded-full md:flex dark:text-gray-300 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600"
         (click)="togglePaginatorPanel('prev')"
       >
         ...
@@ -56,7 +56,7 @@
 
       <a
         *ngIf="currentPage - 1 >= 1"
-        class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
+        class="items-center justify-center hidden w-12 leading-5 transition duration-200 ease-in rounded-full md:flex dark:text-gray-300 hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: currentPage - 1 }"
         queryParamsHandling="merge"
@@ -65,7 +65,7 @@
         {{ currentPage - 1 }}
       </a>
       <a
-        class="bg-indigo-500 page-button"
+        class="items-center justify-center hidden w-12 leading-5 transition duration-200 ease-in bg-indigo-500 rounded-full md:flex dark:text-gray-300"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: currentPage }"
         queryParamsHandling="merge"
@@ -74,7 +74,7 @@
       </a>
       <a
         *ngIf="currentPage < pages"
-        class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
+        class="items-center justify-center hidden w-12 leading-5 transition duration-200 ease-in rounded-full md:flex dark:text-gray-300 hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: currentPage + 1 }"
         queryParamsHandling="merge"
@@ -86,14 +86,14 @@
       <button
         type="button"
         *ngIf="currentPage + 3 < pages"
-        class="page-button hover:bg-gray-300 focus:outline-none focus:bg-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600"
+        class="items-center justify-center hidden w-12 leading-5 transition duration-200 ease-in rounded-full md:flex dark:text-gray-300 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600"
         (click)="togglePaginatorPanel('post')"
       >
         ...
       </button>
       <a
         *ngIf="currentPage + 2 < pages"
-        class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
+        class="items-center justify-center hidden w-12 leading-5 transition duration-200 ease-in rounded-full md:flex dark:text-gray-300 hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: pages - 1 }"
         queryParamsHandling="merge"
@@ -103,7 +103,7 @@
       </a>
       <a
         *ngIf="currentPage + 1 < pages"
-        class="page-button hover:bg-indigo-300 dark:hover:bg-indigo-400"
+        class="items-center justify-center hidden w-12 leading-5 transition duration-200 ease-in rounded-full md:flex dark:text-gray-300 hover:bg-indigo-300 dark:hover:bg-indigo-400"
         [routerLink]="['./'] | localize"
         [queryParams]="{ page: pages }"
         queryParamsHandling="merge"
