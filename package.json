@@ -106,13 +106,13 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{ts,html}": [
+    "**/*.{ts,html}": [
       "eslint --fix"
     ],
-    "src/**/*.{scss,css}": [
+    "**/*.{scss,css}": [
       "stylelint --syntax scss --fix"
     ],
-    "src/**/i18n/*.json": [
+    "**/i18n/*.json": [
       "transloco-validator"
     ]
   },
