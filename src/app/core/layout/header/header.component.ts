@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
 import { environment } from '@environments/environment';
 import { MenuItem } from '../models';
 
@@ -8,7 +8,7 @@ import { MenuItem } from '../models';
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   @Input() menu: MenuItem[] = [];
   @Input() language: string = environment.defaultLanguage;
   @Input() languages: string[] = environment.supportedLanguages;
@@ -17,10 +17,6 @@ export class HeaderComponent implements OnInit {
   @Output() toggleTheme = new EventEmitter();
 
   menuPanelOpened = false;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   toggleMenuPanel(): void {
     this.menuPanelOpened = !this.menuPanelOpened;

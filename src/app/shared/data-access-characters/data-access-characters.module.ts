@@ -18,6 +18,4 @@ import { CharactersSeoEffects } from './+state/characters-seo.effects';
     EffectsModule.forFeature([CharactersEffects, CharactersSeoEffects]),
   ],
 })
-export class DataAccessCharactersModule {
-  constructor() {}
-}
+export class DataAccessCharactersModule {}

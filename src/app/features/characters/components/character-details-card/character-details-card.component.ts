@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
 import { Character } from '@app/shared/models';
 
 @Component({
@@ -7,13 +7,9 @@ import { Character } from '@app/shared/models';
   styleUrls: ['./character-details-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CharacterDetailsCardComponent implements OnInit {
+export class CharacterDetailsCardComponent {
   @Input() character!: Character;
   @Output() hoverLocation = new EventEmitter<number>();
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   onHoverLocation(locationId: number): void {
     this.hoverLocation.next(locationId);

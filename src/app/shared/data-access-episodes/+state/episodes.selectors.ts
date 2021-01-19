@@ -13,15 +13,13 @@ export const getDataState = createSelector(selectEpisodesState, (state) => state
 
 export const getLoading = createSelector(getDataState, (dataState: DataState) => isLoadingOrRefreshing(dataState));
 
-export const getError = createSelector(selectEpisodesState, (state): any => getError(state));
-
 export const getAllEpisodes = createSelector(selectEpisodesState, (state) => state && selectAll(state));
 
 export const getEpisodesEntities = createSelector(selectEpisodesState, (state) => state && selectEntities(state));
 
 export const getEpisodesIds = createSelector(
   selectEpisodesState,
-  (state): number[] => state && (selectIds(state) as number[])
+  (state): number[] => state && (selectIds(state) as number[]),
 );
 
 export const getSelectedId = createSelector(RouterSelectors.getIdParam, (id: string): number => +id);
@@ -32,7 +30,7 @@ export const getLoadedPages = createSelector(selectEpisodesState, (state) => sta
 
 export const getCurrentPage = createSelector(
   RouterSelectors.getCurrentPage,
-  (page: number | null): number => page || 1
+  (page: number | null): number => page || 1,
 );
 
 /*
@@ -43,28 +41,28 @@ export const getCurrentFilter = createSelector(
   (params: Params): EpisodesFilter => {
     return (
       params && {
-        name: params.name,
-        episode: params.episode,
+        name: params.name as string,
+        episode: params.episode as string,
       }
     );
-  }
+  },
 );
 
 export const getEpisodesFiltered = createSelectorFactory((projection) =>
-  defaultMemoize(projection, argumentsStringifyComparer())
+  defaultMemoize(projection, argumentsStringifyComparer()),
 )(getAllEpisodes, getCurrentFilter, (episodes: Episode[], filter: EpisodesFilter): Episode[] =>
-  filterContainsData<Episode>(episodes, filter)
+  filterContainsData<Episode>(episodes, filter),
 );
 
 export const getEpisodes = createSelectorFactory((projector) =>
   resultMemoize(projector, (l1: Episode[], l2: Episode[]) =>
     isEqual(
       l1?.map((e: Episode) => e.id),
-      l2?.map((e: Episode) => e.id)
-    )
-  )
+      l2?.map((e: Episode) => e.id),
+    ),
+  ),
 )(getEpisodesFiltered, getCurrentPage, (episodes: Episode[], page: number): Episode[] =>
-  episodes.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  episodes.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
 );
 
 /*
@@ -73,5 +71,5 @@ export const getEpisodes = createSelectorFactory((projector) =>
 export const getSelectedEpisode = createSelectorFactory((projector) => resultMemoize(projector, isEqual))(
   getEpisodesEntities,
   getSelectedId,
-  (entities: Dictionary<Episode>, selectedId: number): Episode | undefined => entities[selectedId]
+  (entities: Dictionary<Episode>, selectedId: number): Episode | undefined => entities[selectedId],
 );

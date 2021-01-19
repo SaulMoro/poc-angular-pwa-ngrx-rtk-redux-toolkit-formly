@@ -18,7 +18,7 @@ export const matchRoutePageChange: RouteMatcher = (state: RouterStateUrl) =>
 */
 
 export const isRoute = (routeToCheck: string | string[] | RegExp, ...anyOfMatchers: RouteMatcher[]) => (
-  action: any
+  action: any,
 ): action is RouterNavigationAction<RouterStateUrl> =>
   isRouterNavigation(action) &&
   matchRoute(routeToCheck, action.payload.routerState.route) &&
@@ -40,7 +40,7 @@ export function ofRoute(
   return (actions$: Observable<any>) =>
     actions$.pipe(
       filter(isRoute(routeToCheck, ...anyOfMatchers)),
-      map(({ payload: { routerState } }: RouterNavigationAction<RouterStateUrl>) => routerState)
+      map(({ payload: { routerState } }: RouterNavigationAction<RouterStateUrl>) => routerState),
     );
 }
 

@@ -13,7 +13,7 @@ import { LocationsActions } from '@app/shared/data-access-locations';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CharactersListComponent implements OnInit {
-  characters$: Observable<Character[]> = this.store.select(CharactersSelectors.getCharacters);
+  characters$: Observable<Character[]> = this.store.select<Character[]>(CharactersSelectors.getCharacters);
   loading$: Observable<boolean> = this.store.select(CharactersSelectors.getLoading);
   page$: Observable<number> = this.store.select(CharactersSelectors.getCurrentPage);
   pages$: Observable<number> = this.store.select(CharactersSelectors.getTotalPages);

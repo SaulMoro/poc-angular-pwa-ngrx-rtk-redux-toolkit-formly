@@ -26,7 +26,7 @@ export class LocationsService {
     return this.http
       .get<LocationsResponse>(`${environment.apiUrl}${API_PATCH}`, { params })
       .pipe(
-        handleNotResultsError<LocationsResponse>({ results: [] })
+        handleNotResultsError<LocationsResponse>({ results: [] }),
       );
   }
 

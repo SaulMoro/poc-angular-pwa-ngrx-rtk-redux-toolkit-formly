@@ -45,12 +45,12 @@ export class LocationsEffects {
               })),
               pages: info?.pages || page,
               page,
-            })
+            }),
           ),
-          catchError((error) => of(LocationsActions.loadListFailure(error)))
-        )
-      )
-    )
+          catchError((error: unknown) => of(LocationsActions.loadListFailure(error))),
+        ),
+      ),
+    ),
   );
 
   /* prefetchNextPageOfLocations$ = createEffect(() =>
@@ -81,15 +81,15 @@ export class LocationsEffects {
     merge(
       this.actions$.pipe(
         ofRoute('/locations/:id', matchRouteEnter),
-        map(({ params: { id } }) => +id)
+        map(({ params: { id } }) => +id),
       ),
       this.actions$.pipe(
         ofType(LocationsActions.hoverLocationOfCharacter),
         debounceTime(debounce, scheduler),
         fromStore(LocationsSelectors.getLocationsEntities)(this.store),
         filter(([{ payload: locationId }, locations]) => !locations[locationId]),
-        map(([{ payload: locationId }]) => locationId)
-      )
+        map(([{ payload: locationId }]) => locationId),
+      ),
     ).pipe(
       groupBy((id) => id),
       mergeMap((pairs) =>
@@ -97,12 +97,12 @@ export class LocationsEffects {
           exhaustMap((id) =>
             this.locationsService.getLocation(id).pipe(
               map((location) => LocationsActions.loadDetailsSuccess(fromLocationResponseToLocation(location))),
-              catchError((error) => of(LocationsActions.loadDetailsFailure(error)))
-            )
-          )
-        )
-      )
-    )
+              catchError((error: unknown) => of(LocationsActions.loadDetailsFailure(error))),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   /*
@@ -113,31 +113,31 @@ export class LocationsEffects {
     () =>
       this.actions$.pipe(
         ofRoute('/locations', matchRouteEnter, matchRouteFilter),
-        tap(({ queryParams: currentFilter }) =>
+        map(({ queryParams: currentFilter }) =>
           this.googleAnalytics.sendEvent({
             name: 'New Locations Filter',
             category: GAEventCategory.FILTER,
             label: JSON.stringify(currentFilter),
-          })
-        )
+          }),
+        ),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   gaTrackOnOpenCharactersDialog$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(LocationsActions.openCharactersDialog),
-        tap(({ payload: location }) =>
+        map(({ payload: location }) =>
           this.googleAnalytics.sendEvent({
             name: 'Open Characters Dialog Of Location',
             category: GAEventCategory.INTERACTION,
             label: location.name,
             value: location.id,
-          })
-        )
+          }),
+        ),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   locationsPageSEO$ = createEffect(
@@ -145,11 +145,11 @@ export class LocationsEffects {
       this.actions$.pipe(
         ofRoute('/locations', matchRouteEnter),
         concatMap(({ route }) =>
-          of(route).pipe(withLatestFrom(this.translocoService.selectTranslateObject('EPISODES.SEO')))
+          of(route).pipe(withLatestFrom(this.translocoService.selectTranslateObject('EPISODES.SEO'))),
         ),
-        tap(([route, config]) => this.seoService.generateMetaTags({ ...config, route }))
+        tap(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   locationsDetailsPageSEO$ = createEffect(
@@ -165,13 +165,13 @@ export class LocationsEffects {
                 description: { name },
                 'keywords.0': { name },
                 'keywords.1': { name },
-              })
-            )
-          )
+              }),
+            ),
+          ),
         ),
-        tap(([route, config]) => this.seoService.generateMetaTags({ ...config, route }))
+        tap(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   constructor(
@@ -181,6 +181,6 @@ export class LocationsEffects {
     private router: Router,
     private translocoService: TranslocoService,
     private googleAnalytics: GoogleAnalyticsService,
-    private seoService: SeoService
+    private seoService: SeoService,
   ) {}
 }

@@ -15,6 +15,4 @@ const EXPORTED_DECLARATIONS = [HeaderComponent, FooterComponent];
   imports: [CommonModule, FormsModule, RouterModule, TranslocoLocalizeRouterModule],
   exports: [...EXPORTED_DECLARATIONS],
 })
-export class LayoutModule {
-  constructor() {}
-}
+export class LayoutModule {}

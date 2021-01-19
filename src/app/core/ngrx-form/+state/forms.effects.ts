@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { filter, map, concatMap, withLatestFrom } from 'rxjs/operators';
@@ -16,20 +16,20 @@ export class FormsEffects {
     this.actions$.pipe(
       ofType(FormsActions.enterFormConfig),
       concatMap((action) =>
-        of(action).pipe(withLatestFrom(this.store$.pipe(select(FormsSelectors.selectForm, { formId: action.formId }))))
+        of(action).pipe(withLatestFrom(this.store$.select(FormsSelectors.selectForm, { formId: action.formId }))),
       ),
       filter(([, existsForm]) => !existsForm),
       concatMap(([action]) =>
         of(action).pipe(
           withLatestFrom(
             action.filter
-              ? this.store$.pipe(select(RouterSelectors.getQueryParams), map(fixDataFromQueryParams))
-              : of(action.model)
-          )
-        )
+              ? this.store$.select(RouterSelectors.getQueryParams).pipe(map(fixDataFromQueryParams))
+              : of(action.model),
+          ),
+        ),
       ),
-      map(([action, model]) => FormsActions.initForm({ ...action, model }))
-    )
+      map(([action, model]) => FormsActions.initForm({ ...action, model })),
+    ),
   );
 
   reuseForm$ = createEffect(() =>
@@ -37,11 +37,11 @@ export class FormsEffects {
       ofType(FormsActions.enterFormConfig),
       filter(({ reuse }) => reuse),
       concatMap((action) =>
-        of(action).pipe(withLatestFrom(this.store$.pipe(select(FormsSelectors.selectForm, { formId: action.formId }))))
+        of(action).pipe(withLatestFrom(this.store$.select(FormsSelectors.selectForm, { formId: action.formId }))),
       ),
       filter(([, reuseForm]) => !!reuseForm),
-      map(([action, reuseForm]) => FormsActions.reuseForm({ ...action, model: reuseForm?.model }))
-    )
+      map(([action, reuseForm]) => FormsActions.reuseForm({ ...action, model: reuseForm?.model })),
+    ),
   );
 
   updateQueryParamsOnFilter$ = createEffect(
@@ -53,11 +53,11 @@ export class FormsEffects {
           type === FormsActions.reuseForm.type
             ? { ...fixDataForQueryParams(model) }
             : // Reset pagination if update or submit filter form
-              { ...fixDataForQueryParams(model), page: null }
+              { ...fixDataForQueryParams(model), page: null },
         ),
-        concatMap((queryParams) => this.router.navigate([], { queryParams, queryParamsHandling: 'merge' }))
+        concatMap((queryParams) => this.router.navigate([], { queryParams, queryParamsHandling: 'merge' })),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   constructor(private actions$: Actions, private store$: Store, private router: Router) {}

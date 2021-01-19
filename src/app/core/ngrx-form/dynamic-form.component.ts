@@ -9,7 +9,7 @@ import { Form } from './+state/forms.model';
 import { FormConfig } from './dynamic-form-config';
 
 @Component({
-  // tslint:disable-next-line: component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'dynamic-form',
   template: `
     <ng-container *ngIf="config">
@@ -34,7 +34,7 @@ import { FormConfig } from './dynamic-form-config';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynamicFormComponent implements OnInit {
-  // tslint:disable-next-line: no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('form') formGroup = new FormGroup({});
   @Input() config!: FormConfig;
   @Output() submitForm = new EventEmitter<any>();
@@ -61,7 +61,7 @@ export class DynamicFormComponent implements OnInit {
         filter: filter || filterOnSubmit,
         reuse,
         valid: !this.config.fields?.some((field) => field.templateOptions?.required),
-      })
+      }),
     );
   }
 

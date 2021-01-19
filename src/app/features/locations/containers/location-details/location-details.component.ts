@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Dictionary } from '@ngrx/entity';
 import { combineLatest, Observable } from 'rxjs';
@@ -14,20 +14,18 @@ import { CharactersSelectors } from '@app/shared/data-access-characters';
   styleUrls: ['./location-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LocationDetailsComponent implements OnInit {
-  location$: Observable<Location> = this.store.select(LocationsSelectors.getSelectedLocation);
+export class LocationDetailsComponent {
+  location$: Observable<Location> = this.store.select<Location>(LocationsSelectors.getSelectedLocation);
   characters$: Observable<Dictionary<Character>> = this.store.select(CharactersSelectors.getCharatersEntities);
   loading$: Observable<boolean> = combineLatest([
     this.store.select(LocationsSelectors.getLoading),
     this.store.select(CharactersSelectors.getLoading),
   ]).pipe(
     map(([locationLoading, charactersLoading]) => locationLoading || charactersLoading),
-    distinctUntilChanged()
+    distinctUntilChanged(),
   );
 
   constructor(private readonly store: Store) {}
-
-  ngOnInit(): void {}
 
   trackByFn(index: number, characterId: number): number {
     return characterId;

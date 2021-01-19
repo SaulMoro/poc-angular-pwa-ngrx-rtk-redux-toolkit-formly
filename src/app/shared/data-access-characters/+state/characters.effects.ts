@@ -24,15 +24,15 @@ export class CharactersEffects {
   filterCharacters$ = createEffect(() =>
     this.actions$.pipe(
       ofRoute('/characters', matchRouteEnter, matchRouteFilter),
-      map(({ queryParams, page }) => CharactersActions.filterCharacters({ filter: queryParams, page: page || 1 }))
-    )
+      map(({ queryParams, page }) => CharactersActions.filterCharacters({ filter: queryParams, page: page || 1 })),
+    ),
   );
 
   filterPageChange$ = createEffect(() =>
     this.actions$.pipe(
       ofRoutePageChange('/characters'),
-      map(({ queryParams, page }) => CharactersActions.filterPageChange({ filter: queryParams, page: page || 1 }))
-    )
+      map(({ queryParams, page }) => CharactersActions.filterPageChange({ filter: queryParams, page: page || 1 })),
+    ),
   );
 
   loadCharacters$ = createEffect(() =>
@@ -42,7 +42,7 @@ export class CharactersEffects {
           name: 'New Characters Filter',
           category: GAEventCategory.FILTER,
           label: JSON.stringify({ currentFilter, page }),
-        })
+        }),
       ),
       switchMap(({ filter: currentFilter, page }) =>
         this.charactersService.getCharacters(currentFilter, page).pipe(
@@ -55,12 +55,12 @@ export class CharactersEffects {
               count: info?.count || results.length,
               pages: info?.pages || page,
               page,
-            })
+            }),
           ),
-          catchError((error) => of(CharactersApiActions.loadCharactersFailure({ error })))
-        )
-      )
-    )
+          catchError((error: unknown) => of(CharactersApiActions.loadCharactersFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   prefetchNextPageOfCharacters$ = createEffect(() =>
@@ -79,12 +79,12 @@ export class CharactersEffects {
               count: info?.count || results.length,
               pages: info?.pages || action.page + 1,
               page: action.page + 1,
-            })
+            }),
           ),
-          catchError((error) => of(CharactersApiActions.prefetchNextCharactersPageFailure({ error })))
-        )
-      )
-    )
+          catchError((error: unknown) => of(CharactersApiActions.prefetchNextCharactersPageFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   loadCharacter$ = createEffect(() =>
@@ -96,12 +96,12 @@ export class CharactersEffects {
           map((character) =>
             CharactersApiActions.loadCharacterSuccess({
               character: fromCharacterResponseToCharacter(character),
-            })
+            }),
           ),
-          catchError((error) => of(CharactersApiActions.loadCharacterFailure({ error })))
-        )
-      )
-    )
+          catchError((error: unknown) => of(CharactersApiActions.loadCharacterFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   loadCharactersFromIds$ = createEffect(() =>
@@ -110,7 +110,7 @@ export class CharactersEffects {
         LocationsActions.loadDetailsSuccess,
         EpisodesActions.loadDetailsSuccess,
         LocationsActions.openCharactersDialog,
-        EpisodesActions.openCharactersDialog
+        EpisodesActions.openCharactersDialog,
       ),
       map((action: any): number[] => action.location?.residents ?? action.episode?.characters),
       fromStore(CharactersSelectors.getCharactersIds)(this.store),
@@ -121,12 +121,12 @@ export class CharactersEffects {
           map((characters) =>
             CharactersApiActions.loadCharactersFromIdsSuccess({
               characters: fromCharacterResponsesToCharacters(characters),
-            })
+            }),
           ),
-          catchError((error) => of(CharactersApiActions.loadCharactersFromIdsFailure({ error })))
-        )
-      )
-    )
+          catchError((error: unknown) => of(CharactersApiActions.loadCharactersFromIdsFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   requiredCharactersEpisodes$ = createEffect(() =>
@@ -134,18 +134,18 @@ export class CharactersEffects {
       ofType(
         CharactersApiActions.loadCharactersSuccess,
         CharactersApiActions.prefetchNextCharactersPageSuccess,
-        CharactersApiActions.loadCharacterSuccess
+        CharactersApiActions.loadCharacterSuccess,
       ),
       map((action: any): number[] =>
         action.characters
           ? [...new Set(action.characters.map((character: Character) => character.firstEpisode?.id))]
-          : action.character.episodes
+          : action.character.episodes,
       ),
       fromStore(EpisodesSelectors.getEpisodesIds)(this.store),
       map(([episodeIds, ids]) => episodeIds?.filter((episodeId) => !ids.includes(episodeId))),
       filter((episodeIds) => !!episodeIds?.length),
-      map((episodeIds) => EpisodesActions.requiredCharactersEpisodes(episodeIds))
-    )
+      map((episodeIds) => EpisodesActions.requiredCharactersEpisodes(episodeIds)),
+    ),
   );
 
   /* showErrorLoadDialog$ = createEffect(() =>
@@ -169,6 +169,6 @@ export class CharactersEffects {
     private actions$: Actions,
     private store: Store,
     private charactersService: CharactersService,
-    private googleAnalytics: GoogleAnalyticsService
+    private googleAnalytics: GoogleAnalyticsService,
   ) {}
 }

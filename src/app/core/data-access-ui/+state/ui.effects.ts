@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { concatMap, tap, withLatestFrom } from 'rxjs/operators';
@@ -16,7 +16,7 @@ export class UiEffects {
     () =>
       this.actions$.pipe(
         ofType(UiActions.toggleTheme),
-        concatMap((action) => of(action).pipe(withLatestFrom(this.store.pipe(select(UiSelectors.getTheme))))),
+        concatMap((action) => of(action).pipe(withLatestFrom(this.store.select(UiSelectors.getTheme)))),
         tap(([, theme]) => {
           this.document.body.classList.toggle('dark', theme === 'dark');
           localStorage.setItem(THEME_KEY, theme);
@@ -26,10 +26,10 @@ export class UiEffects {
             name: 'Changed Theme',
             category: GAEventCategory.INTERACTION,
             label: theme,
-          })
-        )
+          }),
+        ),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   trackGAOnChangedLanguage$ = createEffect(
@@ -41,16 +41,16 @@ export class UiEffects {
             name: 'Changed Language',
             category: GAEventCategory.INTERACTION,
             label: payload,
-          })
-        )
+          }),
+        ),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   constructor(
     private actions$: Actions,
     private store: Store,
     private googleAnalytics: GoogleAnalyticsService,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
   ) {}
 }

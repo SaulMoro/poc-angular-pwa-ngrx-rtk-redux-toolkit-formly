@@ -9,7 +9,7 @@ import {
   EntityAdapter,
   ActionReducerMapBuilder,
 } from '@reduxjs/toolkit';
-import { DataState, LoadingState } from '../models';
+import { DataState, ErrorState, LoadingState } from '../models';
 
 export interface GenericPaginatedState<T> extends EntityState<T> {
   dataState: DataState;
@@ -17,8 +17,8 @@ export interface GenericPaginatedState<T> extends EntityState<T> {
   loadedPages: number[];
 }
 
-const loadingFailed = (state: GenericPaginatedState<any>, { payload: error }: PayloadAction<any>) => {
-  state.dataState = { error };
+const loadingFailed = (state: GenericPaginatedState<any>, { payload: error }: PayloadAction<unknown>) => {
+  state.dataState = { error } as ErrorState;
 };
 
 export const createGenericPaginatedSlice = <T, Reducers extends SliceCaseReducers<GenericPaginatedState<T>>>({
@@ -44,7 +44,7 @@ export const createGenericPaginatedSlice = <T, Reducers extends SliceCaseReducer
     reducers: {
       loadListSuccess: (
         state: GenericPaginatedState<T>,
-        { payload }: PayloadAction<{ data: T[]; pages: number; page: number }>
+        { payload }: PayloadAction<{ data: T[]; pages: number; page: number }>,
       ) =>
         entityAdapter.upsertMany(
           {
@@ -53,7 +53,7 @@ export const createGenericPaginatedSlice = <T, Reducers extends SliceCaseReducer
             pages: payload.pages,
             loadedPages: Array.from(new Set([...state.loadedPages, payload.page])),
           },
-          payload.data
+          payload.data,
         ),
       loadListFailure: loadingFailed,
       loadDetailsSuccess: (state: GenericPaginatedState<T>, { payload }: PayloadAction<T>) =>
@@ -62,7 +62,7 @@ export const createGenericPaginatedSlice = <T, Reducers extends SliceCaseReducer
             ...state,
             dataState: LoadingState.LOADED,
           },
-          payload
+          payload,
         ),
       loadDetailsFailure: loadingFailed,
       loadFromIdsSuccess: (state: GenericPaginatedState<T>, { payload: episodes }: PayloadAction<T[]>) =>
@@ -71,7 +71,7 @@ export const createGenericPaginatedSlice = <T, Reducers extends SliceCaseReducer
             ...state,
             dataState: LoadingState.LOADED,
           },
-          episodes
+          episodes,
         ),
       loadFromIdsFailure: loadingFailed,
       ...reducers,
@@ -89,7 +89,7 @@ export const createGenericPaginatedSlice = <T, Reducers extends SliceCaseReducer
           }
         })
         .addMatcher(isRoute(`/${name}/:id`, matchRouteEnter), (state, { payload: { routerState } }) => {
-          state.dataState = !!state.entities[routerState.params.id] ? LoadingState.REFRESHING : LoadingState.LOADING;
+          state.dataState = state.entities[+routerState.params.id] ? LoadingState.REFRESHING : LoadingState.LOADING;
         }) && extraReducers,
   });
 

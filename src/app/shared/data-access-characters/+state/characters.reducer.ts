@@ -2,7 +2,7 @@ import { Action, ActionReducer, createReducer, MetaReducer, on } from '@ngrx/sto
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { localStorageSync } from 'ngrx-store-localstorage';
 
-import { Character, DataState, LoadingState } from '@app/shared/models';
+import { Character, DataState, ErrorState, LoadingState } from '@app/shared/models';
 import { LocationsActions } from '@app/shared/data-access-locations';
 import { EpisodesActions } from '@app/shared/data-access-episodes';
 import * as CharactersActions from './characters.actions';
@@ -38,16 +38,13 @@ export const charactersReducer = createReducer(
       count: 0,
       pages: 0,
       loadedPages: [],
-    })
+    }),
   ),
   on(CharactersActions.filterPageChange, (state, { page }) => ({
     ...state,
     dataState: state.loadedPages.includes(page) ? LoadingState.REFRESHING : LoadingState.LOADING,
   })),
-  on(CharactersActions.enterCharacterDetailsPage, (state) => ({
-    ...state,
-    dataState: LoadingState.LOADING,
-  })),
+  on(CharactersActions.enterCharacterDetailsPage, (state): State => ({ ...state, dataState: LoadingState.LOADING })),
 
   on(LocationsActions.openCharactersDialog, LocationsActions.loadDetailsSuccess, (state, { payload: location }) =>
     location.residents?.some((characterId) => !state.entities[characterId])
@@ -55,7 +52,7 @@ export const charactersReducer = createReducer(
           ...state,
           dataState: LoadingState.LOADING,
         }
-      : state
+      : state,
   ),
   on(EpisodesActions.openCharactersDialog, EpisodesActions.loadDetailsSuccess, (state, { payload: episode }) =>
     episode.characters?.some((characterId) => !state.entities[characterId])
@@ -63,7 +60,7 @@ export const charactersReducer = createReducer(
           ...state,
           dataState: LoadingState.LOADING,
         }
-      : state
+      : state,
   ),
 
   on(
@@ -76,19 +73,19 @@ export const charactersReducer = createReducer(
         count,
         pages,
         loadedPages: state.dataState !== LoadingState.REFRESHING ? [...state.loadedPages, page] : state.loadedPages,
-      })
+      }),
   ),
   on(CharactersApiActions.loadCharacterSuccess, (state, { character }) =>
     charactersAdapter.upsertOne(character, {
       ...state,
       dataState: LoadingState.LOADED,
-    })
+    }),
   ),
   on(CharactersApiActions.loadCharactersFromIdsSuccess, (state, { characters }) =>
     charactersAdapter.upsertMany(characters, {
       ...state,
       dataState: LoadingState.LOADED,
-    })
+    }),
   ),
 
   on(
@@ -96,11 +93,11 @@ export const charactersReducer = createReducer(
     CharactersApiActions.prefetchNextCharactersPageFailure,
     CharactersApiActions.loadCharacterFailure,
     CharactersApiActions.loadCharactersFromIdsFailure,
-    (state, { error }) => ({
+    (state, { error }): State => ({
       ...state,
-      dataState: { error },
-    })
-  )
+      dataState: { error: null } as ErrorState,
+    }),
+  ),
 );
 
 export const localStorageSyncReducer = (reducer: ActionReducer<State>): ActionReducer<State> =>

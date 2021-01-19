@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
+import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { HashMap, TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -19,13 +19,13 @@ import {
   styleUrls: ['./episodes-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EpisodesListComponent implements OnInit, OnDestroy {
+export class EpisodesListComponent implements OnDestroy {
   episodesTableConfig$: Observable<TableConfig<Episode>> = this.store.select(EpisodesSelectors.getEpisodes).pipe(
     switchMap((episodes: Episode[]) =>
       this.translocoService.selectTranslateObject('EPISODES.FIELDS').pipe(
         take(1),
         map(
-          (translateTitles): TableConfig<Episode> => ({
+          (translateTitles: HashMap<string>): TableConfig<Episode> => ({
             headers: {
               id: translateTitles.NUM,
               episode: translateTitles.EPISODE,
@@ -35,10 +35,10 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
             data: episodes,
             linkData: (episode: Episode) => `/episodes/${episode.id}`,
             actionsHeader: translateTitles.CHARACTERS,
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
   loading$: Observable<boolean> = this.store.select(EpisodesSelectors.getLoading);
   page$: Observable<number> = this.store.select(EpisodesSelectors.getCurrentPage);
@@ -47,10 +47,8 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
   constructor(
     private readonly store: Store,
     private lazyModal: LazyModalService<CharactersDialogComponentType>,
-    private translocoService: TranslocoService
+    private translocoService: TranslocoService,
   ) {}
-
-  ngOnInit(): void {}
 
   async openCharactersDialog(episode: Episode): Promise<void> {
     const { CharactersDialogComponent } = await import(

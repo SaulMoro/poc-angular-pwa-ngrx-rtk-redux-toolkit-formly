@@ -16,11 +16,11 @@ export class CharactersSeoEffects {
       this.actions$.pipe(
         ofType(CharactersActions.enterCharactersPage),
         concatMap((action) =>
-          of(action).pipe(withLatestFrom(this.translocoService.selectTranslateObject('CHARACTERS.SEO')))
+          of(action).pipe(withLatestFrom(this.translocoService.selectTranslateObject('CHARACTERS.SEO'))),
         ),
-        tap(([, config]) => this.seoService.generateMetaTags({ ...config, route: this.router.url }))
+        tap(([, config]) => this.seoService.generateMetaTags({ ...config, route: this.router.url })),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   charactersDetailsPageSEO$ = createEffect(
@@ -36,19 +36,19 @@ export class CharactersSeoEffects {
                 description: { name },
                 'keywords.0': { name },
                 'keywords.1': { name },
-              })
-            )
-          )
+              }),
+            ),
+          ),
         ),
-        tap(([, config]) => this.seoService.generateMetaTags({ ...config, route: this.router.url }))
+        tap(([, config]) => this.seoService.generateMetaTags({ ...config, route: this.router.url })),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   constructor(
     private actions$: Actions,
     private router: Router,
     private translocoService: TranslocoService,
-    private seoService: SeoService
+    private seoService: SeoService,
   ) {}
 }

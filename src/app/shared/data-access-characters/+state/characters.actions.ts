@@ -6,9 +6,9 @@ export const enterCharacterDetailsPage = createAction('[Characters Details Page]
 
 export const filterCharacters = createAction(
   '[Characters Navigation] Filter Characters',
-  props<{ filter: CharactersFilter; page: number }>()
+  props<{ filter: CharactersFilter; page: number }>(),
 );
 export const filterPageChange = createAction(
   '[Characters Navigation] Page Change',
-  props<{ filter: CharactersFilter; page: number }>()
+  props<{ filter: CharactersFilter; page: number }>(),
 );

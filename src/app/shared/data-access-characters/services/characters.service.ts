@@ -28,7 +28,7 @@ export class CharactersService {
     return this.http
       .get<CharactersResponse>(`${environment.apiUrl}${API_PATCH}`, { params })
       .pipe(
-        handleNotResultsError<CharactersResponse>({ results: [] })
+        handleNotResultsError<CharactersResponse>({ results: [] }),
       );
   }
 

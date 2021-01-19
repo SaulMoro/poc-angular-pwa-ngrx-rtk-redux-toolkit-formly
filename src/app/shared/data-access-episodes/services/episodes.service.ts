@@ -25,7 +25,7 @@ export class EpisodesService {
     return this.http
       .get<EpisodesResponse>(`${environment.apiUrl}${API_PATCH}`, { params })
       .pipe(
-        handleNotResultsError<EpisodesResponse>({ results: [] })
+        handleNotResultsError<EpisodesResponse>({ results: [] }),
       );
   }
 

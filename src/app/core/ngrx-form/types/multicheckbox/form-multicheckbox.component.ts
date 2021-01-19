@@ -44,7 +44,7 @@ export class FormMulticheckboxComponent extends FieldType {
       this.formControl.patchValue(
         target.checked
           ? [...(this.formControl.value || []), value]
-          : [...(this.formControl.value || [])].filter((o) => o !== value)
+          : [...(this.formControl.value || [])].filter((o) => o !== value),
       );
     } else {
       this.formControl.patchValue({ ...this.formControl.value, [value]: target.checked });

@@ -56,6 +56,4 @@ import { FormTextareaModule } from './types/textarea/form-textarea.module';
   ],
   exports: [DynamicFormComponent],
 })
-export class NgRxFormModule {
-  constructor() {}
-}
+export class NgRxFormModule {}

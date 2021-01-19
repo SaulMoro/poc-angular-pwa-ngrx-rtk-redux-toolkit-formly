@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
+import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { HashMap, TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -19,13 +19,13 @@ import {
   styleUrls: ['./locations-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LocationsListComponent implements OnInit, OnDestroy {
+export class LocationsListComponent implements OnDestroy {
   locationsTableConfig$: Observable<TableConfig<Location>> = this.store.select(LocationsSelectors.getLocations).pipe(
     switchMap((locations: Location[]) =>
       this.translocoService.selectTranslateObject('LOCATIONS.FIELDS').pipe(
         take(1),
         map(
-          (translateTitles): TableConfig<Location> => ({
+          (translateTitles: HashMap<string>): TableConfig<Location> => ({
             headers: {
               id: translateTitles.NUM,
               name: translateTitles.NAME,
@@ -35,10 +35,10 @@ export class LocationsListComponent implements OnInit, OnDestroy {
             data: locations,
             linkData: (location: Location) => `/locations/${location.id}`,
             actionsHeader: translateTitles.RESIDENTS,
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
   loading$: Observable<boolean> = this.store.select(LocationsSelectors.getLoading);
   page$: Observable<number> = this.store.select(LocationsSelectors.getCurrentPage);
@@ -47,10 +47,8 @@ export class LocationsListComponent implements OnInit, OnDestroy {
   constructor(
     private readonly store: Store,
     private lazyModal: LazyModalService<CharactersDialogComponentType>,
-    private translocoService: TranslocoService
+    private translocoService: TranslocoService,
   ) {}
-
-  ngOnInit(): void {}
 
   async openResidentsDialog(location: Location): Promise<void> {
     const { CharactersDialogComponent } = await import(

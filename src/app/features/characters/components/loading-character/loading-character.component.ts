@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-loading-character',
@@ -6,8 +6,4 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   styleUrls: ['./loading-character.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoadingCharacterComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
-}
+export class LoadingCharacterComponent {}

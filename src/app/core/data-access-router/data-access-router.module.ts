@@ -12,6 +12,4 @@ import { ROUTER_FEATURE_KEY } from './+state/router.model';
   ],
   providers: [{ provide: RouterStateSerializer, useClass: CustomSerializer }],
 })
-export class DataAccessRouterModule {
-  constructor() {}
-}
+export class DataAccessRouterModule {}

@@ -8,7 +8,7 @@ import locationsReducer, { LOCATIONS_FEATURE_KEY, initialState } from './+state/
 import { LocationsEffects } from './+state/locations.effects';
 
 const localStorageSyncReducer = (
-  reducer: ActionReducer<ReturnType<typeof locationsReducer>>
+  reducer: ActionReducer<ReturnType<typeof locationsReducer>>,
 ): ActionReducer<ReturnType<typeof locationsReducer>> =>
   localStorageSync({
     keys: Object.keys(initialState),
@@ -28,6 +28,4 @@ const localStorageSyncReducer = (
     EffectsModule.forFeature([LocationsEffects]),
   ],
 })
-export class DataAccessLocationsModule {
-  constructor() {}
-}
+export class DataAccessLocationsModule {}

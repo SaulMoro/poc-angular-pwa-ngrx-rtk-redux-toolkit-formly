@@ -8,7 +8,7 @@ import episodesReducer, { EPISODES_FEATURE_KEY, initialState } from './+state/ep
 import { EpisodesEffects } from './+state/episodes.effects';
 
 const localStorageSyncReducer = (
-  reducer: ActionReducer<ReturnType<typeof episodesReducer>>
+  reducer: ActionReducer<ReturnType<typeof episodesReducer>>,
 ): ActionReducer<ReturnType<typeof episodesReducer>> =>
   localStorageSync({
     keys: Object.keys(initialState),
@@ -28,6 +28,4 @@ const localStorageSyncReducer = (
     EffectsModule.forFeature([EpisodesEffects]),
   ],
 })
-export class DataAccessEpisodesModule {
-  constructor() {}
-}
+export class DataAccessEpisodesModule {}

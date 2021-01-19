@@ -33,12 +33,12 @@ export class EpisodesEffects {
               })),
               pages: info?.pages || page,
               page,
-            })
+            }),
           ),
-          catchError((error) => of(EpisodesActions.loadListFailure(error)))
-        )
-      )
-    )
+          catchError((error: unknown) => of(EpisodesActions.loadListFailure(error))),
+        ),
+      ),
+    ),
   );
 
   /* prefetchNextPageOfEpisodes$ = createEffect(() =>
@@ -71,10 +71,10 @@ export class EpisodesEffects {
       switchMap(({ params: { id } }) =>
         this.episodesService.getEpisode(id).pipe(
           map((episode) => EpisodesActions.loadDetailsSuccess(fromEpisodeResponseToEpisode(episode))),
-          catchError((error) => of(EpisodesActions.loadDetailsFailure(error)))
-        )
-      )
-    )
+          catchError((error: unknown) => of(EpisodesActions.loadDetailsFailure(error))),
+        ),
+      ),
+    ),
   );
 
   loadEpisodesFromIds$ = createEffect(() =>
@@ -83,10 +83,10 @@ export class EpisodesEffects {
       mergeMap(({ payload: episodeIds }) =>
         this.episodesService.getEpisodesFromIds(episodeIds).pipe(
           map((episodes) => EpisodesActions.loadFromIdsSuccess(fromEpisodeResponsesToEpisodes(episodes))),
-          catchError((error) => of(EpisodesActions.loadFromIdsFailure(error)))
-        )
-      )
-    )
+          catchError((error: unknown) => of(EpisodesActions.loadFromIdsFailure(error))),
+        ),
+      ),
+    ),
   );
 
   /*
@@ -97,31 +97,31 @@ export class EpisodesEffects {
     () =>
       this.actions$.pipe(
         ofRoute('/episodes', matchRouteEnter, matchRouteFilter),
-        tap(({ queryParams: currentFilter }) =>
+        map(({ queryParams: currentFilter }) =>
           this.googleAnalytics.sendEvent({
             name: 'New Episodes Filter',
             category: GAEventCategory.FILTER,
             label: JSON.stringify(currentFilter),
-          })
-        )
+          }),
+        ),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   gaTrackOnOpenCharactersDialog$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(EpisodesActions.openCharactersDialog),
-        tap(({ payload: episode }) =>
+        map(({ payload: episode }) =>
           this.googleAnalytics.sendEvent({
             name: 'Open Characters Dialog Of Episode',
             category: GAEventCategory.INTERACTION,
             label: episode.name,
             value: episode.id,
-          })
-        )
+          }),
+        ),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   episodesPageSEO$ = createEffect(
@@ -129,11 +129,11 @@ export class EpisodesEffects {
       this.actions$.pipe(
         ofRoute('/episodes', matchRouteEnter),
         concatMap(({ route }) =>
-          of(route).pipe(withLatestFrom(this.translocoService.selectTranslateObject('EPISODES.SEO')))
+          of(route).pipe(withLatestFrom(this.translocoService.selectTranslateObject('EPISODES.SEO'))),
         ),
-        tap(([route, config]) => this.seoService.generateMetaTags({ ...config, route }))
+        tap(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   episodesDetailsPageSEO$ = createEffect(
@@ -149,13 +149,13 @@ export class EpisodesEffects {
                 description: { name },
                 'keywords.0': { name },
                 'keywords.1': { name },
-              })
-            )
-          )
+              }),
+            ),
+          ),
         ),
-        tap(([route, config]) => this.seoService.generateMetaTags({ ...config, route }))
+        tap(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   constructor(
@@ -165,6 +165,6 @@ export class EpisodesEffects {
     private router: Router,
     private translocoService: TranslocoService,
     private googleAnalytics: GoogleAnalyticsService,
-    private seoService: SeoService
+    private seoService: SeoService,
   ) {}
 }

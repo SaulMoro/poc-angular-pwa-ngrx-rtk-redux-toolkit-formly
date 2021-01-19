@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormField, FormConfig, generateFilterForm } from '@app/core/ngrx-form';
 
@@ -13,7 +13,7 @@ const fieldClass = 'col-span-2 sm:col-span-1';
   styleUrls: ['./episodes-filter-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EpisodesFilterFormComponent implements OnInit {
+export class EpisodesFilterFormComponent {
   form = new FormGroup({});
   formConfig: FormConfig = generateFilterForm({
     formId: FORM_EPISODES_FILTER_ID,
@@ -24,10 +24,6 @@ export class EpisodesFilterFormComponent implements OnInit {
       ]),
     ],
   });
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   resetFilter(): void {
     this.form.reset();

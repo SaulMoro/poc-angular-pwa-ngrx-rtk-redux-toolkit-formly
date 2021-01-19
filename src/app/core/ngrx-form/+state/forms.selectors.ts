@@ -10,22 +10,22 @@ const { selectAll, selectEntities } = formsAdapter.getSelectors();
 
 export const selectFormsEntities = createSelector(
   selectFormsState,
-  (state: FormsState) => state && selectEntities(state)
+  (state: FormsState) => state && selectEntities(state),
 );
 
 export const selectAllForms = createSelector(selectFormsState, (state: FormsState) => state && selectAll(state));
 
 export const selectForm = createSelector(
   selectFormsEntities,
-  (forms: Dictionary<Form>, props: { formId: string }) => forms[props.formId]
+  (forms: Dictionary<Form>, props: { formId: string }) => forms[props.formId],
 );
 
 export const selectFormData = createSelector(
   selectFormsEntities,
-  (forms: Dictionary<Form>, props: { formId: string }) => forms[props.formId]?.model
+  (forms: Dictionary<Form>, props: { formId: string }) => forms[props.formId]?.model,
 );
 
 export const selectFormValid = createSelector(
   selectFormsEntities,
-  (forms: Dictionary<Form>, props: { formId: string }) => forms[props.formId]?.valid
+  (forms: Dictionary<Form>, props: { formId: string }) => forms[props.formId]?.valid,
 );

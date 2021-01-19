@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-loading-details-content',
@@ -6,8 +6,4 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   styleUrls: ['./loading-details-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoadingDetailsContentComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
-}
+export class LoadingDetailsContentComponent {}

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-language-dropdown',
@@ -52,16 +52,12 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LanguageDropdownComponent implements OnInit {
+export class LanguageDropdownComponent {
   @Input() language?: string;
   @Input() languages?: string[];
   @Output() languageSelected = new EventEmitter<string>();
 
   langPanelOpened = false;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   toggleLanguagePanel(): void {
     this.langPanelOpened = !this.langPanelOpened;
