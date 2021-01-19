@@ -5,7 +5,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { Character, Episode } from '@app/shared/models';
-import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
+import { EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { CharactersSelectors } from '@app/shared/data-access-characters';
 
 @Component({
@@ -27,9 +27,7 @@ export class EpisodeDetailsComponent implements OnInit {
 
   constructor(private readonly store: Store) {}
 
-  ngOnInit(): void {
-    this.store.dispatch(EpisodesActions.enterEpisodeDetailsPage());
-  }
+  ngOnInit(): void {}
 
   trackByFn(index: number, characterId: number): number {
     return characterId;

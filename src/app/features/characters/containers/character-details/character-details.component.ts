@@ -27,7 +27,7 @@ export class CharacterDetailsComponent implements OnInit {
 
   prefetchLocation(locationId: number): void {
     if (locationId) {
-      this.store.dispatch(LocationsActions.hoverLocationOfCharacterDetails({ locationId }));
+      this.store.dispatch(LocationsActions.hoverLocationOfCharacter(locationId));
     }
   }
 

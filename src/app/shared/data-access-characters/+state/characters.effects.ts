@@ -6,8 +6,8 @@ import { map, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operator
 
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { matchRouteEnter, matchRouteFilter, ofRoute, ofRoutePageChange } from '@app/core/data-access-router';
-import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
-import { EpisodesActions, EpisodesApiActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
+import { LocationsActions } from '@app/shared/data-access-locations';
+import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { Character } from '@app/shared/models';
 import { fromStore } from '@app/shared/utils';
 import * as CharactersActions from './characters.actions';
@@ -107,8 +107,8 @@ export class CharactersEffects {
   loadCharactersFromIds$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
-        LocationsApiActions.loadLocationSuccess,
-        EpisodesApiActions.loadEpisodeSuccess,
+        LocationsActions.loadDetailsSuccess,
+        EpisodesActions.loadDetailsSuccess,
         LocationsActions.openCharactersDialog,
         EpisodesActions.openCharactersDialog
       ),
@@ -144,7 +144,7 @@ export class CharactersEffects {
       fromStore(EpisodesSelectors.getEpisodesIds)(this.store),
       map(([episodeIds, ids]) => episodeIds?.filter((episodeId) => !ids.includes(episodeId))),
       filter((episodeIds) => !!episodeIds?.length),
-      map((episodeIds) => EpisodesActions.requiredCharactersEpisodes({ episodeIds }))
+      map((episodeIds) => EpisodesActions.requiredCharactersEpisodes(episodeIds))
     )
   );
 

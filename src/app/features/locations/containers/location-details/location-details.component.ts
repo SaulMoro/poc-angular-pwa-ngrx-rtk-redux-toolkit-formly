@@ -5,7 +5,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { Character, Location } from '@app/shared/models';
-import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
+import { LocationsSelectors } from '@app/shared/data-access-locations';
 import { CharactersSelectors } from '@app/shared/data-access-characters';
 
 @Component({
@@ -27,9 +27,7 @@ export class LocationDetailsComponent implements OnInit {
 
   constructor(private readonly store: Store) {}
 
-  ngOnInit(): void {
-    this.store.dispatch(LocationsActions.enterLocationDetailsPage());
-  }
+  ngOnInit(): void {}
 
   trackByFn(index: number, characterId: number): number {
     return characterId;

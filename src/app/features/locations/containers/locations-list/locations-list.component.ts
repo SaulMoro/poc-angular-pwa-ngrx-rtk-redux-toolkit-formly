@@ -50,9 +50,7 @@ export class LocationsListComponent implements OnInit, OnDestroy {
     private translocoService: TranslocoService
   ) {}
 
-  ngOnInit(): void {
-    this.store.dispatch(LocationsActions.enterLocationsPage());
-  }
+  ngOnInit(): void {}
 
   async openResidentsDialog(location: Location): Promise<void> {
     const { CharactersDialogComponent } = await import(
@@ -64,7 +62,7 @@ export class LocationsListComponent implements OnInit, OnDestroy {
       characterIds: location.residents,
     } as CharacterDialogData);
 
-    this.store.dispatch(LocationsActions.openCharactersDialog({ location }));
+    this.store.dispatch(LocationsActions.openCharactersDialog(location));
   }
 
   ngOnDestroy(): void {

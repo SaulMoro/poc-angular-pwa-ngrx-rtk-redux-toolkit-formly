@@ -50,9 +50,7 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
     private translocoService: TranslocoService
   ) {}
 
-  ngOnInit(): void {
-    this.store.dispatch(EpisodesActions.enterEpisodesPage());
-  }
+  ngOnInit(): void {}
 
   async openCharactersDialog(episode: Episode): Promise<void> {
     const { CharactersDialogComponent } = await import(
@@ -64,7 +62,7 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
       characterIds: episode.characters,
     } as CharacterDialogData);
 
-    this.store.dispatch(EpisodesActions.openCharactersDialog({ episode }));
+    this.store.dispatch(EpisodesActions.openCharactersDialog(episode));
   }
 
   ngOnDestroy(): void {

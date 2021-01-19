@@ -1,21 +1,31 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreModule } from '@ngrx/store';
+import { ActionReducer, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { localStorageSync } from 'ngrx-store-localstorage';
 
-import * as fromEpisodes from './+state/episodes.reducer';
+import episodesReducer, { EPISODES_FEATURE_KEY, initialState } from './+state/episodes.slice';
 import { EpisodesEffects } from './+state/episodes.effects';
-import { EpisodesSeoEffects } from './+state/episodes-seo.effects';
+
+const localStorageSyncReducer = (
+  reducer: ActionReducer<ReturnType<typeof episodesReducer>>
+): ActionReducer<ReturnType<typeof episodesReducer>> =>
+  localStorageSync({
+    keys: Object.keys(initialState),
+    rehydrate: true,
+    removeOnUndefined: true,
+    storageKeySerializer: (key) => `${EPISODES_FEATURE_KEY}_${key}`,
+  })(reducer);
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forFeature(fromEpisodes.EPISODES_FEATURE_KEY, fromEpisodes.episodesReducer, {
-      initialState: fromEpisodes.initialState,
-      metaReducers: fromEpisodes.metaReducers,
+    StoreModule.forFeature(EPISODES_FEATURE_KEY, episodesReducer, {
+      initialState,
+      metaReducers: [localStorageSyncReducer],
     }),
-    EffectsModule.forFeature([EpisodesEffects, EpisodesSeoEffects]),
+    EffectsModule.forFeature([EpisodesEffects]),
   ],
 })
 export class DataAccessEpisodesModule {

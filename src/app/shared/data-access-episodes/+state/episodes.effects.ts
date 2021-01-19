@@ -1,63 +1,47 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { map, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
+import { map, switchMap, catchError, mergeMap, tap, concatMap, withLatestFrom, filter } from 'rxjs/operators';
 
-import { matchRouteEnter, matchRouteFilter, ofRoute, ofRoutePageChange } from '@app/core/data-access-router';
+import { matchRouteEnter, matchRouteFilter, matchRoutePageChange, ofRoute } from '@app/core/data-access-router';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
+import { SeoService } from '@app/core/seo';
 import { fromStore } from '@app/shared/utils';
-import * as EpisodesActions from './episodes.actions';
-import * as EpisodesApiActions from './episodes-api.actions';
+import { EpisodesActions } from './episodes.slice';
 import * as EpisodesSelectors from './episodes.selectors';
 import { EpisodesService } from '../services/episodes.service';
 import { fromEpisodeResponsesToEpisodes, fromEpisodeResponseToEpisode } from '../models/episode-response.model';
 
 @Injectable()
 export class EpisodesEffects {
-  filterEpisodes$ = createEffect(() =>
-    this.actions$.pipe(
-      ofRoute('/episodes', matchRouteEnter, matchRouteFilter),
-      map(({ queryParams, page }) => EpisodesActions.filterEpisodes({ filter: queryParams, page: page || 1 }))
-    )
-  );
-
-  filterPageChange$ = createEffect(() =>
-    this.actions$.pipe(
-      ofRoutePageChange('/episodes'),
-      map(({ queryParams, page }) => EpisodesActions.filterPageChange({ filter: queryParams, page: page || 1 }))
-    )
-  );
-
   loadEpisodes$ = createEffect(() =>
-    this.actions$.pipe(ofType(EpisodesActions.filterEpisodes, EpisodesActions.filterPageChange)).pipe(
-      tap(({ filter: currentFilter, page }) =>
-        this.googleAnalytics.sendEvent({
-          name: 'New Episodes Filter',
-          category: GAEventCategory.FILTER,
-          label: JSON.stringify({ currentFilter, page }),
-        })
-      ),
-      switchMap(({ filter: currentFilter, page }) =>
+    this.actions$.pipe(
+      ofRoute('/episodes', matchRouteEnter, matchRouteFilter, matchRoutePageChange),
+      map(({ queryParams: currentFilter, page }) => ({ currentFilter, page: page ?? 1 })),
+      fromStore(EpisodesSelectors.getLoadedPages)(this.store),
+      filter(([{ page }, loadedPages]) => !loadedPages.includes(page)),
+      switchMap(([{ currentFilter, page }]) =>
         this.episodesService.getEpisodes(currentFilter, page).pipe(
           map(({ info, results }) =>
-            EpisodesApiActions.loadEpisodesSuccess({
-              episodes: fromEpisodeResponsesToEpisodes(results).map((episode) => ({
+            EpisodesActions.loadListSuccess({
+              data: fromEpisodeResponsesToEpisodes(results).map((episode) => ({
                 ...episode,
                 page,
               })),
-              count: info?.count || results.length,
               pages: info?.pages || page,
               page,
             })
           ),
-          catchError((error) => of(EpisodesApiActions.loadEpisodesFailure({ error })))
+          catchError((error) => of(EpisodesActions.loadListFailure(error)))
         )
       )
     )
   );
 
-  prefetchNextPageOfEpisodes$ = createEffect(() =>
+  /* prefetchNextPageOfEpisodes$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EpisodesApiActions.loadEpisodesSuccess),
       fromStore(EpisodesSelectors.getCurrentFilter, EpisodesSelectors.getLoadedPages)(this.store),
@@ -79,20 +63,15 @@ export class EpisodesEffects {
         )
       )
     )
-  );
+  ); */
 
   loadEpisode$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(EpisodesActions.enterEpisodeDetailsPage),
-      fromStore(EpisodesSelectors.getSelectedId)(this.store),
-      switchMap(([, episodeId]) =>
-        this.episodesService.getEpisode(episodeId).pipe(
-          map((episode) =>
-            EpisodesApiActions.loadEpisodeSuccess({
-              episode: fromEpisodeResponseToEpisode(episode),
-            })
-          ),
-          catchError((error) => of(EpisodesApiActions.loadEpisodeFailure({ error })))
+      ofRoute('/episodes/:id', matchRouteEnter),
+      switchMap(({ params: { id } }) =>
+        this.episodesService.getEpisode(id).pipe(
+          map((episode) => EpisodesActions.loadDetailsSuccess(fromEpisodeResponseToEpisode(episode))),
+          catchError((error) => of(EpisodesActions.loadDetailsFailure(error)))
         )
       )
     )
@@ -101,24 +80,39 @@ export class EpisodesEffects {
   loadEpisodesFromIds$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EpisodesActions.requiredCharactersEpisodes),
-      mergeMap(({ episodeIds }) =>
+      mergeMap(({ payload: episodeIds }) =>
         this.episodesService.getEpisodesFromIds(episodeIds).pipe(
-          map((episodes) =>
-            EpisodesApiActions.loadEpisodesFromIdsSuccess({
-              episodes: fromEpisodeResponsesToEpisodes(episodes),
-            })
-          ),
-          catchError((error) => of(EpisodesApiActions.loadEpisodesFromIdsFailure({ error })))
+          map((episodes) => EpisodesActions.loadFromIdsSuccess(fromEpisodeResponsesToEpisodes(episodes))),
+          catchError((error) => of(EpisodesActions.loadFromIdsFailure(error)))
         )
       )
     )
+  );
+
+  /*
+   * Analytics and SEO
+   */
+
+  gaTrackOnNewFilter$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofRoute('/episodes', matchRouteEnter, matchRouteFilter),
+        tap(({ queryParams: currentFilter }) =>
+          this.googleAnalytics.sendEvent({
+            name: 'New Episodes Filter',
+            category: GAEventCategory.FILTER,
+            label: JSON.stringify(currentFilter),
+          })
+        )
+      ),
+    { dispatch: false }
   );
 
   gaTrackOnOpenCharactersDialog$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(EpisodesActions.openCharactersDialog),
-        tap(({ episode }) =>
+        tap(({ payload: episode }) =>
           this.googleAnalytics.sendEvent({
             name: 'Open Characters Dialog Of Episode',
             category: GAEventCategory.INTERACTION,
@@ -130,27 +124,47 @@ export class EpisodesEffects {
     { dispatch: false }
   );
 
-  /* showErrorLoadDialog$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(
-        EpisodesApiActions.loadEpisodesFailure,
-        EpisodesApiActions.loadEpisodeFailure,
-        EpisodesApiActions.loadEpisodesFromIdsFailure
+  episodesPageSEO$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofRoute('/episodes', matchRouteEnter),
+        concatMap(({ route }) =>
+          of(route).pipe(withLatestFrom(this.translocoService.selectTranslateObject('EPISODES.SEO')))
+        ),
+        tap(([route, config]) => this.seoService.generateMetaTags({ ...config, route }))
       ),
-      exhaustMap(({ error }) =>
-        this.dialog
-          .open(AlertDialogComponent, {
-            data: [!!error.errorMessage ? error.errorMessage : translate('ERRORS.BACKEND'), translate('ERRORS.RETRY')],
-          })
-          .afterClosed()
-      )
-    )
-  ); */
+    { dispatch: false }
+  );
+
+  episodesDetailsPageSEO$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(EpisodesActions.loadDetailsSuccess),
+        map(({ payload: episode }) => episode.name),
+        concatMap((name) =>
+          of(this.router.url).pipe(
+            withLatestFrom(
+              this.translocoService.selectTranslateObject('EPISODES.SEO_DETAILS', {
+                title: { name },
+                description: { name },
+                'keywords.0': { name },
+                'keywords.1': { name },
+              })
+            )
+          )
+        ),
+        tap(([route, config]) => this.seoService.generateMetaTags({ ...config, route }))
+      ),
+    { dispatch: false }
+  );
 
   constructor(
     private actions$: Actions,
-    private store: Store,
     private episodesService: EpisodesService,
-    private googleAnalytics: GoogleAnalyticsService
+    private store: Store,
+    private router: Router,
+    private translocoService: TranslocoService,
+    private googleAnalytics: GoogleAnalyticsService,
+    private seoService: SeoService
   ) {}
 }

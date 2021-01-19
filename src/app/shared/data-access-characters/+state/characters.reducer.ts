@@ -3,8 +3,8 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { localStorageSync } from 'ngrx-store-localstorage';
 
 import { Character, DataState, LoadingState } from '@app/shared/models';
-import { LocationsActions, LocationsApiActions } from '@app/shared/data-access-locations';
-import { EpisodesActions, EpisodesApiActions } from '@app/shared/data-access-episodes';
+import { LocationsActions } from '@app/shared/data-access-locations';
+import { EpisodesActions } from '@app/shared/data-access-episodes';
 import * as CharactersActions from './characters.actions';
 import * as CharactersApiActions from './characters-api.actions';
 
@@ -49,7 +49,7 @@ export const charactersReducer = createReducer(
     dataState: LoadingState.LOADING,
   })),
 
-  on(LocationsActions.openCharactersDialog, LocationsApiActions.loadLocationSuccess, (state, { location }) =>
+  on(LocationsActions.openCharactersDialog, LocationsActions.loadDetailsSuccess, (state, { payload: location }) =>
     location.residents?.some((characterId) => !state.entities[characterId])
       ? {
           ...state,
@@ -57,7 +57,7 @@ export const charactersReducer = createReducer(
         }
       : state
   ),
-  on(EpisodesActions.openCharactersDialog, EpisodesApiActions.loadEpisodeSuccess, (state, { episode }) =>
+  on(EpisodesActions.openCharactersDialog, EpisodesActions.loadDetailsSuccess, (state, { payload: episode }) =>
     episode.characters?.some((characterId) => !state.entities[characterId])
       ? {
           ...state,

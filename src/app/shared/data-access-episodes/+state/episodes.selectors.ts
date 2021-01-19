@@ -1,47 +1,34 @@
 import { Params } from '@angular/router';
-import {
-  createFeatureSelector,
-  createSelector,
-  createSelectorFactory,
-  defaultMemoize,
-  resultMemoize,
-} from '@ngrx/store';
+import { createSelector, createSelectorFactory, defaultMemoize, resultMemoize } from '@ngrx/store';
 import { Dictionary } from '@ngrx/entity';
 
 import { RouterSelectors } from '@app/core/data-access-router';
-import { Episode, EpisodesFilter, DataState, PAGE_SIZE, isLoadingOrRefreshing, isLoading } from '@app/shared/models';
+import { Episode, EpisodesFilter, DataState, PAGE_SIZE, isLoadingOrRefreshing } from '@app/shared/models';
 import { argumentsStringifyComparer, filterContainsData, isEqual } from '@app/shared/utils';
-import { episodesAdapter, EPISODES_FEATURE_KEY, State } from './episodes.reducer';
-
-export const selectEpisodesState = createFeatureSelector<State>(EPISODES_FEATURE_KEY);
+import { episodesAdapter, selectEpisodesState } from './episodes.slice';
 
 const { selectAll, selectEntities, selectIds } = episodesAdapter.getSelectors();
 
-export const getDataState = createSelector(selectEpisodesState, (state: State) => state?.dataState);
+export const getDataState = createSelector(selectEpisodesState, (state) => state?.dataState);
 
-export const getLoading = createSelector(getDataState, (state: DataState) => isLoadingOrRefreshing(state));
+export const getLoading = createSelector(getDataState, (dataState: DataState) => isLoadingOrRefreshing(dataState));
 
-export const getError = createSelector(selectEpisodesState, (state: State): any => getError(state));
+export const getError = createSelector(selectEpisodesState, (state): any => getError(state));
 
-export const getAllEpisodes = createSelector(selectEpisodesState, (state: State) => state && selectAll(state));
+export const getAllEpisodes = createSelector(selectEpisodesState, (state) => state && selectAll(state));
 
-export const getEpisodesEntities = createSelector(
-  selectEpisodesState,
-  (state: State) => state && selectEntities(state)
-);
+export const getEpisodesEntities = createSelector(selectEpisodesState, (state) => state && selectEntities(state));
 
 export const getEpisodesIds = createSelector(
   selectEpisodesState,
-  (state: State): number[] => state && (selectIds(state) as number[])
+  (state): number[] => state && (selectIds(state) as number[])
 );
 
 export const getSelectedId = createSelector(RouterSelectors.getIdParam, (id: string): number => +id);
 
-export const getTotalEpisodes = createSelector(selectEpisodesState, (state: State) => state?.count);
+export const getTotalPages = createSelector(selectEpisodesState, (state) => state?.pages);
 
-export const getTotalPages = createSelector(selectEpisodesState, (state: State) => state?.pages);
-
-export const getLoadedPages = createSelector(selectEpisodesState, (state: State) => state?.loadedPages);
+export const getLoadedPages = createSelector(selectEpisodesState, (state) => state?.loadedPages);
 
 export const getCurrentPage = createSelector(
   RouterSelectors.getCurrentPage,
@@ -51,12 +38,6 @@ export const getCurrentPage = createSelector(
 /*
  * Episodes List Selectors
  */
-export const getEpisodesOfCurrentPage = createSelector(
-  getAllEpisodes,
-  getCurrentPage,
-  (episodes: Episode[], currentPage: number): Episode[] => episodes?.filter((episode) => episode?.page === currentPage)
-);
-
 export const getCurrentFilter = createSelector(
   RouterSelectors.getQueryParams,
   (params: Params): EpisodesFilter => {
@@ -75,12 +56,6 @@ export const getEpisodesFiltered = createSelectorFactory((projection) =>
   filterContainsData<Episode>(episodes, filter)
 );
 
-export const getEpisodesFilteredWithPage = createSelector(
-  getEpisodesFiltered,
-  getCurrentPage,
-  (episodes: Episode[], page: number): Episode[] => episodes.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
-);
-
 export const getEpisodes = createSelectorFactory((projector) =>
   resultMemoize(projector, (l1: Episode[], l2: Episode[]) =>
     isEqual(
@@ -88,12 +63,8 @@ export const getEpisodes = createSelectorFactory((projector) =>
       l2?.map((e: Episode) => e.id)
     )
   )
-)(
-  getDataState,
-  getEpisodesFilteredWithPage,
-  getEpisodesOfCurrentPage,
-  (state: DataState, episodesFiltered: Episode[], episodes: Episode[]): Episode[] =>
-    isLoading(state) ? episodesFiltered : episodes
+)(getEpisodesFiltered, getCurrentPage, (episodes: Episode[], page: number): Episode[] =>
+  episodes.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 );
 
 /*
