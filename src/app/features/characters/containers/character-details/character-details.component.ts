@@ -13,10 +13,10 @@ import { LocationsActions } from '@app/shared/data-access-locations';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CharacterDetailsComponent implements OnInit {
-  character$: Observable<Character> = this.store.select(CharactersSelectors.getSelectedCharacter);
-  loading$: Observable<boolean> = this.store.select(CharactersSelectors.getLoadingCharacter);
+  character$: Observable<Character> = this.store.select<Character>(CharactersSelectors.getSelectedCharacter);
+  loading$: Observable<boolean> = this.store.select(CharactersSelectors.getLoading);
   episodes$: Observable<(Episode | undefined)[]> = this.store.select(
-    CharactersSelectors.getEpisodesOfSelectedCharacter
+    CharactersSelectors.getEpisodesOfSelectedCharacter,
   );
 
   constructor(private readonly store: Store) {}
@@ -27,11 +27,11 @@ export class CharacterDetailsComponent implements OnInit {
 
   prefetchLocation(locationId: number): void {
     if (locationId) {
-      this.store.dispatch(LocationsActions.hoverLocationOfCharacterDetails({ locationId }));
+      this.store.dispatch(LocationsActions.hoverLocationOfCharacter(locationId));
     }
   }
 
   trackByEpisodeFn(index: number, episode?: Episode): number {
-    return episode?.id || index;
+    return episode?.id ?? index;
   }
 }

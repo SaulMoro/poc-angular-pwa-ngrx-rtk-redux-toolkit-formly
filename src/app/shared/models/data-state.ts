@@ -7,12 +7,10 @@ export const enum LoadingState {
 }
 
 export interface ErrorState {
-  error: any;
+  error: unknown;
 }
 
 export type DataState = LoadingState | ErrorState;
-
-export const getError = (dataState: DataState): any | null => (dataState as ErrorState)?.error ?? null;
 
 export const isLoading = (dataState: DataState): boolean => dataState === LoadingState.LOADING;
 export const isLoadingOrRefreshing = (dataState: DataState): boolean =>

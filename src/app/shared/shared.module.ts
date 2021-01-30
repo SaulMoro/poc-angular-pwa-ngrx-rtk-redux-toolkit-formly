@@ -54,6 +54,4 @@ const IMPORTED_EXPORTS = [
   ],
   exports: [...IMPORTED_EXPORTS, ...EXPORTED_DECLARATIONS],
 })
-export class SharedModule {
-  constructor() {}
-}
+export class SharedModule {}

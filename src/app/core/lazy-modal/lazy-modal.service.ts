@@ -17,7 +17,7 @@ export class LazyModalService<T> {
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
     private appRef: ApplicationRef,
-    private injector: Injector
+    private injector: Injector,
   ) {}
 
   open(component: Type<T>, data?: any): void {
@@ -54,7 +54,7 @@ export class LazyModalService<T> {
           },
         ],
         parent: this.injector,
-      })
+      }),
     );
   }
 }

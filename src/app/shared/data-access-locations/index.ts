@@ -1,5 +1,4 @@
 export * from './data-access-locations.module';
-import * as LocationsActions from './+state/locations.actions';
-import * as LocationsApiActions from './+state/locations-api.actions';
+import { LocationsActions } from './+state/locations.slice';
 import * as LocationsSelectors from './+state/locations.selectors';
-export { LocationsActions, LocationsApiActions, LocationsSelectors };
+export { LocationsActions, LocationsSelectors };

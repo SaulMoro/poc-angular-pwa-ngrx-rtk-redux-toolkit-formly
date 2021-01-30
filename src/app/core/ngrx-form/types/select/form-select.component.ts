@@ -93,6 +93,7 @@ export class FormSelectComponent extends FieldType {
       return;
     }
 
+    /* eslint-disable */
     const writeValue = s.writeValue.bind(s);
     if (s._getOptionId(s.value) === null) {
       writeValue(s.value);
@@ -116,6 +117,7 @@ export class FormSelectComponent extends FieldType {
           });
       }
     };
+    /* eslint-enable */
   }
 
   constructor(private ngZone: NgZone) {

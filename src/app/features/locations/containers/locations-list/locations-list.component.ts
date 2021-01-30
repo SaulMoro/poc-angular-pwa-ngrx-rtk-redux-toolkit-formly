@@ -1,17 +1,17 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
+import { Component, ChangeDetectionStrategy, OnDestroy, OnInit } from '@angular/core';
+import { HashMap, TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
 import { LazyModalService } from '@app/core/lazy-modal';
-import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
-import { Location } from '@app/shared/models';
-import { TableConfig } from '@app/shared/components/table/table.component';
 import {
   CharactersDialogComponent as CharactersDialogComponentType,
   CharacterDialogData,
 } from '@app/modals/characters-dialog/characters-dialog.component';
+import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
+import { Location, LocationsFilter } from '@app/shared/models';
+import { TableConfig } from '@app/shared/components/table/table.component';
 
 @Component({
   selector: 'app-locations-list',
@@ -25,7 +25,7 @@ export class LocationsListComponent implements OnInit, OnDestroy {
       this.translocoService.selectTranslateObject('LOCATIONS.FIELDS').pipe(
         take(1),
         map(
-          (translateTitles): TableConfig<Location> => ({
+          (translateTitles: HashMap<string>): TableConfig<Location> => ({
             headers: {
               id: translateTitles.NUM,
               name: translateTitles.NAME,
@@ -35,10 +35,10 @@ export class LocationsListComponent implements OnInit, OnDestroy {
             data: locations,
             linkData: (location: Location) => `/locations/${location.id}`,
             actionsHeader: translateTitles.RESIDENTS,
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
   loading$: Observable<boolean> = this.store.select(LocationsSelectors.getLoading);
   page$: Observable<number> = this.store.select(LocationsSelectors.getCurrentPage);
@@ -47,11 +47,19 @@ export class LocationsListComponent implements OnInit, OnDestroy {
   constructor(
     private readonly store: Store,
     private lazyModal: LazyModalService<CharactersDialogComponentType>,
-    private translocoService: TranslocoService
+    private translocoService: TranslocoService,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.store.dispatch(LocationsActions.enterLocationsPage());
+  }
+
+  newFilter(filter: LocationsFilter) {
+    this.store.dispatch(LocationsActions.newLocationsFilter(filter));
+  }
+
+  filterPageChange(page: number) {
+    this.store.dispatch(LocationsActions.filterPageChange(page));
   }
 
   async openResidentsDialog(location: Location): Promise<void> {
@@ -64,7 +72,7 @@ export class LocationsListComponent implements OnInit, OnDestroy {
       characterIds: location.residents,
     } as CharacterDialogData);
 
-    this.store.dispatch(LocationsActions.openCharactersDialog({ location }));
+    this.store.dispatch(LocationsActions.openCharactersDialog(location));
   }
 
   ngOnDestroy(): void {

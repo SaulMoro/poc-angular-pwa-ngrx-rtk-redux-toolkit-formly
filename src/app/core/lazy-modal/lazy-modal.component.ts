@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { LazyModalService } from './lazy-modal.service';
 
 @Component({
-  // tslint:disable-next-line: component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'lazy-modal',
   template: `
     <section
@@ -42,11 +42,11 @@ export class LazyModalComponent<T> {
 
   constructor(private modalService: LazyModalService<T>) {}
 
-  async close(): Promise<void> {
+  close(): void {
     this.display = false;
 
-    setTimeout(async () => {
-      await this.modalService.close();
+    setTimeout(() => {
+      this.modalService.close();
     }, 310);
   }
 }

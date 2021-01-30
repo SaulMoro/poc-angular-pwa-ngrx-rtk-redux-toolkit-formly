@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-paginator',
@@ -6,17 +6,13 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter
   styleUrls: ['./paginator.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PaginatorComponent implements OnInit {
+export class PaginatorComponent {
   @Input() currentPage = 0;
   @Input() pages = 0;
   @Output() page = new EventEmitter<number>();
 
   paginatorPanelOpened = false;
   paginator: 'prev' | 'post' = 'prev';
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   togglePaginatorPanel(paginator: 'prev' | 'post'): void {
     this.paginator = paginator;

@@ -5,7 +5,7 @@ export class FormField implements FormlyFieldConfig {
     key: string,
     type?: string,
     templateOptions: FormlyTemplateOptions = {},
-    config: FormlyFieldConfig = {}
+    config: FormlyFieldConfig = {},
   ): FormlyFieldConfig {
     return {
       key,
@@ -27,7 +27,7 @@ export class FormField implements FormlyFieldConfig {
   static input(
     key: string,
     templateOptions: FormlyTemplateOptions = {},
-    config: FormlyFieldConfig = {}
+    config: FormlyFieldConfig = {},
   ): FormlyFieldConfig {
     return FormField.field(key, 'input', templateOptions, config);
   }

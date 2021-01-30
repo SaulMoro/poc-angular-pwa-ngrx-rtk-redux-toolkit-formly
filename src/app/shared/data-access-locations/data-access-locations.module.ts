@@ -1,23 +1,31 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreModule } from '@ngrx/store';
+import { ActionReducer, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { localStorageSync } from 'ngrx-store-localstorage';
 
-import * as fromLocations from './+state/locations.reducer';
+import locationsReducer, { LOCATIONS_FEATURE_KEY, initialState } from './+state/locations.slice';
 import { LocationsEffects } from './+state/locations.effects';
-import { LocationsSeoEffects } from './+state/locations-seo.effects';
+
+const localStorageSyncReducer = (
+  reducer: ActionReducer<ReturnType<typeof locationsReducer>>,
+): ActionReducer<ReturnType<typeof locationsReducer>> =>
+  localStorageSync({
+    keys: Object.keys(initialState),
+    rehydrate: true,
+    removeOnUndefined: true,
+    storageKeySerializer: (key) => `${LOCATIONS_FEATURE_KEY}_${key}`,
+  })(reducer);
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forFeature(fromLocations.LOCATIONS_FEATURE_KEY, fromLocations.locationsReducer, {
-      initialState: fromLocations.initialState,
-      metaReducers: fromLocations.metaReducers,
+    StoreModule.forFeature(LOCATIONS_FEATURE_KEY, locationsReducer, {
+      initialState,
+      metaReducers: [localStorageSyncReducer],
     }),
-    EffectsModule.forFeature([LocationsEffects, LocationsSeoEffects]),
+    EffectsModule.forFeature([LocationsEffects]),
   ],
 })
-export class DataAccessLocationsModule {
-  constructor() {}
-}
+export class DataAccessLocationsModule {}

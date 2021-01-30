@@ -8,7 +8,7 @@ const matchObject = (object: any, query: any, includes = false): boolean =>
     : query.constructor === Array
     ? query.some((objQuery) => matchObject(object, objQuery, includes))
     : Object.entries(query).every(
-        ([key, value]) => !value || (object[key] && matchObject(object[key], value, includes))
+        ([key, value]) => !value || (object[key] && matchObject(object[key], value, includes)),
       );
 
 export function filterData<T>(data: T[], query: any): T[] {

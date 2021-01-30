@@ -14,7 +14,7 @@ export class TranslocoLocalizeRouterLoader {
     @Inject(LOCALIZE_ROUTER_CONFIG) private config: TranslocoLocalizeRouterConfig,
     @Inject(DOCUMENT) private document: Document,
     private localizeRouterSrv: TranslocoLocalizeRouterService,
-    private router: Router
+    private router: Router,
   ) {
     this.localizeRoutes(this.router.config, this.config);
 
@@ -64,12 +64,12 @@ export class TranslocoLocalizeRouterLoader {
         concatMap((route) => from(links).pipe(map((link) => ({ link, route })))),
         tap(({ link, route }) => {
           const lang = link.getAttribute('hreflang') || undefined;
-          const fixedRoute = this.localizeRouterSrv.translateRoute(
+          const fixedRoute: string = this.localizeRouterSrv.translateRoute(
             route.replace(`/${this.localizeRouterSrv.activeLang}/`, '/'),
-            lang === 'x-default' ? this.localizeRouterSrv.noPrefixLang : lang
+            lang === 'x-default' ? this.localizeRouterSrv.noPrefixLang : lang,
           );
           link.setAttribute('href', `${this.config.hrefLangsBaseUrl}${fixedRoute}`);
-        })
+        }),
       )
       .subscribe();
   }

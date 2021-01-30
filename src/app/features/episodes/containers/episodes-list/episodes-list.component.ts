@@ -1,17 +1,17 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
+import { Component, ChangeDetectionStrategy, OnDestroy, OnInit } from '@angular/core';
+import { HashMap, TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
 import { LazyModalService } from '@app/core/lazy-modal';
-import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
-import { Episode } from '@app/shared/models';
-import { TableConfig } from '@app/shared/components/table/table.component';
 import {
   CharactersDialogComponent as CharactersDialogComponentType,
   CharacterDialogData,
 } from '@app/modals/characters-dialog/characters-dialog.component';
+import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
+import { Episode, EpisodesFilter } from '@app/shared/models';
+import { TableConfig } from '@app/shared/components/table/table.component';
 
 @Component({
   selector: 'app-episodes-list',
@@ -25,7 +25,7 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
       this.translocoService.selectTranslateObject('EPISODES.FIELDS').pipe(
         take(1),
         map(
-          (translateTitles): TableConfig<Episode> => ({
+          (translateTitles: HashMap<string>): TableConfig<Episode> => ({
             headers: {
               id: translateTitles.NUM,
               episode: translateTitles.EPISODE,
@@ -35,10 +35,10 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
             data: episodes,
             linkData: (episode: Episode) => `/episodes/${episode.id}`,
             actionsHeader: translateTitles.CHARACTERS,
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
   loading$: Observable<boolean> = this.store.select(EpisodesSelectors.getLoading);
   page$: Observable<number> = this.store.select(EpisodesSelectors.getCurrentPage);
@@ -47,11 +47,19 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
   constructor(
     private readonly store: Store,
     private lazyModal: LazyModalService<CharactersDialogComponentType>,
-    private translocoService: TranslocoService
+    private translocoService: TranslocoService,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.store.dispatch(EpisodesActions.enterEpisodesPage());
+  }
+
+  newFilter(filter: EpisodesFilter) {
+    this.store.dispatch(EpisodesActions.newEpisodesFilter(filter));
+  }
+
+  filterPageChange(page: number) {
+    this.store.dispatch(EpisodesActions.filterPageChange(page));
   }
 
   async openCharactersDialog(episode: Episode): Promise<void> {
@@ -64,7 +72,7 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
       characterIds: episode.characters,
     } as CharacterDialogData);
 
-    this.store.dispatch(EpisodesActions.openCharactersDialog({ episode }));
+    this.store.dispatch(EpisodesActions.openCharactersDialog(episode));
   }
 
   ngOnDestroy(): void {

@@ -54,7 +54,7 @@ export class SeoService {
   }
 
   private updateOrRemoveTag(name: string, content?: string, type: 'name' | 'property' = 'name'): void {
-    if (!!content) {
+    if (content) {
       this.meta.updateTag({ ...(type === 'name' ? { name } : { property: name }), content });
     } else {
       this.meta.removeTag(name);

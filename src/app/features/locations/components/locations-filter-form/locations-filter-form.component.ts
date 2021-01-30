@@ -1,6 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormField, FormConfig, generateFilterForm } from '@app/core/ngrx-form';
+import { LocationsFilter } from '@app/shared/models';
 
 const FORM_LOCATIONS_FILTER_ID = 'FORM_LOCATIONS_FILTER';
 
@@ -13,7 +14,9 @@ const fieldClass = 'col-span-2 sm:col-span-1';
   styleUrls: ['./locations-filter-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LocationsFilterFormComponent implements OnInit {
+export class LocationsFilterFormComponent {
+  @Output() filter = new EventEmitter<LocationsFilter>();
+
   form = new FormGroup({});
   formConfig: FormConfig = generateFilterForm({
     formId: FORM_LOCATIONS_FILTER_ID,
@@ -24,15 +27,15 @@ export class LocationsFilterFormComponent implements OnInit {
         FormField.input(
           'dimension',
           { translate: true, label: 'LOCATIONS.FIELDS.DIMENSION' },
-          { className: fieldClass }
+          { className: fieldClass },
         ),
       ]),
     ],
   });
 
-  constructor() {}
-
-  ngOnInit(): void {}
+  changeForm(filter: LocationsFilter) {
+    this.filter.emit(filter);
+  }
 
   resetFilter(): void {
     this.form.reset();

@@ -16,7 +16,7 @@ export class TranslocoLocalizeRouterService {
     @Inject(LOCALIZE_ROUTER_CONFIG) private config: TranslocoLocalizeRouterConfig,
     private translocoService: TranslocoService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     service = this;
   }
@@ -27,22 +27,23 @@ export class TranslocoLocalizeRouterService {
     if (Array.isArray(route) && String(route[0]).startsWith('./')) {
       route = `${this.router.url.split('?')[0]?.replace(`/${this.activeLang}/`, '/')}/${route.slice(1)?.join('/')}`;
     } else if (!String(route).startsWith('/')) {
-      route = `${this.router.url.split('?')[0]?.replace(`/${this.activeLang}/`, '/')}/${route ?? ''}`;
+      route = `${this.router.url.split('?')[0]?.replace(`/${this.activeLang}/`, '/')}/${(route as string) ?? ''}`;
     }
 
     const translatedRoute = Array.isArray(route)
       ? startPath
         ? [startPath, ...route?.map((path: string) => String(path).replace('/', '')).filter(Boolean)]
-        : [...route]
+        : route
       : startPath + (route || '/');
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return translatedRoute as any;
   }
 
   changeLanguage(lang: string, extras: NavigationExtras = {}): void {
     if (lang !== this.activeLang) {
       const queryParams = this.route.snapshot.queryParams;
-      this.router.navigate([this.translateRoute('', lang)], {
+      void this.router.navigate([this.translateRoute<string>('', lang)], {
         ...extras,
         queryParams: {
           ...queryParams,

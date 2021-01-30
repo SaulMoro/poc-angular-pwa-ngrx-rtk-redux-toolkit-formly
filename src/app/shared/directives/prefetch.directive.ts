@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 
 @Directive({
-  // tslint:disable-next-line: directive-selector
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[prefetch]',
 })
 export class PrefetchDirective implements OnInit, AfterViewInit, OnDestroy {

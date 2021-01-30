@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Character, CharacterStatus } from '@app/shared/models';
 
 @Component({
@@ -7,12 +7,8 @@ import { Character, CharacterStatus } from '@app/shared/models';
   styleUrls: ['./character-mini-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CharacterMiniCardComponent implements OnInit {
+export class CharacterMiniCardComponent {
   @Input() character?: Character;
 
   statusTypes = CharacterStatus;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 }

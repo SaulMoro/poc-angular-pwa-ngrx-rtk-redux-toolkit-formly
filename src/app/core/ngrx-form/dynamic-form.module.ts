@@ -36,7 +36,7 @@ import { FormTextareaModule } from './types/textarea/form-textarea.module';
     EffectsModule.forFeature([FormsEffects]),
 
     FormlyModule.forRoot({
-      extras: { checkExpressionOn: 'modelChange', immutable: true },
+      extras: { checkExpressionOn: 'modelChange', immutable: true, lazyRender: true },
     }),
 
     // Extensions
@@ -56,6 +56,4 @@ import { FormTextareaModule } from './types/textarea/form-textarea.module';
   ],
   exports: [DynamicFormComponent],
 })
-export class NgRxFormModule {
-  constructor() {}
-}
+export class NgRxFormModule {}

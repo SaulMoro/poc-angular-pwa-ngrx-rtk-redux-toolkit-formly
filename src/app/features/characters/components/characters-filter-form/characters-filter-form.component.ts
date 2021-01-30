@@ -1,11 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { TranslocoService } from '@ngneat/transloco';
+import { HashMap, TranslocoService } from '@ngneat/transloco';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { FormField, FormConfig, generateFilterForm, SelectOption } from '@app/core/ngrx-form';
-import { CharacterGender, CharacterSpecies, CharacterStatus } from '@app/shared/models';
+import { CharacterGender, CharactersFilter, CharacterSpecies, CharacterStatus } from '@app/shared/models';
 
 const FORM_CHARACTERS_FILTER_ID = 'FORM_CHARACTERS_FILTER';
 
@@ -18,7 +18,9 @@ const fieldClass = 'col-span-2 sm:col-span-1';
   styleUrls: ['./characters-filter-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CharactersFilterFormComponent implements OnInit {
+export class CharactersFilterFormComponent {
+  @Output() filter = new EventEmitter<CharactersFilter>();
+
   form = new FormGroup({});
   formConfig: FormConfig = generateFilterForm({
     formId: FORM_CHARACTERS_FILTER_ID,
@@ -33,7 +35,7 @@ export class CharactersFilterFormComponent implements OnInit {
             placeholder: 'CHARACTERS.PLACEHOLDERS.STATUS',
             options: this._status$,
           },
-          { className: fieldClass }
+          { className: fieldClass },
         ),
         FormField.select(
           'gender',
@@ -43,7 +45,7 @@ export class CharactersFilterFormComponent implements OnInit {
             placeholder: 'CHARACTERS.PLACEHOLDERS.GENDER',
             options: this._genders$,
           },
-          { className: fieldClass }
+          { className: fieldClass },
         ),
         FormField.select(
           'species',
@@ -53,7 +55,7 @@ export class CharactersFilterFormComponent implements OnInit {
             placeholder: 'CHARACTERS.PLACEHOLDERS.SPECIES',
             options: this._species$,
           },
-          { className: fieldClass }
+          { className: fieldClass },
         ),
       ]),
     ],
@@ -61,7 +63,9 @@ export class CharactersFilterFormComponent implements OnInit {
 
   constructor(private translocoService: TranslocoService) {}
 
-  ngOnInit(): void {}
+  changeForm(filter: CharactersFilter) {
+    this.filter.emit(filter);
+  }
 
   resetFilter(): void {
     this.form.reset();
@@ -69,7 +73,7 @@ export class CharactersFilterFormComponent implements OnInit {
 
   private get _status$(): Observable<SelectOption[]> {
     return this.translocoService.selectTranslateObject('CHARACTERS.STATUS').pipe(
-      map((translated) => [
+      map((translated: HashMap<string>) => [
         {
           value: CharacterStatus.alive,
           label: translated[CharacterStatus.alive.toUpperCase()],
@@ -82,13 +86,13 @@ export class CharactersFilterFormComponent implements OnInit {
           value: CharacterStatus.unknown,
           label: translated[CharacterStatus.unknown.toUpperCase()],
         },
-      ])
+      ]),
     );
   }
 
   private get _genders$(): Observable<SelectOption[]> {
     return this.translocoService.selectTranslateObject('CHARACTERS.GENDER').pipe(
-      map((translated) => [
+      map((translated: HashMap<string>) => [
         {
           value: CharacterGender.male,
           label: translated[CharacterGender.male.toUpperCase()],
@@ -105,13 +109,13 @@ export class CharactersFilterFormComponent implements OnInit {
           value: CharacterGender.unknown,
           label: translated[CharacterGender.unknown.toUpperCase()],
         },
-      ])
+      ]),
     );
   }
 
   private get _species$(): Observable<SelectOption[]> {
     return this.translocoService.selectTranslateObject('CHARACTERS.SPECIES').pipe(
-      map((translated) => [
+      map((translated: HashMap<string>) => [
         {
           value: CharacterSpecies.alien,
           label: translated[CharacterSpecies.alien.toUpperCase()],
@@ -156,7 +160,7 @@ export class CharactersFilterFormComponent implements OnInit {
           value: CharacterSpecies.unknown,
           label: translated[CharacterSpecies.unknown.toUpperCase()],
         },
-      ])
+      ]),
     );
   }
 }

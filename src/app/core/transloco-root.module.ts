@@ -41,6 +41,4 @@ const ROUTER_LANG = getRouterLang(environment.supportedLanguages);
     { provide: TRANSLOCO_LOADER, useClass: TranslocoHttpLoader },
   ],
 })
-export class TranslocoRootModule {
-  constructor() {}
-}
+export class TranslocoRootModule {}

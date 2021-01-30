@@ -21,7 +21,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('.content span').textContent).toContain(
-      'angular-pwa-ngrx-formly-routerstate app is running!'
+      'angular-pwa-ngrx-formly-routerstate app is running!',
     );
   });
 });

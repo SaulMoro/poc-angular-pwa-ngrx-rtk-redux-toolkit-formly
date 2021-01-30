@@ -5,8 +5,6 @@ import { translateRoute } from './transloco-localize-router.service';
   name: 'localize',
 })
 export class TranslocoLocalizeRouterPipe implements PipeTransform {
-  constructor() {}
-
   /**
    * Requires currentLang to translate paths in non-lazy modules.
    * Can be used to force route lang.

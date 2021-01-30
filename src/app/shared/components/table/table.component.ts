@@ -20,8 +20,6 @@ export class TableComponent implements OnInit {
   @Input() config!: TableConfig<any>;
   @ContentChild(TemplateRef) actions!: TemplateRef<any>;
 
-  constructor() {}
-
   ngOnInit(): void {
     if (!this.config) {
       throw new TypeError('The input "config" is required');

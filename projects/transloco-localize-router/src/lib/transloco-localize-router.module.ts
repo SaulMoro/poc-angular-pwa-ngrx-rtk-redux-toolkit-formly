@@ -31,6 +31,6 @@ export class TranslocoLocalizeRouterModule {
   // Init loader and service context
   constructor(
     private localizeRouterSrv: TranslocoLocalizeRouterService,
-    private loader: TranslocoLocalizeRouterLoader
+    private loader: TranslocoLocalizeRouterLoader,
   ) {}
 }

@@ -11,9 +11,9 @@ export class GoogleAnalyticsEffects {
     () =>
       this.seoService.seoChanges$.pipe(
         filter(({ title }) => !!title),
-        map(({ route: url = '/', title }) => this.googleAnalytics.sendPageView({ url, title }))
+        map(({ route: url = '/', title }) => this.googleAnalytics.sendPageView({ url, title })),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   constructor(private googleAnalytics: GoogleAnalyticsService, private seoService: SeoService) {}

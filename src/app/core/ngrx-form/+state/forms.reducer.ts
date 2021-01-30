@@ -7,7 +7,7 @@ import { fixDataUTCDates } from './helpers';
 
 export const FORMS_FEATURE_KEY = 'forms';
 
-export interface FormsState extends EntityState<Form> {}
+export type FormsState = EntityState<Form>;
 
 export const formsAdapter: EntityAdapter<Form> = createEntityAdapter<Form>({
   selectId: ({ formId }) => formId,
@@ -18,7 +18,7 @@ export const initialState: FormsState = formsAdapter.getInitialState({});
 export const formsReducer = createReducer(
   initialState,
   on(FormsActions.initForm, (state, { formId, model, valid }) =>
-    formsAdapter.addOne({ formId, model, previousModel: null, valid }, state)
+    formsAdapter.addOne({ formId, model, previousModel: null, valid }, state),
   ),
   on(FormsActions.updatedFormModel, (state, { formId, model, previousModel, valid }) =>
     formsAdapter.updateOne(
@@ -30,7 +30,7 @@ export const formsReducer = createReducer(
           valid,
         },
       },
-      state
-    )
-  )
+      state,
+    ),
+  ),
 );

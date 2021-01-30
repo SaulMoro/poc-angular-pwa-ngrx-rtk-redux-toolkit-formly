@@ -1,4 +1,4 @@
-<app-locations-filter-form></app-locations-filter-form>
+<app-locations-filter-form (filter)="newFilter($event)"></app-locations-filter-form>
 <app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar>
 
 <ng-container *ngIf="locationsTableConfig$ | ngrxPush as locationsTableConfig">
@@ -21,7 +21,7 @@
       </ng-template>
     </app-table>
     <div class="mt-4" *ngIf="pages$ | ngrxPush as pages">
-      <app-paginator [currentPage]="page$ | ngrxPush" [pages]="pages"></app-paginator>
+      <app-paginator [currentPage]="page$ | ngrxPush" [pages]="pages" (page)="filterPageChange($event)"></app-paginator>
     </div>
   </div>
 </ng-container>

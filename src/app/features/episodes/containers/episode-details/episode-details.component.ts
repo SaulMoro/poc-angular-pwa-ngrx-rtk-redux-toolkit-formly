@@ -1,8 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Dictionary } from '@ngrx/entity';
-import { combineLatest, Observable } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { Dictionary } from '@reduxjs/toolkit';
+import { Observable } from 'rxjs';
 
 import { Character, Episode } from '@app/shared/models';
 import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
@@ -15,15 +14,9 @@ import { CharactersSelectors } from '@app/shared/data-access-characters';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EpisodeDetailsComponent implements OnInit {
-  episode$: Observable<Episode> = this.store.select(EpisodesSelectors.getSelectedEpisode);
+  episode$: Observable<Episode> = this.store.select<Episode>(EpisodesSelectors.getSelectedEpisode);
   characters$: Observable<Dictionary<Character>> = this.store.select(CharactersSelectors.getCharatersEntities);
-  loading$: Observable<boolean> = combineLatest([
-    this.store.select(EpisodesSelectors.getLoading),
-    this.store.select(CharactersSelectors.getLoading),
-  ]).pipe(
-    map(([episodeLoading, charactersLoading]) => episodeLoading || charactersLoading),
-    distinctUntilChanged()
-  );
+  loading$: Observable<boolean> = this.store.select(EpisodesSelectors.getLoading);
 
   constructor(private readonly store: Store) {}
 
@@ -32,6 +25,6 @@ export class EpisodeDetailsComponent implements OnInit {
   }
 
   trackByFn(index: number, characterId: number): number {
-    return characterId;
+    return characterId ?? index;
   }
 }

@@ -5,20 +5,19 @@ const CIF_REGEX = /^([ABCDEFGHJKLMNPQRSUVW])(\d{7})([0-9A-J])$/;
 const NIE_REGEX = /^[XYZ]\d{7,8}[A-Z]$/;
 
 export const spainIdType = (str: string) => {
-  if (str.match(DNI_REGEX)) {
+  if (DNI_REGEX.exec(str)) {
     return 'dni';
   }
-  if (str.match(CIF_REGEX)) {
+  if (CIF_REGEX.exec(str)) {
     return 'cif';
   }
-  if (str.match(NIE_REGEX)) {
+  if (NIE_REGEX.exec(str)) {
     return 'nie';
   }
   return null;
 };
 
 export const validDNI = (str: string) => {
-  // tslint:disable-next-line: variable-name
   const dni_letters = 'TRWAGMYFPDXBNJZSQVHLCKE';
   const letter = dni_letters.charAt(parseInt(str, 10) % 23);
 
@@ -27,7 +26,6 @@ export const validDNI = (str: string) => {
 
 export const validNIE = (str: string) => {
   // Change the initial letter for the corresponding number and validate as DNI
-  // tslint:disable-next-line: variable-name
   let nie_prefix: string | number = str.charAt(0);
 
   switch (nie_prefix) {
@@ -42,7 +40,7 @@ export const validNIE = (str: string) => {
       break;
   }
 
-  return validDNI(nie_prefix + str.substr(1));
+  return validDNI(`${nie_prefix}${str.substr(1)}`);
 };
 
 export const validCIF = (str: string) => {
@@ -58,7 +56,7 @@ export const validCIF = (str: string) => {
   let i;
   let digit: number;
 
-  if (!letter.match(/[A-Z]/)) {
+  if (!/[A-Z]/.exec(letter)) {
     return false;
   }
 
@@ -88,10 +86,10 @@ export const validCIF = (str: string) => {
     digit = sum;
   }
 
-  if (letter.match(/[ABEH]/)) {
+  if (/[ABEH]/.exec(letter)) {
     return String(digit) === control;
   }
-  if (letter.match(/[NPQRSW]/)) {
+  if (/[NPQRSW]/.exec(letter)) {
     return letters[digit] === control;
   }
 

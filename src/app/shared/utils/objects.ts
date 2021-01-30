@@ -7,7 +7,11 @@ export const isObject = (arg: any): boolean => {
 };
 
 export const isEqual = (o1: any, o2: any): boolean => {
-  if (o1?.constructor === Array && o2?.constructor === Array && o1?.length !== o2?.length) {
+  if (
+    (o1 as Array<any>)?.constructor === Array &&
+    (o2 as Array<any>)?.constructor === Array &&
+    (o1 as Array<any>).length !== (o2 as Array<any>).length
+  ) {
     return false;
   }
   return o1 === o2 || JSON.stringify(o1) === JSON.stringify(o2);
