@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnDestroy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { HashMap, TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -8,7 +8,7 @@ import { LazyModalService } from '@app/core/lazy-modal';
 import {
   CharactersDialogComponent as CharactersDialogComponentType,
   CharacterDialogData,
-} from '@app/modals/characters-dialog/characters-dialog.component';
+} from '@app/features/characters/containers/characters-dialog/characters-dialog.component';
 import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
 import { Location, LocationsFilter } from '@app/shared/models';
 import { TableConfig } from '@app/shared/components/table/table.component';
@@ -19,7 +19,7 @@ import { TableConfig } from '@app/shared/components/table/table.component';
   styleUrls: ['./locations-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LocationsListComponent implements OnInit, OnDestroy {
+export class LocationsListComponent implements OnInit {
   locationsTableConfig$: Observable<TableConfig<Location>> = this.store.select(LocationsSelectors.getLocations).pipe(
     switchMap((locations: Location[]) =>
       this.translocoService.selectTranslateObject('LOCATIONS.FIELDS').pipe(
@@ -65,7 +65,7 @@ export class LocationsListComponent implements OnInit, OnDestroy {
   async openResidentsDialog(location: Location): Promise<void> {
     const { CharactersDialogComponent } = await import(
       /* webpackPrefetch: true */
-      '@app/modals/characters-dialog/characters-dialog.component'
+      '@app/features/characters/containers/characters-dialog/characters-dialog.component'
     );
     this.lazyModal.open(CharactersDialogComponent, {
       title: location.name,
@@ -73,9 +73,5 @@ export class LocationsListComponent implements OnInit, OnDestroy {
     } as CharacterDialogData);
 
     this.store.dispatch(LocationsActions.openCharactersDialog(location));
-  }
-
-  ngOnDestroy(): void {
-    this.lazyModal.close();
   }
 }

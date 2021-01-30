@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnDestroy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { HashMap, TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -8,7 +8,7 @@ import { LazyModalService } from '@app/core/lazy-modal';
 import {
   CharactersDialogComponent as CharactersDialogComponentType,
   CharacterDialogData,
-} from '@app/modals/characters-dialog/characters-dialog.component';
+} from '@app/features/characters/containers/characters-dialog/characters-dialog.component';
 import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { Episode, EpisodesFilter } from '@app/shared/models';
 import { TableConfig } from '@app/shared/components/table/table.component';
@@ -19,7 +19,7 @@ import { TableConfig } from '@app/shared/components/table/table.component';
   styleUrls: ['./episodes-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EpisodesListComponent implements OnInit, OnDestroy {
+export class EpisodesListComponent implements OnInit {
   episodesTableConfig$: Observable<TableConfig<Episode>> = this.store.select(EpisodesSelectors.getEpisodes).pipe(
     switchMap((episodes: Episode[]) =>
       this.translocoService.selectTranslateObject('EPISODES.FIELDS').pipe(
@@ -65,7 +65,7 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
   async openCharactersDialog(episode: Episode): Promise<void> {
     const { CharactersDialogComponent } = await import(
       /* webpackPrefetch: true */
-      '@app/modals/characters-dialog/characters-dialog.component'
+      '@app/features/characters/containers/characters-dialog/characters-dialog.component'
     );
     this.lazyModal.open(CharactersDialogComponent, {
       title: episode.name,
@@ -73,9 +73,5 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
     } as CharacterDialogData);
 
     this.store.dispatch(EpisodesActions.openCharactersDialog(episode));
-  }
-
-  ngOnDestroy(): void {
-    this.lazyModal.close();
   }
 }

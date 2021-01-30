@@ -23,7 +23,7 @@
   <ng-container *ngIf="characters$ | ngrxPush as characters">
     <div class="grid gap-4 mt-4 xl:grid-cols-2">
       <div class="w-full" *ngFor="let characterId of data.characterIds; trackBy: trackByFn">
-        <app-character-mini-card [character]="characters[characterId]"></app-character-mini-card>
+        <app-character-mini-card [character]="characters[characterId]" (click)="close()"></app-character-mini-card>
       </div>
     </div>
   </ng-container>

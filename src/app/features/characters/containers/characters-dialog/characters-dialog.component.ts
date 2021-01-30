@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
 
 import { DIALOG_DATA, LazyModalComponent, LazyModalModule } from '@app/core/lazy-modal';
 import { SharedModule } from '@app/shared/shared.module';
-import { Character } from '@app/shared/models';
 import { CharactersSelectors } from '@app/shared/data-access-characters';
+import { Character } from '@app/shared/models';
 
 export interface CharacterDialogData {
   title: string;
