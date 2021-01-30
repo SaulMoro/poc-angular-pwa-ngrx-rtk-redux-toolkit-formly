@@ -1,4 +1,4 @@
-# **PoC Angular + PWA + NgRx + Router State + NgRx-Entity + TailwindCSS + Formly**
+# **PoC Angular + PWA + NgRx + RTK (Redux Toolkit) + Router State + TailwindCSS + Formly**
 
 [Demo of project](https://poc-angular-rick-morty.web.app)
 
@@ -33,7 +33,8 @@ PoC of an Angular project with:
 **State Management**
 
 - **NgRx** as State Management
-- **NgRx Entity** for the treatment of entities with NgRx
+- **NgRx + RTK (Redux Toolkit)**
+- **RTK Entity** for the treatment of entities with NgRx
 - **NgRx Router State** to manage the state of the App from the Router in NgRx
 - **Forms connected to NgRx** to avoid the use of actions, handle the forms from NgRx and filters by automatic queryParams
 - [**Good Actions Hygiene**](https://www.youtube.com/watch?v=JmnsEvoy-gY) to think on actions as events ([Source] Event), not as commands
