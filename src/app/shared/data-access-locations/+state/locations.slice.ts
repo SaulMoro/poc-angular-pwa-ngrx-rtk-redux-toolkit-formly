@@ -43,7 +43,7 @@ const locationsSlice = createSlice({
       state.pages = 0;
       state.loadedPages = [];
     },
-    changeLocationsFilterPage: plainWithPayload<number>(),
+    filterPageChange: plainWithPayload<number>(),
     hoverLocationOfCharacter: plainWithPayload<number>(),
     openCharactersDialog: plainWithPayload<Location>(),
 

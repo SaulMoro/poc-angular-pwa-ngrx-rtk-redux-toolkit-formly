@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { plainWithPayload } from '@app/shared/utils';
-import { lsTheme, mediaTheme } from '../utils/helpers';
+import { lsTheme, mediaTheme } from './helpers';
 
 export interface UiState {
   theme: 'light' | 'dark';

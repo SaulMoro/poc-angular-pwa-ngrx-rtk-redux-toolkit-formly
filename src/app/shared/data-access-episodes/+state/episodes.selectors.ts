@@ -6,9 +6,9 @@ import {
   defaultMemoize,
   resultMemoize,
 } from '@ngrx/store';
-import { Dictionary } from '@ngrx/entity';
+import { Dictionary } from '@reduxjs/toolkit';
 
-import { RouterSelectors } from '@app/core/data-access-router';
+import { RouterSelectors } from '@app/core/router';
 import {
   Episode,
   EpisodesFilter,
@@ -38,15 +38,14 @@ export const getEpisodesIds = createSelector(
   (state): number[] => state && (selectIds(state) as number[]),
 );
 
-export const getSelectedId = createSelector(RouterSelectors.getIdParam, (id: string): number => +id);
-
 export const getTotalPages = createSelector(selectEpisodesState, (state) => state?.pages);
 
 export const getLoadedPages = createSelector(selectEpisodesState, (state) => state?.loadedPages);
 
-export const getCurrentPage = createSelector(
-  RouterSelectors.getCurrentPage,
-  (page: number | null): number => page || 1,
+export const getSelectedId = createSelector(RouterSelectors.selectParamId, (id): number => Number(id));
+
+export const getCurrentPage = createSelector(RouterSelectors.selectCurrentPage, (page: string | undefined): number =>
+  page ? +page : 1,
 );
 
 /*
@@ -60,7 +59,7 @@ export const getEpisodesOfCurrentPage = createSelector(
 );
 
 export const getCurrentFilter = createSelector(
-  RouterSelectors.getQueryParams,
+  RouterSelectors.selectQueryParams,
   (params: Params): EpisodesFilter => {
     return (
       params && {

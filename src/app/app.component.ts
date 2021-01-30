@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { UiActions, UiSelectors } from '@app/core/data-access-ui';
+import { UiActions, UiSelectors } from '@app/core/ui';
 import { MenuItem } from '@app/core/layout/models';
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Dictionary } from '@ngrx/entity';
+import { Dictionary } from '@reduxjs/toolkit';
 import { Observable } from 'rxjs';
 
 import { Character, Episode } from '@app/shared/models';
@@ -25,6 +25,6 @@ export class EpisodeDetailsComponent implements OnInit {
   }
 
   trackByFn(index: number, characterId: number): number {
-    return characterId;
+    return characterId ?? index;
   }
 }

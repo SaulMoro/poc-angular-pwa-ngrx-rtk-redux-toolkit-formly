@@ -43,7 +43,7 @@ const episodesSlice = createSlice({
       state.pages = 0;
       state.loadedPages = [];
     },
-    changeEpisodesFilterPage: plainWithPayload<number>(),
+    filterPageChange: plainWithPayload<number>(),
     requiredEpisodesOfCharacters: plainWithPayload<number[]>(),
     openCharactersDialog: plainWithPayload<Episode>(),
 

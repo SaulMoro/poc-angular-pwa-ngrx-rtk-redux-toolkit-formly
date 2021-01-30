@@ -1,4 +1,4 @@
-<app-characters-filter-form></app-characters-filter-form>
+<app-characters-filter-form (filter)="newFilter($event)"></app-characters-filter-form>
 <app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar>
 
 <ng-container *ngrxLet="characters$ as characters">
@@ -9,6 +9,6 @@
   </div>
 
   <div class="mt-4" *ngIf="pages$ | ngrxPush as pages">
-    <app-paginator [currentPage]="page$ | ngrxPush" [pages]="pages"></app-paginator>
+    <app-paginator [currentPage]="page$ | ngrxPush" [pages]="pages" (page)="filterPageChange($event)"></app-paginator>
   </div>
 </ng-container>

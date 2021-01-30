@@ -23,6 +23,5 @@ export interface Character {
     id: number;
     name?: string;
   };
-  page?: number;
   created: null;
 }

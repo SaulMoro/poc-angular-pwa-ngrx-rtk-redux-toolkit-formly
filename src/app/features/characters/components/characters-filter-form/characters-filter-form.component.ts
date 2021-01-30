@@ -1,11 +1,11 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { HashMap, TranslocoService } from '@ngneat/transloco';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { FormField, FormConfig, generateFilterForm, SelectOption } from '@app/core/ngrx-form';
-import { CharacterGender, CharacterSpecies, CharacterStatus } from '@app/shared/models';
+import { CharacterGender, CharactersFilter, CharacterSpecies, CharacterStatus } from '@app/shared/models';
 
 const FORM_CHARACTERS_FILTER_ID = 'FORM_CHARACTERS_FILTER';
 
@@ -19,6 +19,8 @@ const fieldClass = 'col-span-2 sm:col-span-1';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CharactersFilterFormComponent {
+  @Output() filter = new EventEmitter<CharactersFilter>();
+
   form = new FormGroup({});
   formConfig: FormConfig = generateFilterForm({
     formId: FORM_CHARACTERS_FILTER_ID,
@@ -60,6 +62,10 @@ export class CharactersFilterFormComponent {
   });
 
   constructor(private translocoService: TranslocoService) {}
+
+  changeForm(filter: CharactersFilter) {
+    this.filter.emit(filter);
+  }
 
   resetFilter(): void {
     this.form.reset();

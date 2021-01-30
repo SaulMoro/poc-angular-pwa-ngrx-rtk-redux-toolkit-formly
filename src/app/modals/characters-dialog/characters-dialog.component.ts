@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewChild, Inject, NgModule } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Dictionary } from '@ngrx/entity';
+import { Dictionary } from '@reduxjs/toolkit';
 import { Observable } from 'rxjs';
 
 import { DIALOG_DATA, LazyModalComponent, LazyModalModule } from '@app/core/lazy-modal';

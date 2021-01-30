@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { filter, map, concatMap, withLatestFrom } from 'rxjs/operators';
 
-import { RouterSelectors } from '@app/core/data-access-router';
+import { RouterSelectors } from '@app/core/router';
 import * as FormsActions from './forms.actions';
 import * as FormsSelectors from './forms.selectors';
 import { fixDataForQueryParams, fixDataFromQueryParams } from './helpers';
@@ -23,7 +23,7 @@ export class FormsEffects {
         of(action).pipe(
           withLatestFrom(
             action.filter
-              ? this.store$.select(RouterSelectors.getQueryParams).pipe(map(fixDataFromQueryParams))
+              ? this.store$.select(RouterSelectors.selectQueryParams).pipe(map(fixDataFromQueryParams))
               : of(action.model),
           ),
         ),

@@ -25,6 +25,6 @@ export class LocationDetailsComponent implements OnInit {
   }
 
   trackByFn(index: number, characterId: number): number {
-    return characterId;
+    return characterId ?? index;
   }
 }

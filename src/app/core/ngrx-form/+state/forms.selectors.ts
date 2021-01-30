@@ -1,5 +1,5 @@
-import { Dictionary } from '@ngrx/entity';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { Dictionary } from '@ngrx/entity';
 import { Form } from './forms.model';
 
 import { FORMS_FEATURE_KEY, FormsState, formsAdapter } from './forms.reducer';

@@ -28,7 +28,7 @@ export class EpisodesEffects {
         map(({ payload: filter }) => ({ filter, page: 1 })),
       ),
       this.actions$.pipe(
-        ofType(EpisodesActions.changeEpisodesFilterPage),
+        ofType(EpisodesActions.filterPageChange),
         fromStore(EpisodesSelectors.getLoadedPages, EpisodesSelectors.getCurrentFilter)(this.store),
         filter(([{ payload: page }, loadedPages]) => !loadedPages.includes(page)),
         map(([{ payload: page }, , filter]) => ({ filter, page })),
@@ -150,7 +150,6 @@ export class EpisodesEffects {
     () =>
       this.actions$.pipe(
         ofType(EpisodesActions.loadEpisodeDetailsSuccess),
-        filter(() => this.router.url.includes('/episodes')),
         map(({ payload: episode }) => episode.name),
         concatMap((name) =>
           of(this.router.url).pipe(

@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { map, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operators';
+import { merge, of } from 'rxjs';
+import { map, switchMap, catchError, concatMap, withLatestFrom, filter, mergeMap } from 'rxjs/operators';
 
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
-import { matchRouteEnter, matchRouteFilter, ofRoute, ofRoutePageChange } from '@app/core/data-access-router';
+import { SeoService } from '@app/core/seo';
 import { LocationsActions } from '@app/shared/data-access-locations';
 import { EpisodesActions } from '@app/shared/data-access-episodes';
-import { Character } from '@app/shared/models';
+import { Episode, Location } from '@app/shared/models';
 import { fromStore } from '@app/shared/utils';
-import * as CharactersActions from './characters.actions';
-import * as CharactersApiActions from './characters-api.actions';
+import { CharactersActions } from './characters.slice';
 import * as CharactersSelectors from './characters.selectors';
 import { CharactersService } from '../services/characters.service';
 import {
@@ -21,90 +22,83 @@ import {
 
 @Injectable()
 export class CharactersEffects {
-  filterCharacters$ = createEffect(() =>
-    this.actions$.pipe(
-      ofRoute('/characters', matchRouteEnter, matchRouteFilter),
-      map(({ queryParams, page }) => CharactersActions.filterCharacters({ filter: queryParams, page: page || 1 })),
-    ),
-  );
-
-  filterPageChange$ = createEffect(() =>
-    this.actions$.pipe(
-      ofRoutePageChange('/characters'),
-      map(({ queryParams, page }) => CharactersActions.filterPageChange({ filter: queryParams, page: page || 1 })),
-    ),
+  loadCharactersStart$ = createEffect(() =>
+    merge(
+      this.actions$.pipe(
+        ofType(CharactersActions.enterCharactersPage),
+        fromStore(CharactersSelectors.getCurrentFilter, CharactersSelectors.getCurrentPage)(this.store),
+        map(([, filter, page]) => ({ filter, page })),
+      ),
+      this.actions$.pipe(
+        ofType(CharactersActions.newCharactersFilter),
+        map(({ payload: filter }) => ({ filter, page: 1 })),
+      ),
+      this.actions$.pipe(
+        ofType(CharactersActions.filterPageChange),
+        fromStore(CharactersSelectors.getLoadedPages, CharactersSelectors.getCurrentFilter)(this.store),
+        filter(([{ payload: page }, loadedPages]) => !loadedPages.includes(page)),
+        map(([{ payload: page }, , filter]) => ({ filter, page })),
+      ),
+    ).pipe(map(CharactersActions.loadCharactersStart)),
   );
 
   loadCharacters$ = createEffect(() =>
-    this.actions$.pipe(ofType(CharactersActions.filterCharacters, CharactersActions.filterPageChange)).pipe(
-      tap(({ filter: currentFilter, page }) =>
-        this.googleAnalytics.sendEvent({
-          name: 'New Characters Filter',
-          category: GAEventCategory.FILTER,
-          label: JSON.stringify({ currentFilter, page }),
-        }),
-      ),
-      switchMap(({ filter: currentFilter, page }) =>
-        this.charactersService.getCharacters(currentFilter, page).pipe(
+    this.actions$.pipe(
+      ofType(CharactersActions.loadCharactersStart),
+      switchMap(({ payload: { filter, page } }) =>
+        this.charactersService.getCharacters(filter, page).pipe(
           map(({ info, results }) =>
-            CharactersApiActions.loadCharactersSuccess({
-              characters: fromCharacterResponsesToCharacters(results).map((character) => ({
+            CharactersActions.loadCharactersSuccess({
+              data: fromCharacterResponsesToCharacters(results).map((character) => ({
                 ...character,
                 page,
               })),
-              count: info?.count || results.length,
               pages: info?.pages || page,
               page,
             }),
           ),
-          catchError((error: unknown) => of(CharactersApiActions.loadCharactersFailure({ error }))),
+          catchError((error: unknown) => of(CharactersActions.loadCharactersFailure(error))),
         ),
       ),
     ),
   );
 
-  prefetchNextPageOfCharacters$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(CharactersApiActions.loadCharactersSuccess),
-      fromStore(CharactersSelectors.getCurrentFilter, CharactersSelectors.getLoadedPages)(this.store),
-      filter(([action, , loadedPages]) => action.page < action.pages && !loadedPages.includes(action.page + 1)),
-      mergeMap(([action, currentFilter]) =>
-        this.charactersService.getCharacters(currentFilter, action.page + 1).pipe(
-          map(({ info, results }) =>
-            CharactersApiActions.prefetchNextCharactersPageSuccess({
-              characters: fromCharacterResponsesToCharacters(results).map((character) => ({
-                ...character,
-                page: action.page + 1,
-              })),
-              count: info?.count || results.length,
-              pages: info?.pages || action.page + 1,
-              page: action.page + 1,
-            }),
-          ),
-          catchError((error: unknown) => of(CharactersApiActions.prefetchNextCharactersPageFailure({ error }))),
-        ),
-      ),
-    ),
-  );
-
-  loadCharacter$ = createEffect(() =>
+  loadCharacterDetailsStart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CharactersActions.enterCharacterDetailsPage),
       fromStore(CharactersSelectors.getSelectedId)(this.store),
-      switchMap(([, characterId]) =>
+      map(([, characterId]) => CharactersActions.loadCharacterDetailsStart(characterId)),
+    ),
+  );
+
+  loadCharacterDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CharactersActions.loadCharacterDetailsStart),
+      switchMap(({ payload: characterId }) =>
         this.charactersService.getCharacter(characterId).pipe(
           map((character) =>
-            CharactersApiActions.loadCharacterSuccess({
-              character: fromCharacterResponseToCharacter(character),
-            }),
+            CharactersActions.loadCharacterDetailsSuccess(fromCharacterResponseToCharacter(character)),
           ),
-          catchError((error: unknown) => of(CharactersApiActions.loadCharacterFailure({ error }))),
+          catchError((error: unknown) => of(CharactersActions.loadCharacterDetailsFailure(error))),
         ),
       ),
     ),
   );
 
-  loadCharactersFromIds$ = createEffect(() =>
+  requiredEpisodesOfCharacters$ = createEffect(() =>
+    merge(
+      this.actions$.pipe(
+        ofType(CharactersActions.loadCharactersSuccess),
+        map(({ payload: { data } }) => [...new Set(data.map((character) => character.firstEpisode?.id))]),
+      ),
+      this.actions$.pipe(
+        ofType(CharactersActions.loadCharacterDetailsSuccess),
+        map(({ payload: character }) => character.episodes),
+      ),
+    ).pipe(map(EpisodesActions.requiredEpisodesOfCharacters)),
+  );
+
+  loadCharactersFromIdsStart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
         LocationsActions.loadLocationDetailsSuccess,
@@ -112,43 +106,88 @@ export class CharactersEffects {
         LocationsActions.openCharactersDialog,
         EpisodesActions.openCharactersDialog,
       ),
-      map((action: any): number[] => action.location?.residents ?? action.episode?.characters),
+      map(({ payload }): number[] => (payload as Location)?.residents ?? (payload as Episode)?.characters),
       fromStore(CharactersSelectors.getCharactersIds)(this.store),
-      map(([characterIds, ids]) => characterIds?.filter((characterId) => !ids.includes(characterId))),
+      map(([characterIds, idsInState]) => characterIds?.filter((characterId) => !idsInState.includes(characterId))),
       filter((idsToFetch) => !!idsToFetch?.length),
-      switchMap((idsToFetch) =>
-        this.charactersService.getCharactersFromIds(idsToFetch).pipe(
+      map((characterIds) => CharactersActions.loadCharactersFromIdsStart(characterIds)),
+    ),
+  );
+
+  loadCharactersFromIds$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CharactersActions.loadCharactersFromIdsStart),
+      mergeMap(({ payload: characterIds }) =>
+        this.charactersService.getCharactersFromIds(characterIds).pipe(
           map((characters) =>
-            CharactersApiActions.loadCharactersFromIdsSuccess({
-              characters: fromCharacterResponsesToCharacters(characters),
-            }),
+            CharactersActions.loadCharactersFromIdsSuccess(fromCharacterResponsesToCharacters(characters)),
           ),
-          catchError((error: unknown) => of(CharactersApiActions.loadCharactersFromIdsFailure({ error }))),
+          catchError((error: unknown) => of(CharactersActions.loadCharactersFromIdsFailure(error))),
         ),
       ),
     ),
   );
 
-  requiredCharactersEpisodes$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(
-        CharactersApiActions.loadCharactersSuccess,
-        CharactersApiActions.prefetchNextCharactersPageSuccess,
-        CharactersApiActions.loadCharacterSuccess,
+  /*
+   * Analytics and SEO
+   */
+
+  gaTrackOnNewFilter$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CharactersActions.loadCharactersStart),
+        map(({ payload: { filter, page } }) =>
+          this.googleAnalytics.sendEvent({
+            name: 'New Characters Filter',
+            category: GAEventCategory.FILTER,
+            label: JSON.stringify({ filter, page }),
+          }),
+        ),
       ),
-      map((action: any): number[] =>
-        action.characters
-          ? [...new Set(action.characters.map((character: Character) => character.firstEpisode?.id))]
-          : action.character.episodes,
+    { dispatch: false },
+  );
+
+  charactersPageSEO$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CharactersActions.enterCharactersPage),
+        concatMap(() =>
+          of(this.router.url).pipe(withLatestFrom(this.translocoService.selectTranslateObject('CHARACTERS.SEO'))),
+        ),
+        map(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
       ),
-      map((episodeIds) => EpisodesActions.requiredEpisodesOfCharacters(episodeIds)),
-    ),
+    { dispatch: false },
+  );
+
+  charactersDetailsPageSEO$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(CharactersActions.loadCharacterDetailsSuccess),
+        map(({ payload: character }) => character.name),
+        concatMap((name) =>
+          of(this.router.url).pipe(
+            withLatestFrom(
+              this.translocoService.selectTranslateObject('CHARACTERS.SEO_DETAILS', {
+                title: { name },
+                description: { name },
+                'keywords.0': { name },
+                'keywords.1': { name },
+              }),
+            ),
+          ),
+        ),
+        map(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
+      ),
+    { dispatch: false },
   );
 
   constructor(
     private actions$: Actions,
-    private store: Store,
     private charactersService: CharactersService,
+    private store: Store,
+    private router: Router,
+    private translocoService: TranslocoService,
     private googleAnalytics: GoogleAnalyticsService,
+    private seoService: SeoService,
   ) {}
 }

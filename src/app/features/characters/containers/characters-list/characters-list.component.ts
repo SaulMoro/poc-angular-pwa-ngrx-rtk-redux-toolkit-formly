@@ -2,9 +2,9 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { Character } from '@app/shared/models';
 import { CharactersActions, CharactersSelectors } from '@app/shared/data-access-characters';
 import { LocationsActions } from '@app/shared/data-access-locations';
+import { Character, CharactersFilter } from '@app/shared/models';
 
 @Component({
   selector: 'app-characters-list',
@@ -24,6 +24,14 @@ export class CharactersListComponent implements OnInit {
     this.store.dispatch(CharactersActions.enterCharactersPage());
   }
 
+  newFilter(filter: CharactersFilter) {
+    this.store.dispatch(CharactersActions.newCharactersFilter(filter));
+  }
+
+  filterPageChange(page: number) {
+    this.store.dispatch(CharactersActions.filterPageChange(page));
+  }
+
   prefetchLocation(locationId: number): void {
     if (locationId) {
       this.store.dispatch(LocationsActions.hoverLocationOfCharacter(locationId));
@@ -31,6 +39,6 @@ export class CharactersListComponent implements OnInit {
   }
 
   trackByFn(index: number, character: Character): number {
-    return character.id;
+    return character?.id ?? index;
   }
 }

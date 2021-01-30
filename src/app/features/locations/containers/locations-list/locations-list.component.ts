@@ -59,7 +59,7 @@ export class LocationsListComponent implements OnInit, OnDestroy {
   }
 
   filterPageChange(page: number) {
-    this.store.dispatch(LocationsActions.changeLocationsFilterPage(page));
+    this.store.dispatch(LocationsActions.filterPageChange(page));
   }
 
   async openResidentsDialog(location: Location): Promise<void> {

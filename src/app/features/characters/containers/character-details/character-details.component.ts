@@ -14,7 +14,7 @@ import { LocationsActions } from '@app/shared/data-access-locations';
 })
 export class CharacterDetailsComponent implements OnInit {
   character$: Observable<Character> = this.store.select<Character>(CharactersSelectors.getSelectedCharacter);
-  loading$: Observable<boolean> = this.store.select(CharactersSelectors.getLoadingCharacter);
+  loading$: Observable<boolean> = this.store.select(CharactersSelectors.getLoading);
   episodes$: Observable<(Episode | undefined)[]> = this.store.select(
     CharactersSelectors.getEpisodesOfSelectedCharacter,
   );
@@ -32,6 +32,6 @@ export class CharacterDetailsComponent implements OnInit {
   }
 
   trackByEpisodeFn(index: number, episode?: Episode): number {
-    return episode?.id || index;
+    return episode?.id ?? index;
   }
 }

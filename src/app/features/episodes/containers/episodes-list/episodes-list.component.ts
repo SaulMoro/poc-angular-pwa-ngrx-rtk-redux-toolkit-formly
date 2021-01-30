@@ -59,7 +59,7 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
   }
 
   filterPageChange(page: number) {
-    this.store.dispatch(EpisodesActions.changeEpisodesFilterPage(page));
+    this.store.dispatch(EpisodesActions.filterPageChange(page));
   }
 
   async openCharactersDialog(episode: Episode): Promise<void> {

@@ -6,9 +6,9 @@ import {
   defaultMemoize,
   resultMemoize,
 } from '@ngrx/store';
-import { Dictionary } from '@ngrx/entity';
+import { Dictionary } from '@reduxjs/toolkit';
 
-import { RouterSelectors } from '@app/core/data-access-router';
+import { RouterSelectors } from '@app/core/router';
 import {
   Character,
   CharacterGenderStrings,
@@ -20,42 +20,49 @@ import {
   isLoading,
   isLoadingOrRefreshing,
   PAGE_SIZE,
+  PaginatedEntity,
 } from '@app/shared/models';
 import { argumentsStringifyComparer, filterContainsData, isEqual } from '@app/shared/utils';
 import { EpisodesSelectors } from '@app/shared/data-access-episodes';
-import { charactersAdapter, CHARACTERS_FEATURE_KEY, State } from './characters.reducer';
+import { charactersAdapter, CHARACTERS_FEATURE_KEY, CharactersState } from './characters.slice';
 
-export const selectCharactersState = createFeatureSelector<State>(CHARACTERS_FEATURE_KEY);
+export const selectCharactersCharactersState = createFeatureSelector<CharactersState>(CHARACTERS_FEATURE_KEY);
 
 const { selectAll, selectEntities, selectIds } = charactersAdapter.getSelectors();
 
-export const getDataState = createSelector(selectCharactersState, (state: State) => state?.dataState);
+export const getDataState = createSelector(
+  selectCharactersCharactersState,
+  (state: CharactersState) => state?.dataState,
+);
 
 export const getLoading = createSelector(getDataState, (state: DataState) => isLoadingOrRefreshing(state));
 
-export const getAllCharacters = createSelector(selectCharactersState, (state: State) => state && selectAll(state));
+export const getAllCharacters = createSelector(
+  selectCharactersCharactersState,
+  (state: CharactersState) => state && selectAll(state),
+);
 
 export const getCharatersEntities = createSelector(
-  selectCharactersState,
-  (state: State) => state && selectEntities(state),
+  selectCharactersCharactersState,
+  (state: CharactersState) => state && selectEntities(state),
 );
 
 export const getCharactersIds = createSelector(
-  selectCharactersState,
-  (state: State): number[] => state && (selectIds(state) as number[]),
+  selectCharactersCharactersState,
+  (state: CharactersState): number[] => state && (selectIds(state) as number[]),
 );
 
-export const getSelectedId = createSelector(RouterSelectors.getIdParam, (id: string): number => +id);
+export const getTotalPages = createSelector(selectCharactersCharactersState, (state: CharactersState) => state?.pages);
 
-export const getTotalCharacters = createSelector(selectCharactersState, (state: State) => state?.count);
+export const getLoadedPages = createSelector(
+  selectCharactersCharactersState,
+  (state: CharactersState) => state?.loadedPages,
+);
 
-export const getTotalPages = createSelector(selectCharactersState, (state: State) => state?.pages);
+export const getSelectedId = createSelector(RouterSelectors.selectParamId, (id): number => Number(id));
 
-export const getLoadedPages = createSelector(selectCharactersState, (state: State) => state?.loadedPages);
-
-export const getCurrentPage = createSelector(
-  RouterSelectors.getCurrentPage,
-  (page: number | null): number => page || 1,
+export const getCurrentPage = createSelector(RouterSelectors.selectCurrentPage, (page: string | undefined): number =>
+  page ? +page : 1,
 );
 
 /*
@@ -74,12 +81,12 @@ export const getAllCharactersWithFirstEpisode = createSelector(
 export const getCharactersOfCurrentPage = createSelector(
   getAllCharactersWithFirstEpisode,
   getCurrentPage,
-  (characters: Character[], currentPage: number): Character[] =>
+  (characters: PaginatedEntity<Character>[], currentPage: number): Character[] =>
     characters?.filter((character) => character?.page === currentPage),
 );
 
 export const getCurrentFilter = createSelector(
-  RouterSelectors.getQueryParams,
+  RouterSelectors.selectQueryParams,
   (params: Params): CharactersFilter =>
     params && {
       name: params.name as string,
@@ -117,19 +124,13 @@ export const getCharacters = createSelectorFactory((projector) =>
   getDataState,
   getCharactersFilteredWithPage,
   getCharactersOfCurrentPage,
-  (state: DataState, charactersFiltered: Character[], characters: Character[]): Character[] =>
-    isLoading(state) ? charactersFiltered : characters,
+  (dataState: DataState, charactersFiltered: Character[], characters: Character[]): Character[] =>
+    isLoading(dataState) ? charactersFiltered : characters,
 );
 
 /*
  * Character Details Selectors
  */
-export const getLoadingCharacter = createSelector(
-  getLoading,
-  EpisodesSelectors.getLoading,
-  (loading, loadingEpisodes): boolean => loading || loadingEpisodes,
-);
-
 export const getSelectedCharacter = createSelectorFactory((projector) => resultMemoize(projector, isEqual))(
   getCharatersEntities,
   getSelectedId,
@@ -140,5 +141,5 @@ export const getEpisodesOfSelectedCharacter = createSelector(
   getSelectedCharacter,
   EpisodesSelectors.getEpisodesEntities,
   (character: Character, episodes: Dictionary<Episode>): (Episode | undefined)[] =>
-    character.episodes?.map((episodeId) => episodes[episodeId]),
+    character?.episodes?.map((episodeId) => episodes[episodeId]),
 );

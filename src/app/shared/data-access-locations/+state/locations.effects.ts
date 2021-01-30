@@ -38,7 +38,7 @@ export class LocationsEffects {
         map(({ payload: filter }) => ({ filter, page: 1 })),
       ),
       this.actions$.pipe(
-        ofType(LocationsActions.changeLocationsFilterPage),
+        ofType(LocationsActions.filterPageChange),
         fromStore(LocationsSelectors.getLoadedPages, LocationsSelectors.getCurrentFilter)(this.store),
         filter(([{ payload: page }, loadedPages]) => !loadedPages.includes(page)),
         map(([{ payload: page }, , filter]) => ({ filter, page })),
@@ -142,7 +142,7 @@ export class LocationsEffects {
       this.actions$.pipe(
         ofType(LocationsActions.enterLocationsPage),
         concatMap(() =>
-          of(this.router.url).pipe(withLatestFrom(this.translocoService.selectTranslateObject('EPISODES.SEO'))),
+          of(this.router.url).pipe(withLatestFrom(this.translocoService.selectTranslateObject('LOCATIONS.SEO'))),
         ),
         map(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
       ),
@@ -158,7 +158,7 @@ export class LocationsEffects {
         concatMap((name) =>
           of(this.router.url).pipe(
             withLatestFrom(
-              this.translocoService.selectTranslateObject('EPISODES.SEO_DETAILS', {
+              this.translocoService.selectTranslateObject('LOCATIONS.SEO_DETAILS', {
                 title: { name },
                 description: { name },
                 'keywords.0': { name },
