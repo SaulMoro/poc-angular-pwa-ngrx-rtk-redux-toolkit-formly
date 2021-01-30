@@ -1,11 +1,27 @@
 import { Params } from '@angular/router';
-import { createSelector, createSelectorFactory, defaultMemoize, resultMemoize } from '@ngrx/store';
+import {
+  createFeatureSelector,
+  createSelector,
+  createSelectorFactory,
+  defaultMemoize,
+  resultMemoize,
+} from '@ngrx/store';
 import { Dictionary } from '@ngrx/entity';
 
 import { RouterSelectors } from '@app/core/data-access-router';
-import { Location, LocationsFilter, DataState, PAGE_SIZE, isLoadingOrRefreshing } from '@app/shared/models';
+import {
+  Location,
+  LocationsFilter,
+  DataState,
+  PAGE_SIZE,
+  isLoadingOrRefreshing,
+  isLoading,
+  PaginatedEntity,
+} from '@app/shared/models';
 import { argumentsStringifyComparer, filterContainsData, isEqual } from '@app/shared/utils';
-import { locationsAdapter, selectLocationsState } from './locations.slice';
+import { locationsAdapter, LocationsState, LOCATIONS_FEATURE_KEY } from './locations.slice';
+
+export const selectLocationsState = createFeatureSelector<LocationsState>(LOCATIONS_FEATURE_KEY);
 
 const { selectAll, selectEntities, selectIds } = locationsAdapter.getSelectors();
 
@@ -36,6 +52,13 @@ export const getCurrentPage = createSelector(
 /*
  * Locations List Selectors
  */
+export const getLocationsOfCurrentPage = createSelector(
+  getAllLocations,
+  getCurrentPage,
+  (locations: PaginatedEntity<Location>[], currentPage: number): Location[] =>
+    locations?.filter((location) => location?.page === currentPage),
+);
+
 export const getCurrentFilter = createSelector(
   RouterSelectors.getQueryParams,
   (params: Params): LocationsFilter => {
@@ -55,15 +78,25 @@ export const getLocationsFiltered = createSelectorFactory((projection) =>
   filterContainsData<Location>(locations, filter),
 );
 
+export const getLocationsFilteredWithPage = createSelector(
+  getLocationsFiltered,
+  getCurrentPage,
+  (locations: Location[], page: number): Location[] => locations.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+);
+
 export const getLocations = createSelectorFactory((projector) =>
   resultMemoize(projector, (l1: Location[], l2: Location[]) =>
     isEqual(
-      l1?.map((e: Location) => e.id),
-      l2?.map((e: Location) => e.id),
+      l1?.map((l: Location) => l.id),
+      l2?.map((l: Location) => l.id),
     ),
   ),
-)(getLocationsFiltered, getCurrentPage, (locations: Location[], page: number): Location[] =>
-  locations.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+)(
+  getDataState,
+  getLocationsFilteredWithPage,
+  getLocationsOfCurrentPage,
+  (dataState: DataState, locationsFiltered: Location[], locations: Location[]): Location[] =>
+    isLoading(dataState) ? locationsFiltered : locations,
 );
 
 /*

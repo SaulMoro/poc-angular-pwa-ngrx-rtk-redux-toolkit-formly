@@ -1,4 +1,5 @@
 export * from './episode.model';
+export * from './paginated-entity.model';
 export * from './character-gender.enum';
 export * from './constants';
 export * from './data-state';

@@ -1,11 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Dictionary } from '@ngrx/entity';
-import { combineLatest, Observable } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { Dictionary } from '@reduxjs/toolkit';
+import { Observable } from 'rxjs';
 
 import { Character, Location } from '@app/shared/models';
-import { LocationsSelectors } from '@app/shared/data-access-locations';
+import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
 import { CharactersSelectors } from '@app/shared/data-access-characters';
 
 @Component({
@@ -14,18 +13,16 @@ import { CharactersSelectors } from '@app/shared/data-access-characters';
   styleUrls: ['./location-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LocationDetailsComponent {
+export class LocationDetailsComponent implements OnInit {
   location$: Observable<Location> = this.store.select<Location>(LocationsSelectors.getSelectedLocation);
   characters$: Observable<Dictionary<Character>> = this.store.select(CharactersSelectors.getCharatersEntities);
-  loading$: Observable<boolean> = combineLatest([
-    this.store.select(LocationsSelectors.getLoading),
-    this.store.select(CharactersSelectors.getLoading),
-  ]).pipe(
-    map(([locationLoading, charactersLoading]) => locationLoading || charactersLoading),
-    distinctUntilChanged(),
-  );
+  loading$: Observable<boolean> = this.store.select(LocationsSelectors.getLoading);
 
   constructor(private readonly store: Store) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(LocationsActions.enterLocationDetailsPage());
+  }
 
   trackByFn(index: number, characterId: number): number {
     return characterId;

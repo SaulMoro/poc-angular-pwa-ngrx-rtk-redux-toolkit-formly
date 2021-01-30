@@ -1,11 +1,27 @@
 import { Params } from '@angular/router';
-import { createSelector, createSelectorFactory, defaultMemoize, resultMemoize } from '@ngrx/store';
+import {
+  createFeatureSelector,
+  createSelector,
+  createSelectorFactory,
+  defaultMemoize,
+  resultMemoize,
+} from '@ngrx/store';
 import { Dictionary } from '@ngrx/entity';
 
 import { RouterSelectors } from '@app/core/data-access-router';
-import { Episode, EpisodesFilter, DataState, PAGE_SIZE, isLoadingOrRefreshing } from '@app/shared/models';
+import {
+  Episode,
+  EpisodesFilter,
+  DataState,
+  PAGE_SIZE,
+  isLoadingOrRefreshing,
+  isLoading,
+  PaginatedEntity,
+} from '@app/shared/models';
 import { argumentsStringifyComparer, filterContainsData, isEqual } from '@app/shared/utils';
-import { episodesAdapter, selectEpisodesState } from './episodes.slice';
+import { episodesAdapter, EpisodesState, EPISODES_FEATURE_KEY } from './episodes.slice';
+
+export const selectEpisodesState = createFeatureSelector<EpisodesState>(EPISODES_FEATURE_KEY);
 
 const { selectAll, selectEntities, selectIds } = episodesAdapter.getSelectors();
 
@@ -36,6 +52,13 @@ export const getCurrentPage = createSelector(
 /*
  * Episodes List Selectors
  */
+export const getEpisodesOfCurrentPage = createSelector(
+  getAllEpisodes,
+  getCurrentPage,
+  (episodes: PaginatedEntity<Episode>[], currentPage: number): Episode[] =>
+    episodes?.filter((episode) => episode?.page === currentPage),
+);
+
 export const getCurrentFilter = createSelector(
   RouterSelectors.getQueryParams,
   (params: Params): EpisodesFilter => {
@@ -54,15 +77,25 @@ export const getEpisodesFiltered = createSelectorFactory((projection) =>
   filterContainsData<Episode>(episodes, filter),
 );
 
+export const getEpisodesFilteredWithPage = createSelector(
+  getEpisodesFiltered,
+  getCurrentPage,
+  (episodes: Episode[], page: number): Episode[] => episodes.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+);
+
 export const getEpisodes = createSelectorFactory((projector) =>
   resultMemoize(projector, (l1: Episode[], l2: Episode[]) =>
     isEqual(
-      l1?.map((e: Episode) => e.id),
-      l2?.map((e: Episode) => e.id),
+      l1?.map((l: Episode) => l.id),
+      l2?.map((l: Episode) => l.id),
     ),
   ),
-)(getEpisodesFiltered, getCurrentPage, (episodes: Episode[], page: number): Episode[] =>
-  episodes.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+)(
+  getDataState,
+  getEpisodesFilteredWithPage,
+  getEpisodesOfCurrentPage,
+  (dataState: DataState, episodesFiltered: Episode[], episodes: Episode[]): Episode[] =>
+    isLoading(dataState) ? episodesFiltered : episodes,
 );
 
 /*

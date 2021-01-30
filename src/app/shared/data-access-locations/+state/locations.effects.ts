@@ -8,17 +8,14 @@ import {
   map,
   switchMap,
   catchError,
-  tap,
   concatMap,
   withLatestFrom,
   filter,
   debounceTime,
   groupBy,
-  mergeMap,
   exhaustMap,
 } from 'rxjs/operators';
 
-import { matchRouteEnter, matchRouteFilter, matchRoutePageChange, ofRoute } from '@app/core/data-access-router';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { SeoService } from '@app/core/seo';
 import { fromStore } from '@app/shared/utils';
@@ -29,16 +26,33 @@ import { fromLocationResponsesToLocations, fromLocationResponseToLocation } from
 
 @Injectable()
 export class LocationsEffects {
+  loadLocationsStart$ = createEffect(() =>
+    merge(
+      this.actions$.pipe(
+        ofType(LocationsActions.enterLocationsPage),
+        fromStore(LocationsSelectors.getCurrentFilter, LocationsSelectors.getCurrentPage)(this.store),
+        map(([, filter, page]) => ({ filter, page })),
+      ),
+      this.actions$.pipe(
+        ofType(LocationsActions.newLocationsFilter),
+        map(({ payload: filter }) => ({ filter, page: 1 })),
+      ),
+      this.actions$.pipe(
+        ofType(LocationsActions.changeLocationsFilterPage),
+        fromStore(LocationsSelectors.getLoadedPages, LocationsSelectors.getCurrentFilter)(this.store),
+        filter(([{ payload: page }, loadedPages]) => !loadedPages.includes(page)),
+        map(([{ payload: page }, , filter]) => ({ filter, page })),
+      ),
+    ).pipe(map(LocationsActions.loadLocationsStart)),
+  );
+
   loadLocations$ = createEffect(() =>
     this.actions$.pipe(
-      ofRoute('/locations', matchRouteEnter, matchRouteFilter, matchRoutePageChange),
-      map(({ queryParams: currentFilter, page }) => ({ currentFilter, page: page ?? 1 })),
-      fromStore(LocationsSelectors.getLoadedPages)(this.store),
-      filter(([{ page }, loadedPages]) => !loadedPages.includes(page)),
-      switchMap(([{ currentFilter, page }]) =>
-        this.locationsService.getLocations(currentFilter, page).pipe(
+      ofType(LocationsActions.loadLocationsStart),
+      switchMap(({ payload: { filter, page } }) =>
+        this.locationsService.getLocations(filter, page).pipe(
           map(({ info, results }) =>
-            LocationsActions.loadListSuccess({
+            LocationsActions.loadLocationsSuccess({
               data: fromLocationResponsesToLocations(results).map((location) => ({
                 ...location,
                 page,
@@ -47,41 +61,18 @@ export class LocationsEffects {
               page,
             }),
           ),
-          catchError((error: unknown) => of(LocationsActions.loadListFailure(error))),
+          catchError((error: unknown) => of(LocationsActions.loadLocationsFailure(error))),
         ),
       ),
     ),
   );
 
-  /* prefetchNextPageOfLocations$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(LocationsApiActions.loadLocationsSuccess),
-      fromStore(LocationsSelectors.getCurrentFilter, LocationsSelectors.getLoadedPages)(this.store),
-      filter(([action, , loadedPages]) => action.page < action.pages && !loadedPages.includes(action.page + 1)),
-      mergeMap(([action, currentFilter]) =>
-        this.locationsService.getLocations(currentFilter, action.page + 1).pipe(
-          map(({ info, results }) =>
-            LocationsApiActions.prefetchNextLocationsPageSuccess({
-              locations: fromLocationResponsesToLocations(results).map((location) => ({
-                ...location,
-                page: action.page + 1,
-              })),
-              count: info?.count || results.length,
-              pages: info?.pages || action.page + 1,
-              page: action.page + 1,
-            })
-          ),
-          catchError((error) => of(LocationsApiActions.prefetchNextLocationsPageFailure({ error })))
-        )
-      )
-    )
-  ); */
-
-  loadLocation$ = createEffect(() => ({ debounce = 500, scheduler = asyncScheduler } = {}) =>
+  loadLocationDetailsStart$ = createEffect(() => ({ debounce = 500, scheduler = asyncScheduler } = {}) =>
     merge(
       this.actions$.pipe(
-        ofRoute('/locations/:id', matchRouteEnter),
-        map(({ params: { id } }) => +id),
+        ofType(LocationsActions.enterLocationDetailsPage),
+        fromStore(LocationsSelectors.getSelectedId)(this.store),
+        map(([, locationId]) => locationId),
       ),
       this.actions$.pipe(
         ofType(LocationsActions.hoverLocationOfCharacter),
@@ -90,14 +81,20 @@ export class LocationsEffects {
         filter(([{ payload: locationId }, locations]) => !locations[locationId]),
         map(([{ payload: locationId }]) => locationId),
       ),
-    ).pipe(
-      groupBy((id) => id),
-      mergeMap((pairs) =>
+    ).pipe(map(LocationsActions.loadLocationDetailsStart)),
+  );
+
+  loadLocationDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(LocationsActions.loadLocationDetailsStart),
+      groupBy(({ payload: locationId }) => locationId),
+      switchMap((pairs) =>
+        // Avoid multiple calls in parallel to the same locationId
         pairs.pipe(
-          exhaustMap((id) =>
-            this.locationsService.getLocation(id).pipe(
-              map((location) => LocationsActions.loadDetailsSuccess(fromLocationResponseToLocation(location))),
-              catchError((error: unknown) => of(LocationsActions.loadDetailsFailure(error))),
+          exhaustMap(({ payload: locationId }) =>
+            this.locationsService.getLocation(locationId).pipe(
+              map((location) => LocationsActions.loadLocationDetailsSuccess(fromLocationResponseToLocation(location))),
+              catchError((error: unknown) => of(LocationsActions.loadLocationDetailsFailure(error))),
             ),
           ),
         ),
@@ -112,12 +109,12 @@ export class LocationsEffects {
   gaTrackOnNewFilter$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofRoute('/locations', matchRouteEnter, matchRouteFilter),
-        map(({ queryParams: currentFilter }) =>
+        ofType(LocationsActions.loadLocationsStart),
+        map(({ payload: { filter, page } }) =>
           this.googleAnalytics.sendEvent({
             name: 'New Locations Filter',
             category: GAEventCategory.FILTER,
-            label: JSON.stringify(currentFilter),
+            label: JSON.stringify({ filter, page }),
           }),
         ),
       ),
@@ -143,11 +140,11 @@ export class LocationsEffects {
   locationsPageSEO$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofRoute('/locations', matchRouteEnter),
-        concatMap(({ route }) =>
-          of(route).pipe(withLatestFrom(this.translocoService.selectTranslateObject('EPISODES.SEO'))),
+        ofType(LocationsActions.enterLocationsPage),
+        concatMap(() =>
+          of(this.router.url).pipe(withLatestFrom(this.translocoService.selectTranslateObject('EPISODES.SEO'))),
         ),
-        tap(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
+        map(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
       ),
     { dispatch: false },
   );
@@ -155,7 +152,8 @@ export class LocationsEffects {
   locationsDetailsPageSEO$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(LocationsActions.loadDetailsSuccess),
+        ofType(LocationsActions.loadLocationDetailsSuccess),
+        filter(() => this.router.url.includes('/locations')),
         map(({ payload: location }) => location.name),
         concatMap((name) =>
           of(this.router.url).pipe(
@@ -169,7 +167,7 @@ export class LocationsEffects {
             ),
           ),
         ),
-        tap(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
+        map(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
       ),
     { dispatch: false },
   );

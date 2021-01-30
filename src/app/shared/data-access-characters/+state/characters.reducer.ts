@@ -46,15 +46,18 @@ export const charactersReducer = createReducer(
   })),
   on(CharactersActions.enterCharacterDetailsPage, (state): State => ({ ...state, dataState: LoadingState.LOADING })),
 
-  on(LocationsActions.openCharactersDialog, LocationsActions.loadDetailsSuccess, (state, { payload: location }) =>
-    location.residents?.some((characterId) => !state.entities[characterId])
-      ? {
-          ...state,
-          dataState: LoadingState.LOADING,
-        }
-      : state,
+  on(
+    LocationsActions.openCharactersDialog,
+    LocationsActions.loadLocationDetailsSuccess,
+    (state, { payload: location }) =>
+      location.residents?.some((characterId) => !state.entities[characterId])
+        ? {
+            ...state,
+            dataState: LoadingState.LOADING,
+          }
+        : state,
   ),
-  on(EpisodesActions.openCharactersDialog, EpisodesActions.loadDetailsSuccess, (state, { payload: episode }) =>
+  on(EpisodesActions.openCharactersDialog, EpisodesActions.loadEpisodeDetailsSuccess, (state, { payload: episode }) =>
     episode.characters?.some((characterId) => !state.entities[characterId])
       ? {
           ...state,

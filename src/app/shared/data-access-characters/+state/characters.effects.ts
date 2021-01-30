@@ -7,7 +7,7 @@ import { map, switchMap, filter, catchError, mergeMap, tap } from 'rxjs/operator
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { matchRouteEnter, matchRouteFilter, ofRoute, ofRoutePageChange } from '@app/core/data-access-router';
 import { LocationsActions } from '@app/shared/data-access-locations';
-import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
+import { EpisodesActions } from '@app/shared/data-access-episodes';
 import { Character } from '@app/shared/models';
 import { fromStore } from '@app/shared/utils';
 import * as CharactersActions from './characters.actions';
@@ -107,8 +107,8 @@ export class CharactersEffects {
   loadCharactersFromIds$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
-        LocationsActions.loadDetailsSuccess,
-        EpisodesActions.loadDetailsSuccess,
+        LocationsActions.loadLocationDetailsSuccess,
+        EpisodesActions.loadEpisodeDetailsSuccess,
         LocationsActions.openCharactersDialog,
         EpisodesActions.openCharactersDialog,
       ),
@@ -141,29 +141,9 @@ export class CharactersEffects {
           ? [...new Set(action.characters.map((character: Character) => character.firstEpisode?.id))]
           : action.character.episodes,
       ),
-      fromStore(EpisodesSelectors.getEpisodesIds)(this.store),
-      map(([episodeIds, ids]) => episodeIds?.filter((episodeId) => !ids.includes(episodeId))),
-      filter((episodeIds) => !!episodeIds?.length),
-      map((episodeIds) => EpisodesActions.requiredCharactersEpisodes(episodeIds)),
+      map((episodeIds) => EpisodesActions.requiredEpisodesOfCharacters(episodeIds)),
     ),
   );
-
-  /* showErrorLoadDialog$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(
-        CharactersApiActions.loadCharactersFailure,
-        CharactersApiActions.loadCharacterFailure,
-        CharactersApiActions.loadCharactersFromIdsFailure
-      ),
-      exhaustMap(({ error }) =>
-        this.dialog
-          .open(AlertDialogComponent, {
-            data: [!!error.errorMessage ? error.errorMessage : translate('ERRORS.BACKEND'), translate('ERRORS.RETRY')],
-          })
-          .afterClosed()
-      )
-    )
-  ); */
 
   constructor(
     private actions$: Actions,

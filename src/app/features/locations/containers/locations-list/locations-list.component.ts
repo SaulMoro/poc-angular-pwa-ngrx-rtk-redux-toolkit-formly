@@ -1,17 +1,17 @@
-import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnDestroy, OnInit } from '@angular/core';
 import { HashMap, TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
 import { LazyModalService } from '@app/core/lazy-modal';
-import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
-import { Location } from '@app/shared/models';
-import { TableConfig } from '@app/shared/components/table/table.component';
 import {
   CharactersDialogComponent as CharactersDialogComponentType,
   CharacterDialogData,
 } from '@app/modals/characters-dialog/characters-dialog.component';
+import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
+import { Location, LocationsFilter } from '@app/shared/models';
+import { TableConfig } from '@app/shared/components/table/table.component';
 
 @Component({
   selector: 'app-locations-list',
@@ -19,7 +19,7 @@ import {
   styleUrls: ['./locations-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LocationsListComponent implements OnDestroy {
+export class LocationsListComponent implements OnInit, OnDestroy {
   locationsTableConfig$: Observable<TableConfig<Location>> = this.store.select(LocationsSelectors.getLocations).pipe(
     switchMap((locations: Location[]) =>
       this.translocoService.selectTranslateObject('LOCATIONS.FIELDS').pipe(
@@ -49,6 +49,18 @@ export class LocationsListComponent implements OnDestroy {
     private lazyModal: LazyModalService<CharactersDialogComponentType>,
     private translocoService: TranslocoService,
   ) {}
+
+  ngOnInit() {
+    this.store.dispatch(LocationsActions.enterLocationsPage());
+  }
+
+  newFilter(filter: LocationsFilter) {
+    this.store.dispatch(LocationsActions.newLocationsFilter(filter));
+  }
+
+  filterPageChange(page: number) {
+    this.store.dispatch(LocationsActions.changeLocationsFilterPage(page));
+  }
 
   async openResidentsDialog(location: Location): Promise<void> {
     const { CharactersDialogComponent } = await import(

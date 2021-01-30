@@ -1,6 +1,7 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormField, FormConfig, generateFilterForm } from '@app/core/ngrx-form';
+import { EpisodesFilter } from '@app/shared/models';
 
 const FORM_EPISODES_FILTER_ID = 'FORM_EPISODES_FILTER';
 
@@ -14,6 +15,8 @@ const fieldClass = 'col-span-2 sm:col-span-1';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EpisodesFilterFormComponent {
+  @Output() filter = new EventEmitter<EpisodesFilter>();
+
   form = new FormGroup({});
   formConfig: FormConfig = generateFilterForm({
     formId: FORM_EPISODES_FILTER_ID,
@@ -24,6 +27,10 @@ export class EpisodesFilterFormComponent {
       ]),
     ],
   });
+
+  changeForm(filter: EpisodesFilter) {
+    this.filter.emit(filter);
+  }
 
   resetFilter(): void {
     this.form.reset();

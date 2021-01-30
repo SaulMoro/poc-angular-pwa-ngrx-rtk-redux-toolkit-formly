@@ -1,17 +1,17 @@
-import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnDestroy, OnInit } from '@angular/core';
 import { HashMap, TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
 import { LazyModalService } from '@app/core/lazy-modal';
-import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
-import { Episode } from '@app/shared/models';
-import { TableConfig } from '@app/shared/components/table/table.component';
 import {
   CharactersDialogComponent as CharactersDialogComponentType,
   CharacterDialogData,
 } from '@app/modals/characters-dialog/characters-dialog.component';
+import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
+import { Episode, EpisodesFilter } from '@app/shared/models';
+import { TableConfig } from '@app/shared/components/table/table.component';
 
 @Component({
   selector: 'app-episodes-list',
@@ -19,7 +19,7 @@ import {
   styleUrls: ['./episodes-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EpisodesListComponent implements OnDestroy {
+export class EpisodesListComponent implements OnInit, OnDestroy {
   episodesTableConfig$: Observable<TableConfig<Episode>> = this.store.select(EpisodesSelectors.getEpisodes).pipe(
     switchMap((episodes: Episode[]) =>
       this.translocoService.selectTranslateObject('EPISODES.FIELDS').pipe(
@@ -49,6 +49,18 @@ export class EpisodesListComponent implements OnDestroy {
     private lazyModal: LazyModalService<CharactersDialogComponentType>,
     private translocoService: TranslocoService,
   ) {}
+
+  ngOnInit() {
+    this.store.dispatch(EpisodesActions.enterEpisodesPage());
+  }
+
+  newFilter(filter: EpisodesFilter) {
+    this.store.dispatch(EpisodesActions.newEpisodesFilter(filter));
+  }
+
+  filterPageChange(page: number) {
+    this.store.dispatch(EpisodesActions.changeEpisodesFilterPage(page));
+  }
 
   async openCharactersDialog(episode: Episode): Promise<void> {
     const { CharactersDialogComponent } = await import(

@@ -6,5 +6,5 @@
     </button>
   </div>
 
-  <dynamic-form [form]="form" [config]="formConfig"></dynamic-form>
+  <dynamic-form [form]="form" [config]="formConfig" (modelChanges)="changeForm($event)"></dynamic-form>
 </div>

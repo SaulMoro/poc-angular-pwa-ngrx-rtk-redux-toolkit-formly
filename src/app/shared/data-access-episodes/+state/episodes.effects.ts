@@ -3,10 +3,9 @@ import { Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { map, switchMap, catchError, mergeMap, tap, concatMap, withLatestFrom, filter } from 'rxjs/operators';
+import { merge, of } from 'rxjs';
+import { map, switchMap, catchError, concatMap, withLatestFrom, filter, mergeMap } from 'rxjs/operators';
 
-import { matchRouteEnter, matchRouteFilter, matchRoutePageChange, ofRoute } from '@app/core/data-access-router';
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { SeoService } from '@app/core/seo';
 import { fromStore } from '@app/shared/utils';
@@ -17,16 +16,33 @@ import { fromEpisodeResponsesToEpisodes, fromEpisodeResponseToEpisode } from '..
 
 @Injectable()
 export class EpisodesEffects {
+  loadEpisodesStart$ = createEffect(() =>
+    merge(
+      this.actions$.pipe(
+        ofType(EpisodesActions.enterEpisodesPage),
+        fromStore(EpisodesSelectors.getCurrentFilter, EpisodesSelectors.getCurrentPage)(this.store),
+        map(([, filter, page]) => ({ filter, page })),
+      ),
+      this.actions$.pipe(
+        ofType(EpisodesActions.newEpisodesFilter),
+        map(({ payload: filter }) => ({ filter, page: 1 })),
+      ),
+      this.actions$.pipe(
+        ofType(EpisodesActions.changeEpisodesFilterPage),
+        fromStore(EpisodesSelectors.getLoadedPages, EpisodesSelectors.getCurrentFilter)(this.store),
+        filter(([{ payload: page }, loadedPages]) => !loadedPages.includes(page)),
+        map(([{ payload: page }, , filter]) => ({ filter, page })),
+      ),
+    ).pipe(map(EpisodesActions.loadEpisodesStart)),
+  );
+
   loadEpisodes$ = createEffect(() =>
     this.actions$.pipe(
-      ofRoute('/episodes', matchRouteEnter, matchRouteFilter, matchRoutePageChange),
-      map(({ queryParams: currentFilter, page }) => ({ currentFilter, page: page ?? 1 })),
-      fromStore(EpisodesSelectors.getLoadedPages)(this.store),
-      filter(([{ page }, loadedPages]) => !loadedPages.includes(page)),
-      switchMap(([{ currentFilter, page }]) =>
-        this.episodesService.getEpisodes(currentFilter, page).pipe(
+      ofType(EpisodesActions.loadEpisodesStart),
+      switchMap(({ payload: { filter, page } }) =>
+        this.episodesService.getEpisodes(filter, page).pipe(
           map(({ info, results }) =>
-            EpisodesActions.loadListSuccess({
+            EpisodesActions.loadEpisodesSuccess({
               data: fromEpisodeResponsesToEpisodes(results).map((episode) => ({
                 ...episode,
                 page,
@@ -35,55 +51,49 @@ export class EpisodesEffects {
               page,
             }),
           ),
-          catchError((error: unknown) => of(EpisodesActions.loadListFailure(error))),
+          catchError((error: unknown) => of(EpisodesActions.loadEpisodesFailure(error))),
         ),
       ),
     ),
   );
 
-  /* prefetchNextPageOfEpisodes$ = createEffect(() =>
+  loadEpisodeDetailsStart$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(EpisodesApiActions.loadEpisodesSuccess),
-      fromStore(EpisodesSelectors.getCurrentFilter, EpisodesSelectors.getLoadedPages)(this.store),
-      filter(([action, , loadedPages]) => action.page < action.pages && !loadedPages.includes(action.page + 1)),
-      mergeMap(([action, currentFilter]) =>
-        this.episodesService.getEpisodes(currentFilter, action.page + 1).pipe(
-          map(({ info, results }) =>
-            EpisodesApiActions.prefetchNextEpisodesPageSuccess({
-              episodes: fromEpisodeResponsesToEpisodes(results).map((episode) => ({
-                ...episode,
-                page: action.page + 1,
-              })),
-              count: info?.count || results.length,
-              pages: info?.pages || action.page + 1,
-              page: action.page + 1,
-            })
-          ),
-          catchError((error) => of(EpisodesApiActions.prefetchNextEpisodesPageFailure({ error })))
-        )
-      )
-    )
-  ); */
+      ofType(EpisodesActions.enterEpisodeDetailsPage),
+      fromStore(EpisodesSelectors.getSelectedId)(this.store),
+      map(([, episodeId]) => EpisodesActions.loadEpisodeDetailsStart(episodeId)),
+    ),
+  );
 
-  loadEpisode$ = createEffect(() =>
+  loadEpisodeDetails$ = createEffect(() =>
     this.actions$.pipe(
-      ofRoute('/episodes/:id', matchRouteEnter),
-      switchMap(({ params: { id } }) =>
-        this.episodesService.getEpisode(id).pipe(
-          map((episode) => EpisodesActions.loadDetailsSuccess(fromEpisodeResponseToEpisode(episode))),
-          catchError((error: unknown) => of(EpisodesActions.loadDetailsFailure(error))),
+      ofType(EpisodesActions.loadEpisodeDetailsStart),
+      switchMap(({ payload: episodeId }) =>
+        this.episodesService.getEpisode(episodeId).pipe(
+          map((episode) => EpisodesActions.loadEpisodeDetailsSuccess(fromEpisodeResponseToEpisode(episode))),
+          catchError((error: unknown) => of(EpisodesActions.loadEpisodeDetailsFailure(error))),
         ),
       ),
+    ),
+  );
+
+  requiredEpisodesOfCharacters$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(EpisodesActions.requiredEpisodesOfCharacters),
+      fromStore(EpisodesSelectors.getEpisodesIds)(this.store),
+      map(([{ payload: episodeIds }, ids]) => episodeIds.filter((episodeId) => !ids.includes(episodeId))),
+      filter((episodeIds) => !!episodeIds.length),
+      map((episodeIds) => EpisodesActions.loadEpisodesFromIdsStart(episodeIds)),
     ),
   );
 
   loadEpisodesFromIds$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(EpisodesActions.requiredCharactersEpisodes),
+      ofType(EpisodesActions.loadEpisodesFromIdsStart),
       mergeMap(({ payload: episodeIds }) =>
         this.episodesService.getEpisodesFromIds(episodeIds).pipe(
-          map((episodes) => EpisodesActions.loadFromIdsSuccess(fromEpisodeResponsesToEpisodes(episodes))),
-          catchError((error: unknown) => of(EpisodesActions.loadFromIdsFailure(error))),
+          map((episodes) => EpisodesActions.loadEpisodesFromIdsSuccess(fromEpisodeResponsesToEpisodes(episodes))),
+          catchError((error: unknown) => of(EpisodesActions.loadEpisodesFromIdsFailure(error))),
         ),
       ),
     ),
@@ -96,12 +106,12 @@ export class EpisodesEffects {
   gaTrackOnNewFilter$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofRoute('/episodes', matchRouteEnter, matchRouteFilter),
-        map(({ queryParams: currentFilter }) =>
+        ofType(EpisodesActions.loadEpisodesStart),
+        map(({ payload: { filter, page } }) =>
           this.googleAnalytics.sendEvent({
             name: 'New Episodes Filter',
             category: GAEventCategory.FILTER,
-            label: JSON.stringify(currentFilter),
+            label: JSON.stringify({ filter, page }),
           }),
         ),
       ),
@@ -127,11 +137,11 @@ export class EpisodesEffects {
   episodesPageSEO$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofRoute('/episodes', matchRouteEnter),
-        concatMap(({ route }) =>
-          of(route).pipe(withLatestFrom(this.translocoService.selectTranslateObject('EPISODES.SEO'))),
+        ofType(EpisodesActions.enterEpisodesPage),
+        concatMap(() =>
+          of(this.router.url).pipe(withLatestFrom(this.translocoService.selectTranslateObject('EPISODES.SEO'))),
         ),
-        tap(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
+        map(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
       ),
     { dispatch: false },
   );
@@ -139,7 +149,8 @@ export class EpisodesEffects {
   episodesDetailsPageSEO$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(EpisodesActions.loadDetailsSuccess),
+        ofType(EpisodesActions.loadEpisodeDetailsSuccess),
+        filter(() => this.router.url.includes('/episodes')),
         map(({ payload: episode }) => episode.name),
         concatMap((name) =>
           of(this.router.url).pipe(
@@ -153,7 +164,7 @@ export class EpisodesEffects {
             ),
           ),
         ),
-        tap(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
+        map(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
       ),
     { dispatch: false },
   );
