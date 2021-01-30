@@ -1,8 +1,11 @@
-const { patchPostCSS } = require('@ngneat/tailwind');
+const { addTailwindPlugin } = require('@ngneat/tailwind');
+const tailwindConfig = require('./tailwind.config.js');
 
 module.exports = (config) => {
-  const isProd = config.mode === 'production';
-  const tailwindConfig = require('./tailwind.config.js')(isProd);
-  patchPostCSS(config, tailwindConfig);
+  addTailwindPlugin({
+    webpackConfig: config,
+    tailwindConfig,
+    patchComponentsStyles: true,
+  });
   return config;
 };

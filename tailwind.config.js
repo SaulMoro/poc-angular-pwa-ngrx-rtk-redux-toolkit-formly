@@ -1,10 +1,9 @@
-module.exports = (isProd) => ({
+module.exports = {
   prefix: '',
   purge: {
-    enabled: isProd,
     content: ['./src/**/*.{html,ts}', './projects/**/*.{html,ts}'],
   },
-  darkMode: 'class',
+  darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {},
   },
@@ -15,4 +14,4 @@ module.exports = (isProd) => ({
     },
   },
   plugins: [require('@tailwindcss/forms')],
-});
+};

@@ -9,7 +9,7 @@ export interface LocationsState extends EntityState<PaginatedEntity<Location>> {
   loadedPages: number[];
 }
 
-export const locationsAdapter = createEntityAdapter<Location>({
+export const locationsAdapter = createEntityAdapter<PaginatedEntity<Location>>({
   sortComparer: (e1, e2) => e1?.id - e2?.id,
 });
 
