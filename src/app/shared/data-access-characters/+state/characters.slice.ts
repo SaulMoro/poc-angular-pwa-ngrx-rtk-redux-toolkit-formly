@@ -1,7 +1,7 @@
 import { createEntityAdapter, createSlice, EntityState, PayloadAction } from '@reduxjs/toolkit';
 
-import { Character, LoadingState, DataState, PaginatedEntity, ErrorState, CharactersFilter } from '@app/shared/models';
-import { plain, plainWithPayload } from '@app/shared/utils';
+import { Character, LoadingState, DataState, PaginatedEntity, CharactersFilter } from '@app/shared/models';
+import { loadingFailed, loadingStart, plain, plainWithPayload } from '@app/shared/utils';
 
 export interface CharactersState extends EntityState<PaginatedEntity<Character>> {
   dataState: DataState;
@@ -18,13 +18,6 @@ export const initialState: CharactersState = charactersAdapter.getInitialState({
   pages: 0,
   loadedPages: [],
 });
-
-const loadingStart = (state: CharactersState) => {
-  state.dataState = LoadingState.LOADING;
-};
-const loadingFailed = (state: CharactersState, { payload: error }: PayloadAction<unknown>) => {
-  state.dataState = { error } as ErrorState;
-};
 
 const charactersSlice = createSlice({
   name: 'characters',
