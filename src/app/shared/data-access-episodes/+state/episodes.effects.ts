@@ -4,7 +4,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { merge, of } from 'rxjs';
-import { map, switchMap, catchError, concatMap, withLatestFrom, filter, mergeMap } from 'rxjs/operators';
+import { map, switchMap, catchError, concatMap, withLatestFrom, filter, mergeMap, tap } from 'rxjs/operators';
 
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { SeoService } from '@app/core/seo';
@@ -25,6 +25,10 @@ export class EpisodesEffects {
       ),
       this.actions$.pipe(
         ofType(EpisodesActions.newEpisodesFilter),
+        // Reset page & set filter in queryParams
+        tap(({ payload: filter }) =>
+          this.router.navigate([], { queryParams: { ...filter, page: null }, queryParamsHandling: 'merge' }),
+        ),
         map(({ payload: filter }) => ({ filter, page: 1 })),
       ),
       this.actions$.pipe(
@@ -34,6 +38,15 @@ export class EpisodesEffects {
         map(([{ payload: page }, , filter]) => ({ filter, page })),
       ),
     ).pipe(map(EpisodesActions.loadEpisodesStart)),
+  );
+
+  resetFilter$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(EpisodesActions.resetFilter),
+        map(() => this.router.navigate([], { queryParams: {} })),
+      ),
+    { dispatch: false },
   );
 
   loadEpisodes$ = createEffect(() =>

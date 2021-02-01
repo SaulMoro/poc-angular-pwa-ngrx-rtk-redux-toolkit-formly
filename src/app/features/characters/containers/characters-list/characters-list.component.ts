@@ -40,6 +40,10 @@ export class CharactersListComponent implements OnInit {
     this.store.dispatch(CharactersActions.filterPageChange(page));
   }
 
+  resetFilter() {
+    this.store.dispatch(CharactersActions.resetFilter());
+  }
+
   prefetchLocation(locationId: number): void {
     if (locationId) {
       this.store.dispatch(LocationsActions.hoverLocationOfCharacter(locationId));

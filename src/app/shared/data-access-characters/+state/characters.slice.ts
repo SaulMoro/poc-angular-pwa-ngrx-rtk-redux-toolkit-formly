@@ -37,6 +37,7 @@ const charactersSlice = createSlice({
       state.loadedPages = [];
     },
     filterPageChange: plainWithPayload<number>(),
+    resetFilter: plain(),
 
     loadCharactersStart: (state, { payload }: PayloadAction<{ filter: CharactersFilter; page: number }>) =>
       loadingStart(state),

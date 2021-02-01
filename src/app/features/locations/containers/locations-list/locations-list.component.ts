@@ -67,6 +67,10 @@ export class LocationsListComponent implements OnInit {
     this.store.dispatch(LocationsActions.filterPageChange(page));
   }
 
+  resetFilter() {
+    this.store.dispatch(LocationsActions.resetFilter());
+  }
+
   async openResidentsDialog(location: Location): Promise<void> {
     const { CharactersDialogComponent } = await import(
       /* webpackPrefetch: true */

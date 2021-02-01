@@ -22,8 +22,8 @@ import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 export class DynamicFormComponent {
   @Input() form: FormGroup = new FormGroup({});
   @Input() fields: FormlyFieldConfig[] = [];
-  @Input() model?: Record<string, unknown> = {};
-  @Input() options?: FormlyFormOptions = {};
+  @Input() model: Record<string, unknown> = {};
+  @Input() options: FormlyFormOptions = {};
   @Output() modelChanges = new EventEmitter<Record<string, unknown>>();
   @Output() submitForm = new EventEmitter<Record<string, unknown>>();
 

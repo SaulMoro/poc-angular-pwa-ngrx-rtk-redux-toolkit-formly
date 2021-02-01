@@ -14,6 +14,7 @@ import {
   debounceTime,
   groupBy,
   exhaustMap,
+  tap,
 } from 'rxjs/operators';
 
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
@@ -35,6 +36,10 @@ export class LocationsEffects {
       ),
       this.actions$.pipe(
         ofType(LocationsActions.newLocationsFilter),
+        // Reset page & set filter in queryParams
+        tap(({ payload: filter }) =>
+          this.router.navigate([], { queryParams: { ...filter, page: null }, queryParamsHandling: 'merge' }),
+        ),
         map(({ payload: filter }) => ({ filter, page: 1 })),
       ),
       this.actions$.pipe(
@@ -44,6 +49,15 @@ export class LocationsEffects {
         map(([{ payload: page }, , filter]) => ({ filter, page })),
       ),
     ).pipe(map(LocationsActions.loadLocationsStart)),
+  );
+
+  resetFilter$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(LocationsActions.resetFilter),
+        map(() => this.router.navigate([], { queryParams: {} })),
+      ),
+    { dispatch: false },
   );
 
   loadLocations$ = createEffect(() =>

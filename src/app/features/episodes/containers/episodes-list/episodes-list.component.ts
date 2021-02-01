@@ -67,6 +67,10 @@ export class EpisodesListComponent implements OnInit {
     this.store.dispatch(EpisodesActions.filterPageChange(page));
   }
 
+  resetFilter() {
+    this.store.dispatch(EpisodesActions.resetFilter());
+  }
+
   async openCharactersDialog(episode: Episode): Promise<void> {
     const { CharactersDialogComponent } = await import(
       /* webpackPrefetch: true */
