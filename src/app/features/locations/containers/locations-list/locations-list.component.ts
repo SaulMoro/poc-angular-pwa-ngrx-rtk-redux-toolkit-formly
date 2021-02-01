@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { FormlyFormOptions } from '@ngx-formly/core';
 import { HashMap, TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -12,6 +13,7 @@ import {
 import { LocationsActions, LocationsSelectors } from '@app/shared/data-access-locations';
 import { Location, LocationsFilter } from '@app/shared/models';
 import { TableConfig } from '@app/shared/components/table/table.component';
+import { locationsFilterForm } from '../../forms/locations-filter.form';
 
 @Component({
   selector: 'app-locations-list',
@@ -43,6 +45,9 @@ export class LocationsListComponent implements OnInit {
   loading$: Observable<boolean> = this.store.select(LocationsSelectors.getLoading);
   page$: Observable<number> = this.store.select(LocationsSelectors.getCurrentPage);
   pages$: Observable<number> = this.store.select(LocationsSelectors.getTotalPages);
+
+  form = locationsFilterForm;
+  formOptions: FormlyFormOptions = {};
 
   constructor(
     private readonly store: Store,

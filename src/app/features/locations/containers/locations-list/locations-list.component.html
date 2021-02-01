@@ -1,27 +1,42 @@
-<app-locations-filter-form (filter)="newFilter($event)"></app-locations-filter-form>
-<app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar>
-
-<ng-container *ngIf="locationsTableConfig$ | ngrxPush as locationsTableConfig">
-  <div class="mt-4" *transloco="let t">
-    <app-table [config]="locationsTableConfig">
-      <!-- Actions per location -->
-      <ng-template let-item="item">
-        <button
-          type="button"
-          class="w-3/5 ml-2 btn-outline btn-outline-primary md:w-full md:ml-0"
-          [disabled]="!item.residents.length"
-          (click)="openResidentsDialog(item)"
-        >
-          {{
-            t(item.residents?.length ? 'LOCATIONS.RESIDENTS' : 'LOCATIONS.NO_RESIDENTS', {
-              number: item.residents?.length
-            })
-          }}
-        </button>
-      </ng-template>
-    </app-table>
-    <div class="mt-4" *ngIf="pages$ | ngrxPush as pages">
-      <app-paginator [currentPage]="page$ | ngrxPush" [pages]="pages" (page)="filterPageChange($event)"></app-paginator>
+<ng-container *transloco="let t">
+  <div class="w-full p-4 bg-white dark:bg-gray-700 dark:text-gray-300 sm:rounded-md sm:shadow">
+    <div class="flex justify-between">
+      <h1 class="mb-2 text-lg font-bold text-black dark:text-gray-300">{{ t('EPISODES.FILTER_EPISODES') }}</h1>
+      <button type="button" class="btn btn-primary" (click)="(formOptions.resetModel)">
+        {{ t('FORMS.CLEAR_FILTER') }}
+      </button>
     </div>
+
+    <dynamic-form [fields]="form" [options]="formOptions" (modelChanges)="newFilter($event)"></dynamic-form>
   </div>
+  <app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar>
+
+  <ng-container *ngIf="locationsTableConfig$ | ngrxPush as locationsTableConfig">
+    <div class="mt-4">
+      <app-table [config]="locationsTableConfig">
+        <!-- Actions per location -->
+        <ng-template let-item="item">
+          <button
+            type="button"
+            class="w-3/5 ml-2 btn-outline btn-outline-primary md:w-full md:ml-0"
+            [disabled]="!item.residents.length"
+            (click)="openResidentsDialog(item)"
+          >
+            {{
+              t(item.residents?.length ? 'LOCATIONS.RESIDENTS' : 'LOCATIONS.NO_RESIDENTS', {
+                number: item.residents?.length
+              })
+            }}
+          </button>
+        </ng-template>
+      </app-table>
+      <div class="mt-4" *ngIf="pages$ | ngrxPush as pages">
+        <app-paginator
+          [currentPage]="page$ | ngrxPush"
+          [pages]="pages"
+          (page)="filterPageChange($event)"
+        ></app-paginator>
+      </div>
+    </div>
+  </ng-container>
 </ng-container>

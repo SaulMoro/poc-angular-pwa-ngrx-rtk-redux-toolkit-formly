@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { FormlyFormOptions } from '@ngx-formly/core';
 import { HashMap, TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -12,6 +13,7 @@ import {
 import { EpisodesActions, EpisodesSelectors } from '@app/shared/data-access-episodes';
 import { Episode, EpisodesFilter } from '@app/shared/models';
 import { TableConfig } from '@app/shared/components/table/table.component';
+import { episodesFilterForm } from '../../forms/episodes-filter.form';
 
 @Component({
   selector: 'app-episodes-list',
@@ -43,6 +45,9 @@ export class EpisodesListComponent implements OnInit {
   loading$: Observable<boolean> = this.store.select(EpisodesSelectors.getLoading);
   page$: Observable<number> = this.store.select(EpisodesSelectors.getCurrentPage);
   pages$: Observable<number> = this.store.select(EpisodesSelectors.getTotalPages);
+
+  form = episodesFilterForm;
+  formOptions: FormlyFormOptions = {};
 
   constructor(
     private readonly store: Store,

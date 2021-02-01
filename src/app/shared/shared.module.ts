@@ -11,7 +11,7 @@ import { DataAccessCharactersModule } from './data-access-characters';
 import { DataAccessLocationsModule } from './data-access-locations';
 import { DataAccessEpisodesModule } from './data-access-episodes';
 
-import { NgRxFormModule } from '@app/core/ngrx-form';
+import { UiFormsModule } from './ui-forms';
 import { PrefetchDirective } from './directives/prefetch.directive';
 import { LazyImgDirective } from './directives/lazy-img.directive';
 import { AutofocusDirective } from './directives/autofocus.directive';
@@ -34,7 +34,7 @@ const EXPORTED_DECLARATIONS = [
 
 const IMPORTED_EXPORTS = [
   CommonModule,
-  NgRxFormModule,
+  UiFormsModule,
   TranslocoModule,
   TranslocoLocalizeRouterModule,
   ReactiveComponentModule,

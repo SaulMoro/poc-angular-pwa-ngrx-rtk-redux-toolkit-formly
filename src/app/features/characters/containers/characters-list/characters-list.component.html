@@ -1,4 +1,13 @@
-<app-characters-filter-form (filter)="newFilter($event)"></app-characters-filter-form>
+<div class="w-full p-4 bg-white dark:bg-gray-700 dark:text-gray-300 sm:rounded-md sm:shadow" *transloco="let t">
+  <div class="flex justify-between">
+    <h1 class="mb-2 text-lg font-bold text-black dark:text-gray-300">{{ t('CHARACTERS.FILTER_CHARACTERS') }}</h1>
+    <button type="button" class="btn btn-primary" (click)="(formOptions.resetModel)">
+      {{ t('FORMS.CLEAR_FILTER') }}
+    </button>
+  </div>
+
+  <dynamic-form [fields]="form" [options]="formOptions" (modelChanges)="newFilter($event)"></dynamic-form>
+</div>
 <app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar>
 
 <ng-container *ngrxLet="characters$ as characters">
