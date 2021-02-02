@@ -1,6 +1,6 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-
+import { SvgIconsModule } from '@ngneat/svg-icon';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
@@ -33,6 +33,19 @@ import { LayoutModule } from './layout/layout.module';
     EffectsModule.forRoot([UiEffects, GoogleAnalyticsEffects]),
     StoreRouterConnectingModule.forRoot({ routerState: RouterState.Minimal }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
+
+    // third party
+    SvgIconsModule.forRoot({
+      defaultSize: 'md',
+      sizes: {
+        xs: '16px',
+        sm: '18px',
+        md: '24px',
+        lg: '28px',
+        xl: '32px',
+        xxl: '64px',
+      },
+    }),
   ],
   exports: [LayoutModule, ReactiveComponentModule],
 })

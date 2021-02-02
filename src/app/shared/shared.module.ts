@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ContentLoaderModule } from '@ngneat/content-loader';
 import { TranslocoModule } from '@ngneat/transloco';
+import { SvgIconsModule } from '@ngneat/svg-icon';
 import { ReactiveComponentModule } from '@ngrx/component';
 import { TranslocoLocalizeRouterModule } from 'transloco-localize-router';
 
@@ -12,6 +13,7 @@ import { DataAccessLocationsModule } from './data-access-locations';
 import { DataAccessEpisodesModule } from './data-access-episodes';
 
 import { UiFormsModule } from './ui-forms';
+import { icons } from './shared.icons';
 import { PrefetchDirective } from './directives/prefetch.directive';
 import { LazyImgDirective } from './directives/lazy-img.directive';
 import { AutofocusDirective } from './directives/autofocus.directive';
@@ -46,12 +48,13 @@ const IMPORTED_EXPORTS = [
   imports: [
     ...IMPORTED_EXPORTS,
     RouterModule,
+    SvgIconsModule.forChild(icons),
 
     // Shared data access
     DataAccessCharactersModule,
     DataAccessLocationsModule,
     DataAccessEpisodesModule,
   ],
-  exports: [...IMPORTED_EXPORTS, ...EXPORTED_DECLARATIONS],
+  exports: [...IMPORTED_EXPORTS, ...EXPORTED_DECLARATIONS, SvgIconsModule],
 })
 export class SharedModule {}
