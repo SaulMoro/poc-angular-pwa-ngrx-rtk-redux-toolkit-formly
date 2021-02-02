@@ -37,7 +37,6 @@ PoC of an Angular project with:
 - **NgRx + RTK (Redux Toolkit)**
 - **RTK Entity** for the treatment of entities with NgRx
 - **NgRx Router State** to manage the state of the App from the Router in NgRx
-- **Forms connected to NgRx** to avoid the use of actions, handle the forms from NgRx and filters by automatic queryParams
 - [**Good Actions Hygiene**](https://www.youtube.com/watch?v=JmnsEvoy-gY) to think on actions as events ([Source] Event), not as commands
 - [**ngrx-store-localstorage**](https://github.com/btroncone/ngrx-store-localstorage) to save or retrieve parts of the state from the localStorage. We rehydrate NgRx content (Cache)
 
