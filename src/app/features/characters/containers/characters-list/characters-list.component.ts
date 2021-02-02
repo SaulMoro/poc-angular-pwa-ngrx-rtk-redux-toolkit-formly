@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { HashMap, TranslocoService } from '@ngneat/transloco';
-import { FormlyFormOptions } from '@ngx-formly/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -24,7 +23,6 @@ export class CharactersListComponent implements OnInit {
   pages$: Observable<number> = this.store.select(CharactersSelectors.getTotalPages);
 
   form = charactersFilterForm(this._status$, this._genders$, this._species$);
-  formOptions: FormlyFormOptions = {};
 
   constructor(private readonly store: Store, private translocoService: TranslocoService) {}
 

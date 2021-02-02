@@ -4,7 +4,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { merge, of } from 'rxjs';
-import { map, switchMap, catchError, concatMap, withLatestFrom, filter, mergeMap, tap } from 'rxjs/operators';
+import { map, switchMap, catchError, concatMap, withLatestFrom, filter, mergeMap } from 'rxjs/operators';
 
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { SeoService } from '@app/core/seo';
@@ -25,17 +25,9 @@ export class CharactersEffects {
   loadCharactersStart$ = createEffect(() =>
     merge(
       this.actions$.pipe(
-        ofType(CharactersActions.enterCharactersPage),
-        fromStore(CharactersSelectors.getCurrentFilter, CharactersSelectors.getCurrentPage)(this.store),
-        map(([, filter, page]) => ({ filter, page })),
-      ),
-      this.actions$.pipe(
         ofType(CharactersActions.newCharactersFilter),
-        // Reset page & set filter in queryParams
-        tap(({ payload: filter }) =>
-          this.router.navigate([], { queryParams: { ...filter, page: null }, queryParamsHandling: 'merge' }),
-        ),
-        map(({ payload: filter }) => ({ filter, page: 1 })),
+        fromStore(CharactersSelectors.getCurrentPage)(this.store),
+        map(([{ payload: filter }, currentPage]) => ({ filter, page: currentPage ?? 1 })),
       ),
       this.actions$.pipe(
         ofType(CharactersActions.filterPageChange),

@@ -14,7 +14,6 @@ import {
   debounceTime,
   groupBy,
   exhaustMap,
-  tap,
 } from 'rxjs/operators';
 
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
@@ -30,17 +29,9 @@ export class LocationsEffects {
   loadLocationsStart$ = createEffect(() =>
     merge(
       this.actions$.pipe(
-        ofType(LocationsActions.enterLocationsPage),
-        fromStore(LocationsSelectors.getCurrentFilter, LocationsSelectors.getCurrentPage)(this.store),
-        map(([, filter, page]) => ({ filter, page })),
-      ),
-      this.actions$.pipe(
         ofType(LocationsActions.newLocationsFilter),
-        // Reset page & set filter in queryParams
-        tap(({ payload: filter }) =>
-          this.router.navigate([], { queryParams: { ...filter, page: null }, queryParamsHandling: 'merge' }),
-        ),
-        map(({ payload: filter }) => ({ filter, page: 1 })),
+        fromStore(LocationsSelectors.getCurrentPage)(this.store),
+        map(([{ payload: filter }, currentPage]) => ({ filter, page: currentPage ?? 1 })),
       ),
       this.actions$.pipe(
         ofType(LocationsActions.filterPageChange),

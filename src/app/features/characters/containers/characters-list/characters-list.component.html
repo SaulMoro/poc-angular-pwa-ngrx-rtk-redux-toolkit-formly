@@ -6,7 +6,7 @@
     </button>
   </div>
 
-  <dynamic-form [fields]="form" [options]="formOptions" (modelChanges)="newFilter($event)"></dynamic-form>
+  <dynamic-form [fields]="form" [filter]="'onChange'" (modelChanges)="newFilter($event)"></dynamic-form>
 </div>
 <app-progress-bar *ngIf="loading$ | ngrxPush"></app-progress-bar>
 
