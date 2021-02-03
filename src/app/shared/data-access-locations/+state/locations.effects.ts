@@ -2,23 +2,12 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { asyncScheduler, merge, of } from 'rxjs';
-import {
-  map,
-  switchMap,
-  catchError,
-  concatMap,
-  withLatestFrom,
-  filter,
-  debounceTime,
-  groupBy,
-  exhaustMap,
-} from 'rxjs/operators';
+import { map, switchMap, catchError, filter, debounceTime, groupBy, exhaustMap } from 'rxjs/operators';
 
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { SeoService } from '@app/core/seo';
-import { fromStore } from '@app/shared/utils';
 import { LocationsActions } from './locations.slice';
 import * as LocationsSelectors from './locations.selectors';
 import { LocationsService } from '../services/locations.service';
@@ -30,12 +19,15 @@ export class LocationsEffects {
     merge(
       this.actions$.pipe(
         ofType(LocationsActions.newLocationsFilter),
-        fromStore(LocationsSelectors.getCurrentPage)(this.store),
+        concatLatestFrom(() => this.store.select(LocationsSelectors.getCurrentPage)),
         map(([{ payload: filter }, currentPage]) => ({ filter, page: currentPage ?? 1 })),
       ),
       this.actions$.pipe(
         ofType(LocationsActions.filterPageChange),
-        fromStore(LocationsSelectors.getLoadedPages, LocationsSelectors.getCurrentFilter)(this.store),
+        concatLatestFrom(() => [
+          this.store.select(LocationsSelectors.getLoadedPages),
+          this.store.select(LocationsSelectors.getCurrentFilter),
+        ]),
         filter(([{ payload: page }, loadedPages]) => !loadedPages.includes(page)),
         map(([{ payload: page }, , filter]) => ({ filter, page })),
       ),
@@ -76,13 +68,13 @@ export class LocationsEffects {
     merge(
       this.actions$.pipe(
         ofType(LocationsActions.enterLocationDetailsPage),
-        fromStore(LocationsSelectors.getSelectedId)(this.store),
+        concatLatestFrom(() => this.store.select(LocationsSelectors.getSelectedId)),
         map(([, locationId]) => locationId),
       ),
       this.actions$.pipe(
         ofType(LocationsActions.hoverLocationOfCharacter),
         debounceTime(debounce, scheduler),
-        fromStore(LocationsSelectors.getLocationsEntities)(this.store),
+        concatLatestFrom(() => this.store.select(LocationsSelectors.getLocationsEntities)),
         filter(([{ payload: locationId }, locations]) => !locations[locationId]),
         map(([{ payload: locationId }]) => locationId),
       ),
@@ -146,10 +138,8 @@ export class LocationsEffects {
     () =>
       this.actions$.pipe(
         ofType(LocationsActions.enterLocationsPage),
-        concatMap(() =>
-          of(this.router.url).pipe(withLatestFrom(this.translocoService.selectTranslateObject('LOCATIONS.SEO'))),
-        ),
-        map(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
+        concatLatestFrom(() => this.translocoService.selectTranslateObject('LOCATIONS.SEO')),
+        map(([, config]) => this.seoService.generateMetaTags({ ...config, route: this.router.url })),
       ),
     { dispatch: false },
   );
@@ -160,19 +150,15 @@ export class LocationsEffects {
         ofType(LocationsActions.loadLocationDetailsSuccess),
         filter(() => this.router.url.includes('/locations')),
         map(({ payload: location }) => location.name),
-        concatMap((name) =>
-          of(this.router.url).pipe(
-            withLatestFrom(
-              this.translocoService.selectTranslateObject('LOCATIONS.SEO_DETAILS', {
-                title: { name },
-                description: { name },
-                'keywords.0': { name },
-                'keywords.1': { name },
-              }),
-            ),
-          ),
+        concatLatestFrom((name) =>
+          this.translocoService.selectTranslateObject('LOCATIONS.SEO_DETAILS', {
+            title: { name },
+            description: { name },
+            'keywords.0': { name },
+            'keywords.1': { name },
+          }),
         ),
-        map(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
+        map(([, config]) => this.seoService.generateMetaTags({ ...config, route: this.router.url })),
       ),
     { dispatch: false },
   );

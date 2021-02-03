@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { merge, of } from 'rxjs';
-import { map, switchMap, catchError, concatMap, withLatestFrom, filter, mergeMap } from 'rxjs/operators';
+import { map, switchMap, catchError, filter, mergeMap } from 'rxjs/operators';
 
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { SeoService } from '@app/core/seo';
-import { fromStore } from '@app/shared/utils';
 import { EpisodesActions } from './episodes.slice';
 import * as EpisodesSelectors from './episodes.selectors';
 import { EpisodesService } from '../services/episodes.service';
@@ -20,12 +19,15 @@ export class EpisodesEffects {
     merge(
       this.actions$.pipe(
         ofType(EpisodesActions.newEpisodesFilter),
-        fromStore(EpisodesSelectors.getCurrentPage)(this.store),
+        concatLatestFrom(() => this.store.select(EpisodesSelectors.getCurrentPage)),
         map(([{ payload: filter }, currentPage]) => ({ filter, page: currentPage ?? 1 })),
       ),
       this.actions$.pipe(
         ofType(EpisodesActions.filterPageChange),
-        fromStore(EpisodesSelectors.getLoadedPages, EpisodesSelectors.getCurrentFilter)(this.store),
+        concatLatestFrom(() => [
+          this.store.select(EpisodesSelectors.getLoadedPages),
+          this.store.select(EpisodesSelectors.getCurrentFilter),
+        ]),
         filter(([{ payload: page }, loadedPages]) => !loadedPages.includes(page)),
         map(([{ payload: page }, , filter]) => ({ filter, page })),
       ),
@@ -65,7 +67,7 @@ export class EpisodesEffects {
   loadEpisodeDetailsStart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EpisodesActions.enterEpisodeDetailsPage),
-      fromStore(EpisodesSelectors.getSelectedId)(this.store),
+      concatLatestFrom(() => this.store.select(EpisodesSelectors.getSelectedId)),
       map(([, episodeId]) => EpisodesActions.loadEpisodeDetailsStart(episodeId)),
     ),
   );
@@ -85,7 +87,7 @@ export class EpisodesEffects {
   requiredEpisodesOfCharacters$ = createEffect(() =>
     this.actions$.pipe(
       ofType(EpisodesActions.requiredEpisodesOfCharacters),
-      fromStore(EpisodesSelectors.getEpisodesIds)(this.store),
+      concatLatestFrom(() => this.store.select(EpisodesSelectors.getEpisodesIds)),
       map(([{ payload: episodeIds }, ids]) => episodeIds.filter((episodeId) => !ids.includes(episodeId))),
       filter((episodeIds) => !!episodeIds.length),
       map((episodeIds) => EpisodesActions.loadEpisodesFromIdsStart(episodeIds)),
@@ -143,10 +145,8 @@ export class EpisodesEffects {
     () =>
       this.actions$.pipe(
         ofType(EpisodesActions.enterEpisodesPage),
-        concatMap(() =>
-          of(this.router.url).pipe(withLatestFrom(this.translocoService.selectTranslateObject('EPISODES.SEO'))),
-        ),
-        map(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
+        concatLatestFrom(() => this.translocoService.selectTranslateObject('EPISODES.SEO')),
+        map(([, config]) => this.seoService.generateMetaTags({ ...config, route: this.router.url })),
       ),
     { dispatch: false },
   );
@@ -156,19 +156,15 @@ export class EpisodesEffects {
       this.actions$.pipe(
         ofType(EpisodesActions.loadEpisodeDetailsSuccess),
         map(({ payload: episode }) => episode.name),
-        concatMap((name) =>
-          of(this.router.url).pipe(
-            withLatestFrom(
-              this.translocoService.selectTranslateObject('EPISODES.SEO_DETAILS', {
-                title: { name },
-                description: { name },
-                'keywords.0': { name },
-                'keywords.1': { name },
-              }),
-            ),
-          ),
+        concatLatestFrom((name) =>
+          this.translocoService.selectTranslateObject('EPISODES.SEO_DETAILS', {
+            title: { name },
+            description: { name },
+            'keywords.0': { name },
+            'keywords.1': { name },
+          }),
         ),
-        map(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
+        map(([, config]) => this.seoService.generateMetaTags({ ...config, route: this.router.url })),
       ),
     { dispatch: false },
   );

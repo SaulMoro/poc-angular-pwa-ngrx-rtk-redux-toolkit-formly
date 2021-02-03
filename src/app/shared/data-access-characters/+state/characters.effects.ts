@@ -2,16 +2,15 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { Store } from '@ngrx/store';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { merge, of } from 'rxjs';
-import { map, switchMap, catchError, concatMap, withLatestFrom, filter, mergeMap } from 'rxjs/operators';
+import { map, switchMap, catchError, filter, mergeMap } from 'rxjs/operators';
 
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import { SeoService } from '@app/core/seo';
 import { LocationsActions } from '@app/shared/data-access-locations';
 import { EpisodesActions } from '@app/shared/data-access-episodes';
 import { Episode, Location } from '@app/shared/models';
-import { fromStore } from '@app/shared/utils';
 import { CharactersActions } from './characters.slice';
 import * as CharactersSelectors from './characters.selectors';
 import { CharactersService } from '../services/characters.service';
@@ -26,12 +25,15 @@ export class CharactersEffects {
     merge(
       this.actions$.pipe(
         ofType(CharactersActions.newCharactersFilter),
-        fromStore(CharactersSelectors.getCurrentPage)(this.store),
+        concatLatestFrom(() => this.store.select(CharactersSelectors.getCurrentPage)),
         map(([{ payload: filter }, currentPage]) => ({ filter, page: currentPage ?? 1 })),
       ),
       this.actions$.pipe(
         ofType(CharactersActions.filterPageChange),
-        fromStore(CharactersSelectors.getLoadedPages, CharactersSelectors.getCurrentFilter)(this.store),
+        concatLatestFrom(() => [
+          this.store.select(CharactersSelectors.getLoadedPages),
+          this.store.select(CharactersSelectors.getCurrentFilter),
+        ]),
         filter(([{ payload: page }, loadedPages]) => !loadedPages.includes(page)),
         map(([{ payload: page }, , filter]) => ({ filter, page })),
       ),
@@ -71,7 +73,7 @@ export class CharactersEffects {
   loadCharacterDetailsStart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(CharactersActions.enterCharacterDetailsPage),
-      fromStore(CharactersSelectors.getSelectedId)(this.store),
+      concatLatestFrom(() => this.store.select(CharactersSelectors.getSelectedId)),
       map(([, characterId]) => CharactersActions.loadCharacterDetailsStart(characterId)),
     ),
   );
@@ -112,7 +114,7 @@ export class CharactersEffects {
         EpisodesActions.openCharactersDialog,
       ),
       map(({ payload }): number[] => (payload as Location)?.residents ?? (payload as Episode)?.characters),
-      fromStore(CharactersSelectors.getCharactersIds)(this.store),
+      concatLatestFrom(() => this.store.select(CharactersSelectors.getCharactersIds)),
       map(([characterIds, idsInState]) => characterIds?.filter((characterId) => !idsInState.includes(characterId))),
       filter((idsToFetch) => !!idsToFetch?.length),
       map((characterIds) => CharactersActions.loadCharactersFromIdsStart(characterIds)),
@@ -156,10 +158,8 @@ export class CharactersEffects {
     () =>
       this.actions$.pipe(
         ofType(CharactersActions.enterCharactersPage),
-        concatMap(() =>
-          of(this.router.url).pipe(withLatestFrom(this.translocoService.selectTranslateObject('CHARACTERS.SEO'))),
-        ),
-        map(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
+        concatLatestFrom(() => this.translocoService.selectTranslateObject('CHARACTERS.SEO')),
+        map(([, config]) => this.seoService.generateMetaTags({ ...config, route: this.router.url })),
       ),
     { dispatch: false },
   );
@@ -169,19 +169,15 @@ export class CharactersEffects {
       this.actions$.pipe(
         ofType(CharactersActions.loadCharacterDetailsSuccess),
         map(({ payload: character }) => character.name),
-        concatMap((name) =>
-          of(this.router.url).pipe(
-            withLatestFrom(
-              this.translocoService.selectTranslateObject('CHARACTERS.SEO_DETAILS', {
-                title: { name },
-                description: { name },
-                'keywords.0': { name },
-                'keywords.1': { name },
-              }),
-            ),
-          ),
+        concatLatestFrom((name) =>
+          this.translocoService.selectTranslateObject('CHARACTERS.SEO_DETAILS', {
+            title: { name },
+            description: { name },
+            'keywords.0': { name },
+            'keywords.1': { name },
+          }),
         ),
-        map(([route, config]) => this.seoService.generateMetaTags({ ...config, route })),
+        map(([, config]) => this.seoService.generateMetaTags({ ...config, route: this.router.url })),
       ),
     { dispatch: false },
   );

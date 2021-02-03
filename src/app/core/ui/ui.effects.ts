@@ -1,9 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { concatMap, tap, withLatestFrom } from 'rxjs/operators';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { tap } from 'rxjs/operators';
 
 import { GAEventCategory, GoogleAnalyticsService } from '@app/core/google-analytics';
 import * as UiSelectors from './ui.selectors';
@@ -16,7 +15,7 @@ export class UiEffects {
     () =>
       this.actions$.pipe(
         ofType(UiActions.toggleTheme),
-        concatMap((action) => of(action).pipe(withLatestFrom(this.store.select(UiSelectors.getTheme)))),
+        concatLatestFrom(() => this.store.select(UiSelectors.getTheme)),
         tap(([, theme]) => {
           this.document.body.classList.toggle('dark', theme === 'dark');
           localStorage.setItem(THEME_KEY, theme);
